@@ -3,8 +3,8 @@
 SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SELF_PATH=$SELF_PATH/$(basename -- "$0")
 DOTFILES=`dirname $SELF_PATH`
 
-echo ln -s $DOTFILES/ackrc $HOME/.ackrc
-echo ln -s $DOTFILES/emacs $HOME/.emacs
-echo ln -s $DOTFILES/ssh/config $HOME/.ssh/config
-echo ln -s $DOTFILES/zshrc $HOME/.zshrc
-echo ln -s $DOTFILES/zshenv $HOME/.zshenv
+ln -s $DOTFILES/ackrc $HOME/.ackrc
+ln -s $DOTFILES/emacs $HOME/.emacs
+ln -s $DOTFILES/ssh/config $HOME/.ssh/config
+ln -s $DOTFILES/zshrc $HOME/.zshrc
+ln -s $DOTFILES/zshenv $HOME/.zshenv
