@@ -3,7 +3,7 @@ Host *.statestr.com
   
 Host *
   ControlMaster auto
-  ControlPath /Users/crdant/.ssh/master-%r@%h:%p
+  ControlPath ~/.ssh/master-%r@%h:%p
 
 Host dantonio.homeip.net
   User root
@@ -11,19 +11,19 @@ Host dantonio.homeip.net
       
 Host acquia.com
   User root
-  IdentityFile /Users/crdant/.ssh/id_acquia.com
+  IdentityFile ~/.ssh/id_acquia.com
 
 Host chuckdantonio.com
   User crdant
-  IdentityFile /Users/crdant/.ssh/id_rsa_4096
+  IdentityFile ~/.ssh/id_rsa_4096
 
 Host *.amazonaws.com
   User root
-  IdentityFile /Users/crdant/.ssh/id_aws_crdant
+  IdentityFile ~/.ssh/id_aws_crdant
 
 Host *.aws.statestr.dev
   User root
-  IdentityFile /Users/crdant/.ssh/id_aws_crdant
+  IdentityFile ~/.ssh/id_aws_crdant
 
 Host 172.16.5.1
   User root
