@@ -1,0 +1,10 @@
+#!/bin/sh
+
+SETUPDIR=`dirname $0`
+DOTFILES=`dirname $SETUPDIR`
+
+echo ln -s $DOTFILES/ackrc $HOME/.ackrc
+echo ln -s $DOTFILES/emacs $HOME/.emacs
+echo ln -s $DOTFILES/ssh/config $HOME/.ssh/config
+echo ln -s $DOTFILES/zshrc $HOME/.zshrc
+echo ln -s $DOTFILES/zshenv $HOME/.zshenv

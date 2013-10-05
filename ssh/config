@@ -1,0 +1,32 @@
+Host *.statestr.com
+  User e514294  
+  
+Host *
+  ControlMaster auto
+  ControlPath /Users/crdant/.ssh/master-%r@%h:%p
+
+Host dantonio.homeip.net
+  User root
+  Port 22022
+      
+Host acquia.com
+  User root
+  IdentityFile /Users/crdant/.ssh/id_acquia.com
+
+Host chuckdantonio.com
+  User crdant
+  IdentityFile /Users/crdant/.ssh/id_aws_crdant
+
+Host *.amazonaws.com
+  User root
+  IdentityFile /Users/crdant/.ssh/id_aws_crdant
+
+Host *.aws.statestr.dev
+  User root
+  IdentityFile /Users/crdant/.ssh/id_aws_crdant
+
+Host 172.16.5.1
+  User root
+  
+Host 172.16.5.2
+  User root
