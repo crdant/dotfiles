@@ -4,6 +4,9 @@ SELFPATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SELFPATH=$SELFPATH/$(base
 SELFDIR=`dirname $SELFPATH`
 DOTFILES=`dirname $SELFDIR`
 
+mkdir $HOME/.setup.bak
+cp $HOME/.ackrc $HOME/.emacs $HOME/.ssh/config $HOME/.zshrc $HOME/.zshenv $HOME/.setup.bak
+
 ln -sf $DOTFILES/ackrc $HOME/.ackrc
 ln -sf $DOTFILES/emacs $HOME/.emacs
 ln -sf $DOTFILES/ssh/config $HOME/.ssh/config
