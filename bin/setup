@@ -26,4 +26,6 @@ chmod 600 $HOME/.ssh/authorized_keys
 
 # add oh-my-zsh with from my github respository, assuming the dotfiles repository is in the
 # same repository to use for the source code
-git clone git@github.com:crdant/oh-my-zsh `basename $DOTFILES`/oh-my-zsh
+OHMYZSH=`dirname $DOTFILES`/oh-my-zsh
+git clone git@github.com:crdant/oh-my-zsh $OHMYZSH
+ln -s $HOME/oh-my-zsh $OHMYZSH
