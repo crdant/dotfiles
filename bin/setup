@@ -28,4 +28,4 @@ chmod 600 $HOME/.ssh/authorized_keys
 # same repository to use for the source code
 OHMYZSH=`dirname $DOTFILES`/oh-my-zsh
 git clone git@github.com:crdant/oh-my-zsh.git $OHMYZSH
-ln -s $HOME/oh-my-zsh $OHMYZSH
+ln -sF $HOME/oh-my-zsh $OHMYZSH
