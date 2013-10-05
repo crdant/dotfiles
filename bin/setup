@@ -4,11 +4,15 @@ SELFPATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SELFPATH=$SELFPATH/$(base
 SELFDIR=`dirname $SELFPATH`
 DOTFILES=`dirname $SELFDIR`
 
+# backup the files if they exist
 mkdir $HOME/.setup.bak
 cp $HOME/.ackrc $HOME/.emacs $HOME/.ssh/config $HOME/.zshrc $HOME/.zshenv $HOME/.setup.bak
 
+# make sure the SSH config directory exists with appropriate permissions
 mkdir $HOME/.ssh
 chmod 700 $HOME/.ssh
+
+# setup various dotfiles
 
 ln -sf $DOTFILES/ackrc $HOME/.ackrc
 ln -sf $DOTFILES/emacs $HOME/.emacs
@@ -16,5 +20,10 @@ ln -sf $DOTFILES/ssh/config $HOME/.ssh/config
 ln -sf $DOTFILES/zshrc $HOME/.zshrc
 ln -sf $DOTFILES/zshenv $HOME/.zshenv
 
+# confirm SSH with my private key will be allowed
 cat $DOTFILES/ssh/id_rsa_4096.pub >> $HOME/.ssh/authorized_keys
 chmod 600 $HOME/.ssh/authorized_keys
+
+# add oh-my-zsh with from my github respository, assuming the dotfiles repository is in the
+# same repository to use for the source code
+git clone git@github.com:crdant/oh-my-zsh `basename $DOTFILES`/oh-my-zsh
