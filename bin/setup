@@ -7,8 +7,12 @@ DOTFILES=`dirname $SELFDIR`
 mkdir $HOME/.setup.bak
 cp $HOME/.ackrc $HOME/.emacs $HOME/.ssh/config $HOME/.zshrc $HOME/.zshenv $HOME/.setup.bak
 
+mkdir $HOME/.ssh
+
 ln -sf $DOTFILES/ackrc $HOME/.ackrc
 ln -sf $DOTFILES/emacs $HOME/.emacs
 ln -sf $DOTFILES/ssh/config $HOME/.ssh/config
 ln -sf $DOTFILES/zshrc $HOME/.zshrc
 ln -sf $DOTFILES/zshenv $HOME/.zshenv
+
+cat $DOTFILES/ssh/id_rsa_4096.pub >> $HOME/.ssh/authorized_keys
