@@ -29,3 +29,9 @@ chmod 600 $HOME/.ssh/authorized_keys
 OHMYZSH=`dirname $DOTFILES`/oh-my-zsh
 git clone git@github.com:crdant/oh-my-zsh.git $OHMYZSH
 ln -sF $OHMYZSH $HOME/.oh-my-zsh 
+
+# add the solarized scheme for terminal.app
+SOLARIZED_TERM=`dirname $DOTFILES`/osx-terminal.app-colors-solarized
+git clone https://github.com/tomislav/osx-terminal.app-colors-solarized $SOLARIZED_TERM
+open "$SOLARIZED_TERM/Solarized Dark.terminal"
+open "$SOLARIZED_TERM/Solarized Ligh.terminal"
