@@ -182,54 +182,6 @@ wifibounce () {
 # ssh connections
 alias home="ssh cdant.home-ip.net"
 
-# connect to Summit - defaults to DEV3 environment
-sshsmd () {
-  region=${1}
-  shift 1
-  host=asmdd2.it.statestr.com
-  
-  if [ "$region" = "pr2d" ] ; then
-    host=asmd09.statestr.com
-  elif [ "$region" = "uat1" ] ; then
-    host=asmd01.statestr.com
-  elif [ "$region" = "uat2" ] ; then
-    host=asmd08.statestr.com
-  elif [ "$region" = "qa7" ] ; then
-    host=asmd11.statestr.com
-  elif [ "$region" = "qa6" ] ; then
-    host=asmd10.statestr.com
-  elif [ "$region" = "qa5" ] ; then
-    host=asmd07.statestr.com
-  elif [ "$region" = "qa4" ] ; then
-    host=asmd06.statestr.com
-  elif [ "$region" = "qa3" ] ; then
-    host=asmd05.statestr.com
-  elif [ "$region" = "qa1" ] ; then
-    host=asmd03.statestr.com
-  elif [ "$region" = "dev5" ] ; then
-    host=asmdd4.it.statestr.com
-  elif [ "$region" = "dev4" ] ; then
-    host=asmdd3.it.statestr.com
-  elif [ "$region" = "dev3" ] ; then
-    host=asmdd2.it.statestr.com
-  elif [ "$region" = "dev2" ] ; then
-    host=asmdd1.it.statestr.com
-  elif [ "$region" = "dev1" ] ; then
-    host=asmdd0.it.statestr.com
-  fi
-  
-  ssh $host $*
-}
-
-sshcc () {
-  ssh cpsogl10.it.statestr.com
-}
-
-# full screen remote desktop
-rdc () {
-  rdesktop -f -u e514294 -p - -r disk:dropbox=~/Dropbox,stt=~/Documents/Archive/State\ Street,projects=~/Documents/Projects $1
-}
-
 # setup CVS roots
 CVSROOT=/Users/Shared/Drupal
 
@@ -246,5 +198,7 @@ update_terminal_cwd() {
 autoload add-zsh-hook
 add-zsh-hook chpwd update_terminal_cwd
 update_terminal_cwd
+
+source /usr/local/share/zsh/site-functions/_aws
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" 
