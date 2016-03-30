@@ -37,4 +37,12 @@ export __CF_USER_TEXT_ENCODING=0x1F5:0x8000100:0x8000100
 # use textmate to edit git commit messages, with a meaningful window title
 export GIT_EDITOR="mate --name 'Git Commit Message' -w -l"
 
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+# setup BOSH lite for AWS
+export BOSH_AWS_ACCESS_KEY_ID=AKIAIRW7G663QGREI3WA
+export BOSH_AWS_SECRET_ACCESS_KEY=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%
+
+# code in Go
+export GOPATH=/usr/local/lib/go
+
+# use my own commands before anything else
+export PATH=${HOME}/bin:${PATH}

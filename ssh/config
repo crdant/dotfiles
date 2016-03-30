@@ -8,11 +8,10 @@ Host *
 Host dantonio.homeip.net
   User root
   Port 22022
-      
-Host acquia.com
-  User root
-  IdentityFile ~/.ssh/id_acquia.com
 
+Host tormore
+  User pi
+  
 Host chuckdantonio.com
   User crdant
   IdentityFile ~/.ssh/id_rsa_4096

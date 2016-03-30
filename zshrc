@@ -29,7 +29,7 @@ COMPLETION_WAITING_DOTS="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git git-flow textmate osx phing ant vagrant drush)
+plugins=(git git-flow textmate osx phing ant vagrant drush docker)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -57,6 +57,7 @@ outbox=/Users/crdant/Dropbox/Outbox
 pending=/Users/crdant/Dropbox/Pending
 read=/Users/crdant/Dropbox/Read
 archive=/Users/crdant/Documents/Archive
+projects=/Users/crdant/Documents/Projects
 documents=/Users/crdant/Documents
 clients="/Users/crdant/Documents/Archive/Flying Mist/Clients"
 src=/Users/crdant/Source
@@ -199,6 +200,7 @@ autoload add-zsh-hook
 add-zsh-hook chpwd update_terminal_cwd
 update_terminal_cwd
 
+# completions for AWS commend line
 source /usr/local/share/zsh/site-functions/_aws
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" 
+eval "$(direnv hook zsh)"
