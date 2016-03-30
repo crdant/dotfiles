@@ -44,3 +44,13 @@ PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 
 # use Grails from homebrew
 export GRAILS_HOME=/usr/local/Cellar/grails/2.0.3/libexec
+
+# use my own commands before anything else
+export PATH=${HOME}/bin:${PATH}
+
+# setup BOSH lite for AWS
+export BOSH_AWS_ACCESS_KEY_ID=AKIAIRW7G663QGREI3WA
+export BOSH_AWS_SECRET_ACCESS_KEY=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%
+
+# code in Go
+export GOPATH=/usr/local/lib/go
