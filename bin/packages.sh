@@ -1,3 +1,9 @@
+#!/bin/sh
+
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+brew tap homebrew/serivces
+
 brew cask install 0xed
 brew cask install 1password
 brew cask install alfred
@@ -28,7 +34,6 @@ brew cask install virtualbox
 brew install ack
 brew install autoconf
 brew install awscli
-brew install cf
 brew install direnv
 brew install git-flow
 brew install go
@@ -43,3 +48,6 @@ brew install ruby-build
 brew install springboot
 brew install wget
 brew install zsh-completions
+
+brew tap cloudfoundry/tap
+brew install cf-cli
