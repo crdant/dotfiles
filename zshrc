@@ -29,7 +29,7 @@ COMPLETION_WAITING_DOTS="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git git-flow textmate osx phing ant vagrant drush docker)
+plugins=(git git-flow textmate osx vagrant emoji golang gradle docker aws)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -52,19 +52,36 @@ setopt complete_aliases
 unsetopt hist_verify
 
 # set up some named directories
-inbox=/Users/crdant/Dropbox/Inbox
-outbox=/Users/crdant/Dropbox/Outbox
-pending=/Users/crdant/Dropbox/Pending
-read=/Users/crdant/Dropbox/Read
-archive=/Users/crdant/Documents/Archive
-projects=/Users/crdant/Documents/Projects
-documents=/Users/crdant/Documents
-clients="/Users/crdant/Documents/Archive/Flying Mist/Clients"
-src=/Users/crdant/Source
-sites=/Users/crdant/Sites/DAMP/acquia-drupal/sites
-damp=/Users/crdant/Sites/DAMP
-idisk=/Volumes/iDisk
-bamboo=/Users/Shared/Bamboo
+function names {
+  source=${1}
+  if [ "$source" = "google" ] ; then
+      inbox="/Users/crdant/Google Drive/Inbox"
+      outbox="/Users/crdant/Google Drive/Outbox"
+      pending="/Users/crdant/Google Drive/Pending"
+      read="/Users/crdant/Google Drive/Read"
+      archive="/Users/crdant/Google Drive/Archive"
+      projects="/Users/crdant/Google Drive/Projects"
+      clients="/Users/crdant/Google Drive/Archive/Clients"
+  else
+    inbox=/Users/crdant/Dropbox/Inbox
+    outbox=/Users/crdant/Dropbox/Outbox
+    pending=/Users/crdant/Dropbox/Pending
+    read=/Users/crdant/Dropbox/Read
+    archive=/Users/crdant/Documents/Archive
+    projects=/Users/crdant/Documents/Projects
+    documents=/Users/crdant/Documents
+    clients="/Users/crdant/Documents/Archive/Flying Mist/Clients"
+  fi
+
+  # clients are for Pivotal clients who will only be on Drive
+  clients="/Users/crdant/Google Drive/Archive/Clients"
+
+  # same on all Macs I'm using
+  documents=/Users/crdant/Documents
+  src=/Users/crdant/Source
+  idisk=/Volumes/iDisk
+}
+names dropbox
 
 # company directories
 acquia=/Users/crdant/Documents/Archive/Acquia
@@ -72,9 +89,10 @@ hp=/Users/crdant/Documents/Archive/HP
 systinet=/Users/crdant/Documents/Archive/Systinet
 statestreet="/Users/crdant/Documents/Archive/State Street"
 flyingmist="/Users/crdant/Documents/Archive/Flying Mist"
+pivotal="/Users/crdant/Documents/Archive/Pivotal"
 
 # merge several PDFs into one
-function pdfcat { 
+function pdfcat {
     merged=${1} ;
     shift ;
     gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=${1} $@
@@ -115,7 +133,7 @@ vnct () {
 }
 
 # cdf: cd's to frontmost window of Finder
-cdf () 
+cdf ()
 {
     currFolderPath=$( /usr/bin/osascript <<"    EOT"
         tell application "Finder"
@@ -149,7 +167,7 @@ alias pd=pushd
 alias pop=popd
 alias ant="ant -find build.xml"
 alias Ant="ant"
-alias pbget='curl -O `pbpaste`' 
+alias pbget='curl -O `pbpaste`'
 alias check="cvs update -dP 2>/dev/null"
 alias root-finder="sudo /System/Library/CoreServices/Finder.app/Contents/MacOS/Finder"
 alias sha1="/usr/bin/openssl sha1"
@@ -171,20 +189,8 @@ alias lsock='sudo /usr/sbin/lsof -i -P'
 
 # zipf: to create a ZIP archive of a folder
 zipf () {
-	zip -r "$1".zip "$1" ; 
+	zip -r "$1".zip "$1" ;
 }
-
-# reboot home router
-wifibounce () {
-  router="1"
-  ssh -l root 172.16.5.${router} reboot  
-}
-
-# ssh connections
-alias home="ssh cdant.home-ip.net"
-
-# setup CVS roots
-CVSROOT=/Users/Shared/Drupal
 
 # enable Terminal proxy icons
 update_terminal_cwd() {
@@ -200,7 +206,15 @@ autoload add-zsh-hook
 add-zsh-hook chpwd update_terminal_cwd
 update_terminal_cwd
 
-# completions for AWS commend line
-source /usr/local/share/zsh/site-functions/_aws
+# add completions
+# source /usr/local/share/zsh/site-functions/_go
 
+# enable
+export HOMEBREW_GITHUB_API_TOKEN=00628c278e94be1a37145eb3ee9b676f359740e7
 eval "$(direnv hook zsh)"
+
+# point cf at different instances
+alias pws="cf login -a https://api.run.pivotal.io -u cdantonio@pivotal.io"
+alias pez="cf login -a https://api.run.pez.pivotal.io -sso" 
+alias pcd="cf login -a api.local.pcfdev.io --skip-ssl-validation -u admin"
+alias lite="cf login --skip-ssl-validation -a https://api.bosh-lite.com -u admin"
