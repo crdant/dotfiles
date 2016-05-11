@@ -7,8 +7,8 @@ export PATH=/usr/local/sbin:${PATH}
 # TODO: Update this for newer versions of Xcode
 export PATH=/Developer/usr/bin:${PATH}
 
-# Oracle JDK 1.7
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.7.0_10.jdk/Contents/Home
+# Oracle 1.8
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_77.jdk/Contents/Home
 
 # set man paths to include /usr/local (brew and more) and MacPorts files
 export MANPATH=/usr/local/man:${MANPATH}
@@ -41,8 +41,15 @@ export GIT_EDITOR="mate --name 'Git Commit Message' -w -l"
 export BOSH_AWS_ACCESS_KEY_ID=AKIAIRW7G663QGREI3WA
 export BOSH_AWS_SECRET_ACCESS_KEY=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%
 
-# code in Go
+# code in Go and run downloaded/installed packages
 export GOPATH=/usr/local/lib/go
+export PATH=${GOPATH}/bin:${PATH}
 
-# use my own commands before anything else
+# use my home directory copy of commands before anything else
 export PATH=${HOME}/bin:${PATH}
+
+# Pivotal Network downloads via API require a key
+export PIVNET_TOKEN=KgoMEtxmTZJsodLY4KUw
+
+# Pivotal CF command-line customization
+export CF_COLOR=true                     Do not colorize output
