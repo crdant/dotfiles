@@ -1,37 +1,36 @@
 #!/bin/sh
 
-SELFPATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SELFPATH=$SELFPATH/$(basename -- "$0")
-SELFDIR=`dirname $SELFPATH`
-DOTFILES=`dirname $SELFDIR`
+SELFPATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SELFPATH=${SELFPATH}/$(basename -- "$0")
+SELFDIR=`dirname ${SELFPATH}`
+DOTFILES=`dirname ${SELFDIR}`
 
 # backup the files if they exist
-mkdir $HOME/.setup.bak
-cp $HOME/.ackrc $HOME/.emacs $HOME/.ssh/config $HOME/.zshrc $HOME/.zshenv $HOME/.setup.bak
+mkdir ${HOME}/.setup.bak
+cp ${HOME}/.ackrc ${HOME}/.emacs ${HOME}/.ssh/config ${HOME}/.zshrc ${HOME}/.zshenv ${HOME}/.setup.bak
 
 # make sure the SSH config directory exists with appropriate permissions
-mkdir $HOME/.ssh
-chmod 700 $HOME/.ssh
+mkdir ${HOME}/.ssh
+chmod 700 ${HOME}/.ssh
 
 # setup various dotfiles
 
-ln -sf $DOTFILES/ackrc $HOME/.ackrc
-ln -sf $DOTFILES/emacs $HOME/.emacs
-ln -sf $DOTFILES/ssh/config $HOME/.ssh/config
-ln -sf $DOTFILES/zshrc $HOME/.zshrc
-ln -sf $DOTFILES/zshenv $HOME/.zshenv
+ln -sf ${DOTFILES}/ackrc ${HOME}/.ackrc
+ln -sf ${DOTFILES}/emacs ${HOME}/.emacs
+ln -sf ${DOTFILES}/ssh/config ${HOME}/.ssh/config
+ln -sf ${DOTFILES}/gitconfig ${HOME}/.gitconfig
+ln -sf ${DOTFILES}/zshrc ${HOME}/.zshrc
+ln -sf ${DOTFILES}/zshenv ${HOME}/.zshenv
 
 # confirm SSH with my private key will be allowed
-cat $DOTFILES/ssh/id_rsa_4096.pub >> $HOME/.ssh/authorized_keys
-chmod 600 $HOME/.ssh/authorized_keys
+cat ${DOTFILES}/ssh/id_rsa_4096.pub >> ${HOME}/.ssh/authorized_keys
+chmod 600 ${HOME}/.ssh/authorized_keys
 
 # add oh-my-zsh with from my github respository, assuming the dotfiles repository is in the
 # same repository to use for the source code
-OHMYZSH=`dirname $DOTFILES`/oh-my-zsh
-git clone git@github.com:crdant/oh-my-zsh.git $OHMYZSH
-ln -sF $OHMYZSH $HOME/.oh-my-zsh 
+OHMYZSH=`dirname ${DOTFILES}`/oh-my-zsh
+git clone git@github.com:crdant/oh-my-zsh.git ${OHMYZSH}
+ln -sF ${OHMYZSH} ${HOME}/.oh-my-zsh 
 
-# add the solarized scheme for terminal.app
-SOLARIZED_TERM=`dirname $DOTFILES`/osx-terminal.app-colors-solarized
-git clone https://github.com/tomislav/osx-terminal.app-colors-solarized $SOLARIZED_TERM
-open "$SOLARIZED_TERM/Solarized Dark.terminal"
-open "$SOLARIZED_TERM/Solarized Ligh.terminal"
+# add customized Terminal.app configuration (need to make this only execute on Macs)
+cp ${HOME}/Library/Preferences/com.apple.Terminal.plist ${HOME}/.setup.bak
+ln -sf ${DOTFILES}/com.apple.Terminal.plist ${HOME}/Library/Preferences/com.apple.Terminal.plist 
