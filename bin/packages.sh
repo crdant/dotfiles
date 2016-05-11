@@ -37,7 +37,7 @@ brew cask install carbon-copy-cloner
 brew cask install charles
 brew cask install cocoapacketanalyzer
 brew cask install dash
-brew cask install dropbox 
+brew cask install dropbox
 brew cask install dockertoolbox
 brew cask install evernote
 brew cask install flux
@@ -76,10 +76,7 @@ brew install ack
 brew install autoconf
 brew install automake
 brew install awscli
-<<<<<<< HEAD
-=======
 brew install cmake
->>>>>>> a91e60694ed9e0f10f82aaa73e54f0acb044d2fe
 brew install direnv
 brew install dsd
 brew install fftw
@@ -90,6 +87,7 @@ brew install godep
 brew install gradle
 brew install itpp
 brew install jenkins
+brew install jq
 brew install libgpg-error
 brew install libksba
 brew install libogg
@@ -113,10 +111,6 @@ brew install springboot
 brew install wget
 brew install zsh-completions
 
-<<<<<<< HEAD
-brew tap cloudfoundry/tap
-brew install cf-cli
-=======
 # some fonts for coding
 brew tap caskroom/fonts
 brew cask install font-inconsolata
@@ -130,4 +124,3 @@ brew install cf-cli
 # now some go stuff
 go get github.com/cfmobile/gopivnet
 go install github.com/cfmobile/gopivnet
->>>>>>> a91e60694ed9e0f10f82aaa73e54f0acb044d2fe
