@@ -53,6 +53,7 @@ brew cask install istumbler
 brew cask install kindle
 brew cask install java
 brew cask install pacifist
+brew cask install packer
 brew cask install packetpeeper
 brew cask install postman
 brew cask install rubymine
@@ -124,3 +125,5 @@ brew install cf-cli
 # now some go stuff
 go get github.com/cfmobile/gopivnet
 go install github.com/cfmobile/gopivnet
+go get github.com/cppforlife/packer-bosh
+go install github.com/cppforlife/packer-bosh

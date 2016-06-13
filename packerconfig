@@ -1,0 +1,5 @@
+{
+  "provisioners": {
+    "packer-bosh": "/your-bin-dir/packer-bosh"
+  }
+}
