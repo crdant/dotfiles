@@ -62,7 +62,7 @@ function names {
       archive="/Users/crdant/Google Drive/Archive"
       projects="/Users/crdant/Google Drive/Projects"
       clients="/Users/crdant/Google Drive/Archive/Clients"
-  else
+  elif [ "$source" = "dropbox" ] ; then
     inbox=/Users/crdant/Dropbox/Inbox
     outbox=/Users/crdant/Dropbox/Outbox
     pending=/Users/crdant/Dropbox/Pending
@@ -71,6 +71,8 @@ function names {
     projects=/Users/crdant/Documents/Projects
     documents=/Users/crdant/Documents
     clients="/Users/crdant/Documents/Archive/Flying Mist/Clients"
+  else
+    echo Using names from $NAMES_ARE_FROM_SOURCE
   fi
 
   # clients are for Pivotal clients who will only be on Drive
@@ -80,8 +82,15 @@ function names {
   documents=/Users/crdant/Documents
   src=/Users/crdant/Source
   idisk=/Volumes/iDisk
+  export NAMES_ARE_FROM_SOURCE=$source
 }
-names dropbox
+
+if security find-certificate -c "Pivotal Root CA" &> /dev/null
+then
+  names google
+else
+  names dropbox
+fi
 
 # company directories
 acquia=/Users/crdant/Documents/Archive/Acquia
@@ -149,17 +158,6 @@ cdf ()
     cd "$currFolderPath"
 }
 
-# TextMate for editing
-export EDITOR="mate -w"
-export SVN_EDITOR="mate -w"
-
-# use Groovy
-export GROOVY_HOME=/opt/local/share/java/groovy
-
-# CVS
-export CVS_RSH=ssh
-export CVSEDITOR="mate -w"
-
 # common aliases
 alias xterm="xterm -fn 6x10 -sl 500 -sb -ls"
 alias more="less -X"
@@ -167,7 +165,7 @@ alias pd=pushd
 alias pop=popd
 alias ant="ant -find build.xml"
 alias Ant="ant"
-alias pbget='curl -O `pbpaste`'
+alias paste='curl -O `pbpaste`'
 alias check="cvs update -dP 2>/dev/null"
 alias root-finder="sudo /System/Library/CoreServices/Finder.app/Contents/MacOS/Finder"
 alias sha1="/usr/bin/openssl sha1"
@@ -218,3 +216,4 @@ alias pws="cf login -a https://api.run.pivotal.io -u cdantonio@pivotal.io"
 alias pez="cf login -a https://api.run.pez.pivotal.io -sso"
 alias pcd="cf login -a api.local.pcfdev.io --skip-ssl-validation -u admin"
 alias lite="cf login --skip-ssl-validation -a https://api.bosh-lite.com -u admin"
+alias pcf=cf
