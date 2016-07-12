@@ -1,6 +1,6 @@
 Host *.statestr.com
-  User e514294  
-  
+  User e514294
+
 Host *
   ControlMaster auto
   ControlPath ~/.ssh/master-%r@%h:%p
@@ -11,7 +11,7 @@ Host dantonio.homeip.net
 
 Host tormore
   User pi
-  
+
 Host chuckdantonio.com
   User crdant
   IdentityFile ~/.ssh/id_rsa_4096
@@ -26,6 +26,14 @@ Host *.aws.statestr.dev
 
 Host 172.16.5.1
   User root
-  
+
 Host 172.16.5.2
   User root
+
+Host *.crdant.io
+  User vcap
+  IdentityFile ~/.ssh/bosh.pem
+
+Host *.local.pcfdev.io
+  User vcap
+  StrictHostKeyChecking no
