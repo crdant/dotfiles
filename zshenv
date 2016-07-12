@@ -34,8 +34,12 @@ export PATH=${AWS_ELB_HOME}/bin:${PATH}
 # make sure PB Copy uses UTF-8
 export __CF_USER_TEXT_ENCODING=0x1F5:0x8000100:0x8000100
 
-# use textmate to edit git commit messages, with a meaningful window title
-export GIT_EDITOR="mate --name 'Git Commit Message' -w -l"
+
+# set various editor variables to use atom
+export EDITOR="atom -w"
+export VISUAL="atom -w"
+export SVN_EDITOR="atom -w -l"
+export GIT_EDITOR="atom -w -l"
 
 # setup BOSH lite for AWS
 export BOSH_AWS_ACCESS_KEY_ID=AKIAIRW7G663QGREI3WA
