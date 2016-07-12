@@ -15,9 +15,13 @@ chmod 700 ${HOME}/.ssh
 # setup various dotfiles
 
 ln -sf ${DOTFILES}/ackrc ${HOME}/.ackrc
+ln -sf ${DOTFILES}/curlrc ${HOME}/.curlrc
+ln -sf ${DOTFILES}/editorconfig ${HOME}/.editorconfig
 ln -sf ${DOTFILES}/emacs ${HOME}/.emacs
 ln -sf ${DOTFILES}/ssh/config ${HOME}/.ssh/config
 ln -sf ${DOTFILES}/gitconfig ${HOME}/.gitconfig
+ln -sf ${DOTFILES}/packerconfig ${HOME}/.packerconfig
+ln -sf ${DOTFILES}/tmproperties ${HOME}/.tm_properties
 ln -sf ${DOTFILES}/zshrc ${HOME}/.zshrc
 ln -sf ${DOTFILES}/zshenv ${HOME}/.zshenv
 
@@ -29,8 +33,8 @@ chmod 600 ${HOME}/.ssh/authorized_keys
 # same repository to use for the source code
 OHMYZSH=`dirname ${DOTFILES}`/oh-my-zsh
 git clone git@github.com:crdant/oh-my-zsh.git ${OHMYZSH}
-ln -sF ${OHMYZSH} ${HOME}/.oh-my-zsh 
+ln -sF ${OHMYZSH} ${HOME}/.oh-my-zsh
 
 # add customized Terminal.app configuration (need to make this only execute on Macs)
 cp ${HOME}/Library/Preferences/com.apple.Terminal.plist ${HOME}/.setup.bak
-ln -sf ${DOTFILES}/com.apple.Terminal.plist ${HOME}/Library/Preferences/com.apple.Terminal.plist 
+ln -sf ${DOTFILES}/com.apple.Terminal.plist ${HOME}/Library/Preferences/com.apple.Terminal.plist
