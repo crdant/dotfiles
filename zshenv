@@ -34,16 +34,25 @@ export PATH=${AWS_ELB_HOME}/bin:${PATH}
 # make sure PB Copy uses UTF-8
 export __CF_USER_TEXT_ENCODING=0x1F5:0x8000100:0x8000100
 
-
 # set various editor variables to use atom
 export EDITOR="atom -w"
 export VISUAL="atom -w"
-export SVN_EDITOR="atom -w -l"
-export GIT_EDITOR="atom -w -l"
+export SVN_EDITOR="vi"
+export GIT_EDITOR="vi"
 
 # setup BOSH lite for AWS
 export BOSH_AWS_ACCESS_KEY_ID=AKIAIRW7G663QGREI3WA
 export BOSH_AWS_SECRET_ACCESS_KEY=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%
+
+# use Pivotal Shared billing AWS environment
+export PIVOTAL_AWS_ACCESS_KEY_ID=AKIAJ4FEQERG4YY3FHRQ
+export PIVOTAL_AWS_SECRET_ACCESS_KEY=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
+export AWS_ACCESS_KEY_ID=${PIVOTAL_AWS_ACCESS_KEY_ID}
+export AWS_SECRET_ACCESS_KEY=${PIVOTAL_AWS_SECRET_ACCESS_KEY}
+
+# use personal billing AWS environment
+export PERSONAL_AWS_ACCESS_KEY_ID=AKIAJD6FY3VALDRKDBYA
+export PERSONAL_AWS_SECRET_ACCESS_KEY=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
 
 # code in Go and run downloaded/installed packages
 export GOPATH=/usr/local/lib/go
@@ -53,7 +62,16 @@ export PATH=${GOPATH}/bin:${PATH}
 export PATH=${HOME}/bin:${PATH}
 
 # Pivotal Network downloads via API require a key
-export PIVNET_TOKEN=KgoMEtxmTZJsodLY4KUw
+export PIVNET_TOKEN=3Q-w2Xd34yU2VzdUXGJJ
 
 # Pivotal CF command-line customization
-export CF_COLOR=true                     Do not colorize output
+export CF_COLOR=true
+
+# Use Geode installed from Homebrew
+export GEODE_HOME=/usr/local/Cellar/apache-geode/1.0.0-incubating.M3/libexec
+
+# Use minicoda for Python 2.7
+export PATH=/usr/local/opt/miniconda2/bin:$PATH
+
+# Use gettext from Homebrew
+export PATH=/usr/local/opt/gettext/bin:$PATH
