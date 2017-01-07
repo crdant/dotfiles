@@ -18,6 +18,9 @@ mas install 497799835   # xcode
 mas install 1053031090  # boxy
 mas install 1031444301  # hangouts plus
 mas install 715768417   # microsoft remote desktop
+mas install 937984704   # amphetamine, trying it out instead of caffeine
+mas install 1055511498  # day one
+mas install 1046095491  # freeze
 
 # install iwork
 mas install 409183694  # keynote
@@ -33,7 +36,7 @@ brew cask install atom
 brew cask install audacity
 brew cask install bartender
 brew cask install bose-soundtouch
-brew cask install caffeine
+# brew cask install caffeine
 brew cask install candybar
 brew cask install carbon-copy-cloner
 brew cask install charles
@@ -41,7 +44,6 @@ brew cask install cocoapacketanalyzer
 brew cask install dash
 brew cask install dropbox
 brew cask install docker
-brew cask install dotnet
 brew cask install evernote
 brew cask install flux
 brew cask install flycut
@@ -56,10 +58,13 @@ brew cask install intellij-idea
 brew cask install istumbler
 brew cask install java
 brew cask install kindle
-brew cask instsall mysqlworkbench
+brew cask install little-snitch
+brew cask install logitech-gaming-software
+brew cask install mysqlworkbench
 brew cask install pacifist
 brew cask install packer
 brew cask install packetpeeper
+brew cask install popclip
 brew cask install postman
 brew cask install rubymine
 brew cask install rstudio
@@ -74,12 +79,17 @@ brew cask install textmate
 brew cask install torbrowser
 brew cask install utorrent
 brew cask install vagrant
+brew cask install vlc
 brew cask install virtualbox
 brew cask install wireshark
 brew cask install zoomus
 
+# install avast if this isn't a Pivotal computer
+if ! security find-certificate -c "Pivotal Root CA" &> /dev/null
+  brew cask install avast
+fi
+
 # install packages to build
-brew install ack
 brew install autoconf
 brew install automake
 brew install apache-geode
@@ -139,6 +149,11 @@ go get -u github.com/cfmobile/gopivnet
 go get -u github.com/cppforlife/packer-bosh
 go get -u github.com/hashicorp/terraform
 
+# .NET core (the cask is old)
+curl -qsLf -o ${TMPDIR}dotnetcore.pkg https://go.microsoft.com/fwlink/\?LinkID\=835011
+sudo installer -pkg ${TMPDIR}dotnetcore.pkg -target /
+rm $TMPDIR/dotnetcore.pkg
+
 # add atom packages
 apm install atom-beautify
 apm install atom-keyboard-macros
@@ -177,10 +192,9 @@ pcfdev_eula_accepted=`curl -qsLf -X POST -d "" -H "Authorization: Token $PIVNET_
 pcfdev_files_url=`curl -qsLf -H "Authorization: Token $PIVNET_TOKEN" "$pcfdev_releases" | jq --raw-output ".releases[0] ._links .product_files .href"`
 pcfdev_post_url=`curl -qsLf -H "Authorization: Token $PIVNET_TOKEN" $pcfdev_files_url | jq --raw-output ".product_files[] | select( .aws_object_key | contains(\"osx\") ) ._links .download .href"`
 pcfdev_download_url=`curl -qsLf -X POST -d "" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Token $PIVNET_TOKEN" $pcfdev_post_url -w "%{url_effective}\n"`
-curl -qsLf -o ${TMPDIR}/pcfdev-osx.zip $pcfdev_download_url
-pushd ${TMPDIR}
-unzip -p ${TMPDIR}/pcfdev-osx.zip > pcfdev
-chmod 755 pcfdev
-yes | cf install-plugin pcfdev
-rm ${TMPDIR}/pcfdev  ${TMPDIR}/pcfdev-osx.zip
+curl -qsLf -o ${TMPDIR}pcfdev-osx.zip $pcfdev_download_url
+unzip -p ${TMPDIR}pcfdev-osx.zip > ${TMPDIR}pcfdev
+chmod 755 ${TMPDIR}pcfdev
+yes | cf install-plugin ${TMPDIR}pcfdev
+rm ${TMPDIR}pcfdev  ${TMPDIR}pcfdev-osx.zip
 popd
