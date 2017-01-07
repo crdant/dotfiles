@@ -38,3 +38,6 @@ ln -sF ${OHMYZSH} ${HOME}/.oh-my-zsh
 # add customized Terminal.app configuration (need to make this only execute on Macs)
 cp ${HOME}/Library/Preferences/com.apple.Terminal.plist ${HOME}/.setup.bak
 ln -sf ${DOTFILES}/com.apple.Terminal.plist ${HOME}/Library/Preferences/com.apple.Terminal.plist
+
+# install packages
+$SELFDIR/packages.sh
