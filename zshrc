@@ -29,7 +29,7 @@ COMPLETION_WAITING_DOTS="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git git-flow textmate osx vagrant emoji golang gradle docker aws cf)
+plugins=(git git-flow osx vagrant emoji golang gradle docker aws spring brew)
 
 source $ZSH/oh-my-zsh.sh
 
