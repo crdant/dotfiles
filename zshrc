@@ -173,10 +173,10 @@ alias rmd160="/usr/bin/openssl rmd160"
 alias flushdns="dnscacheutil -flushcache"
 
 # filetype aliases
-alias -s txt=mate
-alias -s java=mate
-alias -s xml=mate
-alias -s php=mate
+alias -s txt=atom
+alias -s java=atom
+alias -s xml=atom
+alias -s php=atom
 alias -s app=open
 
 # check battery
