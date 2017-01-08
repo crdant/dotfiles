@@ -39,5 +39,11 @@ ln -sF ${OHMYZSH} ${HOME}/.oh-my-zsh
 cp ${HOME}/Library/Preferences/com.apple.Terminal.plist ${HOME}/.setup.bak
 ln -sf ${DOTFILES}/com.apple.Terminal.plist ${HOME}/Library/Preferences/com.apple.Terminal.plist
 
+# setup some directories
+mkdir ${HOME}/Source
+ln -s ${HOME}/Source ${HOME}/src
+mkdir ${HOME}/Source/learning
+mkdir "${HOME}/Virtual Box VMs"
+
 # install packages
 $SELFDIR/packages.sh
