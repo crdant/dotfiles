@@ -123,6 +123,7 @@ brew install mysql
 brew install nexus
 brew install node
 brew install openssl
+brew install osxutils
 brew install packer
 brew install pianobar
 brew install pkg-config
