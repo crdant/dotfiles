@@ -80,7 +80,8 @@ function names {
 
   # same on all Macs I'm using
   documents=/Users/crdant/Documents
-  src=/Users/crdant/Source
+  src=/Users/crdant/workspace
+  workspace=/Users/crdant/workspace
   idisk=/Volumes/iDisk
   export NAMES_ARE_FROM_SOURCE=$source
 }
