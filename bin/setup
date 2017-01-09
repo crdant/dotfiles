@@ -29,21 +29,6 @@ ln -sf ${DOTFILES}/zshenv ${HOME}/.zshenv
 cat ${DOTFILES}/ssh/id_rsa_4096.pub >> ${HOME}/.ssh/authorized_keys
 chmod 600 ${HOME}/.ssh/authorized_keys
 
-# add oh-my-zsh with from my github respository, assuming the dotfiles repository is in the
-# same repository to use for the source code
-OHMYZSH=`dirname ${DOTFILES}`/oh-my-zsh
-git clone git@github.com:crdant/oh-my-zsh.git ${OHMYZSH}
-ln -sF ${OHMYZSH} ${HOME}/.oh-my-zsh
-
 # add customized Terminal.app configuration (need to make this only execute on Macs)
 cp ${HOME}/Library/Preferences/com.apple.Terminal.plist ${HOME}/.setup.bak
 ln -sf ${DOTFILES}/com.apple.Terminal.plist ${HOME}/Library/Preferences/com.apple.Terminal.plist
-
-# setup some directories
-mkdir ${HOME}/Source
-ln -s ${HOME}/Source ${HOME}/src
-mkdir ${HOME}/Source/learning
-mkdir "${HOME}/Virtual Box VMs"
-
-# install packages
-$SELFDIR/packages.sh
