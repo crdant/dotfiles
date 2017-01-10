@@ -8,12 +8,10 @@ else
   DOTFILES=`dirname ${SELFDIR}`
 fi
 
-# backup the files if they exist
-mkdir ${HOME}/.setup.bak
-cp ${HOME}/.ackrc ${HOME}/.emacs ${HOME}/.ssh/config ${HOME}/.zshrc ${HOME}/.zshenv ${HOME}/.setup.bak
-
 # make sure the SSH config directory exists with appropriate permissions
-mkdir ${HOME}/.ssh
+if [ ! -d ${HOME}/.ssh ] ; then
+    mkdir ${HOME}/.ssh
+fi
 chmod 700 ${HOME}/.ssh
 
 # setup various dotfiles
