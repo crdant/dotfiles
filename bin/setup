@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ -n "${MY_DIR} ] ; then
+if [ -n "${MY_DIR}" ] ; then
   DOTFILES=${HOME}/.dotfiles
 else 
   SELFPATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SELFPATH=${SELFPATH}/$(basename -- "$0")
