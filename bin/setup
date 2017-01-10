@@ -1,8 +1,12 @@
 #!/bin/sh
 
-SELFPATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SELFPATH=${SELFPATH}/$(basename -- "$0")
-SELFDIR=`dirname ${SELFPATH}`
-DOTFILES=`dirname ${SELFDIR}`
+if [ -n "${MY_DIR} ] ; then
+  DOTFILES=${HOME}/.dotfiles
+else 
+  SELFPATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SELFPATH=${SELFPATH}/$(basename -- "$0")
+  SELFDIR=`dirname ${SELFPATH}`
+  DOTFILES=`dirname ${SELFDIR}`
+fi
 
 # backup the files if they exist
 mkdir ${HOME}/.setup.bak
