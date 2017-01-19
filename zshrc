@@ -59,6 +59,7 @@ function names {
       outbox="/Users/crdant/Google Drive/Outbox"
       pending="/Users/crdant/Google Drive/Pending"
       read="/Users/crdant/Google Drive/Read"
+      watch="/Users/crdant/Google Drive/Watch"
       archive="/Users/crdant/Google Drive/Archive"
       projects="/Users/crdant/Google Drive/Projects"
       clients="/Users/crdant/Google Drive/Archive/Clients"
@@ -67,6 +68,7 @@ function names {
     outbox=/Users/crdant/Dropbox/Outbox
     pending=/Users/crdant/Dropbox/Pending
     read=/Users/crdant/Dropbox/Read
+    watch=/Users/crdant/Dropbox/Watch
     archive=/Users/crdant/Documents/Archive
     projects=/Users/crdant/Documents/Projects
     documents=/Users/crdant/Documents
