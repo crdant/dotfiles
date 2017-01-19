@@ -1,8 +1,10 @@
 #!/bin/sh
 
+mkdir -p ${HOME}/.dotfiles.bak
+
 if [ -n "${MY_DIR}" ] ; then
   DOTFILES=${HOME}/.dotfiles
-else 
+else
   SELFPATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SELFPATH=${SELFPATH}/$(basename -- "$0")
   SELFDIR=`dirname ${SELFPATH}`
   DOTFILES=`dirname ${SELFDIR}`
@@ -15,16 +17,35 @@ fi
 chmod 700 ${HOME}/.ssh
 
 # setup various dotfiles
-
+DATESTAMP=$(date +%Y%m%dT%H%M%S)
+mv ${HOME}/.ackrc ${HOME}/.dotfiles.bak/.ackrc.${DATESTAMP}
 ln -sf ${DOTFILES}/ackrc ${HOME}/.ackrc
+
+mv ${HOME}/.curlrc ${HOME}/.dotfiles.bak/.curlrc.${DATESTAMP}
 ln -sf ${DOTFILES}/curlrc ${HOME}/.curlrc
+
+mv ${HOME}/.editorconfig ${HOME}/.dotfiles.bak/.editorconfig.${DATESTAMP}
 ln -sf ${DOTFILES}/editorconfig ${HOME}/.editorconfig
+
+mv ${HOME}/.emacs ${HOME}/.dotfiles.bak/.emacs.${DATESTAMP}
 ln -sf ${DOTFILES}/emacs ${HOME}/.emacs
+
+mv ${HOME}/ssh/config ${HOME}/.dotfiles.bak/ssh/config.${DATESTAMP}
 ln -sf ${DOTFILES}/ssh/config ${HOME}/.ssh/config
+
+mv ${HOME}/.gitconfig ${HOME}/.dotfiles.bak/.gitconfig.${DATESTAMP}
 ln -sf ${DOTFILES}/gitconfig ${HOME}/.gitconfig
+
+mv ${HOME}/.packerconfig ${HOME}/.dotfiles.bak/.packerconfig.${DATESTAMP}
 ln -sf ${DOTFILES}/packerconfig ${HOME}/.packerconfig
-ln -sf ${DOTFILES}/tmproperties ${HOME}/.tm_properties
+
+mv ${HOME}/.tm_properties ${HOME}/.dotfiles.bak/.tm_properties.${DATESTAMP}
+ln -sf ${DOTFILES}/tm_properties ${HOME}/.tm_properties
+
+mv ${HOME}/.zshrc ${HOME}/.dotfiles.bak/.zshrc.${DATESTAMP}
 ln -sf ${DOTFILES}/zshrc ${HOME}/.zshrc
+
+mv ${HOME}/.zshenv ${HOME}/.dotfiles.bak/.zshenv.${DATESTAMP}
 ln -sf ${DOTFILES}/zshenv ${HOME}/.zshenv
 
 # confirm SSH with my private key will be allowed
@@ -32,5 +53,5 @@ cat ${DOTFILES}/ssh/id_rsa_4096.pub >> ${HOME}/.ssh/authorized_keys
 chmod 600 ${HOME}/.ssh/authorized_keys
 
 # add customized Terminal.app configuration (need to make this only execute on Macs)
-cp ${HOME}/Library/Preferences/com.apple.Terminal.plist ${HOME}/.setup.bak
+cp ${HOME}/Library/Preferences/com.apple.Terminal.plist ${HOME}/.dotfiles.bak
 ln -sf ${DOTFILES}/com.apple.Terminal.plist ${HOME}/Library/Preferences/com.apple.Terminal.plist
