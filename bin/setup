@@ -1,15 +1,17 @@
 #!/bin/sh
 
-SELFPATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SELFPATH=${SELFPATH}/$(basename -- "$0")
-SELFDIR=`dirname ${SELFPATH}`
-DOTFILES=`dirname ${SELFDIR}`
-
-# backup the files if they exist
-mkdir ${HOME}/.setup.bak
-cp ${HOME}/.ackrc ${HOME}/.emacs ${HOME}/.ssh/config ${HOME}/.zshrc ${HOME}/.zshenv ${HOME}/.setup.bak
+if [ -n "${MY_DIR}" ] ; then
+  DOTFILES=${HOME}/.dotfiles
+else 
+  SELFPATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SELFPATH=${SELFPATH}/$(basename -- "$0")
+  SELFDIR=`dirname ${SELFPATH}`
+  DOTFILES=`dirname ${SELFDIR}`
+fi
 
 # make sure the SSH config directory exists with appropriate permissions
-mkdir ${HOME}/.ssh
+if [ ! -d ${HOME}/.ssh ] ; then
+    mkdir ${HOME}/.ssh
+fi
 chmod 700 ${HOME}/.ssh
 
 # setup various dotfiles
