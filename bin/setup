@@ -30,7 +30,7 @@ ln -sf ${DOTFILES}/editorconfig ${HOME}/.editorconfig
 mv ${HOME}/.emacs ${HOME}/.dotfiles.bak/.emacs.${DATESTAMP}
 ln -sf ${DOTFILES}/emacs ${HOME}/.emacs
 
-mv ${HOME}/ssh/config ${HOME}/.dotfiles.bak/ssh/config.${DATESTAMP}
+mv ${HOME}/.ssh/config ${HOME}/.dotfiles.bak/ssh-config.${DATESTAMP}
 ln -sf ${DOTFILES}/ssh/config ${HOME}/.ssh/config
 
 mv ${HOME}/.gitconfig ${HOME}/.dotfiles.bak/.gitconfig.${DATESTAMP}
