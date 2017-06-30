@@ -24,11 +24,9 @@ Host *.aws.statestr.dev
   User root
   IdentityFile ~/.ssh/id_aws_crdant
 
-Host 172.16.5.1
-  User root
-
-Host 172.16.5.2
-  User root
+Host 172.16.0.1
+  User ubnt
+  IdentityFile ~/.ssh/id_ubnt
 
 Host *.crdant.io
   User vcap
