@@ -75,3 +75,6 @@ export PATH=/usr/local/opt/miniconda2/bin:$PATH
 
 # Use gettext from Homebrew
 export PATH=/usr/local/opt/gettext/bin:$PATH
+
+# CF Jump stuff outside of my home directory
+export CFJ_HOME=${HOME}/.cfj
