@@ -7,8 +7,8 @@ export PATH=/usr/local/sbin:${PATH}
 # TODO: Update this for newer versions of Xcode
 export PATH=/Developer/usr/bin:${PATH}
 
-# Oracle 1.8
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_77.jdk/Contents/Home
+# Default Mac location
+export JAVA_HOME=/Library/Java/Home
 
 # set man paths to include /usr/local (brew and more) and MacPorts files
 export MANPATH=/usr/local/man:${MANPATH}
@@ -78,3 +78,6 @@ export PATH=/usr/local/opt/gettext/bin:$PATH
 
 # CF Jump stuff outside of my home directory
 export CFJ_HOME=${HOME}/.cfj
+
+# rbnenv
+export PATH=~/.rbenv/shims:${PATH}
