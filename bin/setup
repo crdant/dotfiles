@@ -55,3 +55,7 @@ chmod 600 ${HOME}/.ssh/authorized_keys
 # add customized Terminal.app configuration (need to make this only execute on Macs)
 cp ${HOME}/Library/Preferences/com.apple.Terminal.plist ${HOME}/.dotfiles.bak
 ln -sf ${DOTFILES}/com.apple.Terminal.plist ${HOME}/Library/Preferences/com.apple.Terminal.plist
+
+# add AWS configuration
+mv ${HOME}/.aws ${HOME}/.dotfiles.bak/.aws.${DATESTAMP}
+ln -sf ${DOTFILES}/aws ${HOME}/.aws
