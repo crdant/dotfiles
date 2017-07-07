@@ -1,0 +1,9 @@
+[profile personal]
+region = us-east-1
+output = json
+[default]
+output = json
+region = us-east-1
+[profile pivotal]
+output = json
+region = us-west-2
