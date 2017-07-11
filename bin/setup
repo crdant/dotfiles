@@ -56,6 +56,10 @@ chmod 600 ${HOME}/.ssh/authorized_keys
 cp ${HOME}/Library/Preferences/com.apple.Terminal.plist ${HOME}/.dotfiles.bak
 ln -sf ${DOTFILES}/Library/Preferences/com.apple.Terminal.plist ${HOME}/Library/Preferences/com.apple.Terminal.plist
 
+# add Bartender configuration (need to make this only execute on Macs)
+cp ${HOME}/Library/Preferences/ccom.surteesstudios.Bartender.plist ${HOME}/.dotfiles.bak
+ln -sf ${DOTFILES}/Library/Preferences/com.surteesstudios.Bartender.plist ${HOME}/Library/Preferences/com.surteesstudios.Bartender.plist
+
 # add Pivotal color palette
 cp ${HOME}/Library/Colors/Pivotal.clr ${HOME}/.dotfiles.bak
 ln -sf ${DOTFILES}/Library/Colors/Pivotal.clr ${HOME}/Library/Colors/Pivotal.clr
