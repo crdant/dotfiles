@@ -1,0 +1,2 @@
+# Download YouTube playlist videos in separate directory indexed by video order in a playlist
+-o '%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s'

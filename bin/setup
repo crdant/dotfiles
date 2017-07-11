@@ -53,12 +53,16 @@ cat ${DOTFILES}/ssh/id_rsa_4096.pub >> ${HOME}/.ssh/authorized_keys
 chmod 600 ${HOME}/.ssh/authorized_keys
 
 # add customized Terminal.app configuration (need to make this only execute on Macs)
-cp ${HOME}/Library/Preferences/com.apple.Terminal.plist ${HOME}/.dotfiles.bak
+cp ${HOME}/Library/Preferences/com.apple.Terminal.plist ${HOME}/.dotfiles.bak/com.apple.Terminal.plist.${DATESTAMP}
 ln -sf ${DOTFILES}/Library/Preferences/com.apple.Terminal.plist ${HOME}/Library/Preferences/com.apple.Terminal.plist
 
 # add Bartender configuration (need to make this only execute on Macs)
-cp ${HOME}/Library/Preferences/ccom.surteesstudios.Bartender.plist ${HOME}/.dotfiles.bak
+cp ${HOME}/Library/Preferences/com.surteesstudios.Bartender.plist ${HOME}/.dotfiles.bak/com.surteesstudios.Bartender.plist.${DATESTAMP}
 ln -sf ${DOTFILES}/Library/Preferences/com.surteesstudios.Bartender.plist ${HOME}/Library/Preferences/com.surteesstudios.Bartender.plist
+
+# add youtube-dl configuration
+mv ${HOME}/.config/youtube-dl ${HOME}/.dotfiles.bak/youtube-dl.${DATESTAMP}
+ln -sf ${DOTFILES}/.config/youtube-dl ${HOME}/.config/youtube-dl
 
 # add Pivotal color palette
 cp ${HOME}/Library/Colors/Pivotal.clr ${HOME}/.dotfiles.bak
