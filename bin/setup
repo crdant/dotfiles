@@ -54,7 +54,11 @@ chmod 600 ${HOME}/.ssh/authorized_keys
 
 # add customized Terminal.app configuration (need to make this only execute on Macs)
 cp ${HOME}/Library/Preferences/com.apple.Terminal.plist ${HOME}/.dotfiles.bak
-ln -sf ${DOTFILES}/com.apple.Terminal.plist ${HOME}/Library/Preferences/com.apple.Terminal.plist
+ln -sf ${DOTFILES}/Library/Preferences/com.apple.Terminal.plist ${HOME}/Library/Preferences/com.apple.Terminal.plist
+
+# add Pivotal color palette
+cp ${HOME}/Library/Colors/Pivotal.clr ${HOME}/.dotfiles.bak
+ln -sf ${DOTFILES}/Library/Colors/Pivotal.clr ${HOME}/Library/Colors/Pivotal.clr
 
 # add AWS configuration
 mv ${HOME}/.aws ${HOME}/.dotfiles.bak/.aws.${DATESTAMP}
