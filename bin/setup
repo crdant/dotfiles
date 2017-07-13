@@ -18,34 +18,34 @@ chmod 700 ${HOME}/.ssh
 
 # setup various dotfiles
 DATESTAMP=$(date +%Y%m%dT%H%M%S)
-mv ${HOME}/.ackrc ${HOME}/.dotfiles.bak/.ackrc.${DATESTAMP}
+mv ${HOME}/.ackrc ${HOME}/.dotfiles.bak/ackrc.${DATESTAMP}
 ln -sf ${DOTFILES}/ackrc ${HOME}/.ackrc
 
-mv ${HOME}/.curlrc ${HOME}/.dotfiles.bak/.curlrc.${DATESTAMP}
+mv ${HOME}/.curlrc ${HOME}/.dotfiles.bak/curlrc.${DATESTAMP}
 ln -sf ${DOTFILES}/curlrc ${HOME}/.curlrc
 
-mv ${HOME}/.editorconfig ${HOME}/.dotfiles.bak/.editorconfig.${DATESTAMP}
+mv ${HOME}/.editorconfig ${HOME}/.dotfiles.bak/editorconfig.${DATESTAMP}
 ln -sf ${DOTFILES}/editorconfig ${HOME}/.editorconfig
 
-mv ${HOME}/.emacs ${HOME}/.dotfiles.bak/.emacs.${DATESTAMP}
+mv ${HOME}/.emacs ${HOME}/.dotfiles.bak/emacs.${DATESTAMP}
 ln -sf ${DOTFILES}/emacs ${HOME}/.emacs
 
 mv ${HOME}/.ssh/config ${HOME}/.dotfiles.bak/ssh-config.${DATESTAMP}
 ln -sf ${DOTFILES}/ssh/config ${HOME}/.ssh/config
 
-mv ${HOME}/.gitconfig ${HOME}/.dotfiles.bak/.gitconfig.${DATESTAMP}
+mv ${HOME}/.gitconfig ${HOME}/.dotfiles.bak/gitconfig.${DATESTAMP}
 ln -sf ${DOTFILES}/gitconfig ${HOME}/.gitconfig
 
-mv ${HOME}/.packerconfig ${HOME}/.dotfiles.bak/.packerconfig.${DATESTAMP}
+mv ${HOME}/.packerconfig ${HOME}/.dotfiles.bak/packerconfig.${DATESTAMP}
 ln -sf ${DOTFILES}/packerconfig ${HOME}/.packerconfig
 
-mv ${HOME}/.tm_properties ${HOME}/.dotfiles.bak/.tm_properties.${DATESTAMP}
+mv ${HOME}/.tm_properties ${HOME}/.dotfiles.bak/tm_properties.${DATESTAMP}
 ln -sf ${DOTFILES}/tm_properties ${HOME}/.tm_properties
 
-mv ${HOME}/.zshrc ${HOME}/.dotfiles.bak/.zshrc.${DATESTAMP}
+mv ${HOME}/.zshrc ${HOME}/.dotfiles.bak/zshrc.${DATESTAMP}
 ln -sf ${DOTFILES}/zshrc ${HOME}/.zshrc
 
-mv ${HOME}/.zshenv ${HOME}/.dotfiles.bak/.zshenv.${DATESTAMP}
+mv ${HOME}/.zshenv ${HOME}/.dotfiles.bak/zshenv.${DATESTAMP}
 ln -sf ${DOTFILES}/zshenv ${HOME}/.zshenv
 
 # confirm SSH with my private key will be allowed
@@ -69,5 +69,10 @@ cp ${HOME}/Library/Colors/Pivotal.clr ${HOME}/.dotfiles.bak
 ln -sf ${DOTFILES}/Library/Colors/Pivotal.clr ${HOME}/Library/Colors/Pivotal.clr
 
 # add AWS configuration
-mv ${HOME}/.aws ${HOME}/.dotfiles.bak/.aws.${DATESTAMP}
+mv ${HOME}/.aws ${HOME}/.dotfiles.bak/aws.${DATESTAMP}
 ln -sf ${DOTFILES}/aws ${HOME}/.aws
+
+# link in atom configuration
+mkdir ~/.dotfiles.bak/atom
+mv ${HOME}/.atom/config.cson ${HOME}/.dotfiles.bak/atom/
+ln -sf ${DOTFILES}/atom/config.cson ${HOME}/.atom/config.cson

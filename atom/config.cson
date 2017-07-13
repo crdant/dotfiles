@@ -1,0 +1,18 @@
+"*":
+  core:
+    telemetryConsent: "no"
+    themes: [
+      "one-light-ui"
+      "solarized-light-syntax"
+    ]
+  editor:
+    fontFamily: "inconsolata"
+    fontSize: 12
+  "exception-reporting":
+    userId: "25edbd35-bca5-492a-8015-f9937373b69b"
+  "linter-ui-default":
+    panelHeight: 69
+  "tree-view":
+    hideVcsIgnoredFiles: true
+  welcome:
+    showOnStartup: false
