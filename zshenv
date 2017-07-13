@@ -37,8 +37,8 @@ export __CF_USER_TEXT_ENCODING=0x1F5:0x8000100:0x8000100
 # set various editor variables to use atom
 export EDITOR="atom -w"
 export VISUAL="atom -w"
-export SVN_EDITOR="vi"
-export GIT_EDITOR="vi"
+export SVN_EDITOR="${VISUAL}"
+export GIT_EDITOR="${VISUAL}"
 
 # setup BOSH lite for AWS
 export BOSH_AWS_ACCESS_KEY_ID=AKIAIRW7G663QGREI3WA
