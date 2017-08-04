@@ -1,6 +1,3 @@
-Host *.statestr.com
-  User e514294
-
 Host *
   ControlMaster auto
   ControlPath ~/.ssh/master-%r@%h:%p
@@ -12,21 +9,9 @@ Host dantonio.homeip.net
 Host tormore
   User pi
 
-Host chuckdantonio.com
-  User crdant
-  IdentityFile ~/.ssh/id_rsa_4096
-
-Host *.amazonaws.com
-  User root
-  IdentityFile ~/.ssh/id_aws_crdant
-
-Host *.aws.statestr.dev
-  User root
-  IdentityFile ~/.ssh/id_aws_crdant
-
 Host 172.16.0.1
   User ubnt
-  IdentityFile ~/.ssh/id_ubnt=
+  IdentityFile ~/.ssh/id_ubnt
 
 Host *.crdant.io
   User vcap
