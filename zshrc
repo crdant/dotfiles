@@ -91,6 +91,8 @@ function names {
 if security find-certificate -c "Pivotal Root CA" &> /dev/null
 then
   names google
+  demos=/Users/crdant/workspace/demos
+  accounts=/Users/crdant/workspace/accounts
 else
   names dropbox
 fi
@@ -207,6 +209,11 @@ autoload add-zsh-hook
 add-zsh-hook chpwd update_terminal_cwd
 update_terminal_cwd
 
+function op_secret () {
+  local secret=${1}
+  op get item ${secret} | jq -r '.details.fields[] | select ( .designation == "password" ) .value'
+}
+
 # add completions
 # source /usr/local/share/zsh/site-functions/_go
 
@@ -227,3 +234,7 @@ alias pcf=cf
 # tabtab source for sls package
 # uninstall by removing these lines or running `tabtab uninstall sls`
 [[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
+
+# tabtab source for jhipster package
+# uninstall by removing these lines or running `tabtab uninstall jhipster`
+[[ -f /private/tmp/node_modules/tabtab/.completions/jhipster.zsh ]] && . /private/tmp/node_modules/tabtab/.completions/jhipster.zsh
