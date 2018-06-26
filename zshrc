@@ -29,7 +29,7 @@ COMPLETION_WAITING_DOTS="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git git-flow osx vagrant emoji golang gradle docker aws spring brew azure cf)
+plugins=(git git-flow osx iterm2 emoji golang gradle docker aws spring brew azure cf kubectl helm command-not-found node npm)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -226,7 +226,6 @@ alias pws="cf login -a https://api.run.pivotal.io -u cdantonio@pivotal.io"
 alias pez="cf login -a https://api.run.pez.pivotal.io -sso"
 alias pcd="cf login -a api.local.pcfdev.io --skip-ssl-validation -u admin"
 alias lite="cf login --skip-ssl-validation -a https://api.bosh-lite.com -u admin"
-alias pcf=cf
 
 # tabtab source for serverless package
 # uninstall by removing these lines or running `tabtab uninstall serverless`
