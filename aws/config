@@ -9,3 +9,6 @@ output = json
 region = us-west-2
 [profile bbl]
 region = us-west-2
+[profile workgrid]
+output = json
+region = us-east-1

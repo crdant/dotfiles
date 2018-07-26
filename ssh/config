@@ -13,10 +13,6 @@ Host 172.16.0.1
   User ubnt
   IdentityFile ~/.ssh/id_ubnt
 
-Host *.crdant.io
-  User vcap
-  IdentityFile ~/.ssh/bosh.pem
-
 Host *.local.pcfdev.io
   User vcap
   StrictHostKeyChecking no
