@@ -7,8 +7,9 @@ region = us-east-1
 [profile pivotal]
 output = json
 region = us-west-2
-[profile workgrid]
-output = json
-region = us-east-1
 [profile bcbsma]
 region = us-east-1
+output = json
+[profile bbl]
+region = us-west-2
+output = json

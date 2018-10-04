@@ -29,7 +29,7 @@ COMPLETION_WAITING_DOTS="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git git-flow osx vagrant emoji golang gradle docker aws spring brew azure cf)
+plugins=(git git-flow osx iterm2 emoji golang gradle docker aws spring brew azure cf kubectl helm command-not-found node npm)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -91,6 +91,8 @@ function names {
 if security find-certificate -c "Pivotal Root CA" &> /dev/null
 then
   names google
+  demos=/Users/crdant/workspace/demos
+  accounts=/Users/crdant/workspace/accounts
 else
   names dropbox
 fi
@@ -207,6 +209,11 @@ autoload add-zsh-hook
 add-zsh-hook chpwd update_terminal_cwd
 update_terminal_cwd
 
+function op_secret () {
+  local secret=${1}
+  op get item ${secret} | jq -r '.details.fields[] | select ( .designation == "password" ) .value'
+}
+
 # add completions
 # source /usr/local/share/zsh/site-functions/_go
 
@@ -228,4 +235,6 @@ alias lite="cf login --skip-ssl-validation -a https://api.bosh-lite.com -u admin
 [[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
 alias swift="PATH=/System/Library/Frameworks/Python.framework/Versions/Current/bin:$PATH swift"
 autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /usr/local/Cellar/terraform/0.11.7/bin/terraform terraform
+complete -o nospace -C /usr/local/Cellar/terraform/0.11.7/bin/terraform terraform# tabtab source for jhipster package
+# uninstall by removing these lines or running `tabtab uninstall jhipster`
+[[ -f /private/tmp/node_modules/tabtab/.completions/jhipster.zsh ]] && . /private/tmp/node_modules/tabtab/.completions/jhipster.zsh

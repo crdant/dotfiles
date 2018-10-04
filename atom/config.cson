@@ -1,0 +1,31 @@
+"*":
+  "atom-ide-ui":
+    use: {}
+  core:
+    debugLSP: true
+    disabledPackages: [
+      "MavensMate-Atom"
+      "go-quick-import"
+      "linter"
+    ]
+    projectHome: "/Users/crdant/workspace"
+    telemetryConsent: "no"
+    themes: [
+      "one-light-ui"
+      "solarized-light-syntax"
+    ]
+  editor:
+    fontFamily: "inconsolata"
+    fontSize: 12
+  "exception-reporting":
+    userId: "25edbd35-bca5-492a-8015-f9937373b69b"
+  "go-plus":
+    panel:
+      currentHeight: "19.25531914893617vh"
+      currentWidth: "45.396145610278374vw"
+  "linter-ui-default":
+    panelHeight: 69
+  minimap: {}
+  "tree-view": {}
+  welcome:
+    showOnStartup: false
