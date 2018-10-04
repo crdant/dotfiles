@@ -216,10 +216,9 @@ eval "$(direnv hook zsh)"
 
 # point cf at different instances
 alias pws="cf login -a https://api.run.pivotal.io -u cdantonio@pivotal.io"
-alias pez="cf login -a https://api.run.pez.pivotal.io -sso"
+alias pez="cf login -a https://api.run.pcfbeta.io -sso"
 alias pcd="cf login -a api.local.pcfdev.io --skip-ssl-validation -u admin"
 alias lite="cf login --skip-ssl-validation -a https://api.bosh-lite.com -u admin"
-alias pcf=cf
 
 # tabtab source for serverless package
 # uninstall by removing these lines or running `tabtab uninstall serverless`
@@ -227,3 +226,6 @@ alias pcf=cf
 # tabtab source for sls package
 # uninstall by removing these lines or running `tabtab uninstall sls`
 [[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
+alias swift="PATH=/System/Library/Frameworks/Python.framework/Versions/Current/bin:$PATH swift"
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/local/Cellar/terraform/0.11.7/bin/terraform terraform
