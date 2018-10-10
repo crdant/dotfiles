@@ -87,8 +87,9 @@ export GLASSFISH_HOME=/usr/local/opt/glassfish/libexec
 export PATH="${PATH}:${GLASSFISH_HOME}/bin"
 export VCENTER_LICENSE=5H491-8CK8Q-K8392-008R0-0M541
 
+os="$(uname | awk '{print tolower($1)}')"
 # linunx brew on linux
-if [[ os -eq "linux"  ]]; then
+if [[ os == "linux"  ]]; then
   brew_prefix="/home/linuxbrew/.linuxbrew"
-  export PATH='${brew_prefix}/bin:${brew_prefix}/sbin'":'"$PATH"' >>~/.profile
+  export PATH=${brew_prefix}/bin:${brew_prefix}/sbin:${PATH} >>~/.profile
 fi
