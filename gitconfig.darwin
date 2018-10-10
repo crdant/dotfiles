@@ -1,0 +1,4 @@
+[include]
+	path = .dotfiles/gitconfig
+[credential]
+	helper = osxkeychain

@@ -57,5 +57,3 @@
 	allowed = wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 [http]
 	cookiefile = /Users/crdant/.gitcookies
-[credential]
-	helper = osxkeychain
