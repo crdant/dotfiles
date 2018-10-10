@@ -67,6 +67,10 @@ ln -sf ${DOTFILES}/zshenv ${HOME}/.zshenv
 cat ${DOTFILES}/ssh/id_rsa_4096.pub >> ${HOME}/.ssh/authorized_keys
 chmod 600 ${HOME}/.ssh/authorized_keys
 
+if [[ ! -d ${HOME}/.config/ ]]; then
+  mkdir ${HOME}/.config
+fi
+
 # add youtube-dl configuration
 if [[ -f ${HOME}/.config/youtube-dl  ]] ; then
   mv ${HOME}/.config/youtube-dl ${HOME}/.dotfiles.bak/youtube-dl.${DATESTAMP}
@@ -100,5 +104,7 @@ ln -sf ${DOTFILES}/aws ${HOME}/.aws
 if [[ -d ${HOME}/.atom  ]] ; then
   mkdir ${HOME}/.dotfiles.bak/atom.${DATESTAMP}
   mv ${HOME}/.atom/config.cson ${HOME}/.dotfiles.bak/atom/
+else
+  mkdir ${HOME}/.atom
 fi
 ln -sf ${DOTFILES}/atom/config.cson ${HOME}/.atom/config.cson
