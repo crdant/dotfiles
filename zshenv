@@ -86,3 +86,9 @@ export DOCKER_HOST=unix:///var/run/docker.sock
 export GLASSFISH_HOME=/usr/local/opt/glassfish/libexec
 export PATH="${PATH}:${GLASSFISH_HOME}/bin"
 export VCENTER_LICENSE=5H491-8CK8Q-K8392-008R0-0M541
+
+# linunx brew on linux
+if [[ os -eq "linux"  ]]; then
+  brew_prefix="/home/linuxbrew/.linuxbrew"
+  export PATH='${brew_prefix}/bin:${brew_prefix}/sbin'":'"$PATH"' >>~/.profile
+fi
