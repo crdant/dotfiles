@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 mkdir -p ${HOME}/.dotfiles.bak
+os="$(uname | awk '{print tolower($1)}')"
 
 if [ -n "${MY_DIR}" ] ; then
   DOTFILES=${HOME}/.dotfiles
@@ -46,7 +47,7 @@ ln -sf ${DOTFILES}/ssh/config ${HOME}/.ssh/config
 if [[ -f ${HOME}/.gitconfig  ]] ; then
   mv ${HOME}/.gitconfig ${HOME}/.dotfiles.bak/gitconfig.${DATESTAMP}
 fi
-ln -sf ${DOTFILES}/gitconfig ${HOME}/.gitconfig
+ln -sf ${DOTFILES}/gitconfig.${os} ${HOME}/.gitconfig
 
 if [[ -f ${HOME}/.packerconfig  ]] ; then
   mv ${HOME}/.packerconfig ${HOME}/.dotfiles.bak/packerconfig.${DATESTAMP}
@@ -77,7 +78,6 @@ if [[ -f ${HOME}/.config/youtube-dl  ]] ; then
 fi
 ln -sf ${DOTFILES}/.config/youtube-dl ${HOME}/.config/youtube-dl
 
-os="$(uname | awk '{print tolower($1)}')"
 if [[ os == "darwin"  ]]; then
   # add customized Terminal.app configuration (need to make this only execute on Macs)
   cp ${HOME}/Library/Preferences/com.apple.Terminal.plist ${HOME}/.dotfiles.bak/com.apple.Terminal.plist.${DATESTAMP}
