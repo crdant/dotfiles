@@ -18,39 +18,60 @@ chmod 700 ${HOME}/.ssh
 
 # setup various dotfiles
 DATESTAMP=$(date +%Y%m%dT%H%M%S)
-mv ${HOME}/.ackrc ${HOME}/.dotfiles.bak/ackrc.${DATESTAMP}
+if [[ -f ${HOME}/.ackrc  ]] ; then
+  mv ${HOME}/.ackrc ${HOME}/.dotfiles.bak/ackrc.${DATESTAMP}
+fi
 ln -sf ${DOTFILES}/ackrc ${HOME}/.ackrc
 
-mv ${HOME}/.curlrc ${HOME}/.dotfiles.bak/curlrc.${DATESTAMP}
+if [[ -f ${HOME}/.curlrc  ]] ; then
+  mv ${HOME}/.curlrc ${HOME}/.dotfiles.bak/curlrc.${DATESTAMP}
+fi
 ln -sf ${DOTFILES}/curlrc ${HOME}/.curlrc
 
-mv ${HOME}/.editorconfig ${HOME}/.dotfiles.bak/editorconfig.${DATESTAMP}
+if [[ -f ${HOME}/.editorconfig  ]] ; then
+  mv ${HOME}/.editorconfig ${HOME}/.dotfiles.bak/editorconfig.${DATESTAMP}
+fi
 ln -sf ${DOTFILES}/editorconfig ${HOME}/.editorconfig
 
-mv ${HOME}/.emacs ${HOME}/.dotfiles.bak/emacs.${DATESTAMP}
+if [[ -f ${HOME}/.emacs  ]] ; then
+  mv ${HOME}/.emacs ${HOME}/.dotfiles.bak/emacs.${DATESTAMP}
+fi
 ln -sf ${DOTFILES}/emacs ${HOME}/.emacs
 
-mv ${HOME}/.ssh/config ${HOME}/.dotfiles.bak/ssh-config.${DATESTAMP}
+if [[ -f ${HOME}/.ssh/config  ]] ; then
+  mv ${HOME}/.ssh/config ${HOME}/.dotfiles.bak/ssh-config.${DATESTAMP}
+fi
 ln -sf ${DOTFILES}/ssh/config ${HOME}/.ssh/config
 
-mv ${HOME}/.gitconfig ${HOME}/.dotfiles.bak/gitconfig.${DATESTAMP}
+if [[ -f ${HOME}/.gitconfig  ]] ; then
+  mv ${HOME}/.gitconfig ${HOME}/.dotfiles.bak/gitconfig.${DATESTAMP}
+fi
 ln -sf ${DOTFILES}/gitconfig ${HOME}/.gitconfig
 
-mv ${HOME}/.packerconfig ${HOME}/.dotfiles.bak/packerconfig.${DATESTAMP}
+if [[ -f ${HOME}/.packerconfig  ]] ; then
+  mv ${HOME}/.packerconfig ${HOME}/.dotfiles.bak/packerconfig.${DATESTAMP}
+fi
 ln -sf ${DOTFILES}/packerconfig ${HOME}/.packerconfig
 
-mv ${HOME}/.tm_properties ${HOME}/.dotfiles.bak/tm_properties.${DATESTAMP}
-ln -sf ${DOTFILES}/tm_properties ${HOME}/.tm_properties
-
-mv ${HOME}/.zshrc ${HOME}/.dotfiles.bak/zshrc.${DATESTAMP}
+if [[ -f ${HOME}/.zshrc  ]] ; then
+  mv ${HOME}/.zshrc ${HOME}/.dotfiles.bak/zshrc.${DATESTAMP}
+fi
 ln -sf ${DOTFILES}/zshrc ${HOME}/.zshrc
 
-mv ${HOME}/.zshenv ${HOME}/.dotfiles.bak/zshenv.${DATESTAMP}
+if [[ -f ${HOME}/.zshenv  ]] ; then
+  mv ${HOME}/.zshenv ${HOME}/.dotfiles.bak/zshenv.${DATESTAMP}
+fi
 ln -sf ${DOTFILES}/zshenv ${HOME}/.zshenv
 
 # confirm SSH with my private key will be allowed
 cat ${DOTFILES}/ssh/id_rsa_4096.pub >> ${HOME}/.ssh/authorized_keys
 chmod 600 ${HOME}/.ssh/authorized_keys
+
+# add youtube-dl configuration
+if [[ -f ${HOME}/.config/youtube-dl  ]] ; then
+  mv ${HOME}/.config/youtube-dl ${HOME}/.dotfiles.bak/youtube-dl.${DATESTAMP}
+fi
+ln -sf ${DOTFILES}/.config/youtube-dl ${HOME}/.config/youtube-dl
 
 os="$(uname | awk '{print tolower($1)}')"
 if [[ os -eq "darwin"  ]]; then
@@ -62,20 +83,20 @@ if [[ os -eq "darwin"  ]]; then
   cp ${HOME}/Library/Preferences/com.surteesstudios.Bartender.plist ${HOME}/.dotfiles.bak/com.surteesstudios.Bartender.plist.${DATESTAMP}
   ln -sf ${DOTFILES}/Library/Preferences/com.surteesstudios.Bartender.plist ${HOME}/Library/Preferences/com.surteesstudios.Bartender.plist
 
-  # add youtube-dl configuration
-  mv ${HOME}/.config/youtube-dl ${HOME}/.dotfiles.bak/youtube-dl.${DATESTAMP}
-  ln -sf ${DOTFILES}/.config/youtube-dl ${HOME}/.config/youtube-dl
-
   # add Pivotal color palette
   cp ${HOME}/Library/Colors/Pivotal.clr ${HOME}/.dotfiles.bak
   ln -sf ${DOTFILES}/Library/Colors/Pivotal.clr ${HOME}/Library/Colors/Pivotal.clr
 fi
 
 # add AWS configuration
-mv ${HOME}/.aws ${HOME}/.dotfiles.bak/aws.${DATESTAMP}
+
+# add youtube-dl configuration
+if [[ -d ${HOME}/.aws  ]] ; then
+  mv ${HOME}/.aws ${HOME}/.dotfiles.bak/aws.${DATESTAMP}
+fi
 ln -sf ${DOTFILES}/aws ${HOME}/.aws
 
 # link in atom configuration
-mkdir ~/.dotfiles.bak/atom
-mv ${HOME}/.atom/config.cson ${HOME}/.dotfiles.bak/atom/
-ln -sf ${DOTFILES}/atom/config.cson ${HOME}/.atom/config.cson
+# mkdir ~/.dotfiles.bak/atom
+# mv ${HOME}/.atom/config.cson ${HOME}/.dotfiles.bak/atom/
+# ln -sf ${DOTFILES}/atom/config.cson ${HOME}/.atom/config.cson
