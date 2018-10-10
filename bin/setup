@@ -97,6 +97,8 @@ fi
 ln -sf ${DOTFILES}/aws ${HOME}/.aws
 
 # link in atom configuration
-# mkdir ~/.dotfiles.bak/atom
-# mv ${HOME}/.atom/config.cson ${HOME}/.dotfiles.bak/atom/
-# ln -sf ${DOTFILES}/atom/config.cson ${HOME}/.atom/config.cson
+if [[ -d ${HOME}/.atom  ]] ; then
+  mkdir ${HOME}/.dotfiles.bak/atom.${DATESTAMP}
+  mv ${HOME}/.atom/config.cson ${HOME}/.dotfiles.bak/atom/
+fi
+ln -sf ${DOTFILES}/atom/config.cson ${HOME}/.atom/config.cson
