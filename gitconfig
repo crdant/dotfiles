@@ -20,6 +20,9 @@
 	squash = commit
 	unstage = reset
 	rum = rebase master@{u}
+  ignore = update-index --assume-unchanged
+  unignore = update-index --no-assume-unchanged
+  ignored = !git ls-files -v | grep "^[[:lower:]]"
 [core]
   whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
 	editor = /usr/local/bin/atom --wait
