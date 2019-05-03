@@ -238,4 +238,7 @@ autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/local/Cellar/terraform/0.11.7/bin/terraform terraform# tabtab source for jhipster package
 # uninstall by removing these lines or running `tabtab uninstall jhipster`
 [[ -f /private/tmp/node_modules/tabtab/.completions/jhipster.zsh ]] && . /private/tmp/node_modules/tabtab/.completions/jhipster.zsh
+
+alias git=git-together
+
 export PATH=/usr/local/opt/python3/libexec/bin:${PATH}

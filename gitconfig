@@ -57,3 +57,5 @@
 	allowed = wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 [http]
 	cookiefile = /Users/crdant/.gitcookies
+[include]
+	path = /Users/crdant/.git-together
