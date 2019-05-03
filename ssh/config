@@ -1,14 +1,34 @@
 Host *
   ControlMaster auto
   ControlPath ~/.ssh/master-%r@%h:%p
+  AddKeysToAgent yes
+  UseKeychain yes
+  IdentityFile ~/.ssh/id_ed25519
 
-Host dantonio.homeip.net
-  User root
-  Port 22022
+Host opsman.*
+  PasswordAuthentication yes
 
 Host tormore
   User pi
 
-Host 172.16.0.1
-  User ubnt
-  IdentityFile ~/.ssh/id_ubnt
+Host router.crdant.net
+  User arceus
+  Port 40204
+  IdentityFile ~/.ssh/id_router
+
+Host 10.13.6.1
+  User arceus
+  Port 40204
+  IdentityFile ~/.ssh/id_router
+
+Host manager.pcf.crdant.net
+  PasswordAuthentication yes
+
+Host balancer.crdant.net
+  PasswordAuthentication yes
+  KexAlgorithms ecdh-sha2-nistp256
+  MACs hmac-sha1
+
+Host git.aoc-pathfinder.cloud
+    IdentityFile ~/.ssh/id_kr_gitlab
+    IdentitiesOnly yes
