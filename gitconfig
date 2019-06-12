@@ -27,6 +27,7 @@
   whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
 	editor = /usr/local/bin/atom --wait
 	excludesfile = /usr/local/etc/gitignore
+	hooksPath = /Users/crdant/workspace/git-hooks-core
 [color]
     ui = auto
 [color "branch"]
