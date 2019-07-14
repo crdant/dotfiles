@@ -28,6 +28,14 @@ Host 10.13.6.1
 Host manager.pcf.crdant.net
   PasswordAuthentication yes
 
+Host jumpbox.pez-46.pivotalcf.cloud
+  User ubuntu
+  PasswordAuthentication yes
+  PubkeyAuthentication no
+
+Host git.pez-46.pivotalcf.cloud
+  PasswordAuthentication yes
+
 Host balancer.crdant.net
   PasswordAuthentication yes
   KexAlgorithms ecdh-sha2-nistp256
@@ -36,3 +44,7 @@ Host balancer.crdant.net
 Host git.aoc-pathfinder.cloud
   IdentityFile ~/.ssh/id_kr_gitlab
   IdentitiesOnly yes
+
+Host jumpbox.cantina.pivotalcf.cloud
+  IdentityFile /Users/crdant/.ssh/id_aws_piv_crdant
+  User ec2-user
