@@ -16,6 +16,10 @@ Host router.crdant.net
   Port 40204
   IdentityFile ~/.ssh/id_router
 
+Host router.lab.crdant.net
+  User arceus
+  IdentityFile ~/.ssh/id_router
+
 Host 10.13.6.1
   User arceus
   Port 40204
@@ -30,5 +34,5 @@ Host balancer.crdant.net
   MACs hmac-sha1
 
 Host git.aoc-pathfinder.cloud
-    IdentityFile ~/.ssh/id_kr_gitlab
-    IdentitiesOnly yes
+  IdentityFile ~/.ssh/id_kr_gitlab
+  IdentitiesOnly yes

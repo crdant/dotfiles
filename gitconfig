@@ -15,18 +15,19 @@
 	flog = log --pretty=fuller --decorate
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 	blog = log origin/master... --left-right
-	ds = diff
-	fixup = commit
-	squash = commit
-	unstage = reset
+	ds = diff --staged
+	fixup = commit --fixup
+	squash = commit --squash
+	unstage = reset HEAD
 	rum = rebase master@{u}
   ignore = update-index --skip-worktree
   unignore = update-index --no-skip-worktree
   ignored = !git ls-files -v | grep "^S"
 [core]
   whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
-	editor = /usr/local/bin/atom --wait
+	editor = /usr/local/bin/vim
 	excludesfile = /usr/local/etc/gitignore
+	hooksPath = /Users/crdant/workspace/git-hooks-core
 [color]
     ui = auto
 [color "branch"]
