@@ -100,6 +100,11 @@ if [[ os == "darwin"  ]]; then
     mv ${HOME}/.keyboard ~/.dotfiles.bak/keyboard.${DATESTAMP}
   fi
   ln -sf ${DOTFILES}/keyboard ${HOME}/.keyboard
+
+  if [[ -d ${HOME}/.config/karabiner ]]; then
+    mv ${HOME}/.config ~/.dotfiles.bak/karabiner.${DATESTAMP}
+  fi
+  ln -sf ${DOTFILES}/karabiner ${HOME}/.config/karabiner
 fi
 
 
