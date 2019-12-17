@@ -8,7 +8,7 @@ export PATH=/usr/local/sbin:${PATH}
 export PATH=/Developer/usr/bin:${PATH}
 
 # Default Mac location
-export JAVA_HOME=/Library/Java/Home
+export JAVA_HOME=$(/usr/libexec/java_home -v 11.0.4)
 
 # set man paths to include /usr/local (brew and more) and MacPorts files
 export MANPATH=/usr/local/man:${MANPATH}
@@ -35,8 +35,8 @@ export PATH=${AWS_ELB_HOME}/bin:${PATH}
 export __CF_USER_TEXT_ENCODING=0x1F5:0x8000100:0x8000100
 
 # set various editor variables to use atom
-export EDITOR="atom -w"
-export VISUAL="atom -w"
+export EDITOR="vi"
+export VISUAL="vi"
 export SVN_EDITOR="${VISUAL}"
 export GIT_EDITOR="${VISUAL}"
 
@@ -93,3 +93,5 @@ if [[ $os == "linux"  ]]; then
   brew_prefix="/home/linuxbrew/.linuxbrew"
   export PATH=${brew_prefix}/bin:${brew_prefix}/sbin:${PATH} >>~/.profile
 fi
+
+export PIVOTAL_USER=cdantonio
