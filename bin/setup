@@ -90,9 +90,10 @@ if [[ os == "darwin"  ]]; then
   # add Pivotal color palette
   cp ${HOME}/Library/Colors/Pivotal.clr ${HOME}/.dotfiles.bak
   ln -sf ${DOTFILES}/Library/Colors/Pivotal.clr ${HOME}/Library/Colors/Pivotal.clr
+  
+  ln -sf ${DOTFILES}/keyboard ${HOME}/.keyboard
 fi
 
-# add AWS configuration
 
 # add youtube-dl configuration
 if [[ -d ${HOME}/.aws  ]] ; then
