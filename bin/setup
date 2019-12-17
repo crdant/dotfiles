@@ -39,6 +39,11 @@ if [[ -f ${HOME}/.emacs  ]] ; then
 fi
 ln -sf ${DOTFILES}/emacs ${HOME}/.emacs
 
+if [[ -d ${HOME}/.config/nvim ]] ; then
+  mv ${HOME}/.config/nvim ${HOME}/.dotfiles.bak/nvim.${DATESTAMP}
+fi
+ln -sf ${DOTFILES}/nvim ${HOME}/.config/nvim
+
 if [[ -f ${HOME}/.ssh/config  ]] ; then
   mv ${HOME}/.ssh/config ${HOME}/.dotfiles.bak/ssh-config.${DATESTAMP}
 fi
@@ -91,6 +96,9 @@ if [[ os == "darwin"  ]]; then
   cp ${HOME}/Library/Colors/Pivotal.clr ${HOME}/.dotfiles.bak
   ln -sf ${DOTFILES}/Library/Colors/Pivotal.clr ${HOME}/Library/Colors/Pivotal.clr
   
+  if [[ -d ${HOME}/.keyboard ]]; then
+    mv ${HOME}/.keyboard ~/.dotfiles.bak/keyboard.${DATESTAMP}
+  fi
   ln -sf ${DOTFILES}/keyboard ${HOME}/.keyboard
 fi
 
