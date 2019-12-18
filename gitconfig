@@ -1,6 +1,7 @@
 [user]
 	name = Chuck D'Antonio
-	email = c_dantonio@acm.org
+	email = cdantonio@pivotal.io
+	signingkey = 9687C97E2F6BED1ACF6F4E459235A148252596B5
 [alias]
 	lol = log --graph --decorate --oneline
 	lola = log --graph --decorate --oneline --all
@@ -63,3 +64,5 @@
 	cookiefile = /Users/crdant/.gitcookies
 [include]
 	path = /Users/crdant/.git-together
+[gpg]
+	program = gpg

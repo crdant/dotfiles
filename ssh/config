@@ -8,6 +8,12 @@ Host *
 Host opsman.*
   PasswordAuthentication yes
 
+Host manager.*
+  PasswordAuthentication yes
+
+Host utility.arm.crdant.io
+  IdentityFile ~/.ssh/id_rsa
+
 Host tormore
   User pi
 
@@ -25,14 +31,6 @@ Host 10.13.6.1
   Port 40204
   IdentityFile ~/.ssh/id_router
 
-Host manager.pcf.crdant.net
-  PasswordAuthentication yes
-
-Host jumpbox.pez-46.pivotalcf.cloud
-  User ubuntu
-  PasswordAuthentication yes
-  PubkeyAuthentication no
-
 Host git.pez-46.pivotalcf.cloud
   PasswordAuthentication yes
 
@@ -45,6 +43,31 @@ Host git.aoc-pathfinder.cloud
   IdentityFile ~/.ssh/id_kr_gitlab
   IdentitiesOnly yes
 
+Host jumpbox.pez-46.pivotalcf.cloud
+  User chuck
+  PubkeyAuthentication yes
+
 Host jumpbox.cantina.pivotalcf.cloud
-  IdentityFile /Users/crdant/.ssh/id_aws_piv_crdant
   User ec2-user
+  IdentityFile ~/.ssh/govcloud.pem
+  PasswordAuthentication no
+  PubkeyAuthentication yes
+
+Host 52.61.216.191
+  User ec2-user
+  IdentityFile ~/.ssh/management.pem
+  PasswordAuthentication no
+  PubkeyAuthentication yes
+
+Host jumpbox.mdc.krstaging.kesselrun.us
+  User ec2-user
+  IdentityFile ~/.ssh/management.pem
+  PasswordAuthentication no
+  PubkeyAuthentication yes
+
+Host jumpbox.scp.krstaging.kesselrun.us
+  User ubuntu
+  IdentityFile ~/.ssh/management.pem
+  PasswordAuthentication no
+  PubkeyAuthentication yes
+

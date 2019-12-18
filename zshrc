@@ -29,7 +29,7 @@ COMPLETION_WAITING_DOTS="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git git-flow iterm2 tmux tmuxinator emoji golang gradle docker aws spring brew azure cf kubectl helm command-not-found node npm)
+plugins=(git git-flow iterm2 tmux tmuxinator emoji golang gradle docker aws spring brew azure cf kubectl helm command-not-found history-substring-search pasteboard)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -40,7 +40,7 @@ SAVEHIST=500
 HISTFILE=~/.history
 
 # set shell options
-setopt emacs
+setopt vi
 setopt nobeep
 setopt inc_append_history
 setopt auto_cd
@@ -102,7 +102,6 @@ acquia=/Users/crdant/Documents/Archive/Acquia
 hp=/Users/crdant/Documents/Archive/HP
 systinet=/Users/crdant/Documents/Archive/Systinet
 statestreet="/Users/crdant/Documents/Archive/State Street"
-flyingmist="/Users/crdant/Documents/Archive/Flying Mist"
 pivotal="/Users/crdant/Documents/Archive/Pivotal"
 
 # merge several PDFs into one
@@ -117,33 +116,6 @@ function extract {
 	first=${1}
 	last=${2}
 	python /System/Library/Automator/Extract\ Odd\ \&\ Even\ Pages.action/Contents/Resources/extract.py --input=${3} --output=${3}_${1}-${2}.pdf --slice [${1}:${2}]
-}
-
-# run a terminal
-rxt () {
-    IDENT=${1}
-    SERVER=${2}
-    if [ "$HOST" = "panix5.panix.com" ] ; then
-        XTERM="/usr/X11R6/bin/xterm"
-    elif [ "$HOST" = "192.168.1.104" ] ; then
-        XTERM="/usr/X11R6/bin/xterm"
-    else
-        XTERM="/usr/X/bin/xterm"
-    fi
-    ssh -f -l ${IDENT} -X ${SERVER} ${XTERM} -ls -sl 500 -sb -T "$IDENT@$SERVER" -n "$USERNAME@$SERVER" -fn 6x10
-}
-
-# run an instance of emacs via X
-remacs () {
-    USERNAME=${1}
-    HOST=${2}
-    ssh -f -l ${USERNAME} -X ${HOST} /usr/bin/emacs -T "$USERNAME:emacs@$HOST" -n "$USERNAME:emacs@$HOST" -fn 6x10
-}
-
-# tunnel in VNC
-vnct () {
-    HOST=${1}
-    ssh -CN -L 5901:127.0.0.1:5900 ${HOST}
 }
 
 # cdf: cd's to frontmost window of Finder
@@ -164,24 +136,24 @@ cdf ()
 }
 
 # common aliases
-alias xterm="xterm -fn 6x10 -sl 500 -sb -ls"
 alias more="less -X"
+alias vim=nvim
+alias vi=nvim
 alias pd=pushd
 alias pop=popd
 alias ant="ant -find build.xml"
 alias Ant="ant"
 alias paste='curl -O `pbpaste`'
-alias check="cvs update -dP 2>/dev/null"
 alias root-finder="sudo /System/Library/CoreServices/Finder.app/Contents/MacOS/Finder"
 alias sha1="/usr/bin/openssl sha1"
 alias rmd160="/usr/bin/openssl rmd160"
 alias flushdns="dnscacheutil -flushcache"
 
 # filetype aliases
-alias -s txt=atom
-alias -s java=atom
-alias -s xml=atom
-alias -s php=atom
+alias -s txt=vimr
+alias -s java=idea
+alias -s xml=vimr
+alias -s php=vimr
 alias -s app=open
 
 # check battery
@@ -214,6 +186,12 @@ function op_secret () {
   op get item ${secret} | jq -r '.details.fields[] | select ( .designation == "password" ) .value'
 }
 
+function hget () {
+  local host="${1}"
+  hostess dump | jq --raw-output --arg host $host '.[] | select ( .domain==$host ) .ip'
+}
+
+
 # add completions
 # source /usr/local/share/zsh/site-functions/_go
 
@@ -239,8 +217,7 @@ alias lite="cf login --skip-ssl-validation -a https://api.bosh-lite.com -u admin
 # uninstall by removing these lines or running `tabtab uninstall jhipster`
 [[ -f /private/tmp/node_modules/tabtab/.completions/jhipster.zsh ]] && . /private/tmp/node_modules/tabtab/.completions/jhipster.zsh
 
-# git together for pairing
-alias git=git-together
-
 # use homebrew python
 export PATH=/usr/local/opt/python3/libexec/bin:${PATH}
+
+complete -o nospace -C /usr/local/bin/mc mc

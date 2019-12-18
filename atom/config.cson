@@ -7,6 +7,7 @@
       "MavensMate-Atom"
       "go-quick-import"
       "linter"
+      "markdown-preview"
     ]
     projectHome: "/Users/crdant/workspace"
     telemetryConsent: "no"
@@ -16,7 +17,8 @@
     ]
   editor:
     fontFamily: "inconsolata"
-    fontSize: 12
+    fontSize: 13
+    scrollPastEnd: true
   "exception-reporting":
     userId: "25edbd35-bca5-492a-8015-f9937373b69b"
   "go-plus":

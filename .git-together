@@ -1,4 +1,10 @@
-[git-together "authors"]
-	crd = "Chuck D'Antonio; cdantonio@pivotal.io"
+[git-together "authors"] 
+  crd = "Chuck D'Antonio; cdantonio@pivotal.io"
   cw = "Chris Willis; cwillis@kr.af.mil"
-	sr = "Stephen Reaves; sreaves@kr.af.mil"
+  sr = "Stephen Reaves; sreaves@kr.af.mil"
+  cb = "Chris Busch; cbusch@pivotal.io"
+  cd = "Chris Decelles; cdecelles@pivotal.io"
+  jm = "Jason Morgan; jmorgan@pivotal.io"
+  mm = "Michael Minges; mminges@pivotal.io"
+  gs = "Gaurav Sharma; gsharma.ctr@kr.af.mil"
+  pn = "Paul Nath; pnath@pivotal.io"
