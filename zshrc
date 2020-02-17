@@ -220,3 +220,4 @@ complete -o nospace -C /usr/local/Cellar/terraform/0.11.7/bin/terraform terrafor
 export PATH=/usr/local/opt/python3/libexec/bin:${PATH}
 
 complete -o nospace -C /usr/local/bin/mc mc
+alias oni2='/Applications/Onivim2.app/Contents/MacOS/Oni2'
