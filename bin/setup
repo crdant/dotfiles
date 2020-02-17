@@ -122,3 +122,5 @@ else
   mkdir ${HOME}/.atom
 fi
 ln -sf ${DOTFILES}/atom/config.cson ${HOME}/.atom/config.cson
+
+ln -sf ${DOTFILES}/vimrc.local ${HOME}/.vimrc.local
