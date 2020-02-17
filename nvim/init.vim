@@ -9,6 +9,9 @@ set ttyfast                 " Faster redrawing
 set lazyredraw              " Only redraw when necessary
 set cursorline              " Find the current line quickly.
 
+" go to normal mode when the window loses focus
+autocmd FocusLost * call feedkeys("\<esc>")
+
 """""""""""""""""""""""""""""""""""""""""""""""
 " => Indentation
 """""""""""""""""""""""""""""""""""""""""""""""
@@ -91,10 +94,13 @@ Plug 'junegunn/fzf.vim'
 Plug 'editorconfig/editorconfig-vim'
 
 " semantic-based completion
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --ts-completer' }
+" Plug 'Valloric/YouCompleteMe', { 'do': './install.py --ts-completer' }
 
 " work with "surroundings"
 Plug 'tpope/vim-surround'
+
+" add '.' to other plugins (like `vim-surround`)
+Plug 'tpope/vim-repeat'
 
 call plug#end()
 

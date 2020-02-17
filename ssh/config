@@ -47,6 +47,10 @@ Host jumpbox.pez-46.pivotalcf.cloud
   User chuck
   PubkeyAuthentication yes
 
+Host opsman.plane.dev.kesselrun.us
+  User ubuntu
+  IdentityFile ~/.ssh/id_plane.dev
+
 Host jumpbox.cantina.pivotalcf.cloud
   User ec2-user
   IdentityFile ~/.ssh/govcloud.pem

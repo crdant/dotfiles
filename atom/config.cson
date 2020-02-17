@@ -26,7 +26,7 @@
       currentHeight: "19.25531914893617vh"
       currentWidth: "45.396145610278374vw"
   "linter-ui-default":
-    panelHeight: 69
+    panelHeight: 299
   minimap: {}
   "tree-view": {}
   welcome:

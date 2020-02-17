@@ -221,3 +221,4 @@ alias lite="cf login --skip-ssl-validation -a https://api.bosh-lite.com -u admin
 export PATH=/usr/local/opt/python3/libexec/bin:${PATH}
 
 complete -o nospace -C /usr/local/bin/mc mc
+alias oni2='/Applications/Onivim2.app/Contents/MacOS/Oni2'
