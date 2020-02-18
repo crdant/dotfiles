@@ -208,15 +208,16 @@ alias lite="cf login --skip-ssl-validation -a https://api.bosh-lite.com -u admin
 # tabtab source for serverless package
 # uninstall by removing these lines or running `tabtab uninstall serverless`
 [[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
+
 # tabtab source for sls package
 # uninstall by removing these lines or running `tabtab uninstall sls`
 [[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
-alias swift="PATH=/System/Library/Frameworks/Python.framework/Versions/Current/bin:$PATH swift"
-autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /usr/local/Cellar/terraform/0.11.7/bin/terraform terraform# tabtab source for jhipster package
+
+# tabtab source for jhipster package
 # uninstall by removing these lines or running `tabtab uninstall jhipster`
 [[ -f /private/tmp/node_modules/tabtab/.completions/jhipster.zsh ]] && . /private/tmp/node_modules/tabtab/.completions/jhipster.zsh
 
+# use homebrew python
 export PATH=/usr/local/opt/python3/libexec/bin:${PATH}
 
 complete -o nospace -C /usr/local/bin/mc mc
