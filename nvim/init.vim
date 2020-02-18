@@ -99,6 +99,9 @@ Plug 'editorconfig/editorconfig-vim'
 " work with "surroundings"
 Plug 'tpope/vim-surround'
 
+" comment/uncomment easily
+Plug 'tpope/vim-commentary'
+
 " add '.' to other plugins (like `vim-surround`)
 Plug 'tpope/vim-repeat'
 
