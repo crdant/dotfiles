@@ -3,10 +3,13 @@ region = us-east-1
 output = json
 [default]
 output = json
-region = us-east-1
+region = us-gov-west-1
 [profile pivotal]
 output = json
 region = us-west-2
+[profile tkg]
+output = json
+region = us-east-2
 [profile bbl]
 region = us-west-2
 output = json

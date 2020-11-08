@@ -40,19 +40,15 @@ export VISUAL="vi"
 export SVN_EDITOR="${VISUAL}"
 export GIT_EDITOR="${VISUAL}"
 
-# setup BOSH lite for AWS
-export BOSH_AWS_ACCESS_KEY_ID=AKIAIRW7G663QGREI3WA
-export BOSH_AWS_SECRET_ACCESS_KEY=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%
-
 # use Pivotal Shared billing AWS environment
-export PIVOTAL_AWS_ACCESS_KEY_ID=AKIAIFIUHICAFIXBYRDQ
-export PIVOTAL_AWS_SECRET_ACCESS_KEY=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
+export PIVOTAL_AWS_ACCESS_KEY_ID=$(aws configure get --profile pivotal aws_access_key_id)
+export PIVOTAL_AWS_SECRET_ACCESS_KEY=$(aws configure get --profile pivotal aws_secret_access_key)
 export AWS_ACCESS_KEY_ID=${PIVOTAL_AWS_ACCESS_KEY_ID}
 export AWS_SECRET_ACCESS_KEY=${PIVOTAL_AWS_SECRET_ACCESS_KEY}
 
 # use personal billing AWS environment
-export PERSONAL_AWS_ACCESS_KEY_ID=AKIAJD6FY3VALDRKDBYA
-export PERSONAL_AWS_SECRET_ACCESS_KEY=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
+export PERSONAL_AWS_ACCESS_KEY_ID=$(aws configure get --profile personal aws_accces_key_id)
+export PERSONAL_AWS_SECRET_ACCESS_KEY=$(aws configure get --profile personal aws_access_key_id)
 
 # code in Go and run downloaded/installed packages
 export GOPATH=/usr/local/lib/go
@@ -95,3 +91,12 @@ if [[ $os == "linux"  ]]; then
 fi
 
 export PIVOTAL_USER=cdantonio
+
+# manage kubectl plugins with `krew`
+export PATH="${PATH}:${HOME}/.krew/bin"
+
+# homelab GOVC configuration
+export GOVC_URL=https://vcenter.lab.crdant.net
+export GOVC_USERNAME=administrator@crdant.net
+export GOVC_PASSWORD=$(security find-generic-password -a administrator@crdant.net -s vcenter.lab.crdant.net -w)
+export GOVC_INSECURE=true

@@ -4,6 +4,7 @@ Host *
   AddKeysToAgent yes
   UseKeychain yes
   IdentityFile ~/.ssh/id_ed25519
+  PasswordAuthentication no
 
 Host opsman.*
   PasswordAuthentication yes
@@ -17,61 +18,44 @@ Host utility.arm.crdant.io
 Host tormore
   User pi
 
-Host router.crdant.net
-  User arceus
-  Port 40204
-  IdentityFile ~/.ssh/id_router
-
 Host router.lab.crdant.net
   User arceus
-  IdentityFile ~/.ssh/id_router
-
-Host 10.13.6.1
-  User arceus
-  Port 40204
   IdentityFile ~/.ssh/id_router
 
 Host git.pez-46.pivotalcf.cloud
   PasswordAuthentication yes
 
-Host balancer.crdant.net
-  PasswordAuthentication yes
-  KexAlgorithms ecdh-sha2-nistp256
-  MACs hmac-sha1
-
-Host git.aoc-pathfinder.cloud
-  IdentityFile ~/.ssh/id_kr_gitlab
-  IdentitiesOnly yes
-
 Host jumpbox.pez-46.pivotalcf.cloud
   User chuck
   PubkeyAuthentication yes
 
-Host opsman.plane.dev.kesselrun.us
+Host jumpbox.aws.crdant.io
   User ubuntu
-  IdentityFile ~/.ssh/id_plane.dev
+  IdentityFile ~/.ssh/id_aws_piv_crdant
 
-Host jumpbox.cantina.pivotalcf.cloud
-  User ec2-user
-  IdentityFile ~/.ssh/govcloud.pem
-  PasswordAuthentication no
-  PubkeyAuthentication yes
+Host usg.crdant.net unifi.crdant.net
+  User arceus
+  IdentityFile ~/.ssh/id_unifi
 
-Host 52.61.216.191
-  User ec2-user
-  IdentityFile ~/.ssh/management.pem
-  PasswordAuthentication no
-  PubkeyAuthentication yes
+Host rye.lab.crdant.net bourbon.lab.crdant.net scotch.lab.crdant.net witness.lab.crdant.net
+  User root
+  IdentityFile ~/.ssh/id_homelab
 
-Host jumpbox.mdc.krstaging.kesselrun.us
-  User ec2-user
-  IdentityFile ~/.ssh/management.pem
-  PasswordAuthentication no
-  PubkeyAuthentication yes
+Host vcenter.lab.crdant.net supervisor.lab.crdant.net
+  User root
 
-Host jumpbox.scp.krstaging.kesselrun.us
-  User ubuntu
-  IdentityFile ~/.ssh/management.pem
-  PasswordAuthentication no
-  PubkeyAuthentication yes
+Host nsx.lab.crdant.net
+  User admin
+  PasswordAuthentication yes
 
+Host storage.lab.crdant.net
+  User arceus
+
+Host gitlab.com
+  IdentityFile ~/.ssh/id_rsa_gitlab.com
+
+Host git.tools.az.crdant.io
+  IdentityFile ~/.ssh/id_homelab
+
+Host sc3-linjump-01-vsk-04.pez.vmware.com
+  User user2

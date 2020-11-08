@@ -29,7 +29,7 @@ COMPLETION_WAITING_DOTS="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git git-flow iterm2 tmux tmuxinator emoji golang gradle docker aws spring brew azure cf kubectl helm command-not-found history-substring-search pasteboard)
+plugins=(git git-flow iterm2 tmux emoji docker aws brew minikube kubectl helm history-substring-search pasteboard velero terraform)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -55,14 +55,14 @@ unsetopt hist_verify
 function names {
   source=${1}
   if [ "$source" = "google" ] ; then
-      inbox="/Users/crdant/Google Drive/Inbox"
-      outbox="/Users/crdant/Google Drive/Outbox"
-      pending="/Users/crdant/Google Drive/Pending"
-      read="/Users/crdant/Google Drive/Read"
-      watch="/Users/crdant/Google Drive/Watch"
-      archive="/Users/crdant/Google Drive/Archive"
-      projects="/Users/crdant/Google Drive/Projects"
-      clients="/Users/crdant/Google Drive/Archive/Clients"
+      inbox="/Users/crdant/OneDrive - VMware, Inc/Inbox"
+      outbox="/Users/crdant/OneDrive - VMware, Inc/Outbox"
+      pending="/Users/crdant/OneDrive - VMware, Inc/Pending"
+      read="/Users/crdant/OneDrive - VMware, Inc/Read"
+      watch="/Users/crdant/OneDrive - VMware, Inc/Watch"
+      archive="/Users/crdant/OneDrive - VMware, Inc/Archive"
+      projects="/Users/crdant/OneDrive - VMware, Inc/Projects"
+      clients="/Users/crdant/OneDrive - VMware, Inc/Archive/Clients"
   elif [ "$source" = "dropbox" ] ; then
     inbox=/Users/crdant/Dropbox/Inbox
     outbox=/Users/crdant/Dropbox/Outbox
@@ -222,3 +222,4 @@ export PATH=/usr/local/opt/python3/libexec/bin:${PATH}
 
 complete -o nospace -C /usr/local/bin/mc mc
 alias oni2='/Applications/Onivim2.app/Contents/MacOS/Oni2'
+

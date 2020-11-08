@@ -8,6 +8,13 @@
 			"api": "S3v2",
 			"lookup": "dns"
 		},
+		"homelab": {
+			"url": "https://s3.lab.crdant.net",
+			"accessKey": "iQ7sXPU47T",
+			"secretKey": "ZiYIa7pMw2eM4plQP8pNjN5sQHU59U0vQjKvevXU",
+			"api": "s3v4",
+			"lookup": "auto"
+		},
 		"local": {
 			"url": "http://localhost:9000",
 			"accessKey": "",
@@ -15,10 +22,24 @@
 			"api": "S3v4",
 			"lookup": "auto"
 		},
+		"minikube": {
+			"url": "https://storage.minikube.crdant.io:443",
+			"accessKey": "blobstore",
+			"secretKey": "presto-tomahawk-hob-marquis-cocksure",
+			"api": "s3v4",
+			"lookup": "auto"
+		},
 		"minio": {
 			"url": "http://10.244.0.7:9000",
 			"accessKey": "homeroom-stoat-amaranth-cuddly",
 			"secretKey": "logjam-bus-aspirate-boom",
+			"api": "s3v4",
+			"lookup": "auto"
+		},
+		"pez-46": {
+			"url": "https://s3.pez.pivotal.io",
+			"accessKey": "haas-46",
+			"secretKey": "SkXhzvek38U3jUZMg1E2qSKeGWatKrJDQNBrTBlR",
 			"api": "s3v4",
 			"lookup": "auto"
 		},

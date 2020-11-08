@@ -8,11 +8,25 @@
 			"api": "S3v2",
 			"lookup": "dns"
 		},
+		"homelab": {
+			"url": "https://s3.lab.crdant.net",
+			"accessKey": "awake-wildcat",
+			"secretKey": "legally-virtually-kindly-eager-titmouse",
+			"api": "s3v4",
+			"lookup": "auto"
+		},
 		"local": {
 			"url": "http://localhost:9000",
 			"accessKey": "",
 			"secretKey": "",
 			"api": "S3v4",
+			"lookup": "auto"
+		},
+		"minikube": {
+			"url": "https://storage.minikube.crdant.io:443",
+			"accessKey": "blobstore",
+			"secretKey": "presto-tomahawk-hob-marquis-cocksure",
+			"api": "s3v4",
 			"lookup": "auto"
 		},
 		"minio": {
