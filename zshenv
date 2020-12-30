@@ -100,3 +100,6 @@ export GOVC_URL=https://vcenter.lab.crdant.net
 export GOVC_USERNAME=administrator@crdant.net
 export GOVC_PASSWORD=$(security find-generic-password -a administrator@crdant.net -s vcenter.lab.crdant.net -w)
 export GOVC_INSECURE=true
+# Add .NET Core SDK tools
+export PATH="${PATH}:${HOME}/.dotnet/tools"
+export DOTNET_ROOT=/usr/local/Cellar/dotnet/3.1.110/libexec 
