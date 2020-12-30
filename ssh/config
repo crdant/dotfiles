@@ -18,7 +18,7 @@ Host utility.arm.crdant.io
 Host tormore
   User pi
 
-Host router.lab.crdant.net
+Host router.lab.shortrib.net
   User arceus
   IdentityFile ~/.ssh/id_router
 
@@ -37,18 +37,16 @@ Host usg.crdant.net unifi.crdant.net
   User arceus
   IdentityFile ~/.ssh/id_unifi
 
-Host rye.lab.crdant.net bourbon.lab.crdant.net scotch.lab.crdant.net witness.lab.crdant.net
+Host rye.lab.shortrib.net bourbon.lab.shortrib.net scotch.lab.shortrib.net potstill.lab.shortrib.net vcenter.lab.shortrib.net
   User root
   IdentityFile ~/.ssh/id_homelab
 
-Host vcenter.lab.crdant.net supervisor.lab.crdant.net
+Host haproxy.lab.shortrib.net
   User root
-
-Host nsx.lab.crdant.net
-  User admin
+  PubkeyAuthentication no
   PasswordAuthentication yes
 
-Host storage.lab.crdant.net
+Host storage.lab.shortrib.net
   User arceus
 
 Host gitlab.com
