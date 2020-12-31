@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+  <plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>io.crdant.CertBotRenewal</string>
+
+    <key>ProgramArguments</key>
+    <array>
+      <string>/usr/local/bin/certbot</string>
+      <string>renew</string>
+      <string>--config-dir</string>
+      <string>/usr/local/etc/certbot</string>
+      <string>--work-dir</string>
+      <string>/usr/local/var/certbot</string>
+      <string>--logs-dir</string>
+      <string>/usr/local/var/certbot</string>
+    </array>
+
+    <key>Nice</key>
+    <integer>1</integer>
+
+    <key>StartCalendarInterval</key>
+    <array>
+      <dict>
+        <key>Weekday</key>
+        <integer>3</integer>
+        <key>Hour</key>
+        <integer>15</integer>
+        <key>Minute</key>
+        <integer>48</integer>
+      </dict>
+    </array>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>StandardErrorPath</key>
+    <string>/usr/local/var/certbot/renewal.err</string>
+
+    <key>StandardOutPath</key>
+    <string>/usr/local/var/certbot/renewal.out</string>
+  </dict>
+</plist>
