@@ -55,14 +55,23 @@ unsetopt hist_verify
 function names {
   source=${1}
   if [ "$source" = "google" ] ; then
-      inbox="/Users/crdant/OneDrive - VMware, Inc/Inbox"
-      outbox="/Users/crdant/OneDrive - VMware, Inc/Outbox"
-      pending="/Users/crdant/OneDrive - VMware, Inc/Pending"
-      read="/Users/crdant/OneDrive - VMware, Inc/Read"
-      watch="/Users/crdant/OneDrive - VMware, Inc/Watch"
-      archive="/Users/crdant/OneDrive - VMware, Inc/Archive"
-      projects="/Users/crdant/OneDrive - VMware, Inc/Projects"
-      clients="/Users/crdant/OneDrive - VMware, Inc/Archive/Clients"
+    inbox="/Volumes/GoogleDrive/My Drive/Inbox"
+    outbox="/Volumes/GoogleDrive/My Drive/Outbox"
+    pending="/Volumes/GoogleDrive/My Drive/Pending"
+    read="/Volumes/GoogleDrive/My Drive/Read"
+    watch="/Volumes/GoogleDrive/My Drive/Watch"
+    archive="/Volumes/GoogleDrive/My Drive/Archive"
+    projects="/Volumes/GoogleDrive/My Drive/Projects"
+    accounts="/Volumes/GoogleDrive/My Drive/Archive/Accounts"
+  elif [ "$source" = "onedrive" ] ; then 
+    inbox="/Users/crdant/OneDrive - VMware, Inc/Inbox"
+    outbox="/Users/crdant/OneDrive - VMware, Inc/Outbox"
+    pending="/Users/crdant/OneDrive - VMware, Inc/Pending"
+    read="/Users/crdant/OneDrive - VMware, Inc/Read"
+    watch="/Users/crdant/OneDrive - VMware, Inc/Watch"
+    archive="/Users/crdant/OneDrive - VMware, Inc/Archive"
+    projects="/Users/crdant/OneDrive - VMware, Inc/Projects"
+    accounts="/Users/crdant/OneDrive - VMware, Inc/Archive/Accounts"
   elif [ "$source" = "dropbox" ] ; then
     inbox=/Users/crdant/Dropbox/Inbox
     outbox=/Users/crdant/Dropbox/Outbox
@@ -73,7 +82,17 @@ function names {
     projects=/Users/crdant/Documents/Projects
     documents=/Users/crdant/Documents
     clients="/Users/crdant/Documents/Archive/Flying Mist/Clients"
-  else
+  elif [ "$source" = "icloud" ] ; then
+    inbox=/Users/crdant/Documents/Inbox
+    outbox=/Users/crdant/Documents/Outbox
+    pending=/Users/crdant/Documents/Pending
+    read=/Users/crdant/Documents/Read
+    watch=/Users/crdant/Documents/Watch
+    archive=/Users/crdant/Documents/Archive
+    projects=/Users/crdant/Documents/Projects
+    documents=/Users/crdant/Documents
+    accounts=/Users/crdant/Documents/Archives/Accounts
+   else
     echo Using names from $NAMES_ARE_FROM_SOURCE
   fi
 
@@ -94,7 +113,7 @@ then
   demos=/Users/crdant/workspace/demos
   accounts=/Users/crdant/workspace/accounts
 else
-  names dropbox
+  names icloud
 fi
 
 # company directories
