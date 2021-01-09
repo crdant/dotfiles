@@ -223,3 +223,8 @@ export PATH=/usr/local/opt/python3/libexec/bin:${PATH}
 complete -o nospace -C /usr/local/bin/mc mc
 alias oni2='/Applications/Onivim2.app/Contents/MacOS/Oni2'
 
+<<<<<<< Updated upstream
+=======
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+>>>>>>> Stashed changes

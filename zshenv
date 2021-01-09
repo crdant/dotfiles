@@ -103,3 +103,5 @@ export GOVC_INSECURE=true
 # Add .NET Core SDK tools
 export PATH="${PATH}:${HOME}/.dotnet/tools"
 export DOTNET_ROOT=/usr/local/Cellar/dotnet/3.1.110/libexec 
+# rust
+export PATH="${HOME}/.cargo/bin:${PATH}"
