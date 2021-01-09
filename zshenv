@@ -3,6 +3,10 @@ export PATH=/usr/local/bin:${PATH}
 # and the admin tools that are there
 export PATH=/usr/local/sbin:${PATH}
 
+if [[  `uname -m` == 'arm64' ]]; then
+  export PATH=/opt/homebrew/bin:/opt/homebrew/sbin/:${PATH}
+fi
+
 # XCode now puts all of it's dependencies under /Developer
 # TODO: Update this for newer versions of Xcode
 export PATH=/Developer/usr/bin:${PATH}
@@ -13,6 +17,9 @@ export JAVA_HOME=$(/usr/libexec/java_home -v 11.0.4)
 # set man paths to include /usr/local (brew and more) and MacPorts files
 export MANPATH=/usr/local/man:${MANPATH}
 export MANPATH=/opt/local/man:${MANPATH}
+if [[  `uname -m` == 'arm64' ]]; then
+  export MANPATH=/opt/homebrew/man:${MANPATH}
+fi
 
 # Developer command-line tools
 export PATH=${PATH}:/Developer/Tools
