@@ -1,3 +1,6 @@
+hs.loadSpoon("WindowHalfsAndThirds")
+spoon.WindowHalfsAndThirds:bindHotkeys(spoon.WindowHalfsAndThirds.defaultHotkeys)
+
 units = {
   upright    = { x = 0.70, y = 0.00, w = 0.33, h = 0.50 },
   botright    = { x = 0.70, y = 0.50, w = 0.33, h = 0.50 },
