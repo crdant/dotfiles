@@ -12,7 +12,7 @@ fi
 export PATH=/Developer/usr/bin:${PATH}
 
 # Default Mac location
-export JAVA_HOME=$(/usr/libexec/java_home -v 11.0.4)
+export JAVA_HOME=$(/usr/libexec/java_home -v 15)
 
 # set man paths to include /usr/local (brew and more) and MacPorts files
 export MANPATH=/usr/local/man:${MANPATH}
