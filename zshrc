@@ -51,6 +51,12 @@ setopt no_always_last_prompt
 setopt complete_aliases
 unsetopt hist_verify
 
+# check if this is a work or home machine
+
+function work() {
+   security find-certificate -c "OutSystems JSS Built-in Certificate Authority" &> /dev/null
+}
+
 # set up some named directories
 function names {
   source=${1}
@@ -107,8 +113,7 @@ function names {
   export NAMES_ARE_FROM_SOURCE=$source
 }
 
-if security find-certificate -c "Pivotal Root CA" &> /dev/null
-then
+if work ; then
   names google
   demos=/Users/crdant/workspace/demos
   accounts=/Users/crdant/workspace/accounts
