@@ -2,3 +2,5 @@
 	path = .dotfiles/gitconfig
 [credential]
 	helper = osxkeychain
+[pull]
+	rebase = false
