@@ -1,3 +1,5 @@
+HashKnownHosts yes
+
 Host *
   ControlMaster auto
   ControlPath ~/.ssh/master-%r@%h:%p
@@ -5,6 +7,9 @@ Host *
   UseKeychain yes
   IdentityFile ~/.ssh/id_ed25519
   PasswordAuthentication no
+
+Host *.os.shortrib.net
+  User Administrator
 
 Host opsman.*
   PasswordAuthentication yes
@@ -18,26 +23,15 @@ Host utility.arm.crdant.io
 Host tormore
   User pi
 
-Host router.lab.shortrib.net
+Host router.lab.shortrib.net exit.crdant.net
   User arceus
   IdentityFile ~/.ssh/id_router
 
-Host git.pez-46.pivotalcf.cloud
-  PasswordAuthentication yes
-
-Host jumpbox.pez-46.pivotalcf.cloud
-  User chuck
-  PubkeyAuthentication yes
-
-Host jumpbox.aws.crdant.io
-  User ubuntu
-  IdentityFile ~/.ssh/id_aws_piv_crdant
-
-Host usg.crdant.net unifi.crdant.net
+Host unifi.crdant.net
   User arceus
   IdentityFile ~/.ssh/id_unifi
 
-Host rye.lab.shortrib.net bourbon.lab.shortrib.net scotch.lab.shortrib.net potstill.lab.shortrib.net vcenter.lab.shortrib.net
+Host rye.lab.shortrib.net bourbon.lab.shortrib.net scotch.lab.shortrib.net potstill.lab.shortrib.net malt.lab.shortrib.net vcenter.lab.shortrib.net
   User root
   IdentityFile ~/.ssh/id_homelab
 
@@ -52,8 +46,5 @@ Host storage.lab.shortrib.net
 Host gitlab.com
   IdentityFile ~/.ssh/id_rsa_gitlab.com
 
-Host git.tools.az.crdant.io
-  IdentityFile ~/.ssh/id_homelab
-
-Host sc3-linjump-01-vsk-04.pez.vmware.com
-  User user2
+Host *
+  User crdant
