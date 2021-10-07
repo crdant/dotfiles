@@ -1,0 +1,18 @@
+name: emails
+parent: default
+
+matches:
+  - trigger: ":email"
+    replace: "chuck.dantonio@outsystems.com"
+  - trigger: ":zoom"
+    replace: "https://outsystems.zoom.us/my/crdant?pwd=MnlsejdYcmtxVDh1Ukprb0pRWWpNUT09"
+  - trigger: ":wnum"
+    replace: "+1 617 837 6840"
+  - trigger: ":title"
+    replace: "Manager, Solution Architecture"
+  - trigger: ":waddr"
+    replace: |
+      55 Thomson Place
+      Boston, MA 02210
+
+

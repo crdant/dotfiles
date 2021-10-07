@@ -111,8 +111,12 @@ if [[ os == "darwin"  ]]; then
   ln -sf ${DOTFILES}/karabiner ${HOME}/.config/karabiner
 fi
 
+if which espanso 2>&1 1>/dev/null; then
+  cp -r "$(espanso path config)" ${HOME}/.dotfiles.bak/espanso.${DATESTAMP}
+  ln -sf ${DOTFILES}/espanso "$(espanso path config)"
+fi
 
-# add youtube-dl configuration
+# add aws configuration
 if [[ -d ${HOME}/.aws  ]] ; then
   mv ${HOME}/.aws ${HOME}/.dotfiles.bak/aws.${DATESTAMP}
 fi

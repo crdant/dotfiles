@@ -1,0 +1,34 @@
+name: signoffs
+parent: default
+
+matches:
+  - trigger: ":help"
+    replace: |
+      Let me know what I can do to help.
+
+      {{first}}
+  - trigger: ":know"
+    replace: |
+      Letm me know.
+
+      Thanks,
+      {{first}}
+  - trigger: ":look"
+    replace: |
+      I look forward to hearing from you.
+
+      {{first}}
+  - trigger: ":thx"
+    replace: | 
+      Thanks$|$,
+      {{first}}
+  - trigger: ":talk"
+    replace: |
+      Talk with you then.
+
+      {{first}}
+  - trigger: ":update"
+    replace: |
+      Thanks for the update.
+
+      {{first}}

@@ -1,0 +1,60 @@
+# espanso configuration file
+
+# This is the default configuration file, change it as you like it
+# You can refer to the official documentation:
+# https://espanso.org/docs/
+
+global_vars:
+  - name: first
+    type: "dummy"
+    params:
+      echo: "Chuck"
+  - name: last
+    type: "dummy"
+    params:
+      echo: "D'Antonioo"
+
+# Matches are the substitution rules, when you type the "trigger" string
+# it gets replaced by the "replace" string.
+matches:
+  # Simple text replacement
+  - trigger: ":espanso"
+    replace: "Hi there!"
+
+  # Dates
+  - trigger: ":date"
+    replace: "{{today}}"
+    vars:
+      - name: today
+        type: date
+        params:
+          format: "%m/%d/%Y"
+  - trigger: ":today"
+    replace: "{{today}}"
+    vars:
+      - name: today
+        type: date
+        params:
+          format: "%m/%d/%Y"
+
+  # Contact
+  - trigger: ":name"
+    replace: "{{first}} {{last}}"
+  - trigger: ":first"
+    replace: "{{first}}"
+  - trigger: ":last"
+    replace: "{{last}}"
+  - trigger: ":addr"
+    replace: | 
+      73 Greenwood St.
+      Melrose, MA 02176
+  - trigger: ":bmail"
+    replace: "chuck@crdant.io"
+  - trigger: ":hey"
+    replace: "crdant@hey.com"
+  - trigger: ":gmail"
+    replace: "cdantonio@gmail.com"
+  - trigger: ":num"
+    replace: "+1 617 388 1120"
+  - trigger: ":pmail"
+    replace: "chuck@thedantonios.net"
