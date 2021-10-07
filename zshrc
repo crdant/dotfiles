@@ -1,3 +1,6 @@
+os="$(uname | awk '{print tolower($1)}')"
+arch=$(uname -m)
+
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
 
@@ -52,9 +55,8 @@ setopt complete_aliases
 unsetopt hist_verify
 
 # check if this is a work or home machine
-
 function work() {
-   security find-certificate -c "OutSystems JSS Built-in Certificate Authority" &> /dev/null
+   [[ $os == "darwin" ]] && security find-certificate -c "OutSystems JSS Built-in Certificate Authority" &> /dev/null
 }
 
 # set up some named directories
@@ -102,9 +104,6 @@ function names {
     echo Using names from $NAMES_ARE_FROM_SOURCE
   fi
 
-  # clients are for Pivotal clients who will only be on Drive
-  clients="/Users/crdant/Google Drive/Archive/Clients"
-
   # same on all Macs I'm using
   documents=/Users/crdant/Documents
   src=/Users/crdant/workspace
@@ -145,7 +144,7 @@ function extract {
 # cdf: cd's to frontmost window of Finder
 cdf ()
 {
-    currFolderPath=$( /usr/bin/osascript <<"    EOT"
+    currFolderPath=$( /usr/bin/osascript <<SCRIPT
         tell application "Finder"
             try
 		set currFolder to (folder of the front window as alias)
@@ -154,7 +153,7 @@ cdf ()
             end try
             POSIX path of currFolder
         end tell
-    EOT
+SCRIPT
     )
     cd "$currFolderPath"
 }
@@ -220,7 +219,7 @@ function hget () {
 # source /usr/local/share/zsh/site-functions/_go
 
 # enable
-export HOMEBREW_GITHUB_API_TOKEN=00628c278e94be1a37145eb3ee9b676f359740e7
+export HOMEBREW_GITHUB_API_TOKEN=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
 eval "$(direnv hook zsh)"
 
 # point cf at different instances
@@ -252,3 +251,9 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 if [[  `uname -m` == 'arm64' ]]; then
   alias ibrew='arch --x86_64 /usr/local/bin/brew'
 fi
+
+source /usr/local/bin/virtualenvwrapper.sh
+source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+
+# added by Snowflake SnowSQL installer v1.2
+export PATH=/Applications/SnowSQL.app/Contents/MacOS:$PATH
