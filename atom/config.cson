@@ -6,7 +6,6 @@
     disabledPackages: [
       "MavensMate-Atom"
       "go-quick-import"
-      "linter"
       "markdown-preview"
     ]
     projectHome: "/Users/crdant/workspace"
