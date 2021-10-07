@@ -1,6 +1,6 @@
 [user]
 	name = Chuck D'Antonio
-	email = cdantonio@pivotal.io
+	email = chuck.dantonio@outsystems.com
 	signingkey = 9687C97E2F6BED1ACF6F4E459235A148252596B5
 [alias]
 	lol = log --graph --decorate --oneline
@@ -24,6 +24,7 @@
   ignore = update-index --skip-worktree
   unignore = update-index --no-skip-worktree
   ignored = !git ls-files -v | grep "^S"
+	praise = blame
 [core]
   whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
 	editor = /usr/local/bin/vim
@@ -66,3 +67,10 @@
 	path = /Users/crdant/.git-together
 [gpg]
 	program = gpg
+[init]
+	defaultBranch = main
+[pull]
+	rebase = false
+[uiser]
+	signingkey = AD974BBBF12570F7
+
