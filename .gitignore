@@ -1,2 +1,4 @@
-aws/cli/cache/**
-nvim/plugged/**
+aws/cli/cache
+aws/boto/cache
+nvim/plugged
+nvim/.netrwhist
