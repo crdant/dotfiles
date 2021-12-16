@@ -1,28 +1,5 @@
 HashKnownHosts yes
 
-Host *
-  ControlMaster auto
-  ControlPath ~/.ssh/master-%r@%h:%p
-  AddKeysToAgent yes
-  UseKeychain yes
-  IdentityFile ~/.ssh/id_ed25519
-  PasswordAuthentication no
-
-Host *.os.shortrib.net
-  User Administrator
-
-Host opsman.*
-  PasswordAuthentication yes
-
-Host manager.*
-  PasswordAuthentication yes
-
-Host utility.arm.crdant.io
-  IdentityFile ~/.ssh/id_rsa
-
-Host tormore
-  User pi
-
 Host router.lab.shortrib.net exit.crdant.net
   User arceus
   IdentityFile ~/.ssh/id_router
@@ -35,10 +12,10 @@ Host rye.lab.shortrib.net bourbon.lab.shortrib.net scotch.lab.shortrib.net potst
   User root
   IdentityFile ~/.ssh/id_homelab
 
-Host haproxy.lab.shortrib.net
-  User root
-  PubkeyAuthentication no
+Host platform.shortrib.dev
+  User Administrator
   PasswordAuthentication yes
+  PubkeyAuthentication no
 
 Host storage.lab.shortrib.net
   User arceus
@@ -48,3 +25,10 @@ Host gitlab.com
 
 Host *
   User crdant
+  ControlMaster auto
+  ControlPath ~/.ssh/master-%r@%h:%p
+  AddKeysToAgent yes
+  UseKeychain yes
+  IdentityFile ~/.ssh/id_ed25519
+  PasswordAuthentication no
+
