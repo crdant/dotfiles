@@ -111,3 +111,4 @@ if [[ -d /opt/oracle/instantclient_19_8 ]]; then
 fi
 
 export CERTBOT_ROOT=$(brew --prefix)/etc/certbot
+. "$HOME/.cargo/env"

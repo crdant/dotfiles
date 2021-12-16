@@ -131,4 +131,12 @@ else
 fi
 ln -sf ${DOTFILES}/atom/config.cson ${HOME}/.atom/config.cson
 
+# link in cargo configuration
+if [[ -d ${HOME}/.cargo  ]] ; then
+  mkdir ${HOME}/.dotfiles.bak/cargo.${DATESTAMP}
+  mv ${HOME}/.cargo/config.cson ${HOME}/.dotfiles.bak/cargo/
+else
+  mkdir ${HOME}/.cargo
+fi
+
 ln -sf ${DOTFILES}/vimrc.local ${HOME}/.vimrc.local

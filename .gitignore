@@ -2,3 +2,6 @@ aws/cli/cache
 aws/boto/cache
 nvim/plugged
 nvim/.netrwhist
+cargo/registry
+cargo/.package-cache
+cargo/bin
