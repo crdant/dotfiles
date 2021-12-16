@@ -105,6 +105,10 @@ Plug 'tpope/vim-commentary'
 " add '.' to other plugins (like `vim-surround`)
 Plug 'tpope/vim-repeat'
 
+" add vim to browser
+Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
+
+
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""
