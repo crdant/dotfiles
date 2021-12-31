@@ -131,6 +131,18 @@ else
 fi
 ln -sf ${DOTFILES}/atom/config.cson ${HOME}/.atom/config.cson
 
+# link in tmux configuration
+if [[ -d ${HOME}/.tmux ]]; then
+  mv ${HOME}/.tmux ~/.dotfiles.bak/tmux.${DATESTAMP}
+fi
+ln -sf ${DOTFILES}/tmux ${HOME}/.tmux
+
+# link in tmux configuration
+if [[ -d ${HOME}/.tmux ]]; then
+  mv ${HOME}/.tmux.conf ~/.dotfiles.bak/tmux.conf.${DATESTAMP}
+fi
+ln -sf ${DOTFILES}/tmux.conf ${HOME}/.tmux.conf
+
 # link in cargo configuration
 if [[ -d ${HOME}/.cargo  ]] ; then
   mkdir ${HOME}/.dotfiles.bak/cargo.${DATESTAMP}
