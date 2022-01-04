@@ -47,7 +47,19 @@ ln -sf ${DOTFILES}/nvim ${HOME}/.config/nvim
 if [[ -f ${HOME}/.ssh/config  ]] ; then
   mv ${HOME}/.ssh/config ${HOME}/.dotfiles.bak/ssh-config.${DATESTAMP}
 fi
-echo "Include ~/.dotfiles/ssh/config.base" > ${HOME}/.ssh/config
+if [[ -f ${HOME}/.ssh/config.base  ]] ; then
+  mv ${HOME}/.ssh/config.base ${HOME}/.dotfiles.bak/ssh-config.base.${DATESTAMP}
+fi
+ln -sf ${DOTFILES}/ssh/config.base ${HOME}/.ssh/config.base
+echo "Include ~/.ssh/config.base" > ${HOME}/.ssh/config
+if [[ -f ${DOTfILES}/ssh/config.${os} ]] ; then
+  # use os-specific SSH config
+  if [[ -f ${HOME}/.ssh/config.${os}  ]] ; then
+    mv ${HOME}/.ssh/config.${os} ${HOME}/.dotfiles.bak/ssh-config.${os}.${DATESTAMP}
+  fi
+  ln -sf ${DOTFILES}/ssh/config.${os} ${HOME}/.ssh/config.${os}
+  echo "Include ~/.ssh/config.${os}" >> ${HOME}/.ssh/config
+fi 
 
 if [[ -f ${HOME}/.gitconfig  ]] ; then
   mv ${HOME}/.gitconfig ${HOME}/.dotfiles.bak/gitconfig.${DATESTAMP}
@@ -84,8 +96,6 @@ fi
 ln -sf ${DOTFILES}/.config/youtube-dl ${HOME}/.config/youtube-dl
 
 if [[ os == "darwin"  ]]; then
-  # use darwin-specific SSH keychain config
-  echo "Include ~/.dotfiles/ssh/config.darwin" >> ${HOME}/.ssh/config
   # add customized Terminal.app configuration (need to make this only execute on Macs)
   cp ${HOME}/Library/Preferences/com.apple.Terminal.plist ${HOME}/.dotfiles.bak/com.apple.Terminal.plist.${DATESTAMP}
   ln -sf ${DOTFILES}/Library/Preferences/com.apple.Terminal.plist ${HOME}/Library/Preferences/com.apple.Terminal.plist
