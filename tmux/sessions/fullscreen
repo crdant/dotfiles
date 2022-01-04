@@ -1,0 +1,3 @@
+split-window -h -p 35
+split-window -v -p 50 
+split-window -v -p 50

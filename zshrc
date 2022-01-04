@@ -87,10 +87,34 @@ function hget () {
   hostess dump | jq --raw-output --arg host $host '.[] | select ( .domain==$host ) .ip'
 }
 
+# tmux session handiness
+function tmux-has-session() { 
+  session=${1}
+  tmux has-session -t ${session} 2>/dev/null 
+}
+
+function tmux-session() {
+  session=${1}
+  if tmux-has-session ${session}; then
+    tmux attach -t ${session}
+  else
+    tmux new-session -s ${session} \; source-file "${HOME}/.tmux/sessions/${session}"
+  fi
+}
+
+function fullscreen() {
+  tmux-session fullscreen
+} 
+
+function window() {
+  tmux-session window
+} 
+
 complete -o nospace -C /usr/local/bin/mc mc
-source /usr/local/bin/virtualenvwrapper.sh
 eval "$(fly completion --shell zsh)"
 
 if [[ $os == "darwin" ]]; then
   source ${HOME}/.dotfiles/zshrc.darwin
 fi
+
+

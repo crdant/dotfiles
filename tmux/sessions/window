@@ -1,0 +1,3 @@
+split-window -v -p 50
+new-window
+select-window  -t 0
