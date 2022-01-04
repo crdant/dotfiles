@@ -32,7 +32,10 @@ COMPLETION_WAITING_DOTS="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git git-flow iterm2 tmux emoji docker aws brew minikube kubectl helm history-substring-search pasteboard velero terraform)
+plugins=(git git-flow tmux emoji docker aws minikube kubectl helm history-substring-search pasteboard velero terraform)
+if [[ $os == "darwin" ]]; then
+  plugins+=(iterm2 brew)
+fi
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...

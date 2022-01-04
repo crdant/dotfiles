@@ -69,7 +69,7 @@ export CF_COLOR=true
 # set man paths to include /usr/local (brew and more) and MacPorts files
 export MANPATH=/usr/local/man:${MANPATH}
 export MANPATH=/opt/local/man:${MANPATH}
-export MANPATH=$(brew --prefix):${MANPATH}
+[[ $os == "darwin" ]] && export MANPATH=$(brew --prefix):${MANPATH}
 
 
 # Use minicoda for Python 2.7
@@ -82,7 +82,7 @@ export DOCKER_HOST=unix:///var/run/docker.sock
 export VCENTER_LICENSE=5H491-8CK8Q-K8392-008R0-0M541
 
 # Use gettext from Homebrew
-export PATH=$(brew --prefix)/gettext/bin:$PATH
+[[ $os == "darwin" ]] && export PATH=$(brew --prefix)/gettext/bin:$PATH
 
 # manage kubectl plugins with `krew`
 export PATH="${PATH}:${HOME}/.krew/bin"
@@ -110,5 +110,8 @@ if [[ -d /opt/oracle/instantclient_19_8 ]]; then
   export LD_LIBRARY_PATH=${ORACLE_HOME}/instantclient_19_8:${LD_LIBRARY_PATH}
 fi
 
-export CERTBOT_ROOT=$(brew --prefix)/etc/certbot
-. "$HOME/.cargo/env"
+[[ $os == "darwin" ]] && export CERTBOT_ROOT=$(brew --prefix)/etc/certbot
+
+if [[ -d ${HOME}/.cargp ]] ; then
+  . "$HOME/.cargo/env"
+fi
