@@ -1,5 +1,4 @@
 Host jumpbox.lab.shortrib.net
-  User crdant
   StreamLocalBindUnlink yes
   RemoteForward /run/user/1001/gnupg/S.gpg-agent /Users/crdant/.gnupg/S.gpg-agent.extra 
   RemoteForward /run/user/1001/gnupg/S.gpg-agent.ssh /Users/crdant/.gnupg/S.gpg-agent.ssh
