@@ -2,6 +2,11 @@
 	name = Chuck D'Antonio
 	email = chuck.dantonio@outsystems.com
 	signingkey = 9687C97E2F6BED1ACF6F4E459235A148252596B5
+	signingkey = 0805EEDF0FEA6ACD
+[commit]
+	gpgsign = true
+[tag]
+	gpgSign = true
 [alias]
 	lol = log --graph --decorate --oneline
 	lola = log --graph --decorate --oneline --all
@@ -71,6 +76,3 @@
 	defaultBranch = main
 [pull]
 	rebase = false
-[uiser]
-	signingkey = AD974BBBF12570F7
-

@@ -4,9 +4,3 @@
 	helper = osxkeychain
 [diff "gpg"]
 	textconv = secrets diff
-[commit]
-	gpgsign = true
-[tag]
-	gpgSign = true
-[user]
-	signingkey = 0805EEDF0FEA6ACD
