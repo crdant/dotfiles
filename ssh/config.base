@@ -1,5 +1,8 @@
 HashKnownHosts yes
 
+Host jumpbox.lab.shortrib.net
+  RemoteForward /run/user/1001/gnupg/S.gpg-agent.extra 
+
 Host router.lab.shortrib.net exit.crdant.net
   User arceus
   IdentityFile ~/.ssh/id_router

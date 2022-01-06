@@ -85,7 +85,7 @@ export VCENTER_LICENSE=5H491-8CK8Q-K8392-008R0-0M541
 [[ $os == "darwin" ]] && export PATH=$(brew --prefix)/gettext/bin:$PATH
 
 # manage kubectl plugins with `krew`
-export PATH="${PATH}:${HOME}/.krew/bin"
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 # homelab GOVC configuration
 if [[ $os == "darwin" ]] && security find-generic-password -a administrator@shortrib.local -s vcenter.lab.shortrib.net -w >&| /dev/null ; then
@@ -115,3 +115,5 @@ fi
 if [[ -d ${HOME}/.cargp ]] ; then
   . "$HOME/.cargo/env"
 fi
+
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)

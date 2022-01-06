@@ -120,4 +120,4 @@ if [[ $os == "darwin" ]]; then
   source ${HOME}/.dotfiles/zshrc.darwin
 fi
 
-
+eval "$(direnv hook zsh)"
