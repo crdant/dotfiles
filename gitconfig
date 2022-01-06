@@ -1,7 +1,6 @@
 [user]
 	name = Chuck D'Antonio
-	email = chuck.dantonio@outsystems.com
-	signingkey = 9687C97E2F6BED1ACF6F4E459235A148252596B5
+	email = chuck@crdant.io
 	signingkey = 0805EEDF0FEA6ACD
 [commit]
 	gpgsign = true
