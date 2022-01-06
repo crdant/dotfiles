@@ -31,6 +31,5 @@ Host *
   ControlMaster auto
   ControlPath ~/.ssh/master-%r@%h:%p
   AddKeysToAgent yes
-  IdentityFile ~/.ssh/id_ed25519
   PasswordAuthentication no
 
