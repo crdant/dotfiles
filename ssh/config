@@ -33,4 +33,10 @@ Host *
   AddKeysToAgent yes
   IdentityFile ~/.ssh/id_ed25519
   PasswordAuthentication no
+  IgnoreUnknown UseKeychain
+  UseKeychain yes
 
+Match host jumpbox.lab.shortrib.net exec "[ $(uname) == 'Darwin' ]"
+  StreamLocalBindUnlink yes
+  RemoteForward /run/user/1001/gnupg/S.gpg-agent /Users/crdant/.gnupg/S.gpg-agent.extra 
+  RemoteForward /run/user/1001/gnupg/S.gpg-agent.ssh /Users/crdant/.gnupg/S.gpg-agent.ssh
