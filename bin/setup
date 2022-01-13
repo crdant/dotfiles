@@ -163,4 +163,13 @@ else
   mkdir ${HOME}/.cargo
 fi
 
+# gnupg
+if [[ -d ${HOME}/.gnupg  ]] ; then
+  mkdir ${HOME}/.dotfiles.bak/gnupg.${DATESTAMP}
+  mv ${HOME}/.gnupg/*.conf ${HOME}/.dotfiles.bak/gnupg/
+else
+  mkdir ${HOME}/.gnupg
+fi
+ln -s ${HOME}/.dotfiles/gnupg/*.conf ~/.gnupg
+
 ln -sf ${DOTFILES}/vimrc.local ${HOME}/.vimrc.local
