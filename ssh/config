@@ -1,8 +1,5 @@
 HashKnownHosts yes
 
-Host jumpbox.lab.shortrib.net
-  RemoteForward /run/user/1001/gnupg/S.gpg-agent.extra 
-
 Host router.lab.shortrib.net exit.crdant.net
   User arceus
   IdentityFile ~/.ssh/id_router
@@ -32,4 +29,10 @@ Host *
   ControlPath ~/.ssh/master-%r@%h:%p
   AddKeysToAgent yes
   PasswordAuthentication no
+  IgnoreUnknown UseKeychain
+  UseKeychain yes
 
+Match host jumpbox.lab.shortrib.net exec "[ $(uname) == 'Darwin' ]"
+  StreamLocalBindUnlink yes
+  RemoteForward /run/user/1001/gnupg/S.gpg-agent /Users/crdant/.gnupg/S.gpg-agent.extra 
+  RemoteForward /run/user/1001/gnupg/S.gpg-agent.ssh /Users/crdant/.gnupg/S.gpg-agent.ssh
