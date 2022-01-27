@@ -14,8 +14,6 @@ Host rye.lab.shortrib.net bourbon.lab.shortrib.net scotch.lab.shortrib.net potst
 
 Host platform.shortrib.dev
   User Administrator
-  PasswordAuthentication yes
-  PubkeyAuthentication no
 
 Host storage.lab.shortrib.net
   User arceus
@@ -27,7 +25,6 @@ Host *
   User crdant
   ControlMaster auto
   ControlPath ~/.ssh/master-%r@%h:%p
-  AddKeysToAgent yes
   PasswordAuthentication no
   IgnoreUnknown UseKeychain
   UseKeychain yes
