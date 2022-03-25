@@ -1,0 +1,10 @@
+matches:
+  - trigger: ":cert"
+    form: |
+      certbot certonly --dns-google --dns-google-credentials ${CERTBOT_ROOT}/[[private_key]] --config-dir ${CERTBOT_ROOT} --work-dir /usr/local/var/certbot --logs-dir /usr/local/var/log/certbot -d [[domain]]
+    form_fields:
+      private_key:
+        type: choice
+        values:
+          - crdant-net-8545d66a8add.json 
+          - shortrib-026f467f5704.json  
