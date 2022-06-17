@@ -75,6 +75,11 @@ export MANPATH=/opt/local/man:${MANPATH}
 # Use minicoda for Python 2.7
 export PATH=/usr/local/opt/miniconda2/bin:$PATH
 
+# use Rancher desktop if it's installed (don't override existing
+if [[ -d ${HOME}/.rd/bin ]] ; then
+  export PATH=${PATH}:${HOME}/.rd/bin
+fi 
+
 # rbnenv
 export PATH=~/.rbenv/shims:${PATH}
 export DOCKER_HOST=unix:///var/run/docker.sock
@@ -117,3 +122,8 @@ if [[ -d ${HOME}/.cargp ]] ; then
 fi
 
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+
+# use krew for Kubernetes plugins
+if [[ -d ${KREW_ROOT:-$HOME/.krew}/bin ]] ; then
+  export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+fi
