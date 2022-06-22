@@ -111,7 +111,7 @@ hs.hotkey.bind(shiftIt, 'm', function() hs.window.focusedWindow():move(units.mes
 hs.loadSpoon("ReloadConfiguration")
 spoon.ReloadConfiguration:start()
 
-require('keyboard') -- Load Hammerspoon bits from https://github.com/jasonrudolph/keyboard
+-- require('keyboard') -- Load Hammerspoon bits from https://github.com/jasonrudolph/keyboard
 
 -- stolen from WindowHalfsAndThirds spoon that might resolve me comparision
 function window_rect(win)
@@ -143,7 +143,7 @@ hs.hotkey.bind(shiftIt, 'm', function() hs.window.focusedWindow():move(units.mes
 hs.loadSpoon("ReloadConfiguration")
 spoon.ReloadConfiguration:start()
 
-require('keyboard') -- Load Hammerspoon bits from https://github.com/jasonrudolph/keyboard
+-- require('keyboard') -- Load Hammerspoon bits from https://github.com/jasonrudolph/keyboard
 
 -- stolen from WindowHalfsAndThirds spoon that might resolve me comparision
 function window_rect(win)
