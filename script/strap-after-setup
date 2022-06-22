@@ -102,3 +102,5 @@ open /Applications/Todoist.app
 loginitems -a "Amphetamine"
 open /Applications/Amphetamine.app
 
+loginitems -a "Tailscale"
+open /Applications/Tailscale.app
