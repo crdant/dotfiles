@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+
+# default to zsh for my user
+sudo chsh -u ${USER} -s /bin/zsh
+
+# Install useful extensions for VSCode"
+code --install-extension EditorConfig.EditorConfig
+code --install-extension esbenp.prettier-vscode
+code --install-extension file-icons.file-icons
+code --install-extension jaspernorth.vscode-pigments
+code --install-extension ms-vscode-remote.remote-containers
+code --install-extension ms-vsliveshare.vsliveshare
+code --install-extension ms-vsliveshare.vsliveshare-audio
+code --install-extension ms-vsliveshare.vsliveshare-pack
+code --install-extension coenraads.bracket-pair-colorizer-2
+code --install-extension britesnow.vscode-toggle-quotes
+code --install-extension vscodevim.vim
+code --install-extension Gruntfuggly.todo-tree
+code --install-extension ms-vscode-remote.remote-containers
+code --install-extension redhat.vscode-yaml
+code --install-extension GitHub.vscode-pull-request-github
+code --install-extension Pivotal.vscode-concourse
+
+# set up Dock
+dockutil --remove all
+dockutil --add "/Applications/iTerm.app" --after "Siri"
+dockutil --add "/Applications/Google Chrome.app" --after "iTerm"
+dockutil --add "/Applications/Slack.app" --after "Chrome"
+dockutil --add "/Applications/Superhuman.app" --after "Slack"
+dockutil --add "/System/Applications/Messages.app" --after "Airmail"
+dockutil --add "/Applications/Twitter.app" --after "Messages"
+dockutil --add "/System/Applications/Contacts.app" --after "Twitter"
+dockutil --add "/Applications/Fantastical.app" --after "Contacts"
+dockutil --add "/Applications/Todoist.app" --after "Fantastical"
+dockutil --add "/Applications/Bear.app" --after "Todoist"
+dockutil --add "/System/Applications/News.app" --after "Bear"
+dockutil --add "/System/Applications/Music.app" --after "News"
+dockutil --add "/System/Applications/TV.app" --after "Music"
+dockutil --add "/System/Applications/Books.app" --after "TV"
+dockutil --add "/System/Applications/Photos.app" --after "Books"
+dockutil --add "/Applications/Keynote.app" --after "Photos"
+dockutil --add "/Applications/Numbers.app" --after "Keynote"
+dockutil --add "/Applications/Pages.app" --after "Numbers"
+dockutil --add "/Applications/Visual Studio Code.app" --after "Pages"
+dockutil --add "/Applications/Postman.app" --after "Dash"
+dockutil --add "/System/Applications/App Store.app" --after "Postman"
+dockutil --add "/System/Applications/Utilities/Activity Monitor.app" --after "App Store"
+dockutil --add "/System/Applications/Utilities/Console.app" --after "Activity Monitor"
+dockutil --add "/System/Applications/System Preferences.app" --after "Console"
+
+# setup some directories
+mkdir -p ~/sandbox
+mkdir -p ~/workspace
+mkdir -p ~/workspace/learning
+mkdir -p ~/workspace/learning/exercism
+mkdir -p ~/"Virtual Box VMs"
+
+# setup aliases I'm used to having
+Rez -append files/icons/workspace.rsrc -o ~/workspace/$'Icon\r'
+SetFile -a C ~/workspace
+
+# follow the LSB for some home-level content
+mkdir -p ~/bin
+mkdir -p ~/etc
+mkdir -p ~/share
+
+# make sure I can work with my oh my zsh and my dotfiles easily
+ln -sf ~/.dotfiles ~/workspace/dotfiles
+
+# Common file folders and links
+mkdir -p ~/Documents/Inbox 
+ln -sf ~/Documents/Inbox ~/Desktop
+mkdir -p ~/Documents/Outbox 
+ln -sf ~/Documents/Outbox ~/Desktop
+mkdir -p ~/Documents/Archive 
+ln -sf ~/Documents/Archive ~/Desktop
+mkdir -p ~/Documents/Pending 
+ln -sf ~/Documents/Pending ~/Desktop
+mkdir -p ~/Documents/Projects 
+ln -sf ~/Documents/Projects ~/Desktop
+mkdir -p ~/Documents/Read 
+ln -sf ~/Documents/Read ~/Desktop
+mkdir -p ~/Documents/Watch 
+ln -sf ~/Documents/Watch ~/Desktop
+
+# setup login items
+loginitems -a  "Alfred 4"
+open /Applications/Alfred\ 4.app
+
+loginitems -a "Bartender 4"
+open "/Applications/Bartender 4.app"
+
+loginitems -a "Espanso"
+open /Applications/Espanso.app
+
+loginitems -a "Popclip"
+open /Applications/Popclip.app
+
+loginitems -a "Todoist"
+open /Applications/Todoist.app
+
+loginitems -a "Amphetamine"
+open /Applications/Amphetamine.app
+

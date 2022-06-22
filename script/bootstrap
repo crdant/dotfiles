@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+create_dns_location () {
+  location="${1}"
+  shift
+
+  if ! sudo networksetup -switchtolocation "${location}" ; then
+    sudo networksetup -createlocation "${location}" populate
+    sudo networksetup -switchtolocation "${location}" 
+    sudo networksetup -setdnsservers Wi-Fi $@
+  fi
+}
+
+if mac; then
+  create_dns_location "Home DNS" 10.13.6.253 10.13.6.254
+  create_dns_location "Google DNS" 8.8.8.8 8.8.4.4
+  create_dns_location "Cloudflare DNS" 1.1.1.1 1.0.0.1
+  create_dns_location "Quad9 DNS" 9.9.9.9 149.112.112.112
+  create_dns_location "Tailscale DNS" 100.85.25.21
+  sudo networksetup -switchtolocation "Automatic" 
+fi
+
+# install oh-my-zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+# use my customizations to oh-my-zsh
+ZSH_CUSTOM=${HOME}/workspace/oh-my-zsh-custom
+rm -rf ${ZSH_CUSTOM} 2>/dev/null
+git clone https://github.com/crdant/oh-my-zsh-custom.git ${ZSH_CUSTOM}
+
+# setup some directories
+mkdir -p ~/sandbox
+mkdir -p ~/workspace
+mkdir -p ~/workspace/learning
+mkdir -p ~/workspace/learning/exercism
+mkdir -p ~/"Virtual Box VMs"
+
+# setup aliases I'm used to having
+Rez -append files/icons/workspace.rsrc -o ~/workspace/$'Icon\r'
+SetFile -a C ~/workspace
+
+# follow the LSB for some home-level content
+mkdir -p ~/bin
+mkdir -p ~/etc
+mkdir -p ~/share
+
+# make sure I can work with my oh my zsh and my dotfiles easily
+ln -sf ~/.dotfiles ~/workspace/dotfiles
+
+
