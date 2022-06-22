@@ -3,6 +3,8 @@ arch=$(uname -m)
 
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
+ZSH_CUSTOM=${HOME}/workspace/oh-my-zsh-custom
+fpath=(${ZSH_CUSTOM}/completions $fpath)
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -32,9 +34,9 @@ COMPLETION_WAITING_DOTS="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git git-flow gpg-agent tmux emoji docker aws minikube kubectl helm history-substring-search pasteboard velero terraform)
+plugins=(git git-flow gpg-agent tmux emoji docker aws minikube kubectl helm history-substring-search velero terraform)
 if [[ $os == "darwin" ]]; then
-  plugins+=(iterm2 brew macos)
+  plugins+=(iterm2 brew macos pasteboard)
 fi
 source $ZSH/oh-my-zsh.sh
 
