@@ -1,6 +1,3 @@
-[submodule "keyboard"]
-	path = keyboard
-	url = https://github.com/jasonrudolph/keyboard.git
 [submodule "tmux/plugins/tmux/plugins/tpm"]
 	path = tmux/plugins/tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
