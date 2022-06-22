@@ -117,3 +117,7 @@ if [[ -d ${HOME}/.cargp ]] ; then
 fi
 
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+
+if [[ -d ${HOME}/.rd ]] ; then
+  export PATH=${PATH}:"$HOME/.rd/bin"
+fi
