@@ -18,6 +18,16 @@ create_dns_location "Quad9 DNS" 9.9.9.9 149.112.112.112
 create_dns_location "Tailscale DNS" 100.85.25.21
 sudo networksetup -switchtolocation "Automatic" 
 
+# put dotfile symbolic links into place
+
+stow --target ${HOME} --dir ${HOME}/.dotfiles/files */
+
+# make sure the SSH config directory exists with appropriate permissions
+if [ ! -d ${HOME}/.ssh ] ; then
+    mkdir ${HOME}/.ssh
+fi
+chmod 700 ${HOME}/.ssh
+
 # install oh-my-zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
@@ -45,6 +55,8 @@ mkdir -p ~/share
 # make sure I can work with my oh my zsh and my dotfiles easily
 ln -sf ~/.dotfiles ~/workspace/dotfiles
 
+pushd ~/.dotfiles/files
+  stow 
 # MacOS preferences and customizations snagged from Mathias Bynensat
 # and Pivotal's workstation setup
 
