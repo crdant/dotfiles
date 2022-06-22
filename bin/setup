@@ -69,42 +69,23 @@ if [[ -f ${HOME}/.zshenv  ]] ; then
 fi
 ln -sf ${DOTFILES}/zshenv ${HOME}/.zshenv
 
-# confirm SSH with my private key will be allowed
-cat ${DOTFILES}/ssh/id_rsa_4096.pub >> ${HOME}/.ssh/authorized_keys
+# confirm SSH with my keys will be allowed
+cat ${DOTFILES}/ssh/*.pub >> ${HOME}/.ssh/authorized_keys
 chmod 600 ${HOME}/.ssh/authorized_keys
 
 if [[ ! -d ${HOME}/.config/ ]]; then
   mkdir ${HOME}/.config
 fi
 
-# add youtube-dl configuration
-if [[ -f ${HOME}/.config/youtube-dl  ]] ; then
-  mv ${HOME}/.config/youtube-dl ${HOME}/.dotfiles.bak/youtube-dl.${DATESTAMP}
-fi
-ln -sf ${DOTFILES}/.config/youtube-dl ${HOME}/.config/youtube-dl
-
 if [[ os == "darwin"  ]]; then
-  # add customized Terminal.app configuration (need to make this only execute on Macs)
-  cp ${HOME}/Library/Preferences/com.apple.Terminal.plist ${HOME}/.dotfiles.bak/com.apple.Terminal.plist.${DATESTAMP}
-  ln -sf ${DOTFILES}/Library/Preferences/com.apple.Terminal.plist ${HOME}/Library/Preferences/com.apple.Terminal.plist
-
-  # add Bartender configuration (need to make this only execute on Macs)
+  # add Bartender configuration
   cp ${HOME}/Library/Preferences/com.surteesstudios.Bartender.plist ${HOME}/.dotfiles.bak/com.surteesstudios.Bartender.plist.${DATESTAMP}
   ln -sf ${DOTFILES}/Library/Preferences/com.surteesstudios.Bartender.plist ${HOME}/Library/Preferences/com.surteesstudios.Bartender.plist
 
-  # add Pivotal color palette
-  cp ${HOME}/Library/Colors/Pivotal.clr ${HOME}/.dotfiles.bak
-  ln -sf ${DOTFILES}/Library/Colors/Pivotal.clr ${HOME}/Library/Colors/Pivotal.clr
+  # add brand color palettes
+  cp ${HOME}/Library/Colors/*.clr ${HOME}/.dotfiles.bak
+  ln -sf ${DOTFILES}/Library/Colors/*.clr ${HOME}/Library/Colors
   
-  # add OutSytems color palette
-  cp ${HOME}/Library/Colors/OutSytems.clr ${HOME}/.dotfiles.bak
-  ln -sf ${DOTFILES}/Library/Colors/OutSytems.clr ${HOME}/Library/Colors/OutSytems.clr
-  
-  if [[ -d ${HOME}/.keyboard ]]; then
-    mv ${HOME}/.keyboard ~/.dotfiles.bak/keyboard.${DATESTAMP}
-  fi
-  ln -sf ${DOTFILES}/keyboard ${HOME}/.keyboard
-
   if [[ -d ${HOME}/.config/karabiner ]]; then
     mv ${HOME}/.config ~/.dotfiles.bak/karabiner.${DATESTAMP}
   fi
@@ -122,22 +103,12 @@ if [[ -d ${HOME}/.aws  ]] ; then
 fi
 ln -sf ${DOTFILES}/aws ${HOME}/.aws
 
-# link in atom configuration
-if [[ -d ${HOME}/.atom  ]] ; then
-  mkdir ${HOME}/.dotfiles.bak/atom.${DATESTAMP}
-  mv ${HOME}/.atom/config.cson ${HOME}/.dotfiles.bak/atom/
-else
-  mkdir ${HOME}/.atom
-fi
-ln -sf ${DOTFILES}/atom/config.cson ${HOME}/.atom/config.cson
-
 # link in tmux configuration
 if [[ -d ${HOME}/.tmux ]]; then
   mv ${HOME}/.tmux ~/.dotfiles.bak/tmux.${DATESTAMP}
 fi
 ln -sf ${DOTFILES}/tmux ${HOME}/.tmux
 
-# link in tmux configuration
 if [[ -d ${HOME}/.tmux ]]; then
   mv ${HOME}/.tmux.conf ~/.dotfiles.bak/tmux.conf.${DATESTAMP}
 fi
