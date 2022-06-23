@@ -4,11 +4,11 @@ create_dns_location () {
   location="${1}"
   shift
 
-  if ! sudo networksetup -switchtolocation "${location}" ; then
-    sudo networksetup -createlocation "${location}" populate
-    sudo networksetup -switchtolocation "${location}" 
-    sudo networksetup -setdnsservers Wi-Fi $@
+  if ! sudo networksetup -switchtolocation "${location}" 2>&1 >/dev/null ; then
+    sudo networksetup -createlocation "${location}" populate 2>&1 >/dev/null 
   fi
+  sudo networksetup -switchtolocation "${location}" 2>&1 >/dev/null
+  sudo networksetup -setdnsservers Wi-Fi $@
 }
 
 create_dns_location "Home DNS" 10.13.6.253 10.13.6.254
@@ -16,11 +16,16 @@ create_dns_location "Google DNS" 8.8.8.8 8.8.4.4
 create_dns_location "Cloudflare DNS" 1.1.1.1 1.0.0.1
 create_dns_location "Quad9 DNS" 9.9.9.9 149.112.112.112
 create_dns_location "Tailscale DNS" 100.85.25.21
-sudo networksetup -switchtolocation "Automatic" 
+sudo networksetup -switchtolocation "Automatic" 2>&1 >/dev/null
+sleep 10
 
-# put dotfile symbolic links into place
+# put dotfile symbolic links into place with stow, installing if it's not
+# already installed
+if ! command -v stow >/dev/null 2>&1 ; then 
+  brew install stow
+fi
 
-stow --target ${HOME} --dir ${HOME}/.dotfiles/files */
+stow --target ${HOME} --dir ${HOME}/.dotfiles/files $(ls ${HOME}/.dotfiles/files)
 
 # make sure the SSH config directory exists with appropriate permissions
 if [ ! -d ${HOME}/.ssh ] ; then
@@ -29,7 +34,10 @@ fi
 chmod 700 ${HOME}/.ssh
 
 # install oh-my-zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+if [ -d ${ZSH:-${HOME}/.oh-my-zsh} ] ; then
+  rm -rf ${ZSH:-${HOME}/.oh-my-zsh}
+fi
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
 
 # use my customizations to oh-my-zsh
 ZSH_CUSTOM=${HOME}/workspace/oh-my-zsh-custom
@@ -37,26 +45,21 @@ rm -rf ${ZSH_CUSTOM} 2>/dev/null
 git clone https://github.com/crdant/oh-my-zsh-custom.git ${ZSH_CUSTOM}
 
 # setup some directories
-mkdir -p ~/sandbox
-mkdir -p ~/workspace
-mkdir -p ~/workspace/learning
-mkdir -p ~/workspace/learning/exercism
-mkdir -p ~/"Virtual Box VMs"
-
-# setup aliases I'm used to having
-Rez -append files/icons/workspace.rsrc -o ~/workspace/$'Icon\r'
-SetFile -a C ~/workspace
+mkdir -p ${HOME}/sandbox
+mkdir -p ${HOME}/workspace
+mkdir -p ${HOME}/workspace/learning
+mkdir -p ${HOME}/workspace/learning/exercism
 
 # follow the LSB for some home-level content
-mkdir -p ~/bin
-mkdir -p ~/etc
-mkdir -p ~/share
+mkdir -p ${HOME}/bin
+mkdir -p ${HOME}/etc
+mkdir -p ${HOME}/share
 
 # make sure I can work with my oh my zsh and my dotfiles easily
-ln -sf ~/.dotfiles ~/workspace/dotfiles
+if [ ! -L ${HOME}/workspace/dotfiles ] ; then
+  ln -sf ${HOME}/dotfiles ${HOME}/workspace/dotfiles  
+fi
 
-pushd ~/.dotfiles/files
-  stow 
 # MacOS preferences and customizations snagged from Mathias Bynensat
 # and Pivotal's workstation setup
 
@@ -97,14 +100,14 @@ sudo pmset -a lidwake 1
 # Restart automatically on power loss
 sudo pmset -a autorestart 1
 
-# Restart automatically if the computer freezes
-sudo systemsetup -setrestartfreeze on
-
-# Sleep the display after 15 minutes
-sudo pmset -a displaysleep 15
+# Sleep the display after 5 minutes
+sudo pmset -a displaysleep 5
 
 # Disable machine sleep while charging
 sudo pmset -c sleep 0
+
+# set display sleep to 2 minutes on batter
+sudo pmset -b displaysleep 2
 
 # Set machine sleep to 5 minutes on battery
 sudo pmset -b sleep 5
@@ -135,7 +138,7 @@ defaults write com.apple.finder FXPreferredViewStyle -string "clmv"
 
 
 # Show the ~/Library folder
-chflags nohidden ~/Library && xattr -d com.apple.FinderInfo ~/Library
+chflags nohidden ~/Library && xattr -d com.apple.finderinfo ~/Library 2>/dev/null
 
 # Show the /Volumes folder
 sudo chflags nohidden /Volumes
