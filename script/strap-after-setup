@@ -5,7 +5,10 @@ sudo chsh -u ${USER} -s /bin/zsh
 
 # convert color palette links to hard links so that the palettes
 # load correctly in the color picker
-find /Library/Colors -type l -exec bash -c 'ln -f "$(greadlink -m "$0")" "$0"' {} \;1
+find ${HOME}/Library/Colors -type l -exec bash -c 'ln -f "$(greadlink -m "$0")" "$0"' {} \;1
+
+# use the same mechanism for preference files
+find ${HOME}/Library/Preferences -type l -exec bash -c 'ln -f "$(greadlink -m "$0")" "$0"' {} \;1
 
 # Install useful extensions for VSCode"
 code --install-extension EditorConfig.EditorConfig
@@ -60,7 +63,6 @@ mkdir -p ~/workspace/learning/exercism
 mkdir -p ~/"Virtual Box VMs"
 
 # setup aliases I'm used to having
-Rez -append files/icons/workspace.rsrc -o ~/workspace/$'Icon\r'
 SetFile -a C ~/workspace
 
 # follow the LSB for some home-level content

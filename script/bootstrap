@@ -25,7 +25,29 @@ if ! command -v stow >/dev/null 2>&1 ; then
   brew install stow
 fi
 
+# kind of a hack, but before we stow we need to make sure that hardlinks we 
+# created in the past are not in the way
+find ${HOME}/Library/Colors -type f -links +1 -exec unlink {} \;
+find ${HOME}/Library/Preferences -type f -links +1 -exec unlink {} \;
+
+# set up the link farm for non-secret files
 stow --target ${HOME} --dir ${HOME}/.dotfiles/files $(ls ${HOME}/.dotfiles/files)
+
+# gpg provides the encryption, so make sure it's installed
+if ! command -v gpg >/dev/null 2>&1 ; then 
+  brew install gnupg
+fi
+
+# the helper script for encryption/decryption is written in python and
+# has some depedencies, make sure they're available
+pip3 install -r ${HOME}/.dotfiles/requirements.txt
+
+# decrypt the sensitive files
+SECRETS_DIR=${HOME}/.dotfiles/secrets
+${HOME}/.dotfiles/bin/secrets decrypt --all
+
+# set up the link farm for sensitive files
+stow --no-folding --ignore '.*\.enc' --target ${HOME} --dir ${HOME}/.dotfiles/secrets $(ls ${HOME}/.dotfiles/secrets) 
 
 # make sure the SSH config directory exists with appropriate permissions
 if [ ! -d ${HOME}/.ssh ] ; then
