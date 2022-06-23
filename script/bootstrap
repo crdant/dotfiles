@@ -77,10 +77,9 @@ mkdir -p ${HOME}/bin
 mkdir -p ${HOME}/etc
 mkdir -p ${HOME}/share
 
-# make sure I can work with my oh my zsh and my dotfiles easily
-if [ ! -L ${HOME}/workspace/dotfiles ] ; then
-  ln -sf ${HOME}/dotfiles ${HOME}/workspace/dotfiles  
-fi
+# make sure I can work with dotfiles easily
+unlink ${HOME}/workspace/dotfiles
+ln -sf ${HOME}/.dotfiles ${HOME}/workspace/dotfiles
 
 # MacOS preferences and customizations snagged from Mathias Bynensat
 # and Pivotal's workstation setup

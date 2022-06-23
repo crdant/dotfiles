@@ -70,9 +70,6 @@ mkdir -p ~/bin
 mkdir -p ~/etc
 mkdir -p ~/share
 
-# make sure I can work with my oh my zsh and my dotfiles easily
-ln -sf ~/.dotfiles ~/workspace/dotfiles
-
 # Common file folders and links
 mkdir -p ~/Documents/Inbox 
 ln -sf ~/Documents/Inbox ~/Desktop
