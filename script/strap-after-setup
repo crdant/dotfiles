@@ -68,7 +68,6 @@ SetFile -a C ~/workspace
 
 # follow the LSB for some home-level content
 mkdir -p ~/bin
-mkdir -p ~/etc
 mkdir -p ~/share
 
 # Common file folders and links

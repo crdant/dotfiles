@@ -2,7 +2,7 @@ os="$(uname | awk '{print tolower($1)}')"
 arch=$(uname -m)
 
 # Path to your oh-my-zsh configuration.
-ZSH=$HOME/.oh-my-zsh
+ZSH=${HOME}/.config/oh-my-zsh
 ZSH_CUSTOM=${HOME}/workspace/oh-my-zsh-custom
 fpath=(${ZSH_CUSTOM}/completions $fpath)
 
@@ -119,7 +119,7 @@ complete -o nospace -C /usr/local/bin/mc mc
 eval "$(fly completion --shell zsh)"
 
 if [[ $os == "darwin" ]]; then
-  source ${HOME}/share/zsh/zshrc.darwin
+  source ${HOME}/.config/zsh/zshrc_darwin
 fi
 
 eval "$(direnv hook zsh)"
