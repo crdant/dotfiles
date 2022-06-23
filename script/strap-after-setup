@@ -3,6 +3,10 @@
 # default to zsh for my user
 sudo chsh -u ${USER} -s /bin/zsh
 
+# convert color palette links to hard links so that the palettes
+# load correctly in the color picker
+find /Library/Colors -type l -exec bash -c 'ln -f "$(greadlink -m "$0")" "$0"' {} \;1
+
 # Install useful extensions for VSCode"
 code --install-extension EditorConfig.EditorConfig
 code --install-extension esbenp.prettier-vscode
