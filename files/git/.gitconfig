@@ -73,3 +73,5 @@
 	defaultBranch = main
 [pull]
 	rebase = false
+[diff "secrets"]
+	textconv = secrets diff
