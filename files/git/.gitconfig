@@ -75,3 +75,5 @@
 	rebase = false
 [diff "secrets"]
 	textconv = secrets diff
+[diff "plist"]
+	textconv = plutil -p
