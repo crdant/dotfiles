@@ -295,5 +295,3 @@ defaults -currentHost write com.apple.ImageCapture disableHotPlug -bool true
 defaults write com.apple.iCal "Default duration in minutes for new event" -int 30
 defaults write com.apple.iCal "TimeZone support enabled" 1
 
-# allow Zoom URLs to open in chrome without approval 
-defaults write com.google.chrome URLWhitelist -array "zoommtg://*"
