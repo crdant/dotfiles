@@ -125,18 +125,6 @@ sudo pmset -a lidwake 1
 # Restart automatically on power loss
 sudo pmset -a autorestart 1
 
-# Sleep the display after 5 minutes
-sudo pmset -a displaysleep 5
-
-# Disable machine sleep while charging
-sudo pmset -c sleep 0
-
-# set display sleep to 2 minutes on batter
-sudo pmset -b displaysleep 2
-
-# Set machine sleep to 5 minutes on battery
-sudo pmset -b sleep 5
-
 # Require password immediately after sleep or screen saver begins
 defaults write com.apple.screensaver askForPassword -int 1
 defaults write com.apple.screensaver askForPasswordDelay -int 0
