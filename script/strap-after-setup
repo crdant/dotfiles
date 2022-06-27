@@ -4,6 +4,12 @@
 MY_USER=${USER}
 sudo chsh -u ${MY_USER} -s /bin/zsh
 
+# import Github's GPG keys
+curl https://github.com/web-flow.gpg | gpg --import
+
+# import my GPG keys
+curl https://github.com/crdant.gpg | gpg --import
+
 # convert color palette links to hard links so that the palettes
 # load correctly in the color picker
 find ${HOME}/Library/Colors -type l -exec bash -c 'ln -f "$(greadlink -m "$0")" "$0"' {} \;1
