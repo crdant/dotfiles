@@ -9,7 +9,7 @@ sudo chsh -u ${MY_USER} -s /bin/zsh
 find ${HOME}/Library/Colors -type l -exec bash -c 'ln -f "$(greadlink -m "$0")" "$0"' {} \;1
 
 # use the same mechanism for preference files
-find ${HOME}/Library/Preferences -type l -exec bash -c 'ln -f "$(greadlink -m "$0")" "$0"' {} \;1
+find ${HOME}/Library/Preferences -name "*.plist" -a -type l -exec bash -c 'ln -f "$(greadlink -m "$0")" "$0"' {} \;1
 
 # Install useful extensions for VSCode"
 code --install-extension --force EditorConfig.EditorConfig
