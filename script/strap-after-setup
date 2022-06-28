@@ -34,13 +34,19 @@ code --install-extension redhat.vscode-yaml --force
 code --install-extension GitHub.vscode-pull-request-github --force
 code --install-extension Pivotal.vscode-concourse --force
 
+# install Dockutil from the Github release
+dockutil_url=$(curl -s https://api.github.com/repos/kcrawford/dockutil/releases/latest | jq -r '.assets[].browser_download_url')
+dockutil_installer=/tmp/$(curl -s https://api.github.com/repos/kcrawford/dockutil/releases/latest | jq -r '.assets[].name')
+curl -o ${dockutil_installer} ${dockutil_url} && chmod 755 ${dockutil_installer}
+sudo installer -pkg ${dockutil_installer} -target /
+
 # set up Dock
 dockutil --remove all
-dockutil --add "/Applications/iTerm.app" --after "Siri"
+dockutil --add "/Applications/iTerm.app"
 dockutil --add "/Applications/Google Chrome.app" --after "iTerm"
-dockutil --add "/Applications/Slack.app" --after "Chrome"
+dockutil --add "/Applications/Slack.app" --after "Google Chrome"
 dockutil --add "/Applications/Superhuman.app" --after "Slack"
-dockutil --add "/System/Applications/Messages.app" --after "Airmail"
+dockutil --add "/System/Applications/Messages.app" --after "Superhuman"
 dockutil --add "/Applications/Twitter.app" --after "Messages"
 dockutil --add "/System/Applications/Contacts.app" --after "Twitter"
 dockutil --add "/Applications/Fantastical.app" --after "Contacts"
@@ -55,7 +61,7 @@ dockutil --add "/Applications/Keynote.app" --after "Photos"
 dockutil --add "/Applications/Numbers.app" --after "Keynote"
 dockutil --add "/Applications/Pages.app" --after "Numbers"
 dockutil --add "/Applications/Visual Studio Code.app" --after "Pages"
-dockutil --add "/Applications/Postman.app" --after "Dash"
+dockutil --add "/Applications/Postman.app" --after "Visual Studio Code"
 dockutil --add "/System/Applications/App Store.app" --after "Postman"
 dockutil --add "/System/Applications/Utilities/Activity Monitor.app" --after "App Store"
 dockutil --add "/System/Applications/Utilities/Console.app" --after "Activity Monitor"
