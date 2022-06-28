@@ -17,22 +17,22 @@ find ${HOME}/Library/Colors -type l -exec bash -c 'ln -f "$(greadlink -m "$0")" 
 find ${HOME}/Library/Preferences -name "*.plist" -a -type l -exec bash -c 'ln -f "$(greadlink -m "$0")" "$0"' {} \;1
 
 # Install useful extensions for VSCode"
-code --install-extension --force EditorConfig.EditorConfig
-code --install-extension --force esbenp.prettier-vscode
-code --install-extension --force file-icons.file-icons
-code --install-extension --force jaspernorth.vscode-pigments
-code --install-extension --force ms-vscode-remote.remote-containers
-code --install-extension --force ms-vsliveshare.vsliveshare
-code --install-extension --force ms-vsliveshare.vsliveshare-audio
-code --install-extension --force ms-vsliveshare.vsliveshare-pack
-code --install-extension --force coenraads.bracket-pair-colorizer-2
-code --install-extension --force britesnow.vscode-toggle-quotes
-code --install-extension --force vscodevim.vim
-code --install-extension --force Gruntfuggly.todo-tree
-code --install-extension --force ms-vscode-remote.remote-containers
-code --install-extension --force redhat.vscode-yaml
-code --install-extension --force GitHub.vscode-pull-request-github
-code --install-extension --force Pivotal.vscode-concourse
+code --install-extension EditorConfig.EditorConfig --force 
+code --install-extension esbenp.prettier-vscode --force
+code --install-extension file-icons.file-icons --force
+code --install-extension jaspernorth.vscode-pigments --force
+code --install-extension ms-vscode-remote.remote-containers --force
+code --install-extension ms-vsliveshare.vsliveshare --force
+code --install-extension ms-vsliveshare.vsliveshare-audio --force
+code --install-extension ms-vsliveshare.vsliveshare-pack --force
+code --install-extension coenraads.bracket-pair-colorizer-2 --force
+code --install-extension britesnow.vscode-toggle-quotes --force
+code --install-extension vscodevim.vim --force
+code --install-extension Gruntfuggly.todo-tree --force
+code --install-extension ms-vscode-remote.remote-containers --force
+code --install-extension redhat.vscode-yaml --force
+code --install-extension GitHub.vscode-pull-request-github --force
+code --install-extension Pivotal.vscode-concourse --force
 
 # set up Dock
 dockutil --remove all
