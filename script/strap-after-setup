@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
 # default to zsh for my user
-MY_USER=${USER}
-sudo chsh -u ${MY_USER} -s /bin/zsh
+sudo chsh -s /bin/zsh ${USER}
 
 # import Github's GPG keys
 curl https://github.com/web-flow.gpg | gpg --import
