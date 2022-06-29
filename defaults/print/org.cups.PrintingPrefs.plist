@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>LastUsedPrinters</key>
+	<array>
+		<dict>
+			<key>Network</key>
+			<string>10.13.6.1</string>
+			<key>PrinterID</key>
+			<string>Brother_HL_L3270CDW_series</string>
+		</dict>
+		<dict>
+			<key>Network</key>
+			<string>fe80::f4be:ecff:fe4b:b564</string>
+			<key>PrinterID</key>
+			<string>Brother_HL_L3270CDW_series</string>
+		</dict>
+		<dict>
+			<key>Network</key>
+			<string>fe80::6616:66ff:feb1:ce65</string>
+			<key>PrinterID</key>
+			<string>Brother_HL_L2350DW_series</string>
+		</dict>
+		<dict>
+			<key>Network</key>
+			<string>172.20.32.254</string>
+			<key>PrinterID</key>
+			<string>Boston_Xerox_7225</string>
+		</dict>
+	</array>
+	<key>PDFAuthor</key>
+	<string>Chuck D'Antonio</string>
+	<key>SavedDuplexState</key>
+	<integer>1</integer>
+	<key>com.apple.print.recentPDFActions</key>
+	<array>
+		<string>Save as PDF</string>
+	</array>
+</dict>
+</plist>

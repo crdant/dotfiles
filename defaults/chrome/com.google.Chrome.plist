@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>DeveloperIDCertificateReauthorizeWinter20212022Success</key>
+	<true/>
+	<key>LastRunAppBundlePath</key>
+	<string>/Applications/Google Chrome.app</string>
+	<key>NSNavLastRootDirectory</key>
+	<string>~/Documents/Outbox</string>
+	<key>NSNavLastUserSetHideExtensionButtonState</key>
+	<true/>
+	<key>NSNavPanelExpandedSizeForOpenMode</key>
+	<string>{800, 450}</string>
+	<key>NSNavPanelExpandedSizeForSaveMode</key>
+	<string>{800, 448}</string>
+	<key>NSWindow Frame NSNavPanelAutosaveName</key>
+	<string>-250 -250 800 450 0 0 1440 875 </string>
+	<key>PMPrintingExpandedStateForPrint2</key>
+	<false/>
+	<key>PurgeStaleScreenCapturePermissionSuccessEarly2022Attempts</key>
+	<integer>1</integer>
+	<key>PurgeStaleScreenCapturePermissionSuccessEarly2022Success</key>
+	<true/>
+	<key>URLWhitelist</key>
+	<array>
+		<string>zoommtg://*</string>
+	</array>
+</dict>
+</plist>
