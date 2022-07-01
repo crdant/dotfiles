@@ -4,49 +4,11 @@
 <dict>
 	<key>CheckedIfBartender2LaunchedAtLogin</key>
 	<true/>
-	<key>FRFeedbackReporter.lastCrashCheckDate</key>
-	<date>2020-12-09T21:27:21Z</date>
-	<key>NSStatusItem Preferred Position EItem</key>
-	<real>60000</real>
-	<key>NSStatusItem Preferred Position HItem</key>
-	<real>10000</real>
-	<key>NSStatusItem Preferred Position HItem1</key>
-	<real>10000</real>
-	<key>NSStatusItem Preferred Position HItem2</key>
-	<real>10000</real>
-	<key>NSStatusItem Preferred Position HItem3</key>
-	<real>10000</real>
-	<key>NSStatusItem Preferred Position Item-6</key>
-	<real>10</real>
-	<key>NSStatusItem Preferred Position Item-7</key>
-	<real>10</real>
-	<key>NSStatusItem Preferred Position NCItem</key>
-	<integer>-100</integer>
-	<key>NSStatusItem Preferred Position statusItem</key>
-	<real>87</real>
-	<key>NSStatusItem Visible Item-0</key>
-	<true/>
-	<key>NSStatusItem Visible NCItem</key>
-	<true/>
-	<key>NSWindow Frame SUStatusFrame</key>
-	<string>-2394 983 400 129 -2560 0 2560 1417 </string>
-	<key>NSWindow Frame SUUpdateAlert</key>
-	<string>-1590 768 620 392 -2560 0 2560 1417 </string>
-	<key>SUAutomaticallyUpdate</key>
-	<false/>
-	<key>SUHasLaunchedBefore</key>
-	<true/>
-	<key>SULastCheckTime</key>
-	<date>2021-01-08T01:13:22Z</date>
-	<key>UpdateWelcomeMessageShowAgain</key>
-	<true/>
 	<key>appBartenderOrder</key>
 	<array>
 		<string>com.citrix.ReceiverHelper</string>
 		<string>com.twitter.twitter-mac</string>
 		<string>AppleVPNExtra</string>
-		<string>com.smileonmymac.textexpander.helper</string>
-		<string>com.avast.helper</string>
 		<string>AppleVolumeExtra</string>
 		<string>AppleBluetoothExtra</string>
 		<string>DisplaysExtra</string>
@@ -106,28 +68,6 @@
 			<key>updateDisplayTime</key>
 			<integer>15</integer>
 		</dict>
-		<key>CbDefense</key>
-		<dict>
-			<key>controlled</key>
-			<integer>1</integer>
-			<key>searchName</key>
-			<string>com.carbonblack.defense.ui</string>
-			<key>showForUpdates</key>
-			<false/>
-			<key>updateDisplayTime</key>
-			<integer>15</integer>
-		</dict>
-		<key>DisplayLink.DisplayLinkUserAgent</key>
-		<dict>
-			<key>controlled</key>
-			<integer>1</integer>
-			<key>searchName</key>
-			<string>DisplayLinkUserAgent</string>
-			<key>showForUpdates</key>
-			<false/>
-			<key>updateDisplayTime</key>
-			<integer>15</integer>
-		</dict>
 		<key>DisplaysExtra</key>
 		<dict>
 			<key>controlled</key>
@@ -145,17 +85,6 @@
 			<integer>2</integer>
 			<key>searchName</key>
 			<string>Siri</string>
-			<key>showForUpdates</key>
-			<false/>
-			<key>updateDisplayTime</key>
-			<integer>15</integer>
-		</dict>
-		<key>com.airwatch.mac.agent</key>
-		<dict>
-			<key>controlled</key>
-			<integer>1</integer>
-			<key>searchName</key>
-			<string>IntelligentHubAgent</string>
 			<key>showForUpdates</key>
 			<false/>
 			<key>updateDisplayTime</key>
@@ -183,62 +112,7 @@
 			<key>updateDisplayTime</key>
 			<integer>15</integer>
 		</dict>
-		<key>com.avast.helper</key>
-		<dict>
-			<key>controlled</key>
-			<integer>1</integer>
-			<key>popupFix</key>
-			<false/>
-			<key>showForUpdates</key>
-			<false/>
-			<key>updateDisplayTime</key>
-			<integer>5</integer>
-		</dict>
-		<key>com.citrix.ReceiverHelper</key>
-		<dict>
-			<key>controlled</key>
-			<integer>1</integer>
-			<key>popupFix</key>
-			<false/>
-			<key>showForUpdates</key>
-			<false/>
-			<key>updateDisplayTime</key>
-			<integer>5</integer>
-		</dict>
-		<key>com.docker.docker</key>
-		<dict>
-			<key>controlled</key>
-			<integer>1</integer>
-			<key>searchName</key>
-			<string>Docker</string>
-			<key>showForUpdates</key>
-			<false/>
-			<key>updateDisplayTime</key>
-			<integer>15</integer>
-		</dict>
-		<key>com.evernote.EvernoteHelper</key>
-		<dict>
-			<key>controlled</key>
-			<integer>1</integer>
-			<key>popupFix</key>
-			<false/>
-			<key>showForUpdates</key>
-			<false/>
-			<key>updateDisplayTime</key>
-			<integer>5</integer>
-		</dict>
-		<key>com.garmin.renu.service</key>
-		<dict>
-			<key>controlled</key>
-			<integer>1</integer>
-			<key>popupFix</key>
-			<false/>
-			<key>showForUpdates</key>
-			<false/>
-			<key>updateDisplayTime</key>
-			<integer>5</integer>
-		</dict>
-		<key>com.generalarcade.flycut</key>
+  	<key>com.generalarcade.flycut</key>
 		<dict>
 			<key>controlled</key>
 			<integer>1</integer>
@@ -248,17 +122,6 @@
 			<false/>
 			<key>updateDisplayTime</key>
 			<integer>15</integer>
-		</dict>
-		<key>com.getdropbox.dropbox</key>
-		<dict>
-			<key>controlled</key>
-			<integer>1</integer>
-			<key>popupFix</key>
-			<false/>
-			<key>showForUpdates</key>
-			<false/>
-			<key>updateDisplayTime</key>
-			<integer>5</integer>
 		</dict>
 		<key>com.google.GoogleDrive</key>
 		<dict>
@@ -270,28 +133,6 @@
 			<false/>
 			<key>updateDisplayTime</key>
 			<integer>5</integer>
-		</dict>
-		<key>com.google.drivefs</key>
-		<dict>
-			<key>controlled</key>
-			<integer>1</integer>
-			<key>searchName</key>
-			<string>Google Drive File Stream</string>
-			<key>showForUpdates</key>
-			<false/>
-			<key>updateDisplayTime</key>
-			<integer>15</integer>
-		</dict>
-		<key>com.incident57.Muzzle</key>
-		<dict>
-			<key>controlled</key>
-			<integer>1</integer>
-			<key>searchName</key>
-			<string>Muzzle</string>
-			<key>showForUpdates</key>
-			<false/>
-			<key>updateDisplayTime</key>
-			<integer>15</integer>
 		</dict>
 		<key>com.jetbrains.apps.activator</key>
 		<dict>
@@ -310,50 +151,6 @@
 			<integer>1</integer>
 			<key>searchName</key>
 			<string>JetBrains Toolbox</string>
-			<key>showForUpdates</key>
-			<false/>
-			<key>updateDisplayTime</key>
-			<integer>15</integer>
-		</dict>
-		<key>com.logitech.gaming</key>
-		<dict>
-			<key>controlled</key>
-			<integer>1</integer>
-			<key>popupFix</key>
-			<false/>
-			<key>showForUpdates</key>
-			<false/>
-			<key>updateDisplayTime</key>
-			<integer>5</integer>
-		</dict>
-		<key>com.mcafee.Menulet</key>
-		<dict>
-			<key>controlled</key>
-			<integer>1</integer>
-			<key>searchName</key>
-			<string>Menulet</string>
-			<key>showForUpdates</key>
-			<false/>
-			<key>updateDisplayTime</key>
-			<integer>15</integer>
-		</dict>
-		<key>com.microsoft.OneDrive</key>
-		<dict>
-			<key>controlled</key>
-			<integer>1</integer>
-			<key>searchName</key>
-			<string>OneDrive</string>
-			<key>showForUpdates</key>
-			<false/>
-			<key>updateDisplayTime</key>
-			<integer>15</integer>
-		</dict>
-		<key>com.paloaltonetworks.GlobalProtect</key>
-		<dict>
-			<key>controlled</key>
-			<integer>1</integer>
-			<key>searchName</key>
-			<string>GlobalProtect</string>
 			<key>showForUpdates</key>
 			<false/>
 			<key>updateDisplayTime</key>
@@ -392,28 +189,6 @@
 			<key>updateDisplayTime</key>
 			<integer>5</integer>
 		</dict>
-		<key>com.sentinelone.SentinelAgent</key>
-		<dict>
-			<key>controlled</key>
-			<integer>1</integer>
-			<key>searchName</key>
-			<string>SentinelAgent</string>
-			<key>showForUpdates</key>
-			<false/>
-			<key>updateDisplayTime</key>
-			<integer>15</integer>
-		</dict>
-		<key>com.smileonmymac.textexpander.helper</key>
-		<dict>
-			<key>controlled</key>
-			<integer>1</integer>
-			<key>popupFix</key>
-			<false/>
-			<key>showForUpdates</key>
-			<false/>
-			<key>updateDisplayTime</key>
-			<integer>5</integer>
-		</dict>
 		<key>com.twitter.twitter-mac</key>
 		<dict>
 			<key>controlled</key>
@@ -425,56 +200,12 @@
 			<key>updateDisplayTime</key>
 			<integer>5</integer>
 		</dict>
-		<key>com.ysoft.YSoft-SafeQ-Client</key>
-		<dict>
-			<key>controlled</key>
-			<integer>1</integer>
-			<key>searchName</key>
-			<string>YSoft SafeQ Client</string>
-			<key>showForUpdates</key>
-			<false/>
-			<key>updateDisplayTime</key>
-			<integer>15</integer>
-		</dict>
 		<key>com.zenonas.Barmaid</key>
 		<dict>
 			<key>controlled</key>
 			<integer>1</integer>
 			<key>searchName</key>
 			<string>Barmaid</string>
-			<key>showForUpdates</key>
-			<false/>
-			<key>updateDisplayTime</key>
-			<integer>15</integer>
-		</dict>
-		<key>io.qt.SoundTouchHelper</key>
-		<dict>
-			<key>controlled</key>
-			<integer>2</integer>
-			<key>searchName</key>
-			<string>SoundTouchHelper</string>
-			<key>showForUpdates</key>
-			<false/>
-			<key>updateDisplayTime</key>
-			<integer>15</integer>
-		</dict>
-		<key>keybase.Electron</key>
-		<dict>
-			<key>controlled</key>
-			<integer>1</integer>
-			<key>searchName</key>
-			<string>Keybase</string>
-			<key>showForUpdates</key>
-			<false/>
-			<key>updateDisplayTime</key>
-			<integer>15</integer>
-		</dict>
-		<key>net.tunnelblick.tunnelblick</key>
-		<dict>
-			<key>controlled</key>
-			<integer>1</integer>
-			<key>searchName</key>
-			<string>Tunnelblick</string>
 			<key>showForUpdates</key>
 			<false/>
 			<key>updateDisplayTime</key>
@@ -491,28 +222,6 @@
 			<key>updateDisplayTime</key>
 			<integer>15</integer>
 		</dict>
-		<key>org.herf.Flux</key>
-		<dict>
-			<key>controlled</key>
-			<integer>1</integer>
-			<key>popupFix</key>
-			<false/>
-			<key>showForUpdates</key>
-			<false/>
-			<key>updateDisplayTime</key>
-			<integer>5</integer>
-		</dict>
-		<key>org.openvpn.client.app</key>
-		<dict>
-			<key>controlled</key>
-			<integer>1</integer>
-			<key>searchName</key>
-			<string>OpenVPNConnect</string>
-			<key>showForUpdates</key>
-			<false/>
-			<key>updateDisplayTime</key>
-			<integer>15</integer>
-		</dict>
 		<key>org.pqrs.Karabiner-Menu</key>
 		<dict>
 			<key>controlled</key>
@@ -524,76 +233,15 @@
 			<key>updateDisplayTime</key>
 			<integer>15</integer>
 		</dict>
-		<key>org.shiftitapp.ShiftIt</key>
-		<dict>
-			<key>controlled</key>
-			<integer>1</integer>
-			<key>popupFix</key>
-			<false/>
-			<key>showForUpdates</key>
-			<false/>
-			<key>updateDisplayTime</key>
-			<integer>5</integer>
-		</dict>
 	</dict>
-	<key>b3UpdateHasTriedChangingName</key>
-	<true/>
-	<key>barLocationPercentage</key>
-	<real>0.83888888359069824</real>
-	<key>bartender.resetItemPositionsList</key>
-	<array>
-		<string>2018-12-17 19:30:35 +0000</string>
-		<string>2018-12-17 19:30:41 +0000</string>
-		<string>2018-12-28 20:21:55 +0000</string>
-		<string>2018-12-28 20:22:00 +0000</string>
-		<string>2019-01-08 14:16:00 +0000</string>
-		<string>2019-01-08 14:16:50 +0000</string>
-		<string>2019-01-08 14:19:16 +0000</string>
-		<string>2019-01-08 14:20:01 +0000</string>
-		<string>2019-01-08 14:20:47 +0000</string>
-		<string>2019-01-08 14:21:54 +0000</string>
-		<string>2019-01-25 15:03:07 +0000</string>
-		<string>2019-03-13 15:40:01 +0000</string>
-		<string>2019-10-21 16:52:11 +0000</string>
-		<string>2020-01-24 15:47:12 +0000</string>
-		<string>2020-01-24 16:16:55 +0000</string>
-		<string>2020-01-29 14:25:40 +0000</string>
-		<string>2020-03-16 16:50:27 +0000</string>
-		<string>2020-08-27 20:18:17 +0000</string>
-		<string>2020-09-02 13:39:47 +0000</string>
-		<string>2020-09-02 13:39:57 +0000</string>
-		<string>2020-10-26 18:20:20 +0000</string>
-		<string>2020-11-30 21:36:30 +0000</string>
-		<string>2020-11-30 21:36:38 +0000</string>
-		<string>2020-11-30 21:55:54 +0000</string>
-		<string>2020-11-30 22:03:10 +0000</string>
-		<string>2020-11-30 22:05:29 +0000</string>
-		<string>2020-12-01 20:33:50 +0000</string>
-		<string>2020-12-03 18:08:58 +0000</string>
-		<string>2020-12-04 19:12:41 +0000</string>
-		<string>2020-12-07 20:57:07 +0000</string>
-		<string>2020-12-08 00:56:43 +0000</string>
-	</array>
 	<key>bartender.storedPositions</key>
 	<dict>
 		<key>85C27NK92C.com.flexibits.fantastical2.mac.helper-Fantastical</key>
 		<real>263</real>
-		<key>CbDefense-Item-0</key>
-		<real>20147</real>
-		<key>DisplayLink.DisplayLinkUserAgent-Item-0</key>
-		<real>802</real>
-		<key>J8RPQ294UB.com.skitch.SkitchHelper-Item-0</key>
-		<real>218</real>
 		<key>Multipass-Item-0</key>
 		<real>846</real>
-		<key>ai.2Hz.krisp-Item-0</key>
-		<real>893</real>
-		<key>ai.krisp.krispMac-Item-0</key>
-		<real>854</real>
 		<key>com.agilebits.onepassword7-Item-0</key>
 		<real>449</real>
-		<key>com.airwatch.mac.agent-Item-0</key>
-		<real>20685.000000010001</real>
 		<key>com.apple.Spotlight-Item-0</key>
 		<real>30116</real>
 		<key>com.apple.TextInputMenuAgent-Item-0</key>
@@ -622,88 +270,34 @@
 		<real>20534</real>
 		<key>com.apple.systemuiserver-Siri</key>
 		<real>30125</real>
-		<key>com.barco.clickshare-Item-0</key>
-		<real>734</real>
-		<key>com.cisco.webexmeetingsapp-Item-0</key>
-		<real>812</real>
-		<key>com.docker.docker-Item-0</key>
-		<real>20664.000000010001</real>
-		<key>com.evernote.EvernoteHelper-Item-0</key>
-		<real>21223</real>
 		<key>com.fiplab.memoryclean3-Item-0</key>
 		<real>491</real>
-		<key>com.francescodilorenzo.Mailbro-Item-0</key>
-		<real>709</real>
 		<key>com.generalarcade.flycut-Item-0</key>
 		<real>20202</real>
-		<key>com.getdropbox.dropbox-Item-0</key>
-		<real>614</real>
-		<key>com.google.drivefs-Item-0</key>
-		<real>288</real>
 		<key>com.if.Amphetamine-Item-0</key>
 		<real>422.5</real>
-		<key>com.incident57.Muzzle-Item-0</key>
-		<real>20586</real>
-		<key>com.incident57.Muzzle-Item-1</key>
-		<real>20434</real>
 		<key>com.jetbrains.apps.activator-Item-0</key>
 		<real>21279</real>
 		<key>com.jetbrains.toolbox-Item-0</key>
 		<real>20395</real>
-		<key>com.logitech.gaming-Item-0</key>
-		<real>1089</real>
-		<key>com.macappsters.hangoutsplus-ItsycalStatusItem</key>
-		<real>886</real>
-		<key>com.mattermost.desktop-Item-0</key>
-		<real>839</real>
-		<key>com.mcafee.Menulet-Item-0</key>
-		<real>20229</real>
-		<key>com.microsoft.OneDrive-Item-0</key>
-		<real>20342</real>
-		<key>com.paloaltonetworks.GlobalProtect-Item-0</key>
-		<real>21309</real>
-		<key>com.paloaltonetworks.GlobalProtect.client-Item-0</key>
-		<real>59</real>
 		<key>com.pilotmoon.popclip-Item-0</key>
 		<real>20367</real>
 		<key>com.runningwithcrayons.Alfred-3-Item-0</key>
 		<real>20370.5</real>
 		<key>com.runningwithcrayons.Alfred-Item-0</key>
 		<real>20260.5</real>
-		<key>com.sentinelone.SentinelAgent-Item-0</key>
-		<real>21249</real>
-		<key>com.sentinelone.SentinelAgent-Item-1</key>
-		<real>20695</real>
-		<key>com.smileonmymac.textexpander-Item-0</key>
-		<real>808</real>
-		<key>com.smileonmymac.textexpander.helper-Item-0</key>
-		<real>20327</real>
 		<key>com.todoist.mac.Todoist-Item-0</key>
 		<real>675</real>
 		<key>com.twitter.twitter-mac-Item-0</key>
 		<real>20897</real>
 		<key>com.vmware.fusionApplicationsMenu-Item-0</key>
 		<real>800</real>
-		<key>com.ysoft.YSoft-SafeQ-Client-Item-0</key>
-		<real>20476</real>
 		<key>com.zenonas.Barmaid-Item-0</key>
 		<real>561</real>
-		<key>io.qt.SoundTouchHelper-Item-0</key>
-		<real>30618</real>
-		<key>it.bloop.airmail2-Item-0</key>
-		<real>733.5</real>
-		<key>keybase.Electron-Item-0</key>
-		<real>20449</real>
-		<key>net.tunnelblick.tunnelblick-Item-0</key>
-		<real>20450</real>
 		<key>org.hammerspoon.Hammerspoon-Item-0</key>
 		<real>20119</real>
-		<key>org.openvpn.client.app-Item-0</key>
-		<real>21337</real>
 		<key>org.pqrs.Karabiner-Menu-Item-0</key>
 		<real>20422</real>
-		<key>org.shiftitapp.ShiftIt-Item-0</key>
-		<real>20503</real>
 		<key>us.zoom.xos-Item-0</key>
 		<real>781</real>
 	</dict>
@@ -711,18 +305,10 @@
 	<dict>
 		<key>85C27NK92C.com.flexibits.fantastical2.mac.helper-Fantastical</key>
 		<real>263</real>
-		<key>CbDefense-Item-0</key>
-		<real>147</real>
-		<key>J8RPQ294UB.com.skitch.SkitchHelper-Item-0</key>
-		<real>218</real>
 		<key>Multipass-Item-0</key>
 		<real>846</real>
-		<key>ai.krisp.krispMac-Item-0</key>
-		<real>854</real>
 		<key>com.agilebits.onepassword7-Item-0</key>
 		<real>449</real>
-		<key>com.airwatch.mac.agent-Item-0</key>
-		<real>685</real>
 		<key>com.apple.Spotlight-Item-0</key>
 		<real>116</real>
 		<key>com.apple.TextInputMenuAgent-Item-0</key>
@@ -749,77 +335,35 @@
 		<real>534</real>
 		<key>com.apple.systemuiserver-Siri</key>
 		<real>125</real>
-		<key>com.cisco.webexmeetingsapp-Item-0</key>
-		<real>812</real>
-		<key>com.docker.docker-Item-0</key>
-		<real>664</real>
-		<key>com.evernote.EvernoteHelper-Item-0</key>
-		<real>1223</real>
 		<key>com.fiplab.memoryclean3-Item-0</key>
 		<real>491</real>
 		<key>com.generalarcade.flycut-Item-0</key>
 		<real>202</real>
-		<key>com.getdropbox.dropbox-Item-0</key>
-		<real>614</real>
-		<key>com.google.drivefs-Item-0</key>
-		<real>288</real>
 		<key>com.if.Amphetamine-Item-0</key>
 		<real>422.5</real>
-		<key>com.incident57.Muzzle-Item-0</key>
-		<real>586</real>
-		<key>com.incident57.Muzzle-Item-1</key>
-		<real>434</real>
 		<key>com.jetbrains.toolbox-Item-0</key>
 		<real>395</real>
 		<key>com.logitech.gaming-Item-0</key>
 		<real>1089</real>
-		<key>com.macappsters.hangoutsplus-ItsycalStatusItem</key>
-		<real>886</real>
-		<key>com.mcafee.Menulet-Item-0</key>
-		<real>229</real>
 		<key>com.microsoft.OneDrive-Item-0</key>
 		<real>342</real>
-		<key>com.paloaltonetworks.GlobalProtect-Item-0</key>
-		<real>1309</real>
-		<key>com.paloaltonetworks.GlobalProtect.client-Item-0</key>
-		<real>59</real>
 		<key>com.pilotmoon.popclip-Item-0</key>
 		<real>367</real>
 		<key>com.runningwithcrayons.Alfred-Item-0</key>
 		<real>260.5</real>
-		<key>com.sentinelone.SentinelAgent-Item-0</key>
-		<real>1249</real>
-		<key>com.sentinelone.SentinelAgent-Item-1</key>
-		<real>695</real>
-		<key>com.smileonmymac.textexpander-Item-0</key>
-		<real>808</real>
-		<key>com.smileonmymac.textexpander.helper-Item-0</key>
-		<real>327</real>
 		<key>com.todoist.mac.Todoist-Item-0</key>
 		<real>675</real>
-		<key>com.ysoft.YSoft-SafeQ-Client-Item-0</key>
-		<real>476</real>
 		<key>com.zenonas.Barmaid-Item-0</key>
 		<real>561</real>
-		<key>io.qt.SoundTouchHelper-Item-0</key>
-		<real>618</real>
-		<key>it.bloop.airmail2-Item-0</key>
-		<real>733.5</real>
-		<key>keybase.Electron-Item-0</key>
-		<real>449</real>
 		<key>org.hammerspoon.Hammerspoon-Item-0</key>
 		<real>119</real>
 		<key>org.pqrs.Karabiner-Menu-Item-0</key>
 		<real>422</real>
-		<key>org.shiftitapp.ShiftIt-Item-0</key>
-		<real>503</real>
 		<key>us.zoom.xos-Item-0</key>
 		<real>781</real>
 	</dict>
 	<key>insertGap</key>
 	<true/>
-	<key>license2</key>
-	<string>GAWAE-FCZJ5-7CKWX-TFMQY-PHU9A-KK2PY-V45TL-ZX5QC-CR5M7-4LA4A-AARX8-YWQBE-4PUWE-UVSPT-FEW9</string>
 	<key>license2HoldersName</key>
 	<string>Chuck D'Antonio</string>
 	<key>menuBarPositions</key>
@@ -837,33 +381,21 @@
 		<string>SystemUIServer:150</string>
 		<string>SystemUIServer:123</string>
 		<string>SystemUIServer:115</string>
-		<string>com.citrix.ReceiverHelper</string>
 		<string>us.zoom.xos</string>
 		<string>AppleVPNExtra</string>
-		<string>com.rdbrck.shift</string>
-		<string>com.zdziarski.LittleFlockerUserAgent</string>
 		<string>com.todoist.mac.Todoist</string>
 		<string>com.twitter.twitter-mac</string>
-		<string>com.francescodilorenzo.Mailbro</string>
-		<string>com.avast.helper</string>
 		<string>AppleBluetoothExtra</string>
 		<string>org.herf.Flux</string>
-		<string>com.evernote.EvernoteHelper</string>
 		<string>com.if.Amphetamine</string>
 		<string>com.bufferapp.Buffer-Mac</string>
-		<string>com.logitech.gaming</string>
 		<string>com.zenonas.Barmaid</string>
 		<string>2BUA8C4S2C.com.agilebits.onepassword4-helper</string>
 		<string>com.google.GoogleDrive</string>
-		<string>com.getdropbox.dropbox</string>
-		<string>org.shiftitapp.ShiftIt</string>
-		<string>com.smileonmymac.textexpander.helper</string>
 		<string>com.pilotmoon.popclip</string>
 		<string>com.runningwithcrayons.Alfred-3</string>
 		<string>com.surteesstudios.Bartender</string>
 		<string>com.fiplab.memoryclean</string>
-		<string>J8RPQ294UB.com.skitch.SkitchHelper</string>
-		<string>com.garmin.renu.service</string>
 		<string>com.generalarcade.flycut</string>
 		<string>com.apple.locationmenu</string>
 		<string>AirPortExtra</string>
@@ -878,9 +410,5 @@
 	</array>
 	<key>showMenuBarIcon</key>
 	<true/>
-	<key>trialStart2</key>
-	<date>2017-06-18T22:24:41Z</date>
-	<key>trialStart3</key>
-	<date>2018-10-08T02:08:47Z</date>
 </dict>
 </plist>

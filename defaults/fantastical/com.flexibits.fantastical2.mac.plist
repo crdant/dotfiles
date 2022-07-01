@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>DaysPerWeek</key>
+	<integer>7</integer>
+	<key>DidCheckGoogleScopes</key>
+	<true/>
+	<key>DidCheckOffice365Scopes</key>
+	<true/>
+	<key>DidImportFantastical1Defaults</key>
+	<true/>
+	<key>FirstRunSetup</key>
+	<true/>
+	<key>HoursToShow</key>
+	<integer>10</integer>
+	<key>LaunchInProgress</key>
+	<false/>
+	<key>WeekViewStartsWith</key>
+	<true/>
+	<key>WeeksPerMonth</key>
+	<integer>6</integer>
+	<key>WeeksPerQuarter</key>
+	<integer>13</integer>
+</dict>
+</plist>

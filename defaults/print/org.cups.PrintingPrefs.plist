@@ -33,9 +33,5 @@
 	<string>Chuck D'Antonio</string>
 	<key>SavedDuplexState</key>
 	<integer>1</integer>
-	<key>com.apple.print.recentPDFActions</key>
-	<array>
-		<string>Save as PDF</string>
-	</array>
 </dict>
 </plist>

@@ -49,6 +49,13 @@ ${HOME}/.dotfiles/bin/secrets decrypt --all
 # set up the link farm for sensitive files
 stow --no-folding --ignore '.*\.enc' --target ${HOME} --dir ${HOME}/.dotfiles/secrets $(ls ${HOME}/.dotfiles/secrets) 
 
+# import defaults for Mac apps
+for defaults in $(find ${HOME}/.dotfiles/defaults -name "*.plist")
+do
+  domain=$(basename -s .plist ${defaults})
+  defaults import ${domain} ${defaults}
+done
+
 # make sure the SSH config directory exists with appropriate permissions
 if [ ! -d ${HOME}/.ssh ] ; then
     mkdir ${HOME}/.ssh

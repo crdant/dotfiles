@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CombinedItemOrder</key>
+	<array>
+		<string>openlink</string>
+		<string>search</string>
+		<string>cut</string>
+		<string>copy</string>
+		<string>paste</string>
+		<string>revealfile</string>
+		<string>lookup</string>
+		<string>openmail</string>
+	</array>
+	<key>HasRunBefore</key>
+	<true/>
+	<key>HasShownWelcome</key>
+	<true/>
+	<key>PopEnabled</key>
+	<true/>
+	<key>SpellingSelectedLanguage</key>
+	<string>en</string>
+</dict>
+</plist>
