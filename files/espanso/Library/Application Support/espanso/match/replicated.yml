@@ -3,13 +3,13 @@
 
 matches:
   - trigger: ":email"
-    replace: chuck.dantonio@outsystems.com
+    replace: chuck@replicated.com
   - trigger: ":zoom"
-    replace: "https://outsystems.zoom.us/my/crdant?pwd=MnlsejdYcmtxVDh1Ukprb0pRWWpNUT09"
+    replace: "https://replicated.zoom.us/my/crdant?pwd=TEtDYTlVblJNQlpKV1Y1T3J1SkdKdz09"
   - trigger: ":wnum"
     replace: +1 617 837 6840
   - trigger: ":title"
-    replace: "Manager, Solution Architecture"
+    replace: "Director, Solution Engineering"
   - trigger: ":waddr"
     replace: |
       55 Thomson Place

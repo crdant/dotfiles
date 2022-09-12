@@ -26,7 +26,7 @@ export PATH=/Developer/usr/bin:${PATH}
 
 # Default Mac location
 if [[ $os == "darwin" ]]; then
-  export JAVA_HOME=$(/usr/libexec/java_home -v 15)
+  # export JAVA_HOME=$(/usr/libexec/java_home -v 15)
   # Developer command-line tools
   export PATH=${PATH}:/Developer/Tools
 fi
