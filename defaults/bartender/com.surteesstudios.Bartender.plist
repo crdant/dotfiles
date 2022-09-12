@@ -20,7 +20,6 @@
 		<string>com.google.GoogleDrive</string>
 		<string>com.garmin.renu.service</string>
 		<string>com.getdropbox.dropbox</string>
-		<string>com.runningwithcrayons.Alfred-3</string>
 	</array>
 	<key>appSettings</key>
 	<dict>
@@ -167,28 +166,6 @@
 			<key>updateDisplayTime</key>
 			<integer>5</integer>
 		</dict>
-		<key>com.runningwithcrayons.Alfred</key>
-		<dict>
-			<key>controlled</key>
-			<integer>1</integer>
-			<key>searchName</key>
-			<string>Alfred</string>
-			<key>showForUpdates</key>
-			<false/>
-			<key>updateDisplayTime</key>
-			<integer>15</integer>
-		</dict>
-		<key>com.runningwithcrayons.Alfred-3</key>
-		<dict>
-			<key>controlled</key>
-			<integer>1</integer>
-			<key>popupFix</key>
-			<false/>
-			<key>showForUpdates</key>
-			<false/>
-			<key>updateDisplayTime</key>
-			<integer>5</integer>
-		</dict>
 		<key>com.twitter.twitter-mac</key>
 		<dict>
 			<key>controlled</key>
@@ -282,10 +259,6 @@
 		<real>20395</real>
 		<key>com.pilotmoon.popclip-Item-0</key>
 		<real>20367</real>
-		<key>com.runningwithcrayons.Alfred-3-Item-0</key>
-		<real>20370.5</real>
-		<key>com.runningwithcrayons.Alfred-Item-0</key>
-		<real>20260.5</real>
 		<key>com.todoist.mac.Todoist-Item-0</key>
 		<real>675</real>
 		<key>com.twitter.twitter-mac-Item-0</key>
@@ -349,8 +322,6 @@
 		<real>342</real>
 		<key>com.pilotmoon.popclip-Item-0</key>
 		<real>367</real>
-		<key>com.runningwithcrayons.Alfred-Item-0</key>
-		<real>260.5</real>
 		<key>com.todoist.mac.Todoist-Item-0</key>
 		<real>675</real>
 		<key>com.zenonas.Barmaid-Item-0</key>
@@ -393,7 +364,6 @@
 		<string>2BUA8C4S2C.com.agilebits.onepassword4-helper</string>
 		<string>com.google.GoogleDrive</string>
 		<string>com.pilotmoon.popclip</string>
-		<string>com.runningwithcrayons.Alfred-3</string>
 		<string>com.surteesstudios.Bartender</string>
 		<string>com.fiplab.memoryclean</string>
 		<string>com.generalarcade.flycut</string>

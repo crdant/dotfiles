@@ -97,10 +97,6 @@ ln -sf ~/Documents/Read ~/Desktop
 mkdir -p ~/Documents/Watch 
 ln -sf ~/Documents/Watch ~/Desktop
 
-# setup login items
-loginitems -a  "Alfred 4"
-open /Applications/Alfred\ 4.app
-
 loginitems -a "Bartender 4"
 open "/Applications/Bartender 4.app"
 
