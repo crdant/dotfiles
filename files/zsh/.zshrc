@@ -123,3 +123,4 @@ if [[ $os == "darwin" ]]; then
 fi
 
 eval "$(direnv hook zsh)"
+eval "$(zoxide init zsh)"

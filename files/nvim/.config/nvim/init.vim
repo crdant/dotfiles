@@ -108,6 +108,8 @@ Plug 'tpope/vim-repeat'
 " add vim to browser
 Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 
+" add Zoxide commands
+Plug 'nanotee/zoxide.vim'
 
 call plug#end()
 
