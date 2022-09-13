@@ -53,9 +53,10 @@
 
 [http]
 [filter "lfs"]
-	clean = git-lfs clean %f
-	smudge = git-lfs smudge %f
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
 	required = true
+	process = git-lfs filter-process
 [diff]
 	compactionHeuristic = true
 [secrets]
@@ -77,3 +78,9 @@
 	textconv = secrets diff
 [diff "plist"]
 	textconv = plutil -p
+[push]
+	default = simple
+[credential]
+	helper = osxkeychain
+[github]
+	user = crdant

@@ -124,3 +124,6 @@ fi
 
 eval "$(direnv hook zsh)"
 eval "$(zoxide init zsh)"
+
+# krew path
+xport PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
