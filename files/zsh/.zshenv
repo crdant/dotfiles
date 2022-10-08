@@ -54,7 +54,7 @@ export SVN_EDITOR="${VISUAL}"
 export GIT_EDITOR="${VISUAL}"
 
 # code in Go and run downloaded/installed packages
-export GOPATH=/usr/local/lib/go
+export GOPATH=${HOME}/workspace/go
 export PATH=${GOPATH}/bin:${PATH}
 
 # use my home directory copy of commands before anything else
