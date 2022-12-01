@@ -7,14 +7,14 @@
 
     <key>ProgramArguments</key>
     <array>
-      <string>/usr/local/bin/certbot</string>
+      <string>/opt/homebrew/bin/certbot</string>
       <string>renew</string>
       <string>--config-dir</string>
-      <string>/usr/local/etc/certbot</string>
+      <string>/opt/homebrew/etc/certbot</string>
       <string>--work-dir</string>
-      <string>/usr/local/var/certbot</string>
+      <string>/opt/homebrew/var/certbot</string>
       <string>--logs-dir</string>
-      <string>/usr/local/var/certbot</string>
+      <string>/opt/homebrew/var/certbot</string>
     </array>
 
     <key>Nice</key>
@@ -36,9 +36,9 @@
     <true/>
 
     <key>StandardErrorPath</key>
-    <string>/usr/local/var/certbot/renewal.err</string>
+    <string>/opt/homebrew/var/certbot/renewal.err</string>
 
     <key>StandardOutPath</key>
-    <string>/usr/local/var/certbot/renewal.out</string>
+    <string>/opt/homebrew/var/certbot/renewal.out</string>
   </dict>
 </plist>
