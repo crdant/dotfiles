@@ -7,7 +7,7 @@
 
     <key>ProgramArguments</key>
     <array>
-      <string>/usr/local/bin/brew</string>
+      <string>/opt/homebrew/bin/brew</string>
       <string>upgrade</string>
     </array>
 
@@ -28,9 +28,9 @@
     <true/>
 
     <key>StandardErrorPath</key>
-    <string>/usr/local/var/homebrew/upgrade.err</string>
+    <string>/opt/homebrew/var/homebrew/upgrade.err</string>
 
     <key>StandardOutPath</key>
-    <string>/usr/local/var/homebrew/upgrade.out</string>
+    <string>/opt/homebrew/var/homebrew/upgrade.out</string>
   </dict>
 </plist>
