@@ -33,10 +33,16 @@ find ${HOME}/Library/Preferences -type f -links +1 -exec unlink {} \;
 # set up the link farm for non-secret files
 stow --target ${HOME} --dir ${HOME}/.dotfiles/files $(ls ${HOME}/.dotfiles/files)
 
-# gpg provides the encryption, so make sure it's installed
-if ! command -v gpg >/dev/null 2>&1 ; then 
-  brew install gnupg
-fi
+# Install Nix
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+
+# Install Home Manager
+nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
+nix-channel --update
+nix-shell '<home-manager>' -A install
+
+# activated Home Manager config
+home-manager switch
 
 # the helper script for encryption/decryption is written in python and
 # has some depedencies, make sure they're available
@@ -62,31 +68,16 @@ if [ ! -d ${HOME}/.ssh ] ; then
 fi
 chmod 700 ${HOME}/.ssh
 
-# install oh-my-zsh
-if [ -z "${ZSH}" ] ; then
-  ZSH=${HOME}/.config/oh-my-zsh 
-fi 
-
-if [ -d "${ZSH}" ] ; then
-  rm -rf ${ZSH}
-fi
-ZSH=${ZSH} sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
-
-# use my customizations to oh-my-zsh
-ZSH_CUSTOM=${HOME}/workspace/oh-my-zsh-custom
-rm -rf ${ZSH_CUSTOM} 2>/dev/null
-git clone https://github.com/crdant/oh-my-zsh-custom.git ${ZSH_CUSTOM}
-
 # setup some directories
 mkdir -p ${HOME}/sandbox
 mkdir -p ${HOME}/workspace
 mkdir -p ${HOME}/workspace/learning
 mkdir -p ${HOME}/workspace/learning/exercism
 
-# follow the LSB for some home-level content
-mkdir -p ${HOME}/bin
-mkdir -p ${HOME}/etc
-mkdir -p ${HOME}/share
+# follow the XDG model 
+mkdir -p ${HOME}/.local/bin
+mkdir -p ${HOME}/.local/etc
+mkdir -p ${HOME}/.local/share
 
 # make sure I can work with dotfiles easily
 unlink ${HOME}/workspace/dotfiles
