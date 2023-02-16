@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   # Home Manager needs a bit of information about you and the
@@ -23,6 +23,16 @@
       VISUAL = "nvim" ;
     };
 
+    sessionPath = [
+      "$HOME/.local/bin" 
+      "$HOME/workspace/go/bin"
+      "/usr/local/bin"
+      "/usr/local/sbin"
+    ] ++ lib.optionals pkgs.stdenv.isDarwin [
+      "/opt/homebrew/bin"
+      "/opt/homebrew/sbin"
+    ]; 
+    
     # Specify packages not explicitly configured below
     packages = with pkgs; [
       argocd
@@ -347,12 +357,62 @@
           "history-substring-search"
           "velero"
           "terraform"
+          ] ++ pkgs.lib.optionals pkgs.stdenv.isDarwin [
+            "iterm2"
+            "brew"
+            "macos"
+            "pasteboard"
         ];
       };
 
+      localVariables = {
+        COMPLETION_WAITING_DOTS = true;
+      };
+
+      shellAliases = {
+        more = "less -X" ;
+        pd = "pushd" ;
+        pop = "popd" ;
+        sha1 = "/usr/bin/openssl sha1" ;
+        rmd160 = "/usr/bin/openssl rmd160" ;
+        lsock = "sudo /usr/sbin/lsof -i -P" ;
+      };
+
       initExtra = ''
-        COMPLETION_WAITING_DOTS="true"
+        setopt vi
+        setopt nobeep
+        setopt inc_append_history
+        setopt auto_cd
+        setopt bash_auto_list
+        setopt no_hup
+        setopt correct
+        setopt no_always_last_prompt
+        setopt complete_aliases
+        unsetopt hist_verify
+
+        function tmux-has-session() { 
+          session=$1
+          tmux has-session -t $session 2>/dev/null 
+        }
+
+        function tmux-session() {
+          session=$1
+          if tmux-has-session $session; then
+            tmux attach -t $session
+          else
+            tmux new-session -s $session \; source-file "$HOME/.tmux/sessions/$session"
+          fi
+        }
+
+        function fullscreen() {
+          tmux-session fullscreen
+        } 
+
+        function window() {
+          tmux-session window
+        } 
       '';
+
       initExtraBeforeCompInit = ''
         fpath+=($HOME/workspce/oh-my-zsh-custom/completions)
       '';
@@ -363,6 +423,7 @@
         export GOVC_PASSWORD=$(security find-generic-password -a administrator@shortrib.local -s vcenter.lab.shortrib.net -w)
         export GOVC_INSECURE=true
       '';
+
     };
 
     zoxide = {
