@@ -1,6 +1,10 @@
 { config, pkgs, lib, ... }:
 
-{
+let 
+  isDarwin = pkgs.stdenv.isDarwin ;
+  isLinux = pkgs.stdenv.isLinux ;
+
+in {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
   home = {
@@ -21,20 +25,24 @@
     sessionVariables = {
       EDITOR = "nvim" ;
       VISUAL = "nvim" ;
+      NIXPKGS_ALLOW_UNFREE = 1;
     };
 
     sessionPath = [
       "$HOME/.local/bin" 
+      "$HOME/.krew/bin"
       "$HOME/workspace/go/bin"
-      "/usr/local/bin"
-      "/usr/local/sbin"
-    ] ++ lib.optionals pkgs.stdenv.isDarwin [
+    ] ++ lib.optionals isDarwin [
       "/opt/homebrew/bin"
       "/opt/homebrew/sbin"
+    ] ++ [
+      "/usr/local/bin"
+      "/usr/local/sbin"
     ]; 
     
     # Specify packages not explicitly configured below
     packages = with pkgs; [
+      _1password
       argocd
       awscli2
       azure-cli
@@ -51,23 +59,26 @@
       glow
       gmailctl
       gnupg
+      google-cloud-sdk
       govc
       hostess
       jq
+      krew
       kubectl
       kubernetes-helm
       istioctl
       k0sctl
       kubeseal
       kustomize
-      minikube
       minio-client
       nmap
       opensc
       oras
       packer
+      powershell
       procps
       pstree
+      rar
       ripgrep
       sget
       shellcheck
@@ -89,12 +100,26 @@
       yubico-piv-tool
       yubikey-manager
       zsh-completions
-    ] ++ lib.optionals stdenv.isDarwin [
+    ] ++ lib.optionals isDarwin [
+      # command lines that are mac specific
       duti
       m-cli
       mas
+
+      # gui apps
+      _1password-gui-beta
+      discord
+      espanso
+      iterm2
+      karabiner-elements
+      minikube
       pinentry_mac
-    ] ++ lib.optionals stdenv.isLinux [
+      postman
+      slack
+      transmission
+      vscode
+      zoom-us
+    ] ++ lib.optionals isLinux [
       nerdctl
     ];
 
@@ -214,7 +239,10 @@
 
       plugins = with pkgs.vimPlugins; [
         editorconfig-nvim
-        NeoSolarized
+        {
+          plugin = NeoSolarized;
+          config = "colorscheme NeoSolarized";
+        }
         nvim-fzf
         nvim-surround
         vim-commentary
@@ -222,88 +250,112 @@
         zoxide-vim
       ];
 
-      extraConfig = ''
-        """""""""""""""""""""""""""""""""""""""""""""""
-        " => General
-        """""""""""""""""""""""""""""""""""""""""""""""
+      extraLuaConfig = ''
 
-        set encoding=utf-8          " The encoding displayed
-        set fileencoding=utf-8      " The encoding written to file
-        syntax on                   " Enable syntax highlight
-        set ttyfast                 " Faster redrawing
-        set lazyredraw              " Only redraw when necessary
-        set cursorline              " Find the current line quickly.
+        -- General
+        vim.opt.encoding = "utf-8"          -- The encoding displayed
+        vim.opt.fileencoding = "utf-8"      -- The encoding written to file
+        vim.cmd("syntax on")               -- Enable syntax highlight
+        vim.opt.ttyfast = true              -- Faster redrawing
+        vim.opt.lazyredraw = true           -- Only redraw when necessary
+        vim.opt.cursorline = true           -- Find the current line quickly.
 
-        " go to normal mode when the window loses focus
-        autocmd FocusLost * call feedkeys("\<esc>")
+        -- go to normal mode when the window loses focus
+        vim.cmd[[
+          "autocmd FocusLost * call feedkeys("\<esc>")
+        ]]
 
-        """""""""""""""""""""""""""""""""""""""""""""""
-        " => Indentation
-        """""""""""""""""""""""""""""""""""""""""""""""
+        -- Indentation
 
-        " Use spaces instead of tabs
-        set expandtab
+        -- Use spaces instead of tabs
+        vim.opt.expandtab = true
 
-        " Be smart when using tabs ;)
-        " :help smarttab
-        set smarttab
+        -- Be smart when using tabs ;)
+        -- :help smarttab
+        vim.opt.smarttab = true
 
-        " 1 tab == 4 spaces
-        set shiftwidth=2
-        set tabstop=2
-        set softtabstop=2
+        -- 1 tab == 4 spaces
+        vim.opt.shiftwidth = 2
+        vim.opt.tabstop = 2
+        vim.opt.softtabstop = 2
 
-        " Auto indent
-        " Copy the indentation from the previous line when starting a new line
-        set ai
+        -- Auto indent
+        -- Copy the indentation from the previous line when starting a new line
+        vim.opt.ai = true
 
-        " Smart indent
-        " Automatically inserts one extra level of indentation in some cases, and works for C-like files
-        set si
+        -- Smart indent
+        -- Automatically inserts one extra level of indentation in some cases, and works for C-like files
+        vim.opt.si = true
 
-        """""""""""""""""""""""""""""""""""""""""""""""
-        " => Keymappings
-        """""""""""""""""""""""""""""""""""""""""""""""
+        -- Keymappings
 
-        " dont use arrowkeys
-        noremap <Up> <NOP>
-        noremap <Down> <NOP>
-        noremap <Left> <NOP>
-        noremap <Right> <NOP>
+        -- dont use arrowkeys
+        vim.api.nvim_set_keymap(
+          "n",
+          "<UP>",
+          "<NOP>",
+          { noremap = true }
+        )
+        vim.api.nvim_set_keymap(
+          "n",
+          "<DOWN>",
+          "<NOP>",
+          { noremap = true }
+        )
+        vim.api.nvim_set_keymap(
+          "n",
+          "<LEFT>",
+          "<NOP>",
+          { noremap = true }
+        )
+        vim.api.nvim_set_keymap(
+          "n",
+          "<RIGHT>",
+          "<NOP>",
+          { noremap = true }
+        )
 
-        " really, just dont
-        inoremap <Up>    <NOP>
-        inoremap <Down>  <NOP>
-        inoremap <Left>  <NOP>
-        inoremap <Right> <NOP>
+        -- really, just dont
+        vim.api.nvim_set_keymap(
+          "i",
+          "<UP>",
+          "<NOP>",
+          { noremap = true }
+        )
+        vim.api.nvim_set_keymap(
+          "i",
+          "<DOWN>",
+          "<NOP>",
+          { noremap = true }
+        )
+        vim.api.nvim_set_keymap(
+          "i",
+          "<LEFT>",
+          "<NOP>",
+          { noremap = true }
+        )
+        vim.api.nvim_set_keymap(
+          "i",
+          "<RIGHT>",
+          "<NOP>",
+          { noremap = true }
+        )
 
-        " copy and paste to/from vIM and the clipboard
-        nnoremap <C-y> +y
-        vnoremap <C-y> +y
-        nnoremap <C-p> +P
-        vnoremap <C-p> +P
+        vim.api.nvim_set_keymap(
+          "n",
+          "<C-P>",
+          ":Files<CR>",
+          { noremap = true }
+        )
 
-        " map fzf to ctrl+p
-        nnoremap <C-P> :Files<CR>
+        -- Appearance
+        if vim.fn.has('gui_vimr') then
+          vim.opt.background = "light"
+        end
 
-
-        noremap <Up> <Nop>
-        noremap <Down> <Nop>
-        noremap <Left> <Nop>
-        noremap <Right> <Nop>
-
-        """"""""""""""""""""""""""""""""""""""""""""""
-        " => Appearance
-        """""""""""""""""""""""""""""""""""""""""""""""
-
-        colorscheme NeoSolarized
-        if has('gui_vimr')
-          set background=light
-        endif
-
-        " line numbers
-        " set relativenumber
-        set number
+        -- line numbers
+        -- set relativenumber
+        vim.opt.number = true
       '';
     };
 
@@ -351,13 +403,12 @@
           "docker"
           "aws"
           "minikube"
-          "krew"
           "kubectl"
           "helm"
           "history-substring-search"
           "velero"
           "terraform"
-          ] ++ pkgs.lib.optionals pkgs.stdenv.isDarwin [
+          ] ++ pkgs.lib.optionals isDarwin [
             "iterm2"
             "brew"
             "macos"
