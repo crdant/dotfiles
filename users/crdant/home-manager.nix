@@ -42,27 +42,18 @@ in {
     
     # Specify packages not explicitly configured below
     packages = with pkgs; [
-      _1password
       argocd
       awscli2
       azure-cli
       certbot-full
       cloudflared
       conftest
-      coreutils
       cosign
       crane
       cue
-      dogdns
       exercism
-      gist
-      glow
-      gmailctl
-      gnupg
       google-cloud-sdk
       govc
-      hostess
-      jq
       krew
       kubectl
       kubernetes-helm
@@ -71,8 +62,6 @@ in {
       kubeseal
       kustomize
       minio-client
-      nmap
-      opensc
       oras
       packer
       powershell
@@ -86,41 +75,45 @@ in {
       skopeo
       sops
       step-cli
-      tailscale
       tcptraceroute
       tektoncd-cli
       terraform
-      timg
-      tree
       vault
-      wget
       ytt
-      yq
       yubico-pam
       yubico-piv-tool
       yubikey-manager
       zsh-completions
     ] ++ lib.optionals isDarwin [
-      # command lines that are mac specific
-      duti
-      m-cli
-      mas
-
       # gui apps
-      _1password-gui-beta
       discord
       espanso
-      iterm2
-      karabiner-elements
       minikube
-      pinentry_mac
       postman
-      slack
       transmission
       vscode
-      zoom-us
     ] ++ lib.optionals isLinux [
+      _1password
+      _1password-gui-beta
+      coreutils
+      dogdns
+      gist
+      glow
+      gmailctl
+      gnupg
+      hostess
+      jq
       nerdctl
+      nmap
+      opensc
+      procps
+      pstree
+      ripgrep
+      sipcalc
+      tailscale
+      tcptraceroute
+      yq
+      zsh-completions
     ];
 
     file = {
