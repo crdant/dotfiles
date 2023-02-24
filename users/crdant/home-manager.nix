@@ -64,7 +64,6 @@ in {
       minio-client
       oras
       packer
-      powershell
       procps
       pstree
       rar
@@ -86,12 +85,10 @@ in {
       zsh-completions
     ] ++ lib.optionals isDarwin [
       # gui apps
-      discord
-      espanso
-      minikube
-      postman
-      transmission
-      vscode
+      # discord
+      # minikube
+      # postman
+      # vscode
     ] ++ lib.optionals isLinux [
       _1password
       _1password-gui-beta
@@ -103,9 +100,11 @@ in {
       gnupg
       hostess
       jq
+      knot-dns
       nerdctl
       nmap
       opensc
+      powershell
       procps
       pstree
       ripgrep
@@ -122,7 +121,7 @@ in {
         source = ./config/gnupg;
         recursive = true;
       };
-    };
+     };
   };
 
   # Let Home Manager install and manage itself.
@@ -226,7 +225,6 @@ in {
 
     neovim = {
       enable = true ;
-      defaultEditor = true ;
       viAlias = true;
       vimAlias = true;
 
@@ -244,11 +242,10 @@ in {
       ];
 
       extraLuaConfig = ''
-
         -- General
         vim.opt.encoding = "utf-8"          -- The encoding displayed
         vim.opt.fileencoding = "utf-8"      -- The encoding written to file
-        vim.cmd("syntax on")               -- Enable syntax highlight
+        vim.cmd("syntax on")                -- Enable syntax highlight
         vim.opt.ttyfast = true              -- Faster redrawing
         vim.opt.lazyredraw = true           -- Only redraw when necessary
         vim.opt.cursorline = true           -- Find the current line quickly.
@@ -342,7 +339,7 @@ in {
         )
 
         -- Appearance
-        if vim.fn.has('gui_vimr') then
+        if vim.fn.has('gui_vimr') == 1 then
           vim.opt.background = "light"
         end
 
