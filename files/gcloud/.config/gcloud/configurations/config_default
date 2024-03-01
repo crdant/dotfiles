@@ -1,4 +1,5 @@
 [core]
 account = chuck@replicated.com
-project = kots-field-labs
+project = smart-proxy-839
+disable_usage_reporting = False
 

@@ -121,6 +121,10 @@ in {
         source = ./config/gnupg;
         recursive = true;
       };
+      ".config/nvim/spell" = {
+        source = ./config/nvim/spell
+        recursive = true ;
+      }
      };
   };
 

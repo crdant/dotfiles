@@ -120,37 +120,6 @@ function window_rect(win)
   return size
 end
 
-shiftIt = { 'ctrl', 'alt', 'cmd' }
-
-hs.hotkey.bind(shiftIt, "Right", function() cycleRight(hs.window.focusedWindow()) end)
-
-hs.hotkey.bind(shiftIt, "Up", function() hs.window.focusedWindow():move(units.fullscreen,    nil, true) end)
-hs.hotkey.bind(shiftIt, '1', function() hs.window.focusedWindow():move(units.upleft2,    nil, true) end)
-hs.hotkey.bind(shiftIt, '2', function() hs.window.focusedWindow():move(units.upright2,    nil, true) end)
-hs.hotkey.bind(shiftIt, '3', function() hs.window.focusedWindow():move(units.botleft2,     nil, true) end)
-hs.hotkey.bind(shiftIt, '4', function() hs.window.focusedWindow():move(units.botright2,     nil, true) end)
-
-hs.hotkey.bind(shiftIt, '5', function() hs.window.focusedWindow():move(units.upleft3,    nil, true) end)
-hs.hotkey.bind(shiftIt, '6', function() hs.window.focusedWindow():move(units.botleft3,     nil, true) end)
-hs.hotkey.bind(shiftIt, '7', function() hs.window.focusedWindow():move(units.upmid3,    nil, true) end)
-hs.hotkey.bind(shiftIt, '8', function() hs.window.focusedWindow():move(units.botmid3,     nil, true) end)
-hs.hotkey.bind(shiftIt, '9', function() hs.window.focusedWindow():move(units.upright3,    nil, true) end)
-hs.hotkey.bind(shiftIt, '0', function() hs.window.focusedWindow():move(units.botright3,     nil, true) end)
-hs.hotkey.bind(shiftIt, 't', function() hs.window.focusedWindow():move(units.todoist,     nil, true) end)
-hs.hotkey.bind(shiftIt, 'f', function() hs.window.focusedWindow():move(units.fantastical,     nil, true) end)
-hs.hotkey.bind(shiftIt, 'm', function() hs.window.focusedWindow():move(units.messages,     nil, true) end)
-
-hs.loadSpoon("ReloadConfiguration")
-spoon.ReloadConfiguration:start()
-
--- require('keyboard') -- Load Hammerspoon bits from https://github.com/jasonrudolph/keyboard
-
--- stolen from WindowHalfsAndThirds spoon that might resolve me comparision
-function window_rect(win)
-  local size = win:screen():toUnitRect(win:frame())
-  return size
-end
-
 function round(num)
   return math.floor(num*10 + 1/2)
 end

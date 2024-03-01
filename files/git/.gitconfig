@@ -84,3 +84,7 @@
 	helper = osxkeychain
 [github]
 	user = crdant
+[merge]
+	conflictstyle = zdiff3
+[branch]
+	sort = -committerdate
