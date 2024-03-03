@@ -33,10 +33,9 @@
   environment = {
     systemPackages = with pkgs; [
       _1password
+      age
       coreutils
       dogdns
-      duti
-      espanso
       gist
       glow
       gmailctl
@@ -51,9 +50,10 @@
       nmap
       opensc
       powershell
-      pinentry_mac
       procps
       pstree
+      python3
+      python311Packages.requests
       ripgrep
       sipcalc
       # slack
@@ -62,15 +62,20 @@
       timg
       tmux
       tree
+      virtualenv
       wget
       yq
       # zoom-us
       zsh-completions
     ] ++ lib.optionals pkgs.stdenv.isDarwin [
+      duti
+      # pinentry_mac
       # gui apps
       # _1password-gui-beta
       # transmission
-      neovide
+      # neovide
+    ] ++ lib.optionals pkgs.stdenv.isLinux [
+      espanso
     ];
 
     shells = with pkgs; [ 

@@ -1,10 +1,21 @@
 { pkgs, ... }:
 {
 
+  documentation.enable = false ;
+
   imports = [
     ./common.nix
   ];
 
+  security.pam.enableSudoTouchIdAuth = true;
+
+  environment = {
+    systemPackages = with pkgs; [
+      iterm2
+      raycast
+    ];
+  }; 
+ 
   homebrew = {
     enable = true;
     # updates homebrew packages on activation,
@@ -31,6 +42,9 @@
       "trash"
       "opa"
       "osxutils"
+      "pinentry-mac"
+      "watch"
+      "pam_yubico"
       # "ojford/formulae/loginitems"
       # "replicatedhq/replicated/cli"
       # "vmware-tanzu/carvel/imgpkg"
@@ -40,6 +54,7 @@
       "bartender"
       "carbon-copy-cloner"
       "dash"
+      "espanso"
       "firefox"
       "font-bitstream-vera"
       "font-cabin"
@@ -50,16 +65,13 @@
       "github"
       "google-chrome"
       "google-drive"
-      "gqrx"
       "grandperspective"
       "hammerspoon"
       "hex-fiend"
-      "istumbler"
       "jetbrains-toolbox"
       "multipass"
       "noun-project"
       "obs"
-      "parallels"
       "proxyman"
       "quicklook-json"
       "rancher"
@@ -68,20 +80,15 @@
       "superhuman"
       "tailscale"
       "vimr"
-      "vmware-fusion"
-      "yubico-yubikey-piv-manager"
+      "yubico-yubikey-manager"
     ];
 
     masApps = {
      # "1Blocker" = 1365531024;
      "1Password for Safari" = 1569813296;
-     "Airmail" = 918858936;
      "Amphetamine" = 937984704;
      "Bear" = 1091189122;
-     "Buffer" = 891953906;
      "Craft" = 1487937127;
-     "Fantastical" = 975937182;
-     "Freeze" = 1046095491;
      "Keynote" = 409183694;
      "Matter" = 1548677272;
      "Memory Clean 3" = 1302310792;
@@ -93,7 +100,6 @@
      "Paprika Recipe Manager 3" = 1303222628;
      "PopClip" = 445189367;
      "Todoist" = 585829637;
-     "Transmit" = 403388562;
      "Twitter" = 1482454543;
     };
 
