@@ -51,6 +51,7 @@
     ];
 
     casks = [
+      "1password"
       "bartender"
       "carbon-copy-cloner"
       "dash"
