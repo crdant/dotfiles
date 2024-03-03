@@ -7,9 +7,9 @@ let
 in {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
+
   home = {
-    username = "crdant";
-    homeDirectory = "/Users/crdant";
+    homeDirectory = lib.mkForce "/Users/chuck";
 
     # This value determines the Home Manager release that your
     # configuration is compatible with. This helps avoid breakage
@@ -19,7 +19,7 @@ in {
     # You can update Home Manager without changing this value. See
     # the Home Manager release notes for a list of state version
     # changes in each release.
-    stateVersion = "22.11";
+    stateVersion = "23.11";
 
     # specify variables to use in all logins across shells
     sessionVariables = {
@@ -44,6 +44,7 @@ in {
     packages = with pkgs; [
       argocd
       awscli2
+      atuin
       azure-cli
       certbot-full
       cloudflared
@@ -68,18 +69,19 @@ in {
       pstree
       rar
       ripgrep
-      sget
       shellcheck
       sipcalc
       skopeo
       sops
       step-cli
+      syft
       tcptraceroute
       tektoncd-cli
       terraform
       vault
+      vendir
       ytt
-      yubico-pam
+      # yubico-pam
       yubico-piv-tool
       yubikey-manager
       zsh-completions
@@ -122,9 +124,9 @@ in {
         recursive = true;
       };
       ".config/nvim/spell" = {
-        source = ./config/nvim/spell
+        source = ./config/nvim/spell;
         recursive = true ;
-      }
+      };
      };
   };
 
@@ -390,13 +392,11 @@ in {
 
         plugins = [ 
           "git"
-          "git-flow"
           "gpg-agent"
           "tmux"
           "emoji"
-          "docker"
+          "gcloud"
           "aws"
-          "minikube"
           "kubectl"
           "helm"
           "history-substring-search"
@@ -435,6 +435,10 @@ in {
         setopt complete_aliases
         unsetopt hist_verify
 
+        # completions for minio client
+        complete -o nospace -C $(brew --prefix)/bin/mc mc
+
+        # Tmux convenience functions
         function tmux-has-session() { 
           session=$1
           tmux has-session -t $session 2>/dev/null 
@@ -463,10 +467,24 @@ in {
       '';
 
       envExtra = ''
+        [[ $os == "darwin" ]] && export CERTBOT_ROOT=$(brew --prefix)/etc/certbot
+
         export GOVC_URL=https://vcenter.lab.shortrib.net
         export GOVC_USERNAME=administrator@shortrib.local
         export GOVC_PASSWORD=$(security find-generic-password -a administrator@shortrib.local -s vcenter.lab.shortrib.net -w)
         export GOVC_INSECURE=true
+
+        # GPG Agent as SSH agent
+        export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+
+        # if rancher desktop is installed use it's binaries ONLY for anything not already
+        # installed system-wide
+        if [[ -d $HOME/.rd ]] ; then
+          export PATH=$PATH:"$HOME/.rd/bin"
+        fi
+
+        export REPL_USE_SUDO=y
+        unset RPS1
       '';
 
     };

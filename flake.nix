@@ -3,27 +3,29 @@
 
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-22.11-darwin";
-    home-manager.url = "github:nix-community/home-manager";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-23.11-darwin";
+    home-manager.url = "github:nix-community/home-manager/release-23.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     darwin.url = "github:lnl7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs"; # ...
   };
 
-  outputs = { self, nixpkgs, home-manager, darwin }: {
+  outputs = { self, nixpkgs, home-manager, darwin, ...}@inputs: let 
+      mkSystem = import ./lib/mksystem.nix {
+        inherit nixpkgs inputs ;
+      };
+    in {
+      darwinConfigurations."grappa" = mkSystem "grappa"  {
+        system = "aarch64-darwin";
+        username = "crdant" ;
+        darwin = true ;
+      };
 
-    darwinConfigurations."grappa" = darwin.lib.darwinSystem {
-      system = "aarch64-darwin";
-
-      modules = [ 
-        ./hosts/grappa/default.nix
-        home-manager.darwinModules.home-manager {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.crdant = import ./users/crdant/home-manager.nix;
-        }
-      ];
+      darwinConfigurations."sochu" = mkSystem "sochu"  {
+        system = "aarch64-darwin";
+        username = "chuck" ;
+        darwin = true ;
+      };
     };
-  };
 }
