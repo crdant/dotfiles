@@ -49,6 +49,7 @@
       mas
       nmap
       opensc
+      openssh
       powershell
       procps
       pstree
@@ -64,7 +65,7 @@
       tree
       virtualenv
       wget
-      yq
+      yq-go
       # zoom-us
       zsh-completions
     ] ++ lib.optionals pkgs.stdenv.isDarwin [

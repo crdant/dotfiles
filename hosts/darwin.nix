@@ -46,7 +46,7 @@
       "watch"
       "pam_yubico"
       # "ojford/formulae/loginitems"
-      # "replicatedhq/replicated/cli"
+      "replicatedhq/replicated/cli"
       # "vmware-tanzu/carvel/imgpkg"
     ];
 
@@ -102,6 +102,7 @@
      "PopClip" = 445189367;
      "Todoist" = 585829637;
      "Twitter" = 1482454543;
+     "Transmit" = 403388562;
     };
 
   };

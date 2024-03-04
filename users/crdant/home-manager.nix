@@ -26,6 +26,7 @@ in {
       EDITOR = "nvim" ;
       VISUAL = "nvim" ;
       NIXPKGS_ALLOW_UNFREE = 1;
+      NIXPKGS_ALLOW_BROKEN = 1;
     };
 
     sessionPath = [
@@ -65,8 +66,6 @@ in {
       minio-client
       oras
       packer
-      procps
-      pstree
       rar
       ripgrep
       shellcheck
@@ -75,6 +74,7 @@ in {
       sops
       step-cli
       syft
+      tcptraceroute
       tcptraceroute
       tektoncd-cli
       terraform
@@ -94,6 +94,7 @@ in {
     ] ++ lib.optionals isLinux [
       _1password
       _1password-gui-beta
+      calicoctl
       coreutils
       dogdns
       gist
@@ -109,7 +110,6 @@ in {
       powershell
       procps
       pstree
-      ripgrep
       sipcalc
       tailscale
       tcptraceroute
@@ -392,16 +392,20 @@ in {
 
         plugins = [ 
           "git"
+          "gh"
           "gpg-agent"
           "tmux"
           "emoji"
           "gcloud"
           "aws"
           "kubectl"
+          "kubectx"
           "helm"
           "history-substring-search"
-          "velero"
+          "vault"
           "terraform"
+          "ripgrep"
+          "zoxide"
           ] ++ pkgs.lib.optionals isDarwin [
             "iterm2"
             "brew"
