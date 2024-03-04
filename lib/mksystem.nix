@@ -24,7 +24,7 @@ in systemFunc rec {
 
   modules = [
     hostConfig
-    # usernameConfig 
+    usernameConfig 
 
     home-manager.home-manager {
       home-manager.useGlobalPkgs = true;
