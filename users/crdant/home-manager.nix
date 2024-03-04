@@ -113,7 +113,7 @@ in {
       sipcalc
       tailscale
       tcptraceroute
-      yq
+      yq-go
       zsh-completions
     ];
 
