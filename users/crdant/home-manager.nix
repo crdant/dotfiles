@@ -127,7 +127,11 @@ in {
         source = ./config/nvim/spell;
         recursive = true ;
       };
-     };
+      ".config/ssh/config.d" = {
+        source = ./config/ssh/config.d;
+        recursive = true;
+      };
+    };
   };
 
   # Let Home Manager install and manage itself.
@@ -383,6 +387,74 @@ in {
         bind -n S-Left  previous-window
         bind -n S-Right next-window
       '';
+    };
+
+    ssh = {
+      enable = true ;
+      hashKnownHosts = true ;
+
+      includes = [
+        "~/.config/ssh/config.d/*"
+      ];
+
+      matchBlocks = {
+        "10.13.6.204 bridge.things.crdant.net homebridge.things.crdant.net" = {
+          user = "pi";
+        };
+        "exit.crdant.net" = {
+          hostname = "exit.crdant.net";
+          user = "arceus";
+          identityFile = "~/.ssh/id_router.pub";
+          extraOptions = {
+            identityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+          };
+        };
+        "router" = {
+          hostname = "router";
+          user = "arceus";
+          identityFile = "~/.ssh/id_router.pub";
+          extraOptions = {
+            identityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+            canonicalizeHostName = "yes" ;
+            canonicalDomains = "lab.shortrib.net crdant.io.beta.tailscale.net";
+          };
+        };
+        "unifi.crdant.net" = {
+          hostname = "unifi.crdant.net";
+          user = "root";
+          identityFile = "~/.ssh/id_unifi.pub";
+          extraOptions = {
+            hostKeyAlgorithms = "+ssh-rsa";
+            identityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+          };
+        };
+        "rye.lab.shortrib.net bourbon.lab.shortrib.net scotch.lab.shortrib.net potstill.lab.shortrib.net shine.lab.shortrib.net malt.lab.shortrib.net vcenter.lab.shortrib.net" = {
+          user = "root";
+          identityFile = "~/.ssh/id_homelab.pub";
+          extraOptions = {
+            identityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+          };
+        };
+        "gitlab.com" = {
+          hostname = "gitlab.com";
+          identityFile = "~/.ssh/id_rsa_gitlab.com.pub";
+          extraOptions = {
+            identityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+          };
+        };
+        "ssh.dev.azure.com" = {
+          hostname = "ssh.dev.azure.com";
+          identityFile = "~/.ssh/id_azure-devops.pub";
+          extraOptions = {
+            identityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+          };
+        };
+      };
+      extraConfig = ''
+        IgnoreUnknown UseKeychain
+        UseKeychain yes
+        PasswordAuthentication no
+      '' ;
     };
 
     yt-dlp = { 
