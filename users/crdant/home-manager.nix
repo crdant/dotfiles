@@ -9,7 +9,7 @@ in {
   # paths it should manage.
 
   home = {
-    homeDirectory = lib.mkForce "/Users/chuck";
+    homeDirectory = lib.mkForce "/Users/crdant";
 
     # This value determines the Home Manager release that your
     # configuration is compatible with. This helps avoid breakage
@@ -132,6 +132,14 @@ in {
 
   # Let Home Manager install and manage itself.
   programs = {
+    atuin = {
+      enable = true ;
+      enableBashIntegration = true;
+      enableFishIntegration = true;
+      enableZshIntegration = true;
+      flags = [ "--disable-up-arrow" ];
+    };
+
     direnv = {
       enable = true ;
       enableZshIntegration = true;
@@ -345,7 +353,7 @@ in {
         )
 
         -- Appearance
-        if vim.fn.has('gui_vimr') == 1 then
+        if vim.fn.has('g:gui_vimr') == 1 then
           vim.opt.background = "light"
         end
 

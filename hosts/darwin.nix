@@ -70,7 +70,6 @@
       "hammerspoon"
       "hex-fiend"
       "jetbrains-toolbox"
-      "multipass"
       "noun-project"
       "obs"
       "proxyman"
