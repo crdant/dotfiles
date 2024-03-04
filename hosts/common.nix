@@ -66,7 +66,6 @@
       virtualenv
       wget
       yq-go
-      # zoom-us
       zsh-completions
     ] ++ lib.optionals pkgs.stdenv.isDarwin [
       duti
@@ -75,6 +74,7 @@
       # _1password-gui-beta
       # transmission
       # neovide
+      zoom-us
     ] ++ lib.optionals pkgs.stdenv.isLinux [
       espanso
     ];
