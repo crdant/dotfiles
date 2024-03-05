@@ -441,6 +441,7 @@ in {
         };
       };
       extraConfig = ''
+        User crdant
         IgnoreUnknown UseKeychain
         UseKeychain yes
         PasswordAuthentication no
