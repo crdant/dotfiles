@@ -134,14 +134,6 @@ in {
 
   # Let Home Manager install and manage itself.
   programs = {
-    atuin = {
-      enable = true ;
-      enableBashIntegration = true;
-      enableFishIntegration = true;
-      enableZshIntegration = true;
-      flags = [ "--disable-up-arrow" ];
-    };
-
     direnv = {
       enable = true ;
       enableZshIntegration = true;
