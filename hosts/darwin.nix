@@ -13,7 +13,7 @@
     systemPackages = with pkgs; [
       iterm2
       raycast
-      (callPackage ../pkgs/vimr.nix { })
+      (callPackage ../pkgs/vimr { })
     ];
   }; 
  
