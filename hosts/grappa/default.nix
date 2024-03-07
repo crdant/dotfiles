@@ -1,11 +1,10 @@
-{ pkgs, ... }:
+{ inputs, outputs, pkgs, ... }:
 {
   imports = [
     ../darwin.nix 
   ];
 
   homebrew = {
-
     casks = [
       "gqrx"
       "parallels"
@@ -17,7 +16,5 @@
      "Freeze" = 1046095491;
      "Transmit" = 403388562;
     };
-
   };
-
 } 

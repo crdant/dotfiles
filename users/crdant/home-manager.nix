@@ -1,9 +1,8 @@
-{ config, pkgs, lib, ... }:
+{ inputs, outputs, config, pkgs, lib, ... }:
 
 let 
   isDarwin = pkgs.stdenv.isDarwin ;
   isLinux = pkgs.stdenv.isLinux ;
-
 in {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
@@ -38,7 +37,7 @@ in {
       "/usr/local/bin"
       "/usr/local/sbin"
     ]; 
-    
+
     # Specify packages not explicitly configured below
     packages = with pkgs; [
       argocd
@@ -87,7 +86,8 @@ in {
       # gui apps
       # discord
       # minikube
-      # postman
+      unstable.postman
+      vimr
       # vscode
     ] ++ lib.optionals isLinux [
       _1password
@@ -113,7 +113,7 @@ in {
       tcptraceroute
       yq-go
       zsh-completions
-    ];
+    ] ;
 
     file = {
       # can't quite configure gnupg the way I want within programs.gnupg
@@ -121,8 +121,8 @@ in {
         source = ./config/gnupg;
         recursive = true;
       };
-      ".config/nvim/spell" = {
-        source = ./config/nvim/spell;
+      ".config/nvim" = {
+        source = ./config/nvim;
         recursive = true ;
       };
       ".config/ssh/config.d" = {

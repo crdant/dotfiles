@@ -13,7 +13,6 @@
     systemPackages = with pkgs; [
       iterm2
       raycast
-      (callPackage ../pkgs/vimr { })
     ];
   }; 
  
@@ -80,7 +79,6 @@
       "raycast"
       "superhuman"
       "tailscale"
-      "vimr"
       "yubico-yubikey-manager"
     ];
 
