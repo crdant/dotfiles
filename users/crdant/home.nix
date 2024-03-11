@@ -642,4 +642,35 @@ in {
 
   };
 
+  launchd = {
+    enable = true ;
+    agents = {
+      "io.crdant.certbotRenewal" = {
+        enable = true ;
+        config = {
+          Label = "io.crdant.certbotRenewal";
+          ProgramArguments = [
+            "${pkgs.certbot}"
+            "renew"
+            "--config-dir"
+            "${config.xdg.dataHome}/certbot"
+            "--work-dir"
+            "${config.xdg.stateHome}/certbot/var"
+            "--logs-dir"
+            "${config.xdg.stateHome}/certbot/logs"
+          ];
+          StartCalendarInterval = [
+            {
+              Weekday = 3 ;
+              Hour = 15 ;
+              Minute = 48 ;
+            }
+          ];
+          RunAtLoad = true;
+          StandardOutPath = "${config.xdg.stateHome}/certbot/renewal.out";
+          StandardErrorPath = "${config.xdg.stateHome}/certbot/renewal.err";
+        };
+      };
+    };
+  };
 }
