@@ -619,7 +619,7 @@ in {
       '';
 
       envExtra = ''
-        [[ $os == "darwin" ]] && export CERTBOT_ROOT=$(brew --prefix)/etc/certbot
+        export CERTBOT_ROOT="${config.xdg.dataHome}/certbot"
 
         export GOVC_URL=https://vcenter.lab.shortrib.net
         export GOVC_USERNAME=administrator@shortrib.local
@@ -679,6 +679,13 @@ in {
           StandardErrorPath = "${config.xdg.stateHome}/certbot/renewal.err";
         };
       };
+    };
+  };
+
+  xdg = {
+    enable = true;
+    configFile = {
+      "gcloud/configurations/config_default".text = builtins.readFile ./config/gcloud/config_default ;
     };
   };
 }
