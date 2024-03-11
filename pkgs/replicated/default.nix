@@ -1,4 +1,4 @@
-{ lib, buildGoModule, fetchFromGitHub, installShellFiles }:
+{ stdenv, lib, buildGoModule, fetchFromGitHub, installShellFiles }:
 
 let
   buildTime = with (import <nixpkgs> {});
@@ -22,12 +22,27 @@ in buildGoModule rec {
 
   subPackages = [ "cli/cmd/" ];
   ldflags = [
-    "-w"
-    "-s"
     "-X github.com/replicatedhq/replicated/pkg/version.version=${version}"
     "-X github.com/replicatedhq/replicated/pkg/version.gitCommit=${src.rev}"
     "-X github.com/replicatedhq/replicated/pkg/version.buildTime=${buildTime}"
   ];
+
+  ldflagsStr = lib.strings.concatStringsSep " " ldflags ;
+
+  # Override build phase to use make
+  buildPhase = ''
+    runHook preBuild
+    make LDFLAGS='-ldflags "${ldflagsStr}"' build
+    runHook postBuild
+  '';
+
+  # Install the binary
+  installPhase = ''
+    runHook preInstall
+    mkdir -p $out/bin
+    cp bin/replicated $out/bin/
+    runHook postInstall
+  '';
 
   nativeBuildInputs = [ installShellFiles ];
 

@@ -2,4 +2,5 @@
 # You can build them using 'nix build .#example'
 { pkgs ? import <nixpkgs> {} } : rec {
   vimr = pkgs.callPackage ./vimr { };
+  replicated = pkgs.callPackage ./replicated { };
 }
