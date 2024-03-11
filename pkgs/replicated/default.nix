@@ -1,13 +1,6 @@
 { stdenv, lib, buildGoModule, fetchFromGitHub, installShellFiles }:
 
-let
-  buildTime = with (import <nixpkgs> {});
-              builtins.readFile (         
-                runCommand "timestamp"
-                           { when = builtins.currentTime; }
-                           "echo -n `date -d @$when +%Y-%m-%dT%H:%M:%SZ` > $out"
-              );
-in buildGoModule rec {
+buildGoModule rec {
   pname = "replicated";
   version = "0.68.0";
 
@@ -24,7 +17,6 @@ in buildGoModule rec {
   ldflags = [
     "-X github.com/replicatedhq/replicated/pkg/version.version=${version}"
     "-X github.com/replicatedhq/replicated/pkg/version.gitCommit=${src.rev}"
-    "-X github.com/replicatedhq/replicated/pkg/version.buildTime=${buildTime}"
   ];
 
   ldflagsStr = lib.strings.concatStringsSep " " ldflags ;
