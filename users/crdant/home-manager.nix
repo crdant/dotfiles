@@ -7,12 +7,37 @@ in {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
 
+  imports = [
+    inputs._1password-shell-plugins.hmModules.default
+  ];
+
+  nixpkgs = {
+    overlays = [
+      # Add overlays your own flake exports (from overlays and pkgs dir):
+      outputs.overlays.additions
+      outputs.overlays.modifications
+      outputs.overlays.unstable-packages
+
+      # You can also add overlays exported from other flakes:
+      # neovim-nightly-overlay.overlays.default
+
+      # Or define it inline, for example:
+      # (final: prev: {
+      #   hi = final.hello.overrideAttrs (oldAttrs: {
+      #     patches = [ ./change-hello-to-hi.patch ];
+      #   });
+      # })
+    ];
+  };
+
   home = {
     # This value determines the Home Manager release that your
     # configuration is compatible with. This helps avoid breakage
     # when a new Home Manager release introduces backwards
     # incompatible changes.
-    #
+    username = "chuck";
+    homeDirectory = "/Users/chuck";
+    
     # You can update Home Manager without changing this value. See
     # the Home Manager release notes for a list of state version
     # changes in each release.
@@ -64,12 +89,14 @@ in {
       oras
       packer
       rar
+      # replicated
       ripgrep
       shellcheck
       sipcalc
       skopeo
       sops
       step-cli
+      stern
       syft
       tcptraceroute
       tcptraceroute
@@ -134,6 +161,13 @@ in {
 
   # Let Home Manager install and manage itself.
   programs = {
+    _1password-shell-plugins = {
+      enable = true;
+      plugins = with pkgs; [
+        awscli2
+      ];
+    };
+
     direnv = {
       enable = true ;
       enableZshIntegration = true;
@@ -535,6 +569,8 @@ in {
         function window() {
           tmux-session window
         } 
+
+        source /Users/chuck/.config/op/plugins.sh
       '';
 
       initExtraBeforeCompInit = ''
