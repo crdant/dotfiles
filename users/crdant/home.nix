@@ -143,6 +143,10 @@ in {
 
     file = {
       # can't quite configure gnupg the way I want within programs.gnupg
+      ".curlrc" = {
+        text = "-fL";
+      };
+
       ".gnupg" = {
         source = ./config/gnupg;
         recursive = true;
