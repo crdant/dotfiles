@@ -45,9 +45,11 @@
       homeConfigurations = {
         "chuck" = let 
             system = "aarch64-darwin";
+            username = "chuck";
+            homeDirectory = "/Users/chuck";
           in home-manager.lib.homeManagerConfiguration {
             pkgs = nixpkgs.legacyPackages.${system};
-            extraSpecialArgs = {inherit inputs outputs;};
+            extraSpecialArgs = {inherit inputs outputs username homeDirectory;};
             modules = [ 
               ./users/crdant/home-manager.nix
             ];
@@ -55,9 +57,11 @@
 
         "crdant" = let 
             system = "aarch64-darwin";
+            username = "crdant";
+            homeDirectory = "/Users/crdant";
           in home-manager.lib.homeManagerConfiguration {
             pkgs = nixpkgs.legacyPackages.${system};
-            extraSpecialArgs = {inherit inputs outputs;};
+            extraSpecialArgs = {inherit inputs outputs username homeDirectory;};
             modules = [ 
               ./users/crdant/home-manager.nix
             ];

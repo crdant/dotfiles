@@ -1,4 +1,4 @@
-{ inputs, outputs, config, pkgs, lib, ... }:
+{ inputs, outputs, config, pkgs, lib, username, homeDirectory, ... }:
 
 let 
   isDarwin = pkgs.stdenv.isDarwin ;
@@ -35,8 +35,8 @@ in {
     # configuration is compatible with. This helps avoid breakage
     # when a new Home Manager release introduces backwards
     # incompatible changes.
-    username = "chuck";
-    homeDirectory = "/Users/chuck";
+    username = "${username}";
+    homeDirectory = "${homeDirectory}";
     
     # You can update Home Manager without changing this value. See
     # the Home Manager release notes for a list of state version
@@ -76,6 +76,7 @@ in {
       crane
       cue
       exercism
+      gh
       google-cloud-sdk
       govc
       krew
@@ -89,7 +90,7 @@ in {
       oras
       packer
       rar
-      # replicated
+      replicated
       ripgrep
       shellcheck
       sipcalc
@@ -117,8 +118,8 @@ in {
       vimr
       # vscode
     ] ++ lib.optionals isLinux [
-      _1password
-      _1password-gui-beta
+      unstable._1password
+      unstable._1password-gui-beta
       calicoctl
       coreutils
       dogdns
@@ -165,6 +166,7 @@ in {
       enable = true;
       plugins = with pkgs; [
         awscli2
+        gh
       ];
     };
 

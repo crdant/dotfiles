@@ -7,7 +7,6 @@
   homebrew = {
     casks = [
       "gqrx"
-      "parallels"
       "vmware-fusion"
     ];
 

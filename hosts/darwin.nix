@@ -38,7 +38,7 @@
 
     brews = [
       "adr-tools"
-      "tccutil"
+      # "tccutil"
       "trash"
       "opa"
       "osxutils"
@@ -63,7 +63,6 @@
       "font-inconsolata"
       "font-noto-sans"
       "font-open-sans"
-      "github"
       "google-chrome"
       "google-drive"
       "grandperspective"
