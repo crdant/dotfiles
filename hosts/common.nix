@@ -69,6 +69,7 @@
       glow
       gmailctl
       gnupg
+      home-manager
       hostess
       iterm2
       jq

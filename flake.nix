@@ -11,6 +11,9 @@
 
     darwin.url = "github:lnl7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs"; # ...
+
+    _1password-shell-plugins.url = "github:1Password/shell-plugins";
+    _1password-shell-plugins.inputs.nixpkgs.follows = "home-manager"; # ...
   };
 
   outputs = { self, nixpkgs, home-manager, darwin, ...}@inputs: 
@@ -19,32 +22,46 @@
     in {
       overlays = import ./overlays {inherit inputs;};
 
-      darwinConfigurations."grappa" = darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
-        specialArgs = {inherit inputs outputs;};
-        modules = [ 
-          ./hosts/grappa/default.nix
-          ./users/crdant/chuck.nix
-          home-manager.darwinModules.home-manager {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.crdant = import ./users/crdant/home-manager.nix;
-          }
-        ];
-      };
+      darwinConfigurations = {
+        "grappa" = darwin.lib.darwinSystem {
+          system = "aarch64-darwin";
+          specialArgs = {inherit inputs outputs;};
+          modules = [ 
+            ./hosts/grappa/default.nix
+            ./users/crdant/crdant.nix
+          ];
+        };
 
-      darwinConfigurations."sochu" = darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
-        specialArgs = {inherit inputs outputs;};
-        modules = [ 
-          ./hosts/sochu/default.nix
-          ./users/crdant/chuck.nix
-          home-manager.darwinModules.home-manager {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.chuck = import ./users/crdant/home-manager.nix;
-          }
-        ];
-      };
+        "sochu" = darwin.lib.darwinSystem {
+          system = "aarch64-darwin";
+          specialArgs = {inherit inputs outputs;};
+          modules = [ 
+            ./hosts/sochu/default.nix
+            ./users/crdant/chuck.nix
+          ];
+        };
+      }; 
+
+      homeConfigurations = {
+        "chuck" = let 
+            system = "aarch64-darwin";
+          in home-manager.lib.homeManagerConfiguration {
+            pkgs = nixpkgs.legacyPackages.${system};
+            extraSpecialArgs = {inherit inputs outputs;};
+            modules = [ 
+              ./users/crdant/home-manager.nix
+            ];
+          };
+
+        "crdant" = let 
+            system = "aarch64-darwin";
+          in home-manager.lib.homeManagerConfiguration {
+            pkgs = nixpkgs.legacyPackages.${system};
+            extraSpecialArgs = {inherit inputs outputs;};
+            modules = [ 
+              ./users/crdant/home-manager.nix
+            ];
+          };
+        };
     };
 }
