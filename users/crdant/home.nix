@@ -122,8 +122,6 @@ in {
       coreutils
       dogdns
       gist
-      glow
-      gmailctl
       gnupg
       hostess
       jq

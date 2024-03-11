@@ -67,16 +67,11 @@
       dogdns
       gist
       glow
-      gmailctl
       gnupg
       home-manager
       hostess
-      iterm2
       jq
-      karabiner-elements
       knot-dns
-      m-cli
-      mas
       nmap
       opensc
       openssh
@@ -98,14 +93,6 @@
       wget
       yq-go
       zsh-completions
-    ] ++ lib.optionals pkgs.stdenv.isDarwin [
-      duti
-      # pinentry_mac
-      # gui apps
-      # _1password-gui-beta
-      # transmission
-      # neovide
-      zoom-us
     ] ++ lib.optionals pkgs.stdenv.isLinux [
       espanso
     ];

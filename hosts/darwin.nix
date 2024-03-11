@@ -11,8 +11,13 @@
 
   environment = {
     systemPackages = with pkgs; [
+      duti
       iterm2
+      karabiner-elements
+      m-cli
+      mas
       raycast
+      zoom-us
     ];
   }; 
  
