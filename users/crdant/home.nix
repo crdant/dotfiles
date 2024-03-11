@@ -66,7 +66,6 @@ in {
     # Specify packages not explicitly configured below
     packages = with pkgs; [
       argocd
-      awscli2
       azure-cli
       certbot-full
       cloudflared
@@ -179,6 +178,24 @@ in {
       ];
     };
 
+    awscli = {
+      enable = true;
+      settings = {
+        "default" = {
+          region = "us-west-2";
+          output = "json";
+        };
+        "personal" = {
+          region = "us-west-2";
+          output = "json";
+        };
+        "replicated-dev" = {
+          region = "us-west-2";
+          output = "json";
+        };
+      };
+    };
+
     direnv = {
       enable = true ;
       enableZshIntegration = true;
@@ -197,6 +214,7 @@ in {
     gh = {
       enable = true;
       settings = {
+
         aliases = {
           co = "pr checkout";
           pv = "pr view";
