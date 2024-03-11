@@ -151,10 +151,26 @@ in {
         source = ./config/editorconfig;
       };
 
+      "Library/Application Support/espanso" = {
+        source = ./config/espanso;
+        recursive = true;
+      };
+
+      "Library/Preferences/glow" = {
+        source = ./config/glow;
+        recursive = true;
+      };
+
       ".gnupg" = {
         source = ./config/gnupg;
         recursive = true;
       };
+
+      ".hammerspoon" = {
+        source = ./config/hammerspoon;
+        recursive = true;
+      };
+
       ".config/nvim" = {
         source = ./config/nvim;
         recursive = true ;

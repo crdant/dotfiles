@@ -1,0 +1,10 @@
+# matches for slackernews demoes
+matches:
+  - trigger: ";id"
+    replace: 4375036420002.5820986269254
+  - trigger: ";secret"
+    replace: 7d75b102878692827aa65b5f564402e7
+  - trigger: ";bot"
+    replace: xoxb-4375036420002-5824708850245-vjgZ4ALFbBVvVOOCnrP047Zr
+  - trigger: ";user"
+    replace: xoxp-4375036420002-4387678236337-5827531985683-151640b8ff1b20f57af5cf52e29d309b
