@@ -147,6 +147,10 @@ in {
         text = "-fL";
       };
 
+      ".editorconfig" = {
+        source = ./config/editorconfig;
+      };
+
       ".gnupg" = {
         source = ./config/gnupg;
         recursive = true;
