@@ -51,7 +51,7 @@
             pkgs = nixpkgs.legacyPackages.${system};
             extraSpecialArgs = {inherit inputs outputs username homeDirectory;};
             modules = [ 
-              ./users/crdant/home-manager.nix
+              ./users/crdant/home.nix
             ];
           };
 
@@ -63,7 +63,7 @@
             pkgs = nixpkgs.legacyPackages.${system};
             extraSpecialArgs = {inherit inputs outputs username homeDirectory;};
             modules = [ 
-              ./users/crdant/home-manager.nix
+              ./users/crdant/home.nix
             ];
           };
         };
