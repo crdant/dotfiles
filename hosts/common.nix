@@ -85,6 +85,7 @@
       pstree
       python3
       python311Packages.requests
+      python311Packages.pip
       ripgrep
       sipcalc
       # slack
