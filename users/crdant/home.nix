@@ -711,6 +711,8 @@ in {
     enable = true;
     configFile = {
       "gcloud/configurations/config_default".text = builtins.readFile ./config/gcloud/config_default ;
+    } // lib.optionals isDarwin { 
+      "karabiner/karabiner.json".text = builtins.readFile ./config/karabiner/karabiner.json ;
     };
   };
 }
