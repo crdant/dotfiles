@@ -173,6 +173,16 @@ in {
         recursive = true;
       };
 
+      "Library/Colors/Solarized.clr" = {
+        source = ./config/palettes/Solarized.clr;
+        recursive = true;
+      };
+
+      "Library/Colors/Replicated.clr" = {
+        source = ./config/palettes/Replicated.clr;
+        recursive = true;
+      };
+
       "Library/Preferences/glow" = {
         source = ./config/glow;
         recursive = true;
