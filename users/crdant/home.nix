@@ -82,6 +82,7 @@ in {
       kubernetes-helm
       istioctl
       k0sctl
+      # kots
       kubeseal
       kustomize
       minio-client
@@ -167,7 +168,7 @@ in {
         source = ./config/ssh/config.d;
         recursive = true;
       };
-    } // lib.optionals isDarwin {
+    } // (if isDarwin then {
       "Library/Application Support/espanso" = {
         source = ./config/espanso;
         recursive = true;
@@ -187,8 +188,7 @@ in {
         source = ./config/glow;
         recursive = true;
       };
-
-     };
+    } else {});
   };
 
   # Let Home Manager install and manage itself.
@@ -724,15 +724,14 @@ in {
       "gcloud/configurations/config_default" = {
         text = builtins.readFile ./config/gcloud/config_default ;
       };
-    } // lib.optionals isDarwin { 
+    } // (if isDarwin then { 
       "karabiner/karabiner.json" = {
         text = builtins.readFile ./config/karabiner/karabiner.json ;
       };
-    } // lib.optionals isLinux {
+    } else {}) // (if isLinux then { 
       "glow/config.yaml" = {
         text = builtins.readFile ./config/glow/config.yaml ;
       };
-
-    };
+    } else {});
   };
 }
