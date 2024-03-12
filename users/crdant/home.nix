@@ -149,17 +149,7 @@ in {
         source = ./config/editorconfig;
       };
 
-      "Library/Application Support/espanso" = {
-        source = ./config/espanso;
-        recursive = true;
-      };
-
-      "Library/Preferences/glow" = {
-        source = ./config/glow;
-        recursive = true;
-      };
-
-      ".gnupg" = {
+     ".gnupg" = {
         source = ./config/gnupg;
         recursive = true;
       };
@@ -177,7 +167,18 @@ in {
         source = ./config/ssh/config.d;
         recursive = true;
       };
-    };
+    } // lib.optionals isDarwin {
+      "Library/Application Support/espanso" = {
+        source = ./config/espanso;
+        recursive = true;
+      };
+
+      "Library/Preferences/glow" = {
+        source = ./config/glow;
+        recursive = true;
+      };
+
+     };
   };
 
   # Let Home Manager install and manage itself.
