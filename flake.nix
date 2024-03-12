@@ -47,9 +47,10 @@
             system = "aarch64-darwin";
             username = "chuck";
             homeDirectory = "/Users/chuck";
+            gitEmail = "chuck@replicated.com";
           in home-manager.lib.homeManagerConfiguration {
             pkgs = nixpkgs.legacyPackages.${system};
-            extraSpecialArgs = {inherit inputs outputs username homeDirectory;};
+            extraSpecialArgs = {inherit inputs outputs username homeDirectory gitEmail;};
             modules = [ 
               ./users/crdant/home.nix
             ];
@@ -59,9 +60,10 @@
             system = "aarch64-darwin";
             username = "crdant";
             homeDirectory = "/Users/crdant";
+            gitEmail = "chuck@crdant.io";
           in home-manager.lib.homeManagerConfiguration {
             pkgs = nixpkgs.legacyPackages.${system};
-            extraSpecialArgs = {inherit inputs outputs username homeDirectory;};
+            extraSpecialArgs = {inherit inputs outputs username homeDirectory gitEmail;};
             modules = [ 
               ./users/crdant/home.nix
             ];

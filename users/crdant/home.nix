@@ -1,4 +1,4 @@
-{ inputs, outputs, config, pkgs, lib, username, homeDirectory, ... }:
+{ inputs, outputs, config, pkgs, lib, username, homeDirectory, gitEmail, ... }:
 
 let 
   isDarwin = pkgs.stdenv.isDarwin ;
@@ -249,7 +249,7 @@ in {
       enable = true ;
 
       userName = "Chuck D'Antonio";
-      userEmail = "chuck@crdant.io";
+      userEmail = "${gitEmail}";
 
       signing = {
         key = "0805EEDF0FEA6ACD";
@@ -264,16 +264,14 @@ in {
       };
 
       extraConfig = {
-
         core = {
           editor = "nvim";
-
+          whitespace = "fix,-indent-with-non-tab,trailing-space,cr-at-eol";
+          
           # If git uses `ssh` from Nix the macOS-specific configuration in
           # `~/.ssh/config` won't be seen as valid
           # https://github.com/NixOS/nixpkgs/issues/15686#issuecomment-865928923
-          sshCommand = "/usr/bin/ssh";
-
-          whitespace = "fix,-indent-with-non-tab,trailing-space,cr-at-eol";
+          sshCommand = "${pkgs.openssh}/bin/ssh";
         };
 
         color = {
@@ -299,6 +297,14 @@ in {
             untracked = "cyan";
           };
 
+          merge = {
+            conflictstyle = "zdiff3";
+          };
+
+          branch = {
+            sort = "-commiterdate";
+          };
+
         };
 
         init = {
@@ -309,6 +315,10 @@ in {
           plist = {
             textconv = "plutil -p";
           };
+        };
+      } // lib.optionals isDarwin {
+        credential = {
+          helper = "osxkeychain";
         };
       };
     };
@@ -633,6 +643,7 @@ in {
       '';
 
       envExtra = ''
+        export XDG_CONFIG_HOME="${config.xdg.configHome}"
         export CERTBOT_ROOT="${config.xdg.dataHome}/certbot"
 
         export GOVC_URL=https://vcenter.lab.shortrib.net
