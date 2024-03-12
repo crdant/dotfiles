@@ -721,9 +721,18 @@ in {
   xdg = {
     enable = true;
     configFile = {
-      "gcloud/configurations/config_default".text = builtins.readFile ./config/gcloud/config_default ;
+      "gcloud/configurations/config_default" = {
+        text = builtins.readFile ./config/gcloud/config_default ;
+      };
     } // lib.optionals isDarwin { 
-      "karabiner/karabiner.json".text = builtins.readFile ./config/karabiner/karabiner.json ;
+      "karabiner/karabiner.json" = {
+        text = builtins.readFile ./config/karabiner/karabiner.json ;
+      };
+    } // lib.optionals isLinux {
+      "glow/config.yaml" = {
+        text = builtins.readFile ./config/glow/config.yaml ;
+      };
+
     };
   };
 }
