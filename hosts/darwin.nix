@@ -17,6 +17,7 @@
       m-cli
       mas
       raycast
+      slack
       zoom-us
     ];
   }; 

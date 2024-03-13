@@ -83,7 +83,6 @@
       python311Packages.pip
       ripgrep
       sipcalc
-      # slack
       tailscale
       tcptraceroute
       timg
