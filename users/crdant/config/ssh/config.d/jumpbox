@@ -6,7 +6,7 @@ Match exec "[[ $(uname) == 'Darwin' ]]" host jumpbox
   RemoteForward /run/user/1001/gnupg/S.gpg-agent.ssh %d/.gnupg/S.gpg-agent.ssh
 
 Match exec "[[ $(uname) == 'Darwin' ]]" host fullscreen
-  RemoteCommand tmux new -A -s fullscreen
+  RemoteCommand source ~/.zshrc && fullscreen
   RequestTTY Yes
   HostName jumpbox
   CanonicalizeHostName yes

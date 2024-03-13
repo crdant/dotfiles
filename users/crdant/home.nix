@@ -95,6 +95,7 @@ in {
         shellcheck
         sipcalc
         skopeo
+        smug
         sops
         step-cli
         stern
@@ -478,6 +479,8 @@ in {
       ];
 
       extraConfig = ''
+        bind r source-file ~/.tmux.conf
+
         # switch panes using Alt-arrow without prefix
         bind-key -n M-Left select-pane -L
         bind-key -n M-Right select-pane -R
@@ -487,6 +490,18 @@ in {
         # Shift arrow to switch windows
         bind -n S-Left  previous-window
         bind -n S-Right next-window
+
+        # vim-like pane navigation
+        bind-key h select-pane -L
+        bind-key j select-pane -D
+        bind-key k select-pane -U
+        bind-key l select-pane -R
+
+        # vim-style copy/paste
+        set-window-option -g mode-keys vi
+        bind-key -T copy-mode-vi 'v' send-keys -X begin-selection
+        bind-key -T copy-mode-vi 'y' send-keys -X copy-selection-and-cancel
+        bind-key p paste-buffer
       '';
     };
 
@@ -630,21 +645,12 @@ in {
           tmux has-session -t $session 2>/dev/null 
         }
 
-        function tmux-session() {
-          session=$1
-          if tmux-has-session $session; then
-            tmux attach -t $session
-          else
-            tmux new-session -s $session \; source-file "$HOME/.tmux/sessions/$session"
-          fi
-        }
-
         function fullscreen() {
-          tmux-session fullscreen
+          smug start fullscreen
         } 
 
         function window() {
-          tmux-session window
+          smug start window
         } 
 
         source /Users/chuck/.config/op/plugins.sh
@@ -725,7 +731,10 @@ in {
       "gcloud/configurations/config_default" = {
         text = builtins.readFile ./config/gcloud/config_default ;
       };
-      "test".text = "${vimUtils.packDir config.programs.neovim.finalPackage.packpathDirs}";
+      "smug" = {
+          source = ./config/smug;
+          recursive = true;
+      };
     } // (if isDarwin then { 
       "karabiner/karabiner.json" = {
         text = builtins.readFile ./config/karabiner/karabiner.json ;
