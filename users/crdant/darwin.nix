@@ -1,0 +1,10 @@
+{ inputs, pkgs, ... }:
+
+{
+  system = {
+    defaults = {
+      
+    }
+  }
+}
+
