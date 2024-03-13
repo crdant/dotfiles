@@ -9,6 +9,10 @@
       "chainguard-dev/tap/chainctl"
       "calicoctl"
     ];
+
+    casks = [
+      "microsoft-teams"
+    ];
   };
 
   environment = {
