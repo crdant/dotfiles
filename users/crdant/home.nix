@@ -3,6 +3,7 @@
 let 
   isDarwin = pkgs.stdenv.isDarwin ;
   isLinux = pkgs.stdenv.isLinux ;
+  vimUtils = pkgs.vimUtils ;
 in {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
@@ -30,166 +31,168 @@ in {
     ];
   };
 
-  home = {
-    # This value determines the Home Manager release that your
-    # configuration is compatible with. This helps avoid breakage
-    # when a new Home Manager release introduces backwards
-    # incompatible changes.
-    username = "${username}";
-    homeDirectory = "${homeDirectory}";
-    
-    # You can update Home Manager without changing this value. See
-    # the Home Manager release notes for a list of state version
-    # changes in each release.
-    stateVersion = "23.11";
+  home = let
+      vimr-wrapper = pkgs.callPackage ./vimr-wrapper.nix { };
+    in {
+      # This value determines the Home Manager release that your
+      # configuration is compatible with. This helps avoid breakage
+      # when a new Home Manager release introduces backwards
+      # incompatible changes.
+      username = "${username}";
+      homeDirectory = "${homeDirectory}";
+       
+      # You can update Home Manager without changing this value. See
+      # the Home Manager release notes for a list of state version
+      # changes in each release.
+      stateVersion = "23.11";
 
-    # specify variables to use in all logins across shells
-    sessionVariables = {
-      EDITOR = "nvim" ;
-      VISUAL = "nvim" ;
-      NIXPKGS_ALLOW_UNFREE = 1;
-      NIXPKGS_ALLOW_BROKEN = 1;
+      # specify variables to use in all logins across shells
+      sessionVariables = {
+        EDITOR = "nvim" ;
+        VISUAL = "nvim" ;
+        NIXPKGS_ALLOW_UNFREE = 1;
+        NIXPKGS_ALLOW_BROKEN = 1;
+      };
+
+      sessionPath = [
+        "$HOME/.local/bin" 
+        "$HOME/.krew/bin"
+        "$HOME/workspace/go/bin"
+      ] ++ lib.optionals isDarwin [
+        "/opt/homebrew/bin"
+        "/opt/homebrew/sbin"
+      ] ++ [
+        "/usr/local/bin"
+        "/usr/local/sbin"
+      ]; 
+
+      # Specify packages not explicitly configured below
+      packages = with pkgs; [
+        argocd
+        azure-cli
+        certbot-full
+        cloudflared
+        conftest
+        cosign
+        crane
+        cue
+        exercism
+        gh
+        google-cloud-sdk
+        govc
+        krew
+        kubectl
+        kubernetes-helm
+        istioctl
+        k0sctl
+        kots
+        kubeseal
+        kustomize
+        minio-client
+        oras
+        packer
+        rar
+        replicated
+        ripgrep
+        shellcheck
+        sipcalc
+        skopeo
+        sops
+        step-cli
+        stern
+        syft
+        tcptraceroute
+        tektoncd-cli
+        terraform
+        vault
+        vendir
+        ytt
+        # yubico-pam
+        yubico-piv-tool
+        yubikey-manager
+        zsh-completions
+      ] ++ lib.optionals isDarwin [
+        # gui apps
+        # discord
+        # minikube
+        unstable.postman
+        vimr
+        vimr-wrapper
+        # vscode
+      ] ++ lib.optionals isLinux [
+        unstable._1password
+        unstable._1password-gui-beta
+        calicoctl
+        coreutils
+        dogdns
+        gist
+        gnupg
+        hostess
+        jq
+        knot-dns
+        nerdctl
+        nmap
+        opensc
+        powershell
+        procps
+        pstree
+        sipcalc
+        tailscale
+        tcptraceroute
+        yq-go
+        zsh-completions
+      ] ;
+
+      file = {
+        # can't quite configure gnupg the way I want within programs.gnupg
+        ".curlrc" = {
+          text = "-fL";
+        };
+
+        ".editorconfig" = {
+          source = ./config/editorconfig;
+        };
+
+       ".gnupg" = {
+          source = ./config/gnupg;
+          recursive = true;
+        };
+
+        ".hammerspoon" = {
+          source = ./config/hammerspoon;
+          recursive = true;
+        };
+
+        ".config/nvim" = {
+          source = ./config/nvim;
+          recursive = true ;
+        };
+        ".config/ssh/config.d" = {
+          source = ./config/ssh/config.d;
+          recursive = true;
+        };
+      } // (if isDarwin then {
+        "Library/Application Support/espanso" = {
+          source = ./config/espanso;
+          recursive = true;
+        };
+
+        "Library/Colors/Solarized.clr" = {
+          source = ./config/palettes/Solarized.clr;
+          recursive = true;
+        };
+
+        "Library/Colors/Replicated.clr" = {
+          source = ./config/palettes/Replicated.clr;
+          recursive = true;
+        };
+
+        "Library/Preferences/glow" = {
+          source = ./config/glow;
+          recursive = true;
+        };
+      } else {});
     };
-
-    sessionPath = [
-      "$HOME/.local/bin" 
-      "$HOME/.krew/bin"
-      "$HOME/workspace/go/bin"
-    ] ++ lib.optionals isDarwin [
-      "/opt/homebrew/bin"
-      "/opt/homebrew/sbin"
-    ] ++ [
-      "/usr/local/bin"
-      "/usr/local/sbin"
-    ]; 
-
-    # Specify packages not explicitly configured below
-    packages = with pkgs; [
-      argocd
-      azure-cli
-      certbot-full
-      cloudflared
-      conftest
-      cosign
-      crane
-      cue
-      exercism
-      gh
-      google-cloud-sdk
-      govc
-      krew
-      kubectl
-      kubernetes-helm
-      istioctl
-      k0sctl
-      # kots
-      kubeseal
-      kustomize
-      minio-client
-      oras
-      packer
-      rar
-      replicated
-      ripgrep
-      shellcheck
-      sipcalc
-      skopeo
-      sops
-      step-cli
-      stern
-      syft
-      tcptraceroute
-      tcptraceroute
-      tektoncd-cli
-      terraform
-      vault
-      vendir
-      ytt
-      # yubico-pam
-      yubico-piv-tool
-      yubikey-manager
-      zsh-completions
-    ] ++ lib.optionals isDarwin [
-      # gui apps
-      # discord
-      # minikube
-      unstable.postman
-      vimr
-      # vscode
-    ] ++ lib.optionals isLinux [
-      unstable._1password
-      unstable._1password-gui-beta
-      calicoctl
-      coreutils
-      dogdns
-      gist
-      gnupg
-      hostess
-      jq
-      knot-dns
-      nerdctl
-      nmap
-      opensc
-      powershell
-      procps
-      pstree
-      sipcalc
-      tailscale
-      tcptraceroute
-      yq-go
-      zsh-completions
-    ] ;
-
-    file = {
-      # can't quite configure gnupg the way I want within programs.gnupg
-      ".curlrc" = {
-        text = "-fL";
-      };
-
-      ".editorconfig" = {
-        source = ./config/editorconfig;
-      };
-
-     ".gnupg" = {
-        source = ./config/gnupg;
-        recursive = true;
-      };
-
-      ".hammerspoon" = {
-        source = ./config/hammerspoon;
-        recursive = true;
-      };
-
-      ".config/nvim" = {
-        source = ./config/nvim;
-        recursive = true ;
-      };
-      ".config/ssh/config.d" = {
-        source = ./config/ssh/config.d;
-        recursive = true;
-      };
-    } // (if isDarwin then {
-      "Library/Application Support/espanso" = {
-        source = ./config/espanso;
-        recursive = true;
-      };
-
-      "Library/Colors/Solarized.clr" = {
-        source = ./config/palettes/Solarized.clr;
-        recursive = true;
-      };
-
-      "Library/Colors/Replicated.clr" = {
-        source = ./config/palettes/Replicated.clr;
-        recursive = true;
-      };
-
-      "Library/Preferences/glow" = {
-        source = ./config/glow;
-        recursive = true;
-      };
-    } else {});
-  };
 
   # Let Home Manager install and manage itself.
   programs = {
@@ -724,6 +727,7 @@ in {
       "gcloud/configurations/config_default" = {
         text = builtins.readFile ./config/gcloud/config_default ;
       };
+      "test".text = "${vimUtils.packDir config.programs.neovim.finalPackage.packpathDirs}";
     } // (if isDarwin then { 
       "karabiner/karabiner.json" = {
         text = builtins.readFile ./config/karabiner/karabiner.json ;

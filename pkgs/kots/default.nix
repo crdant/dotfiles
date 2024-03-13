@@ -1,4 +1,4 @@
-{ stdenv, lib, buildGoModule, fetchFromGitHub, installShellFiles }:
+{ stdenv, lib, buildGoModule, fetchFromGitHub, installShellFiles, pkg-config }:
 
 buildGoModule rec {
   pname = "kots";
@@ -15,7 +15,29 @@ buildGoModule rec {
 
   subPackages = [ "cmd/kots/" ];
 
-  nativeBuildInputs = [ installShellFiles ];
+  ldflags = [
+    "-X github.com/replicatedhq/kots/pkg/buildversion.version=${version}"
+    "-X github.com/replicatedhq/kots/pkg/buildversion.gitCommit=${src.rev}"
+  ];
+
+  ldflagsStr = lib.strings.concatStringsSep " " ldflags ;
+
+  # Override build phase to use make
+  buildPhase = ''
+    runHook preBuild
+    make LDFLAGS='-ldflags "${ldflagsStr}"' kots-real
+    runHook postBuild
+  '';
+
+  # Install the binary
+  installPhase = ''
+    runHook preInstall
+    mkdir -p $out/bin
+    cp bin/kots $out/bin/kubectl-kots
+    runHook postInstall
+  '';
+
+  nativeBuildInputs = [ installShellFiles pkg-config ];
 
   postInstall = ''
     $out/bin/kubectl-kots completion bash > kubectl-kots.bash
