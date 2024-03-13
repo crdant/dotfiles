@@ -31,9 +31,7 @@ in {
     ];
   };
 
-  home = let
-      vimr-wrapper = pkgs.callPackage ./vimr-wrapper.nix { };
-    in {
+  home = {
       # This value determines the Home Manager release that your
       # configuration is compatible with. This helps avoid breakage
       # when a new Home Manager release introduces backwards
@@ -117,7 +115,7 @@ in {
         # minikube
         unstable.postman
         vimr
-        vimr-wrapper
+        (callPackage ./vimr-wrapper.nix { inherit config ; })
         # vscode
       ] ++ lib.optionals isLinux [
         unstable._1password
