@@ -29,6 +29,7 @@
           modules = [ 
             ./hosts/grappa/default.nix
             ./users/crdant/crdant.nix
+            ./users/crdant/darwin.nix
           ];
         };
 
@@ -38,6 +39,7 @@
           modules = [ 
             ./hosts/sochu/default.nix
             ./users/crdant/chuck.nix
+            ./users/crdant/darwin.nix
           ];
         };
       }; 

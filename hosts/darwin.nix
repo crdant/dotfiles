@@ -195,6 +195,57 @@
       spaces = {
         spans-displays = false ;
       };
+
+      CustomSystemPreferences = {
+        "NSGlobalDomain" = {
+          "WebKitDeveloperExtras" = true ;
+        };
+       "com.apple.SoftwareUpdate" = {
+          AutomaticCheckEnabled = true;
+          # Check for software updates daily, not just once per week
+          ScheduleFrequency = 1;
+          # Download newly available updates in background
+          AutomaticDownload = 1;
+          # Install System data files & security updates
+          CriticalUpdateInstall = 1;
+        };
+        "com.apple.AdLib" = {
+          allowApplePersonalizedAdvertising = false;
+        };
+        "com.apple.print.PrintingPrefs" = {
+          # Automatically quit printer app once the print jobs complete
+          "Quit When Finished" = true;
+        };
+        "com.apple.TimeMachine".DoNotOfferNewDisksForBackup = true;
+        # Prevent Photos from opening automatically when devices are plugged in
+        "com.apple.ImageCapture".disableHotPlug = true;
+        # Turn on app auto-update
+        "com.apple.commerce" = {
+          AutoUpdate = true;
+          AutoUpdateRestartRequired = true;
+        };
+        "com.apple.finder" = {
+          "QLEnableTextSelection" = true;
+        };
+        "com.apple.desktopservices" = {
+          "DSDontWriteNetworkStores" = true;
+          "DSDontWriteUSBStories" = true ;
+        };
+        "com.apple.Safari" = {
+          # Disable AutoFill
+          "AutoFillFromAddressBook" = false;
+          "AutoFillPasswords" = false;
+          "AutoFillCreditCardData" = false;
+          "AutoFillMiscellaneousForms" = false;
+          # Block pop-up windows 
+          "WebKitJavaScriptCanOpenWindowsAutomatically" = false;
+          "com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaScriptCanOpenWindowsAutomatically" = false;
+          # Enable “Do Not Track”
+          "SendDoNotTrackHTTPHeader" = true;
+          # Update extensions automatically
+          "InstallExtensionUpdatesAutomatically" = true;
+        };
+      };
    };
 
     activationScripts = {

@@ -7,4 +7,5 @@
     home = "/Users/chuck";
     shell = pkgs.zsh;
   };
+  system.defaults.screencapture.location = "/Users/crdant/Documents/Outbox";
 }
