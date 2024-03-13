@@ -162,14 +162,11 @@ in {
           recursive = true;
         };
 
-        ".config/nvim" = {
-          source = ./config/nvim;
-          recursive = true ;
-        };
-        ".config/ssh/config.d" = {
-          source = ./config/ssh/config.d;
+        ".step" = {
+          source = ./config/step;
           recursive = true;
         };
+
       } // (if isDarwin then {
         "Library/Application Support/espanso" = {
           source = ./config/espanso;
@@ -510,7 +507,7 @@ in {
       hashKnownHosts = true ;
 
       includes = [
-        "~/.config/ssh/config.d/*"
+        "${config.xdg.configHome}/ssh/config.d/*"
       ];
 
       matchBlocks = {
@@ -734,6 +731,15 @@ in {
       "smug" = {
           source = ./config/smug;
           recursive = true;
+      };
+      "nvim" = {
+        source = ./config/nvim;
+        recursive = true ;
+      };
+
+      "ssh/config.d" = {
+        source = ./config/ssh/config.d;
+        recursive = true;
       };
     } // (if isDarwin then { 
       "karabiner/karabiner.json" = {
