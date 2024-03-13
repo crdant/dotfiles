@@ -7,7 +7,17 @@
     ./common.nix
   ];
 
-  security.pam.enableSudoTouchIdAuth = true;
+  security = {
+    pam.enableSudoTouchIdAuth = true;
+
+    pki = {
+      installCACerts = true ;
+      certificateFiles = [
+        ../pki/shortrib-labs-e1.crt
+        ../pki/shortrib-labs-r2.crt
+      ];
+    };
+  };
 
   environment = {
     systemPackages = with pkgs; [
@@ -108,6 +118,10 @@
      "Transmit" = 403388562;
     };
 
+  };
+
+  system = {
+    defaults = { };
   };
 
 }
