@@ -6,6 +6,7 @@ let
   bartender = import ./defaults/amphetamine.nix ;
   diskutil = import ./defaults/diskutil.nix ;
   ical = import ./defaults/ical.nix ;
+  memoryclean = import ./defaults/memoryclean.nix ;
   quicktime = import ./defaults/quicktime.nix ;
   safari = import ./defaults/safari.nix ;
   tailscale = import ./defaults/tailscale.nix ;
@@ -26,6 +27,7 @@ in
         # "com.apple.Safari" = safari;
         "com.apple.TextEdit" = textedit;
         "com.qvacua.VimR" = vimr;
+        "com.fiplab.memoryclean3" = memoryclean ;
         "io.tailscale.ipn.macos" = tailscale ;
       };
     };
