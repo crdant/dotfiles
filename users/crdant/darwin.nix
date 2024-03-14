@@ -7,6 +7,7 @@ let
   diskutil = import ./defaults/diskutil.nix ;
   ical = import ./defaults/ical.nix ;
   memoryclean = import ./defaults/memoryclean.nix ;
+  print = import ./defaults/print.nix ;
   quicktime = import ./defaults/quicktime.nix ;
   safari = import ./defaults/safari.nix ;
   tailscale = import ./defaults/tailscale.nix ;
@@ -29,6 +30,7 @@ in
         "com.qvacua.VimR" = vimr;
         "com.fiplab.memoryclean3" = memoryclean ;
         "io.tailscale.ipn.macos" = tailscale ;
+        "org.cups.PrintingPrefs" = print ;
       };
     };
   };
