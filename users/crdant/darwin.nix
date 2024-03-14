@@ -6,6 +6,7 @@ let
   bartender = import ./defaults/amphetamine.nix ;
   diskutil = import ./defaults/diskutil.nix ;
   ical = import ./defaults/ical.nix ;
+  iterm2 = import ./defaults/iterm2.nix ;
   memoryclean = import ./defaults/memoryclean.nix ;
   print = import ./defaults/print.nix ;
   quicktime = import ./defaults/quicktime.nix ;
@@ -33,6 +34,7 @@ in
         "io.tailscale.ipn.macos" = tailscale ;
         "org.cups.PrintingPrefs" = print ;
         "com.todoist.mac.Todoist" = todoist ;
+        "com.googlecode.iterm2" = iterm2 ;
       };
     };
   };
