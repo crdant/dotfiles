@@ -9,6 +9,7 @@ let
   quicktime = import ./defaults/quicktime.nix ;
   safari = import ./defaults/safari.nix ;
   textedit = import ./defaults/textedit.nix ;
+  vimr = import ./defaults/vimr.nix ;
 in
 {
   system = {
@@ -23,6 +24,7 @@ in
         "com.apple.QuickTimePlayerX" = quicktime;
         # "com.apple.Safari" = safari;
         "com.apple.TextEdit" = textedit;
+        "com.qvacua.VimR" = vimr;
       };
     };
   };
