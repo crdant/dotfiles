@@ -12,6 +12,7 @@ let
   safari = import ./defaults/safari.nix ;
   tailscale = import ./defaults/tailscale.nix ;
   textedit = import ./defaults/textedit.nix ;
+  todoist = import ./defaults/todoist.nix ;
   vimr = import ./defaults/vimr.nix ;
 in
 {
@@ -31,6 +32,7 @@ in
         "com.fiplab.memoryclean3" = memoryclean ;
         "io.tailscale.ipn.macos" = tailscale ;
         "org.cups.PrintingPrefs" = print ;
+        "com.todoist.mac.Todoist" = todoist ;
       };
     };
   };
