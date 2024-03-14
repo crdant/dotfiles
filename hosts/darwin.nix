@@ -70,7 +70,6 @@
       "1password"
       "bartender"
       "carbon-copy-cloner"
-      "dash"
       "espanso"
       "firefox"
       "font-bitstream-vera"
