@@ -86,6 +86,7 @@ in {
         kots
         kubeseal
         kustomize
+        mods
         minio-client
         oras
         packer
@@ -525,6 +526,8 @@ in {
           identityFile = "~/.ssh/id_router.pub";
           extraOptions = {
             identityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+            canonicalizeHostName = "yes" ;
+            canonicalDomains = "crdant.net walrus-shark.ts.net crdant.io.beta.tailscale.net";
           };
         };
         "router" = {
@@ -534,7 +537,7 @@ in {
           extraOptions = {
             identityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
             canonicalizeHostName = "yes" ;
-            canonicalDomains = "lab.shortrib.net crdant.io.beta.tailscale.net";
+            canonicalDomains = "lab.shortrib.net walrus-shark.ts.net crdant.io.beta.tailscale.net";
           };
         };
         "unifi.crdant.net" = {
@@ -655,8 +658,6 @@ in {
         function window() {
           smug start window
         } 
-
-        source /Users/chuck/.config/op/plugins.sh
       '';
 
       initExtraBeforeCompInit = ''
