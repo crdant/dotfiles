@@ -4,4 +4,5 @@
   vimr = pkgs.callPackage ./vimr { };
   replicated = pkgs.callPackage ./replicated { };
   kots = pkgs.callPackage ./kots { };
+  mods = pkgs.callPackage ./mods { };
 }
