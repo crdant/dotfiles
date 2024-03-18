@@ -104,7 +104,7 @@ in {
         tcptraceroute
         tektoncd-cli
         terraform
-        tunnelctl
+        tunnelmanager
         vault
         vendir
         ytt
