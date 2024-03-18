@@ -5,4 +5,5 @@
   replicated = pkgs.callPackage ./replicated { };
   kots = pkgs.callPackage ./kots { };
   mods = pkgs.callPackage ./mods { };
+  tunnelmanager = pkgs.callPackage ./tunnelmanager { };
 }
