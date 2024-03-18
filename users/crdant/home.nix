@@ -262,8 +262,9 @@ in {
       userEmail = "${gitEmail}";
 
       signing = {
-        key = "0805EEDF0FEA6ACD";
+        key = "~/.ssh/id_ecdsa_sk.pub";
         signByDefault = true ;
+        gpgPath = "${pkgs.openssh}/bin/ssh";
       };
 
       aliases = { 
@@ -325,6 +326,10 @@ in {
           plist = {
             textconv = "plutil -p";
           };
+        };
+
+        gpg = {
+          format = "ssh";
         };
       } // lib.optionals isDarwin {
         credential = {
@@ -587,7 +592,7 @@ in {
         plugins = [ 
           "git"
           "gh"
-          "gpg-agent"
+          # "gpg-agent"
           "tmux"
           "emoji"
           "gcloud"
@@ -599,6 +604,7 @@ in {
           "vault"
           "terraform"
           "ripgrep"
+          "ssh-agent"
           "zoxide"
           ] ++ pkgs.lib.optionals isDarwin [
             "iterm2"
@@ -667,7 +673,7 @@ in {
         export GOVC_INSECURE=true
 
         # GPG Agent as SSH agent
-        export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+        # export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 
         # if rancher desktop is installed use it's binaries ONLY for anything not already
         # installed system-wide
