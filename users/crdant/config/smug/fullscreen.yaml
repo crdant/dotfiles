@@ -1,0 +1,18 @@
+sendkeys_timeout: 0
+session: fullscreen
+env: {}
+root: ""
+before_start: []
+stop: []
+windows:
+- name: zsh
+  root: /home/crdant
+  before_start: []
+  panes:
+  - commands: []
+  - commands: []
+  - commands: []
+  commands:
+    - nvim
+  layout: 075e,638x178,0,0{414x178,0,0,4,223x178,415,0[223x88,415,0,10,223x44,415,89,12,223x44,415,134,13]}
+

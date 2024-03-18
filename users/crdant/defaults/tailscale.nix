@@ -1,0 +1,3 @@
+{
+  "TailscaleStartOnLoing" = true ;
+}

@@ -1,0 +1,3 @@
+{
+  "ShowDebugMenu" = true ;
+}

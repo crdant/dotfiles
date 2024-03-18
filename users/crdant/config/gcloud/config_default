@@ -1,0 +1,5 @@
+[core]
+account = chuck@replicated.com
+project = smart-proxy-839
+disable_usage_reporting = False
+
