@@ -5,12 +5,14 @@ matches:
   - trigger: ":email"
     replace: chuck@replicated.com
   - trigger: ":zoom"
-    replace: "https://replicated.zoom.us/my/crdant?pwd=TEtDYTlVblJNQlpKV1Y1T3J1SkdKdz09"
+    replace: "https://replicated.zoom.us/my/crdant?pwd=NU5VVktueXV4QW0wcXFFRElHTkxudz09"
   - trigger: ":wnum"
     replace: +1 617 837 6840
   - trigger: ":title"
     replace: "Director, Solution Engineering"
   - trigger: ":waddr"
     replace: |
-      55 Thomson Place
-      Boston, MA 02210
+      8605 Santa Monica Blvd
+      West Hollywood, CA  960069
+  - trigger: ":fyle"
+    replace: "receipts+us+chuck_wovk@fyle.ai"
