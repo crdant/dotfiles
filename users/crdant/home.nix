@@ -264,7 +264,7 @@ in {
       userEmail = "${gitEmail}";
 
       signing = {
-        key = "~/.ssh/id_ecdsa_sk.pub";
+        key = "~/.ssh/id_personal_9a.pub";
         signByDefault = true ;
         gpgPath = "${pkgs.openssh}/bin/ssh";
       };
