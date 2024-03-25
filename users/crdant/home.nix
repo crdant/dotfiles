@@ -104,6 +104,7 @@ in {
         tcptraceroute
         tektoncd-cli
         terraform
+        troubleshoot-sbctl
         tunnelmanager
         vault
         vendir
@@ -733,9 +734,9 @@ in {
   xdg = {
     enable = true;
     configFile = {
-      "gcloud/configurations/config_default" = {
-        text = builtins.readFile ./config/gcloud/config_default ;
-      };
+      # "gcloud/configurations/config_default" = {
+      #  text = builtins.readFile ./config/gcloud/config_default ;
+      #};
       "smug" = {
           source = ./config/smug;
           recursive = true;
