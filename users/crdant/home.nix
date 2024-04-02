@@ -68,7 +68,7 @@ in {
       packages = with pkgs; [
         argocd
         azure-cli
-        certbot-full
+        unstable.certbot-full
         cloudflared
         conftest
         cosign
@@ -83,11 +83,13 @@ in {
         kubernetes-helm
         istioctl
         k0sctl
+        ko
         kots
         kubeseal
         kustomize
         mods
         minio-client
+        nix-prefetch-git
         oras
         packer
         rar
@@ -526,6 +528,7 @@ in {
             identityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
             canonicalizeHostName = "yes" ;
             canonicalDomains = "crdant.net walrus-shark.ts.net crdant.io.beta.tailscale.net";
+            identitiesOnly = "yes";
           };
         };
         "router" = {
@@ -533,9 +536,10 @@ in {
           user = "arceus";
           identityFile = "~/.ssh/id_router.pub";
           extraOptions = {
-            identityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+            identityAgent = "\"~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock\"";
             canonicalizeHostName = "yes" ;
             canonicalDomains = "lab.shortrib.net walrus-shark.ts.net crdant.io.beta.tailscale.net";
+            identitiesOnly = "yes";
           };
         };
         "unifi.crdant.net" = {
@@ -545,6 +549,7 @@ in {
           extraOptions = {
             hostKeyAlgorithms = "+ssh-rsa";
             identityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+            identitiesOnly = "yes";
           };
         };
         "rye.lab.shortrib.net bourbon.lab.shortrib.net scotch.lab.shortrib.net potstill.lab.shortrib.net shine.lab.shortrib.net malt.lab.shortrib.net vcenter.lab.shortrib.net" = {
@@ -552,6 +557,7 @@ in {
           identityFile = "~/.ssh/id_homelab.pub";
           extraOptions = {
             identityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+            identitiesOnly = "yes";
           };
         };
         "gitlab.com" = {
@@ -559,6 +565,7 @@ in {
           identityFile = "~/.ssh/id_rsa_gitlab.com.pub";
           extraOptions = {
             identityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+            identitiesOnly = "yes";
           };
         };
         "ssh.dev.azure.com" = {
@@ -566,6 +573,7 @@ in {
           identityFile = "~/.ssh/id_azure-devops.pub";
           extraOptions = {
             identityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+            identitiesOnly = "yes";
           };
         };
       };
