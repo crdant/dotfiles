@@ -2,16 +2,16 @@
 
 buildGoModule rec {
   pname = "kots";
-  version = "1.108.0";
+  version = "1.108.5";
 
   src = fetchFromGitHub {
     owner = "replicatedhq";
     repo = "kots";
     rev = "v${version}";
-    sha256 = "sha256-STsqo0ME8T8SiIT/2e6XdT70JOkUQ2hhsY7FrifFdJY=";
+    sha256 = "sha256-1yRpvleDNad5RmrSWF7rlooezlPM+KcZcIy1xyd5JeE=";
   };
 
-  vendorHash = "sha256-h7jLeWWcDAeF5n0pHLjHfJLLWwtw40940CxMnSwrJEk=";
+  vendorHash = "sha256-IxGwqqNvt/mw/DV28PMSQ9m6BiwvVChl19a+SMg7lCU=";
 
   subPackages = [ "cmd/kots/" ];
 
