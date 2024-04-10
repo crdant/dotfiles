@@ -23,7 +23,7 @@
       overlays = import ./overlays {inherit inputs;};
 
       nixosConfigurations = {
-        mash = {
+        mash = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = {inherit inputs outputs;};
           modules = [ 
