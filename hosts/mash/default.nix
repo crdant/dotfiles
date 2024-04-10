@@ -7,7 +7,7 @@
 
   networking = {
     hostName = "mash";
-    firewall {
+    firewall = {
       enable = true;
       allowedTCPPorts = [ 22 ];
     };
