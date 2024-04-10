@@ -15,5 +15,5 @@
     ];
   };
 
-  system.defaults.screencapture.location = "/Users/crdant/Documents/Outbox";
+
 }
