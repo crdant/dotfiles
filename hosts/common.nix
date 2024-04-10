@@ -63,6 +63,7 @@
       coreutils
       dogdns
       gist
+      git
       glow
       gnupg
       home-manager
@@ -70,6 +71,7 @@
       jq
       knot-dns
       nmap
+      neovim
       opensc
       openssh
       powershell
