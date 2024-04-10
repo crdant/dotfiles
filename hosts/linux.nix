@@ -45,7 +45,7 @@
       enable = true;
       allowReboot = true;
     };
-  }
+  };
 
   virtualisation = {
     vmware = {
