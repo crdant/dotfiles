@@ -22,6 +22,18 @@
     in {
       overlays = import ./overlays {inherit inputs;};
 
+      nixosConfigurations = {
+        mash = {
+          system = "x86_64-linux";
+          specialArgs = {inherit inputs outputs;};
+          modules = [ 
+            ./hosts/tun/default.nix
+            ./users/crdant/crdant.nix
+            ./users/crdant/darwin.nix
+          ];
+        };
+      };
+
       darwinConfigurations = {
         "grappa" = darwin.lib.darwinSystem {
           system = "aarch64-darwin";
