@@ -30,9 +30,6 @@
     };
   };
 
-  # Make sure the nix daemon always runs
-  nix.useDaemon = true ;
-
   # assure flakes and nix command are enabled
   nix.extraOptions = ''
     experimental-features = nix-command flakes

@@ -7,6 +7,9 @@
     ./common.nix
   ];
 
+  # Make sure the nix daemon always runs
+  nix.useDaemon = true ;
+
   security = {
     pam.enableSudoTouchIdAuth = true;
 
