@@ -107,6 +107,9 @@
       description = "Chuck D'Antonio";
       home = "/Users/crdant";
     };
+    groups.ssher = {
+      gid = 1001;
+    };
   };
 
 }
