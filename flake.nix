@@ -29,7 +29,6 @@
           modules = [ 
             ./hosts/mash/default.nix
             ./users/crdant/crdant.nix
-            ./users/crdant/darwin.nix
           ];
         };
       };
