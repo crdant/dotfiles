@@ -32,6 +32,5 @@ in
 
     groups.crdant = {
       gid = 1002;
-    }
-
+    };
 }
