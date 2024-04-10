@@ -27,7 +27,7 @@
           system = "x86_64-linux";
           specialArgs = {inherit inputs outputs;};
           modules = [ 
-            ./hosts/tun/default.nix
+            ./hosts/mash/default.nix
             ./users/crdant/crdant.nix
             ./users/crdant/darwin.nix
           ];
