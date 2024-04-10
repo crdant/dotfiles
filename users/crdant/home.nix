@@ -202,6 +202,7 @@ in {
       plugins = with pkgs; [
         awscli2
         gh
+        ngrok
       ];
     };
 
@@ -352,15 +353,20 @@ in {
       vimAlias = true;
 
       plugins = with pkgs.vimPlugins; [
+        copilot-vim
         editorconfig-nvim
         {
           plugin = NeoSolarized;
           config = "colorscheme NeoSolarized";
         }
+        lsp-zero-nvim
+        mason-lspconfig-nvim
+        mason-nvim
         nvim-fzf
         nvim-surround
         vim-commentary
         vim-repeat
+        vim-tmux-navigator
         zoxide-vim
       ];
 
@@ -469,6 +475,24 @@ in {
         -- line numbers
         -- set relativenumber
         vim.opt.number = true
+
+        local lsp_zero = require('lsp-zero')
+
+        lsp_zero.on_attach(function(client, bufnr)
+          -- see :help lsp-zero-keybindings
+          -- to learn the available actions
+          lsp_zero.default_keymaps({buffer = bufnr})
+        end)
+
+        require('mason').setup({})
+        require('mason-lspconfig').setup({
+          -- Replace the language servers listed here 
+          -- with the ones you want to install
+          ensure_installed = {'tsserver', 'gopls', 'pyright', 'rust_analyzer'},
+          handlers = {
+            lsp_zero.default_setup,
+          },
+        })
       '';
     };
 
