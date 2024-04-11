@@ -28,7 +28,7 @@ buildGoModule rec {
   # Override build phase to use make
   buildPhase = ''
     runHook preBuild
-    make LDFLAGS='-ldflags "${ldflagsStr}"' kots-real
+    make SHELL='/usr/bin/env bash -o pipefail' LDFLAGS='-ldflags "${ldflagsStr}"' kots-real
     runHook postBuild
   '';
 
