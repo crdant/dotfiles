@@ -12,7 +12,7 @@ buildGoModule rec {
   };
 
   vendorHash = if stdenv.isDarwin then 
-      "sha256-WEx7ozGY7dJVR47iZF0OTBvTBTYKUDTals85Se4z5l4=";
+      "sha256-WEx7ozGY7dJVR47iZF0OTBvTBTYKUDTals85Se4z5l4="
     else
       "sha256-BsRPBOHkTn2LJil1xXTuF1V7ceKWoFy8ZSdlGMYeaUA";
 
