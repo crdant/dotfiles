@@ -3,7 +3,7 @@
   outputs,
   pkgs, 
   ... 
-} : {
+}: {
 
   nixpkgs = {
     # You can add overlays here
@@ -105,9 +105,7 @@
   };
 
   users = {
-    users.crdant = if isLinux then {
-      uid = 1001 ;
-    } else {} ;
+    users.crdant = {};
     groups = {
       crdant = {
         gid = 1002;

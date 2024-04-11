@@ -63,6 +63,12 @@
     };
   };
 
+  users = { 
+    users.crdant = {
+      uid = 1001;
+    };
+  };
+
   virtualisation = {
     vmware = {
       guest.enable = true ;
