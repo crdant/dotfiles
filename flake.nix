@@ -19,6 +19,8 @@
   outputs = { self, nixpkgs, home-manager, darwin, ...}@inputs: 
     let
       inherit (self) outputs;
+      system = builtins.currentSystem;
+      isDarwin = nixpkgs.legacyPackages.${system}.stdenv.isDarwin;
     in {
       overlays = import ./overlays {inherit inputs;};
 
@@ -57,9 +59,12 @@
 
       homeConfigurations = {
         "chuck" = let 
-            system = builtins.currentSystem;
+            inherit system ;
             username = "chuck";
-            homeDirectory = "/Users/chuck";
+            homeDirectory = if isDarwin then 
+                "/Users/chuck"
+              else
+                "/home/chuck";
             gitEmail = "chuck@replicated.com";
           in home-manager.lib.homeManagerConfiguration {
             pkgs = nixpkgs.legacyPackages.${system};
@@ -70,9 +75,12 @@
           };
 
         "crdant" = let 
-            system = builtins.currentSystem;
+            inherit system ;
             username = "crdant";
-            homeDirectory = "/Users/crdant";
+            homeDirectory = if isDarwin then 
+                "/Users/crdant"
+              else
+                "/home/crdant";
             gitEmail = "chuck@crdant.io";
           in home-manager.lib.homeManagerConfiguration {
             pkgs = nixpkgs.legacyPackages.${system};
