@@ -34,6 +34,7 @@ in
         [ "adm" "ssher" "sudo" "wheel" ];
     };
 
+  } // lib.optionalAttrs isLinux {
     groups.crdant = {
       gid = 1002;
     };
