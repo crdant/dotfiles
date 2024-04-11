@@ -124,8 +124,6 @@ in {
       (callPackage ./vimr-wrapper.nix { inherit config ; })
       # vscode
     ] ++ lib.optionals isLinux [
-      unstable._1password
-      unstable._1password-gui-beta
       calicoctl
       coreutils
       dogdns
