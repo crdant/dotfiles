@@ -105,8 +105,16 @@
   };
 
   users = {
-    groups.ssher = {
-      gid = 1001;
+    users.crdant = {
+      uid = 1001
+    };
+    groups = {
+      crdant = {
+        gid = 1002;
+      };
+      ssher = {
+        gid = 1001;
+      };
     };
   };
 
