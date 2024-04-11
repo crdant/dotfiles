@@ -672,9 +672,6 @@ in {
         setopt complete_aliases
         unsetopt hist_verify
 
-        # completions for minio client
-        complete -o nospace -C $(brew --prefix)/bin/mc mc
-
         # Tmux convenience functions
         function tmux-has-session() { 
           session=$1

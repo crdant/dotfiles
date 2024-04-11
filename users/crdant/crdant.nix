@@ -10,7 +10,11 @@ in
     users.crdant = {
       isNormalUser = true;
 
-      home = "/Users/crdant";
+      home = if isDarwin then
+        "/Users/crdant"
+      else
+        "/home/crdant";
+
       shell = pkgs.zsh;
       description = "Chuck D'Antonio";
 
