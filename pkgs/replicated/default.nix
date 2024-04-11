@@ -11,7 +11,10 @@ buildGoModule rec {
     sha256 = "sha256-PRlUhZAcgF3H9GnAA+nvq5/vCSCLEjXzTs9G72g7gvk=";
   };
 
-  vendorHash = "sha256-WEx7ozGY7dJVR47iZF0OTBvTBTYKUDTals85Se4z5l4=";
+  vendorHash = if stdenv.isDarwin then 
+      "sha256-WEx7ozGY7dJVR47iZF0OTBvTBTYKUDTals85Se4z5l4=";
+    else
+      "sha256-BsRPBOHkTn2LJil1xXTuF1V7ceKWoFy8ZSdlGMYeaUA";
 
   subPackages = [ "cli/cmd/" ];
   ldflags = [
