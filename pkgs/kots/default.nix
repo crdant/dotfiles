@@ -8,10 +8,10 @@ buildGoModule rec {
     owner = "replicatedhq";
     repo = "kots";
     rev = "v${version}";
-    sha256 = "sha256-1yRpvleDNad5RmrSWF7rlooezlPM+KcZcIy1xyd5JeE=";
+    sha256 = "sha256-nYH3oU1mPYBcKrzPnXZXH3PVl7JETvP4ASvzvDj/aok=";
   };
 
-  vendorHash = "sha256-IxGwqqNvt/mw/DV28PMSQ9m6BiwvVChl19a+SMg7lCU=";
+  vendorHash = "sha256-WQ7JUGplHcAWRywzYmnvLv+NwF4xBkbVIdiM0H9sn/8=";
 
   subPackages = [ "cmd/kots/" ];
 

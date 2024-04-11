@@ -62,7 +62,6 @@
       "watch"
       "pam_yubico"
       # "ojford/formulae/loginitems"
-      "replicatedhq/replicated/cli"
       # "vmware-tanzu/carvel/imgpkg"
     ];
 
