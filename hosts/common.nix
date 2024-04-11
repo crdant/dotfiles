@@ -105,9 +105,9 @@
   };
 
   users = {
-    users.crdant = {
-      uid = 1001
-    };
+    users.crdant = if isLinux then {
+      uid = 1001 ;
+    } else {} ;
     groups = {
       crdant = {
         gid = 1002;
