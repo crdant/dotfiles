@@ -52,6 +52,13 @@
     };
   };
 
+  users = {
+    users.crdant = {
+      description = "Chuck D'Antonio";
+      home = "/home/crdant"
+    };
+  };
+
   virtualisation = {
     vmware = {
       guest.enable = true ;

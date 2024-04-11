@@ -108,13 +108,6 @@
     groups.ssher = {
       gid = 1001;
     };
-    users.crdant = {
-      description = "Chuck D'Antonio";
-      home = if isDarwin then
-        "/Users/crdant"
-      else
-        "/home/crdant";
-    };
   };
 
 }
