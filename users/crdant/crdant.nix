@@ -8,8 +8,6 @@ in
   # what our home directory is (https://github.com/LnL7/nix-darwin/issues/423).
   users = {
     users.crdant = {
-      isNormalUser = true;
-
       home = if isDarwin then
         "/Users/crdant"
       else
@@ -24,14 +22,13 @@ in
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIoCrR7Alcy8u2Ef0rmU5CPR7H6A8VB1jMTlITHHmGdB"
         "sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBHjhrp9FP2DfpzUEtZ8e/h1lFCBZbAO4pOdD/toikmzV7Mdh0zTlqHUEWrRA6zeQd9LLk2P352LOt75YHCZ87QoAAAAEc3NoOg=="
         "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDX6f72jpsYAWdlQGLNlGeoz6AKsUl6FGDp48k/Z44QGqZdGymk3JUDO28BHBXJ05u6NiIad+x3hOYuKxglSjVjv8obqNnqAoJM8r2VLErlqwJNSSOzUijeA9V256Mq1ej7jTtYiNspI9TuyE9TOFsiS81tSIqgOGMJAe4Puqs89HZluLsh+XQSPHdiv//kJyhc5/isW7+z3t2jMfMJMBRLWaivZWSeDs8S3Fg6rIav4c7/r0jUKarMcNPhOLnR72uT9dykRrFEPWTuIDABuQft5oEck/MF2YymuRjLVsBeMuuOy4UyCnd8r06cPX4HoHMfpxRmzoJf68RSmBR+AmHN"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJt8LUP/4R88MTLDAbMyLveBBqHHyM16d9m37KtTL6PI"
       ];
 
-      group = if isDarwin then "staff" else "crdant";
-
-      extraGroups = if isDarwin then
-        [ "admin" ]
-      else
-        [ "adm" "ssher" "sudo" "wheel" ];
+    } // lib.optionalAttrs isLinux {
+      isNormalUser = true;
+      group = "crdant";
+      extraGroups = [ "adm" "ssher" "sudo" "wheel" ];
     };
 
   } // lib.optionalAttrs isLinux {
