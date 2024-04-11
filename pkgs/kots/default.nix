@@ -11,7 +11,10 @@ buildGoModule rec {
     sha256 = "sha256-nYH3oU1mPYBcKrzPnXZXH3PVl7JETvP4ASvzvDj/aok=";
   };
 
-  vendorHash = "sha256-WQ7JUGplHcAWRywzYmnvLv+NwF4xBkbVIdiM0H9sn/8=";
+  vendorHash = if stdenv.isDarwin then
+      "sha256-WQ7JUGplHcAWRywzYmnvLv+NwF4xBkbVIdiM0H9sn/8="
+    else
+      "sha256-NiivHDI2XvtJO6izk+9bkemYaqvCy9pUNSEedNgf3E8";
 
   subPackages = [ "cmd/kots/" ];
 
