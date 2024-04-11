@@ -57,7 +57,7 @@
 
       homeConfigurations = {
         "chuck" = let 
-            system = "aarch64-darwin";
+            system = builtins.currentSystem;
             username = "chuck";
             homeDirectory = "/Users/chuck";
             gitEmail = "chuck@replicated.com";
@@ -70,7 +70,7 @@
           };
 
         "crdant" = let 
-            system = "aarch64-darwin";
+            system = builtins.currentSystem;
             username = "crdant";
             homeDirectory = "/Users/crdant";
             gitEmail = "chuck@crdant.io";
