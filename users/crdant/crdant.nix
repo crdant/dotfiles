@@ -31,7 +31,7 @@ in
       extraGroups = if isDarwin then
         [ "admin" ]
       else
-        [ "adm" "ssher" "sudo"];
+        [ "adm" "ssher" "sudo" "wheel" ];
     };
 
     groups.crdant = {

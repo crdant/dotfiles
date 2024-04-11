@@ -30,6 +30,11 @@
         ../pki/shortrib-labs-r2.crt
       ];
     };
+    sudo = {
+      enable = true;
+      execWheelOnly = true;
+      wheelNeedsPassword = false ;
+    }
   };
 
   services = {
@@ -44,6 +49,12 @@
     autoUpgrade = {
       enable = true;
       allowReboot = true;
+    };
+  };
+
+  users = {
+    groups. = {
+      gid = 1001;
     };
   };
 
