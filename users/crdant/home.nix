@@ -334,7 +334,7 @@ in {
           };
         };
 
-      } // lib.optionals isDarwin {
+      } // lib.optionalAttrs isDarwin {
         credential = {
           helper = "osxkeychain";
         };
@@ -775,14 +775,14 @@ in {
         source = ./config/ssh/config.d;
         recursive = true;
       };
-    } // (if isDarwin then { 
+    } // lib.optionalAttrs isDarwin { 
       "karabiner/karabiner.json" = {
         text = builtins.readFile ./config/karabiner/karabiner.json ;
       };
-    } else {}) // (if isLinux then { 
-      "glow/config.yaml" = {
-        text = builtins.readFile ./config/glow/config.yaml ;
+    } // lib.optionalAttrs isLinux { 
+      "glow/glow.yml" = {
+        text = builtins.readFile ./config/glow/glow.yml ;
       };
-    } else {});
+    };
   };
 }
