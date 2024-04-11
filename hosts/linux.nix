@@ -38,10 +38,19 @@
   };
 
   services = {
+    resolved = {
+      enable = true;
+      domains = [
+        "lab.shortrib.net"
+        "crdant.net"
+      ];
+    };
     openssh = {
       enable = true;
-      permitRootLogin = "no";
-      passwordAuthentication = false;
+      settings = {
+        permitRootLogin = "no";
+        passwordAuthentication = false;
+      };
     };
   };
 
