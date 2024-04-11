@@ -20,6 +20,8 @@
     firewall = {
       enable = true;
     };
+    # turn off IPv6 for now while sorting out a plan for it
+    enableIPv6 = false;
   };
 
   security = {
@@ -48,8 +50,8 @@
     openssh = {
       enable = true;
       settings = {
-        permitRootLogin = "no";
-        passwordAuthentication = false;
+        PermitRootLogin = "no";
+        PasswordAuthentication = false;
       };
     };
   };
