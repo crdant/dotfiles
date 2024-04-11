@@ -259,10 +259,4 @@
     };
   };
 
-  users = {
-    users.crdant = {
-      description = "Chuck D'Antonio";
-      home = "/Users/crdant"
-    };
-  };
 }
