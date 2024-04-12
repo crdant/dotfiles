@@ -68,6 +68,7 @@
       gnupg
       home-manager
       hostess
+      inetutils
       jq
       knot-dns
       nmap
