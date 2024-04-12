@@ -1,4 +1,4 @@
-{ stdenv, lib, buildGoModule, fetchFromGitHub, installShellFiles, pkg-config }:
+{ stdenv, lib, buildGoModule, fetchFromGitHub, installShellFiles, pkg-config, bash }:
 
 buildGoModule rec {
   pname = "kots";
@@ -28,7 +28,7 @@ buildGoModule rec {
   # Override build phase to use make
   buildPhase = ''
     runHook preBuild
-    make SHELL='/usr/bin/env bash -o pipefail' LDFLAGS='-ldflags "${ldflagsStr}"' kots-real
+    make SHELL='${bash}/bin/bash -o pipefail' LDFLAGS='-ldflags "${ldflagsStr}"' kots-real
     runHook postBuild
   '';
 
