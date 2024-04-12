@@ -90,6 +90,7 @@ in {
       mods
       minio-client
       nix-prefetch-git
+      nodejs_21
       oras
       packer
       rar
