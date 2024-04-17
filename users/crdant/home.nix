@@ -85,6 +85,7 @@ in {
         k0sctl
         ko
         kots
+        kots2helm
         kubeseal
         kustomize
         mods
