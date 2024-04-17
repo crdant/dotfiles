@@ -157,96 +157,10 @@ in {
         source = ./config/editorconfig;
       };
 
-<<<<<<< HEAD
-      # Specify packages not explicitly configured below
-      packages = with pkgs; [
-        argocd
-        azure-cli
-        unstable.certbot-full
-        cloudflared
-        conftest
-        cosign
-        crane
-        cue
-        exercism
-        gh
-        google-cloud-sdk
-        govc
-        krew
-        kubectl
-        kubernetes-helm
-        istioctl
-        k0sctl
-        ko
-        kots
-        kots2helm
-        kubeseal
-        kustomize
-        mods
-        minio-client
-        nix-prefetch-git
-        oras
-        packer
-        rar
-        replicated
-        ripgrep
-        shellcheck
-        sipcalc
-        skopeo
-        smug
-        sops
-        step-cli
-        stern
-        syft
-        tcptraceroute
-        tektoncd-cli
-        terraform
-        troubleshoot-sbctl
-        tunnelmanager
-        vault
-        vendir
-        ytt
-        # yubico-pam
-        yubico-piv-tool
-        yubikey-manager
-        zsh-completions
-      ] ++ lib.optionals isDarwin [
-        # gui apps
-        # discord
-        # minikube
-        unstable.postman
-        vimr
-        (callPackage ./vimr-wrapper.nix { inherit config ; })
-        # vscode
-      ] ++ lib.optionals isLinux [
-        unstable._1password
-        unstable._1password-gui-beta
-        calicoctl
-        coreutils
-        dogdns
-        gist
-        gnupg
-        hostess
-        jq
-        knot-dns
-        nerdctl
-        nmap
-        opensc
-        powershell
-        procps
-        pstree
-        sipcalc
-        tailscale
-        tcptraceroute
-        yq-go
-        zsh-completions
-      ] ;
-=======
      ".gnupg" = {
         source = ./config/gnupg;
         recursive = true;
       };
->>>>>>> 3fcae94 (Avoids configurating launchd when not on MacOS)
 
       ".hammerspoon" = {
         source = ./config/hammerspoon;
