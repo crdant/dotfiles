@@ -25,6 +25,7 @@
       git-filter-repo
       golangci-lint
       goreleaser
+      instruqt
       k0sctl
       k9s
       kapp
