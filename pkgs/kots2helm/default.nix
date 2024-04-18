@@ -1,4 +1,4 @@
-{ stdenv, lib, buildGoModule, fetchFromGitHub, installShellFiles }:
+{ stdenv, lib, buildGoModule, fetchFromGitHub, bash }:
 
 buildGoModule rec {
   pname = "kots2helm";
@@ -25,7 +25,7 @@ buildGoModule rec {
     runHook preBuild
     export GO111MODULE=on
     export GOPROXY=https://proxy.golang.org,direct
-    make LDFLAGS='-ldflags "${ldflagsStr}"' all 
+    make SHELL='${bash}/bin/bash -o pipefail' LDFLAGS='-ldflags "${ldflagsStr}"' all
     runHook postBuild
   '';
 
@@ -35,8 +35,6 @@ buildGoModule rec {
     cp bin/kots2helm $out/bin/kots2helm
     runHook postInstall
   '';
-
-  nativeBuildInputs = [ installShellFiles ];
 
   meta = with lib; {
     homepage = "https://github.com/replicatedhq/kots2helm";
