@@ -15,7 +15,7 @@ in stdenv.mkDerivation rec {
     sha256 = if isDarwin then
         "sha256-EQV3972rcl7Yy87X/CFmiSSboxySFAVSbbQzRIGUaBs="
       else
-        "";
+        "sha256-KBrxBT5cBrc+0GyoFecygK8eGNJrCD5R6ZXlPxbocmU=";
   };
 
   # Install the binary
@@ -40,6 +40,7 @@ in stdenv.mkDerivation rec {
     description = "Command line tool for examining K8s resources in Troubleshoot's support bundles";
     mainProgram = "sbctl";
     license = licenses.asl20;
+    platforms = platforms.linux ++ platforms.darwin;
   };
 
 }
