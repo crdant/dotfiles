@@ -7,7 +7,9 @@
 
   replicated = pkgs.callPackage ./replicated { };
   kots = pkgs.callPackage ./kots { };
+  kots2helm = pkgs.callPackage ./kots2helm { };
   troubleshoot-sbctl = pkgs.callPackage ./sbctl { };
 
+  instruqt = pkgs.callPackage ./instruqt { };
   mods = pkgs.callPackage ./mods { };
 }
