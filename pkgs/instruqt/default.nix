@@ -1,4 +1,4 @@
- { stdenv, lib, fetchzip, autoPatchelfHook }:
+ { stdenv, lib, fetchzip, unzip, autoPatchelfHook }:
 let
   os = if stdenv.isDarwin then "darwin" else "linux" ;
   arch = if stdenv.isAarch64 then "arm64" else "amd64";
@@ -14,12 +14,10 @@ in stdenv.mkDerivation rec {
     sha256 = if isDarwin then
         "sha256-kP/3n0gfV14kAI68K3yPOFEfCBUvRtb04A58bQgddqo="
       else
-        "";
+        "sha256-w3cMvFNHOA8AqhCmew0Adtwuqp2i0L/IgTXdpH+sR9c=";
   };
 
-  nativeBuildInputs = lib.optionals isLinux [
-    autoPatchelfHook
-  ];
+  nativeBuildInputs = [ unzip ] ;
 
   sourceRoot = ".";
 
