@@ -3,7 +3,7 @@
   outputs,
   pkgs, 
   ... 
-} : {
+}: {
 
   nixpkgs = {
     # You can add overlays here
@@ -29,9 +29,6 @@
       allowUnfree = true;
     };
   };
-
-  # Make sure the nix daemon always runs
-  nix.useDaemon = true ;
 
   # assure flakes and nix command are enabled
   nix.extraOptions = ''
@@ -66,13 +63,16 @@
       coreutils
       dogdns
       gist
+      git
       glow
       gnupg
       home-manager
       hostess
+      inetutils
       jq
       knot-dns
       nmap
+      neovim
       opensc
       openssh
       powershell
@@ -106,9 +106,14 @@
   };
 
   users = {
-    users.crdant = {
-      description = "Chuck D'Antonio";
-      home = "/Users/crdant";
+    users.crdant = {};
+    groups = {
+      crdant = {
+        gid = 1002;
+      };
+      ssher = {
+        gid = 1001;
+      };
     };
   };
 

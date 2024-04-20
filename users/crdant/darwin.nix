@@ -19,6 +19,7 @@ in
 {
   system = {
     defaults = { 
+      screencapture.location = "/Users/crdant/Documents/Outbox";
       CustomUserPreferences = {
         "com.apple.AddressBook" = addressbook;
         "com.if.Amphetamine" = amphetamine;

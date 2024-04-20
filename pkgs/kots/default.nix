@@ -1,4 +1,4 @@
-{ stdenv, lib, buildGoModule, fetchFromGitHub, installShellFiles, pkg-config }:
+{ stdenv, lib, buildGoModule, fetchFromGitHub, installShellFiles, pkg-config, bash }:
 
 buildGoModule rec {
   pname = "kots";
@@ -11,7 +11,10 @@ buildGoModule rec {
     sha256 = "sha256-nYH3oU1mPYBcKrzPnXZXH3PVl7JETvP4ASvzvDj/aok=";
   };
 
-  vendorHash = "sha256-WQ7JUGplHcAWRywzYmnvLv+NwF4xBkbVIdiM0H9sn/8=";
+  vendorHash = if stdenv.isDarwin then
+      "sha256-WQ7JUGplHcAWRywzYmnvLv+NwF4xBkbVIdiM0H9sn/8="
+    else
+      "sha256-NiivHDI2XvtJO6izk+9bkemYaqvCy9pUNSEedNgf3E8";
 
   subPackages = [ "cmd/kots/" ];
 
@@ -25,7 +28,7 @@ buildGoModule rec {
   # Override build phase to use make
   buildPhase = ''
     runHook preBuild
-    make LDFLAGS='-ldflags "${ldflagsStr}"' kots-real
+    make SHELL='${bash}/bin/bash -o pipefail' LDFLAGS='-ldflags "${ldflagsStr}"' kots-real
     runHook postBuild
   '';
 

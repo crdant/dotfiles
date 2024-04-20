@@ -32,169 +32,173 @@ in {
   };
 
   home = {
-      # This value determines the Home Manager release that your
-      # configuration is compatible with. This helps avoid breakage
-      # when a new Home Manager release introduces backwards
-      # incompatible changes.
-      username = "${username}";
-      homeDirectory = "${homeDirectory}";
-       
-      # You can update Home Manager without changing this value. See
-      # the Home Manager release notes for a list of state version
-      # changes in each release.
-      stateVersion = "23.11";
+    # This value determines the Home Manager release that your
+    # configuration is compatible with. This helps avoid breakage
+    # when a new Home Manager release introduces backwards
+    # incompatible changes.
+    username = "${username}";
+    homeDirectory = "${homeDirectory}";
+     
+    # You can update Home Manager without changing this value. See
+    # the Home Manager release notes for a list of state version
+    # changes in each release.
+    stateVersion = "23.11";
 
-      # specify variables to use in all logins across shells
-      sessionVariables = {
-        EDITOR = "nvim" ;
-        VISUAL = "nvim" ;
-        NIXPKGS_ALLOW_UNFREE = 1;
-        NIXPKGS_ALLOW_BROKEN = 1;
+    # specify variables to use in all logins across shells
+    sessionVariables = {
+      EDITOR = "nvim" ;
+      VISUAL = "nvim" ;
+      NIXPKGS_ALLOW_UNFREE = 1;
+      NIXPKGS_ALLOW_BROKEN = 1;
+    };
+
+    sessionPath = [
+      "$HOME/.local/bin" 
+      "$HOME/.krew/bin"
+      "$HOME/workspace/go/bin"
+    ] ++ lib.optionals isDarwin [
+      "/opt/homebrew/bin"
+      "/opt/homebrew/sbin"
+    ] ++ [
+      "/usr/local/bin"
+      "/usr/local/sbin"
+    ]; 
+
+    # Specify packages not explicitly configured below
+    packages = with pkgs; [
+      argocd
+      azure-cli
+      unstable.certbot-full
+      cloudflared
+      conftest
+      cosign
+      crane
+      cue
+      exercism
+      gh
+      google-cloud-sdk
+      govc
+      krew
+      kubectl
+      kubernetes-helm
+      istioctl
+      k0sctl
+      ko
+      kots
+      kots2helm
+      kubeseal
+      kustomize
+      mods
+      minio-client
+      nix-prefetch-git
+      nodejs_21
+      oras
+      packer
+      rar
+      replicated
+      ripgrep
+      shellcheck
+      sipcalc
+      skopeo
+      smug
+      sops
+      step-cli
+      stern
+      syft
+      tcptraceroute
+      tektoncd-cli
+      terraform
+      troubleshoot-sbctl
+      tunnelmanager
+      vault
+      vendir
+      ytt
+      # yubico-pam
+      yubico-piv-tool
+      yubikey-manager
+      zsh-completions
+    ] ++ lib.optionals isDarwin [
+      # gui apps
+      # discord
+      # minikube
+      unstable.postman
+      vimr
+      (callPackage ./vimr-wrapper.nix { inherit config ; })
+      # vscode
+    ] ++ lib.optionals isLinux [
+      calicoctl
+      coreutils
+      dogdns
+      gist
+      gnupg
+      hostess
+      jq
+      knot-dns
+      nerdctl
+      nmap
+      opensc
+      powershell
+      procps
+      pstree
+      sipcalc
+      tailscale
+      tcptraceroute
+      yq-go
+      zsh-completions
+    ] ;
+
+    file = {
+      ".curlrc" = {
+        text = "-fL";
       };
 
-      sessionPath = [
-        "$HOME/.local/bin" 
-        "$HOME/.krew/bin"
-        "$HOME/workspace/go/bin"
-      ] ++ lib.optionals isDarwin [
-        "/opt/homebrew/bin"
-        "/opt/homebrew/sbin"
-      ] ++ [
-        "/usr/local/bin"
-        "/usr/local/sbin"
-      ]; 
+      ".editorconfig" = {
+        source = ./config/editorconfig;
+      };
 
-      # Specify packages not explicitly configured below
-      packages = with pkgs; [
-        argocd
-        azure-cli
-        unstable.certbot-full
-        cloudflared
-        conftest
-        cosign
-        crane
-        cue
-        exercism
-        gh
-        google-cloud-sdk
-        govc
-        krew
-        kubectl
-        kubernetes-helm
-        istioctl
-        k0sctl
-        ko
-        kots
-        kots2helm
-        kubeseal
-        kustomize
-        mods
-        minio-client
-        nix-prefetch-git
-        oras
-        packer
-        rar
-        replicated
-        ripgrep
-        shellcheck
-        sipcalc
-        skopeo
-        smug
-        sops
-        step-cli
-        stern
-        syft
-        tcptraceroute
-        tektoncd-cli
-        terraform
-        troubleshoot-sbctl
-        tunnelmanager
-        vault
-        vendir
-        ytt
-        # yubico-pam
-        yubico-piv-tool
-        yubikey-manager
-        zsh-completions
-      ] ++ lib.optionals isDarwin [
-        # gui apps
-        # discord
-        # minikube
-        unstable.postman
-        vimr
-        (callPackage ./vimr-wrapper.nix { inherit config ; })
-        # vscode
-      ] ++ lib.optionals isLinux [
-        unstable._1password
-        unstable._1password-gui-beta
-        calicoctl
-        coreutils
-        dogdns
-        gist
-        gnupg
-        hostess
-        jq
-        knot-dns
-        nerdctl
-        nmap
-        opensc
-        powershell
-        procps
-        pstree
-        sipcalc
-        tailscale
-        tcptraceroute
-        yq-go
-        zsh-completions
-      ] ;
+      # can't quite configure gnupg the way I want within programs.gnupg
+      ".gnupg" = {
+        source = ./config/gnupg;
+        recursive = true;
+      };
 
-      file = {
-        # can't quite configure gnupg the way I want within programs.gnupg
-        ".curlrc" = {
-          text = "-fL";
-        };
+      ".hammerspoon" = {
+        source = ./config/hammerspoon;
+        recursive = true;
+      };
 
-        ".editorconfig" = {
-          source = ./config/editorconfig;
-        };
+      ".step" = {
+        source = ./config/step;
+        recursive = true;
+      };
 
-       ".gnupg" = {
-          source = ./config/gnupg;
-          recursive = true;
-        };
+    } // lib.optionalAttrs isDarwin {
+      ".gnupg/gpg-agent.conf" = {
+        source = ./config/gpg-agent/gpg-agent.conf;
+        recursive = true;
+      };
 
-        ".hammerspoon" = {
-          source = ./config/hammerspoon;
-          recursive = true;
-        };
+      "Library/Application Support/espanso" = {
+        source = ./config/espanso;
+        recursive = true;
+      };
 
-        ".step" = {
-          source = ./config/step;
-          recursive = true;
-        };
+      "Library/Colors/Solarized.clr" = {
+        source = ./config/palettes/Solarized.clr;
+        recursive = true;
+      };
 
-      } // (if isDarwin then {
-        "Library/Application Support/espanso" = {
-          source = ./config/espanso;
-          recursive = true;
-        };
+      "Library/Colors/Replicated.clr" = {
+        source = ./config/palettes/Replicated.clr;
+        recursive = true;
+      };
 
-        "Library/Colors/Solarized.clr" = {
-          source = ./config/palettes/Solarized.clr;
-          recursive = true;
-        };
-
-        "Library/Colors/Replicated.clr" = {
-          source = ./config/palettes/Replicated.clr;
-          recursive = true;
-        };
-
-        "Library/Preferences/glow" = {
-          source = ./config/glow;
-          recursive = true;
-        };
-      } else {});
-    };
+      "Library/Preferences/glow" = {
+        source = ./config/glow;
+        recursive = true;
+      };
+    } ;
+  };
 
   # Let Home Manager install and manage itself.
   programs = {
@@ -334,7 +338,7 @@ in {
           };
         };
 
-      } // lib.optionals isDarwin {
+      } // lib.optionalAttrs isDarwin {
         credential = {
           helper = "osxkeychain";
         };
@@ -626,7 +630,6 @@ in {
         plugins = [ 
           "git"
           "gh"
-          "gpg-agent"
           "tmux"
           "emoji"
           "gcloud"
@@ -640,8 +643,9 @@ in {
           "ripgrep"
           "zoxide"
           ] ++ pkgs.lib.optionals isDarwin [
-            "iterm2"
             "brew"
+            "gpg-agent"
+            "iterm2"
             "macos"
             "pasteboard"
         ];
@@ -671,9 +675,6 @@ in {
         setopt no_always_last_prompt
         setopt complete_aliases
         unsetopt hist_verify
-
-        # completions for minio client
-        complete -o nospace -C $(brew --prefix)/bin/mc mc
 
         # Tmux convenience functions
         function tmux-has-session() { 
@@ -727,7 +728,7 @@ in {
 
   };
 
-  launchd = {
+  launchd = if isDarwin then {
     enable = true ;
     agents = {
       "io.crdant.certbotRenewal" = {
@@ -757,6 +758,8 @@ in {
         };
       };
     };
+  } else {
+    enable = false ;
   };
 
   xdg = {
@@ -778,14 +781,14 @@ in {
         source = ./config/ssh/config.d;
         recursive = true;
       };
-    } // (if isDarwin then { 
+    } // lib.optionalAttrs isDarwin { 
       "karabiner/karabiner.json" = {
         text = builtins.readFile ./config/karabiner/karabiner.json ;
       };
-    } else {}) // (if isLinux then { 
-      "glow/config.yaml" = {
-        text = builtins.readFile ./config/glow/config.yaml ;
+    } // lib.optionalAttrs isLinux { 
+      "glow/glow.yml" = {
+        text = builtins.readFile ./config/glow/glow.yml ;
       };
-    } else {});
+    };
   };
 }
