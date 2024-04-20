@@ -21,6 +21,11 @@
       fsType = "vfat";
     };
 
+  fileSystems."/home/crdant/workspace" =
+    { device = "/dev/disk/by-uuid/83e58c28-491e-47af-b5d7-eecb7e9dae95";
+      fsType = "ext4";
+    };
+
   swapDevices =
     [ { device = "/dev/disk/by-uuid/e12ad2b7-69b9-402d-94a4-4e382d0d2c7d"; }
     ];
