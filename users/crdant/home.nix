@@ -148,7 +148,6 @@ in {
     ] ;
 
     file = {
-      # can't quite configure gnupg the way I want within programs.gnupg
       ".curlrc" = {
         text = "-fL";
       };
@@ -157,7 +156,8 @@ in {
         source = ./config/editorconfig;
       };
 
-     ".gnupg" = {
+      # can't quite configure gnupg the way I want within programs.gnupg
+      ".gnupg" = {
         source = ./config/gnupg;
         recursive = true;
       };
@@ -173,6 +173,11 @@ in {
       };
 
     } // lib.optionalAttrs isDarwin {
+      ".gnupg/gpg-agent.conf" = {
+        source = ./config/gpg-agent/gpg-agent.conf;
+        recursive = true;
+      };
+
       "Library/Application Support/espanso" = {
         source = ./config/espanso;
         recursive = true;
@@ -625,7 +630,6 @@ in {
         plugins = [ 
           "git"
           "gh"
-          "gpg-agent"
           "tmux"
           "emoji"
           "gcloud"
@@ -639,8 +643,9 @@ in {
           "ripgrep"
           "zoxide"
           ] ++ pkgs.lib.optionals isDarwin [
-            "iterm2"
             "brew"
+            "gpg-agent"
+            "iterm2"
             "macos"
             "pasteboard"
         ];
