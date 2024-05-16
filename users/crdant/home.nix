@@ -358,6 +358,7 @@ in {
       vimAlias = true;
 
       plugins = with pkgs.vimPlugins; [
+        conflict-marker-vim
         copilot-vim
         editorconfig-nvim
         {
