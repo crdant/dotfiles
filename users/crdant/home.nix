@@ -481,7 +481,7 @@ in {
         )
 
         -- Appearance
-        if vim.fn.has('g:gui_vimr') == 1 then
+        if vim.fn.has('gui_running') == 1 then
           vim.opt.background = "light"
         end
 
