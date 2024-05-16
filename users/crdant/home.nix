@@ -362,13 +362,20 @@ in {
         copilot-vim
         editorconfig-nvim
         {
+          plugin = fzf-vim;
+          config = ''
+            " Initialize configuration dictionary
+            let g:fzf_vim = {}
+            let g:fzf_vim.preview_window = []
+          ''; 
+        }
+        {
           plugin = NeoSolarized;
           config = "colorscheme NeoSolarized";
         }
         lsp-zero-nvim
         mason-lspconfig-nvim
         mason-nvim
-        nvim-fzf
         nvim-surround
         vim-commentary
         vim-repeat
