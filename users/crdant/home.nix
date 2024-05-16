@@ -516,6 +516,7 @@ in {
 
       plugins = [
         pkgs.tmuxPlugins.yank
+        pkgs.tmuxPlugins.vim-tmux-navigator 
       ];
 
       extraConfig = ''
