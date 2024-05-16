@@ -506,6 +506,34 @@ in {
             lsp_zero.default_setup,
           },
         })
+
+        -- edits an Instruqt track in a multiple splits
+        function ChallengeEdit(args)
+          local dir = args.args
+
+          -- open the assignment 
+          vim.cmd('tabnew ' .. dir .. '/check-shell')
+
+          -- create a vertical split with the check script, which
+          -- will end up at the bottom
+          vim.cmd('vnew ' .. dir .. '/assignment.md')
+
+          -- Create two horizontal splits with the remaining files on
+          -- right hand side
+
+          vim.cmd('wincmd l')
+          vim.cmd('new ' .. dir .. '/solve-shell')
+          vim.cmd('new ' .. dir .. '/setup-shell')
+        end
+
+        local function challenge_completion(ArgLead, CmdLine, CursorPos)
+          return vim.fn.getcompletion(ArgLead, 'dir')
+        end
+
+        vim.api.nvim_create_user_command('ChallengeEdit', ChallengeEdit, {
+          nargs = 1,
+          complete = challenge_completion
+        })
       '';
     };
 
