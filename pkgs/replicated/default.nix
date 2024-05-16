@@ -2,19 +2,19 @@
 
 buildGoModule rec {
   pname = "replicated";
-  version = "0.72.0";
+  version = "0.73.1";
 
   src = fetchFromGitHub {
     owner = "replicatedhq";
     repo = "replicated";
     rev = "v${version}";
-    sha256 = "sha256-PRlUhZAcgF3H9GnAA+nvq5/vCSCLEjXzTs9G72g7gvk=";
+    sha256 = "sha256-MURw6sQqZeItbGlbddF0ZgZ7Ymq2PIsJhCLK4AOkBoA=";
   };
 
   vendorHash = if stdenv.isDarwin then 
       "sha256-WEx7ozGY7dJVR47iZF0OTBvTBTYKUDTals85Se4z5l4="
     else
-      "sha256-BsRPBOHkTn2LJil1xXTuF1V7ceKWoFy8ZSdlGMYeaUA";
+      "sha256-WEx7ozGY7dJVR47iZF0OTBvTBTYKUDTals85Se4z5l4=";
 
   subPackages = [ "cli/cmd/" ];
   ldflags = [

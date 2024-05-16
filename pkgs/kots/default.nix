@@ -2,19 +2,19 @@
 
 buildGoModule rec {
   pname = "kots";
-  version = "1.108.5";
+  version = "1.109.0";
 
   src = fetchFromGitHub {
     owner = "replicatedhq";
     repo = "kots";
     rev = "v${version}";
-    sha256 = "sha256-nYH3oU1mPYBcKrzPnXZXH3PVl7JETvP4ASvzvDj/aok=";
+    sha256 = "sha256-rwhX4EnMgxu/yktvuVIsghxbyyKvZksQT+9D4fNkSoQ=";
   };
 
   vendorHash = if stdenv.isDarwin then
-      "sha256-WQ7JUGplHcAWRywzYmnvLv+NwF4xBkbVIdiM0H9sn/8="
+      ""
     else
-      "sha256-NiivHDI2XvtJO6izk+9bkemYaqvCy9pUNSEedNgf3E8";
+      "sha256-QI+cvtBtRfTKssnEBLX4VnMX5o2DWvtnPrVOrXF2FyM=";
 
   subPackages = [ "cmd/kots/" ];
 
@@ -24,6 +24,8 @@ buildGoModule rec {
   ];
 
   ldflagsStr = lib.strings.concatStringsSep " " ldflags ;
+
+  buildInputs = [ unstable.go ] ;
 
   # Override build phase to use make
   buildPhase = ''
