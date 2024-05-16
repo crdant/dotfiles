@@ -406,7 +406,7 @@ in {
         -- :help smarttab
         vim.opt.smarttab = true
 
-        -- 1 tab == 4 spaces
+        -- 1 tab == 2 spaces
         vim.opt.shiftwidth = 2
         vim.opt.tabstop = 2
         vim.opt.softtabstop = 2
