@@ -358,8 +358,17 @@ in {
       vimAlias = true;
 
       plugins = with pkgs.vimPlugins; [
+        conflict-marker-vim
         copilot-vim
         editorconfig-nvim
+        {
+          plugin = fzf-vim;
+          config = ''
+            " Initialize configuration dictionary
+            let g:fzf_vim = {}
+            let g:fzf_vim.preview_window = []
+          ''; 
+        }
         {
           plugin = NeoSolarized;
           config = "colorscheme NeoSolarized";
@@ -367,7 +376,6 @@ in {
         lsp-zero-nvim
         mason-lspconfig-nvim
         mason-nvim
-        nvim-fzf
         nvim-surround
         vim-commentary
         vim-repeat
@@ -376,6 +384,7 @@ in {
       ];
 
       extraLuaConfig = ''
+
         -- General
         vim.opt.encoding = "utf-8"          -- The encoding displayed
         vim.opt.fileencoding = "utf-8"      -- The encoding written to file
@@ -398,7 +407,7 @@ in {
         -- :help smarttab
         vim.opt.smarttab = true
 
-        -- 1 tab == 4 spaces
+        -- 1 tab == 2 spaces
         vim.opt.shiftwidth = 2
         vim.opt.tabstop = 2
         vim.opt.softtabstop = 2
@@ -473,9 +482,45 @@ in {
         )
 
         -- Appearance
-        if vim.fn.has('g:gui_vimr') == 1 then
+        if vim.fn.has('gui_running') == 1 then
           vim.opt.background = "light"
         end
+
+        -- markdown should have spell check and word wrap
+        vim.api.nvim_create_autocmd("FileType", {
+          pattern = "markdown",
+          callback = function()
+            vim.opt_local.textwidth = 78
+            vim.opt_local.spell = true
+          end
+        })
+
+        -- Lua-based configuration for Neovim
+
+        -- Ensure Makefiles use tabs
+        vim.api.nvim_create_autocmd("FileType", {
+          pattern = "make",
+          callback = function()
+            vim.opt_local.expandtab = false
+          end
+        })
+
+        -- Set larger indents for Go files
+        vim.api.nvim_create_autocmd("FileType", {
+          pattern = "go",
+          callback = function()
+            vim.opt_local.shiftwidth = 8
+            vim.opt_local.tabstop = 8
+          end
+        })
+
+        -- Auto format Go files on save
+        vim.api.nvim_create_autocmd("BufWritePre", {
+          pattern = "*.go",
+          callback = function()
+            vim.cmd('silent! !go fmt %')
+          end
+        })
 
         -- line numbers
         -- set relativenumber
@@ -498,6 +543,34 @@ in {
             lsp_zero.default_setup,
           },
         })
+
+        -- edits an Instruqt track in a multiple splits
+        function ChallengeEdit(args)
+          local dir = args.args
+
+          -- open the assignment 
+          vim.cmd('tabnew ' .. dir .. '/check-shell')
+
+          -- create a vertical split with the check script, which
+          -- will end up at the bottom
+          vim.cmd('vnew ' .. dir .. '/assignment.md')
+
+          -- Create two horizontal splits with the remaining files on
+          -- right hand side
+
+          vim.cmd('wincmd l')
+          vim.cmd('new ' .. dir .. '/solve-shell')
+          vim.cmd('new ' .. dir .. '/setup-shell')
+        end
+
+        local function challenge_completion(ArgLead, CmdLine, CursorPos)
+          return vim.fn.getcompletion(ArgLead, 'dir')
+        end
+
+        vim.api.nvim_create_user_command('ChallengeEdit', ChallengeEdit, {
+          nargs = 1,
+          complete = challenge_completion
+        })
       '';
     };
 
@@ -508,6 +581,7 @@ in {
 
       plugins = [
         pkgs.tmuxPlugins.yank
+        pkgs.tmuxPlugins.vim-tmux-navigator 
       ];
 
       extraConfig = ''
