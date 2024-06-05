@@ -384,6 +384,7 @@ in {
       ];
 
       extraLuaConfig = ''
+
         -- General
         vim.opt.encoding = "utf-8"          -- The encoding displayed
         vim.opt.fileencoding = "utf-8"      -- The encoding written to file
@@ -484,6 +485,15 @@ in {
         if vim.fn.has('gui_running') == 1 then
           vim.opt.background = "light"
         end
+
+        -- markdown should have spell check and word wrap
+        vim.api.nvim_create_autocmd("FileType", {
+          pattern = "markdown",
+          callback = function()
+            vim.opt_local.textwidth = 78
+            vim.opt_local.spell = true
+          end
+        })
 
         -- line numbers
         -- set relativenumber
