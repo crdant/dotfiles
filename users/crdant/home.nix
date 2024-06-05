@@ -495,6 +495,33 @@ in {
           end
         })
 
+        -- Lua-based configuration for Neovim
+
+        -- Ensure Makefiles use tabs
+        vim.api.nvim_create_autocmd("FileType", {
+          pattern = "make",
+          callback = function()
+            vim.opt_local.expandtab = false
+          end
+        })
+
+        -- Set larger indents for Go files
+        vim.api.nvim_create_autocmd("FileType", {
+          pattern = "go",
+          callback = function()
+            vim.opt_local.shiftwidth = 8
+            vim.opt_local.tabstop = 8
+          end
+        })
+
+        -- Auto format Go files on save
+        vim.api.nvim_create_autocmd("BufWritePre", {
+          pattern = "*.go",
+          callback = function()
+            vim.cmd('silent! !go fmt %')
+          end
+        })
+
         -- line numbers
         -- set relativenumber
         vim.opt.number = true
