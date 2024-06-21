@@ -91,7 +91,7 @@ in {
       mods
       minio-client
       nix-prefetch-git
-      nodejs_21
+      nodejs_22
       oras
       packer
       rar
@@ -121,7 +121,7 @@ in {
       # gui apps
       # discord
       # minikube
-      unstable.postman
+      postman
       vimr
       (callPackage ./vimr-wrapper.nix { inherit config ; })
       # vscode
