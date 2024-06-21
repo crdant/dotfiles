@@ -7,9 +7,16 @@
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
-    # example = prev.example.overrideAttrs (oldAttrs: rec {
-    # ...
-    # });
+    iterm2 = prev.iterm2.overrideAttrs (oldAttrs: let
+      newVersion = "3.5.2";
+      in {
+        version = newVersion;
+        src = prev.fetchzip {
+          url = "https://iterm2.com/downloads/stable/iTerm2-${prev.lib.replaceStrings ["."] ["_"] newVersion}.zip";
+          hash = "sha256-WiRRxklI3A/3MtJY63jAkUVe8qa5jfRACzUESfwAmmw=";
+        };
+      }
+    );
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
