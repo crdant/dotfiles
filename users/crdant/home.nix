@@ -88,6 +88,7 @@ in {
       kots2helm
       kubeseal
       kustomize
+      kyverno-chainsaw
       mods
       minio-client
       nix-prefetch-git
