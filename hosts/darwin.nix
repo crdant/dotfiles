@@ -27,6 +27,7 @@
       duti
       iterm2
       karabiner-elements
+      lima
       m-cli
       mas
       raycast
