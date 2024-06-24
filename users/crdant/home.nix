@@ -377,7 +377,7 @@ in {
         lsp-zero-nvim
         mason-lspconfig-nvim
         mason-nvim
-        nvim-surround
+        vim-surround
         vim-commentary
         vim-repeat
         vim-tmux-navigator
