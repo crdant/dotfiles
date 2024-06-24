@@ -79,6 +79,7 @@ in {
       google-cloud-sdk
       govc
       helmfile
+      imgpkg
       istioctl
       krew
       kubectl
