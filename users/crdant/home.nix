@@ -94,6 +94,7 @@ in {
       minio-client
       nix-prefetch-git
       nodejs_22
+      open-policy-agent
       oras
       packer
       rar

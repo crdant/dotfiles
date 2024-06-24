@@ -91,6 +91,7 @@
       virtualenv
       wget
       yq-go
+      yubico-pam
       zsh-completions
     ] ++ lib.optionals pkgs.stdenv.isLinux [
       espanso

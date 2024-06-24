@@ -24,12 +24,14 @@
 
   environment = {
     systemPackages = with pkgs; [
+      darwin.trash
       duti
       iterm2
       karabiner-elements
       lima
       m-cli
       mas
+      pinentry_mac
       raycast
       slack
       zoom-us
@@ -52,19 +54,6 @@
       "homebrew/services"
       "OJFord/formulae"
       "vmware-tanzu/carvel"
-    ];
-
-    brews = [
-      "adr-tools"
-      # "tccutil"
-      "trash"
-      "opa"
-      "osxutils"
-      "pinentry-mac"
-      "watch"
-      "pam_yubico"
-      # "ojford/formulae/loginitems"
-      # "vmware-tanzu/carvel/imgpkg"
     ];
 
     casks = [
