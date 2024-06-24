@@ -12,4 +12,6 @@
 
   instruqt = pkgs.callPackage ./instruqt { };
   mods = pkgs.callPackage ./mods { };
+
+  imgpkg = pkgs.callPackage ./imgpkg { };
 }
