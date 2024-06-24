@@ -78,10 +78,11 @@ in {
       gh
       google-cloud-sdk
       govc
+      helmfile
+      istioctl
       krew
       kubectl
       kubernetes-helm
-      istioctl
       k0sctl
       ko
       kots
