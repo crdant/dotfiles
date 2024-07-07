@@ -12,6 +12,7 @@
 
   instruqt = pkgs.callPackage ./instruqt { };
   mods = pkgs.callPackage ./mods { };
+  llmPlugins = pkgs.python312Packages.callPackage ./llm/plugins { };
 
   imgpkg = pkgs.callPackage ./imgpkg { };
 }

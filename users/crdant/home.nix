@@ -81,6 +81,7 @@ in {
       helmfile
       imgpkg
       istioctl
+      ( llm.withPlugins [ llmPlugins.claude-3 ] )
       krew
       kubectl
       kubernetes-helm
