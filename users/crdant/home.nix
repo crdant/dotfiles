@@ -373,10 +373,10 @@ in {
             let g:fzf_vim.preview_window = []
           ''; 
         }
-        {
-          plugin = NeoSolarized;
-          config = "colorscheme NeoSolarized";
-        }
+        { plugin = rose-pine;
+          config = "colorscheme rose-pine";
+        } 
+        NeoSolarized
         lsp-zero-nvim
         mason-lspconfig-nvim
         mason-nvim
