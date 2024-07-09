@@ -42,7 +42,7 @@ def fetch_pypi_info(package_name):
             
             if sdist_url:
                 try:
-                    result = subprocess.run(['nix-prefetch-url', sdist_url], capture_output=True, text=True, check=True)
+                    result = subprocess.run(['nix-prefetch-url', '--unpack', sdist_url], capture_output=True, text=True, check=True)
                     sha256 = result.stdout.strip()
                 except subprocess.CalledProcessError as e:
                     print(f"Error fetching SHA256 for {package_name}: {e}")
@@ -51,10 +51,13 @@ def fetch_pypi_info(package_name):
                 print(f"No source distribution found for {package_name}")
                 sha256 = None
 
+            
             return {
                 "name": package_name,
                 "version": latest_version,
+                "sdist_url": sdist_url,
                 "description": data['info']['summary'],
+                "dependencies": data['info']['requires_dist'],
                 "homepage": data['info']['project_urls'].get('Homepage', data['info']['home_page']),
                 "license": data['info']['license'] or "UNKNOWN",
                 "sha256": sha256
@@ -72,18 +75,24 @@ def generate_nix_expression(plugins_info):
         if plugin and plugin['sha256']:
             # Strip "llm-" prefix from the name
             stripped_name = plugin["name"].removeprefix("llm-")
+            # Parse dependencies from requires_dist
+            
+            # Generate the propagatedBuildInputs string
+            package_dependencies = f"python3Packages.{dep}" for dep in parse_dependencies(plugin["dependencies"]])
+            build_inputs = " ".join(package_dependencies +  "llm")
             nix_expr = f'''
   {stripped_name} = buildPythonPackage rec {{
     pname = "{stripped_name}";
     version = "{plugin["version"]}";
+    pyproject = true;
 
-    src = fetchPypi {{
-      inherit pname version;
+    src = fetchzip {{
+      url = "{plugin["sdist_url"]}";
       sha256 = "{plugin["sha256"]}";
     }};
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ {build_inputs} ];
 
     meta = with lib; {{
       description = "{plugin["description"]}";
@@ -107,7 +116,7 @@ if __name__ == "__main__":
     nix_output = generate_nix_expression(plugins_info)
     
     with open("generated.nix", "w") as f:
-        f.write("{ lib, buildPythonPackage, fetchPyPi, llm }:\n")
+        f.write("{ lib, buildPythonPackage, fetchzip, llm }:\n")
         f.write(nix_output)
 
     print(f"Generated Nix expressions for {len(plugins_info)} plugins")

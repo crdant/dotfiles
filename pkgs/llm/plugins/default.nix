@@ -5,7 +5,7 @@ let
 
   generatedPlugins = import ./generated.nix {
     inherit lib buildPythonPackage;
-    inherit (pkgs) fetchPyPi llm;
+    inherit (pkgs) fetchzip llm;
   };
 
   plugins = generatedPlugins;
