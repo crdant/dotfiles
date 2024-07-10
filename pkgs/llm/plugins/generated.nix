@@ -1,7 +1,7 @@
-{ lib, buildPythonPackage, fetchzip, llm }:
+{ lib, python3Packages, fetchzip, llm }:
 {
 
-  anyscale-endpoints = buildPythonPackage rec {
+  anyscale-endpoints = python3Packages.buildPythonPackage rec {
     pname = "anyscale-endpoints";
     version = "0.1";
     pyproject = true;
@@ -12,7 +12,7 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ python3Packages.pytest python3Packages.pytest-httpx llm ];
 
     meta = with lib; {
       description = "LLM plugin for models hosted by Anyscale Endpoints";
@@ -21,7 +21,7 @@
   };
 
 
-  bedrock-anthropic = buildPythonPackage rec {
+  bedrock-anthropic = python3Packages.buildPythonPackage rec {
     pname = "bedrock-anthropic";
     version = "0.1";
     pyproject = true;
@@ -41,7 +41,7 @@
   };
 
 
-  bedrock-meta = buildPythonPackage rec {
+  bedrock-meta = python3Packages.buildPythonPackage rec {
     pname = "bedrock-meta";
     version = "0.1";
     pyproject = true;
@@ -52,7 +52,7 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
       description = "LLM plugin for Meta Llama2 on AWS Bedrock";
@@ -61,7 +61,7 @@
   };
 
 
-  claude = buildPythonPackage rec {
+  claude = python3Packages.buildPythonPackage rec {
     pname = "claude";
     version = "0.1.0";
     pyproject = true;
@@ -72,7 +72,7 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ python3Packages.pytest python3Packages.click llm ];
 
     meta = with lib; {
       description = "LLM plugin for Anthropic's Claude";
@@ -81,7 +81,7 @@
   };
 
 
-  claude-3 = buildPythonPackage rec {
+  claude-3 = python3Packages.buildPythonPackage rec {
     pname = "claude-3";
     version = "0.1";
     pyproject = true;
@@ -92,7 +92,7 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ python3Packages.pytest python3Packages.pytest-recording llm ];
 
     meta = with lib; {
       description = "LLM access to Claude 3 by Anthropic";
@@ -101,7 +101,7 @@
   };
 
 
-  clip = buildPythonPackage rec {
+  clip = python3Packages.buildPythonPackage rec {
     pname = "clip";
     version = "0.1";
     pyproject = true;
@@ -112,7 +112,7 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
       description = "Generate embeddings for images and text using CLIP with LLM";
@@ -121,7 +121,7 @@
   };
 
 
-  cluster = buildPythonPackage rec {
+  cluster = python3Packages.buildPythonPackage rec {
     pname = "cluster";
     version = "0.1";
     pyproject = true;
@@ -132,7 +132,7 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
       description = "LLM plugin for clustering embeddings";
@@ -141,7 +141,7 @@
   };
 
 
-  cmd = buildPythonPackage rec {
+  cmd = python3Packages.buildPythonPackage rec {
     pname = "cmd";
     version = "0.1a0";
     pyproject = true;
@@ -152,7 +152,7 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
       description = "Use LLM to generate and execute commands in your shell";
@@ -161,7 +161,7 @@
   };
 
 
-  cohere = buildPythonPackage rec {
+  cohere = python3Packages.buildPythonPackage rec {
     pname = "cohere";
     version = "0.9";
     pyproject = true;
@@ -172,7 +172,7 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ python3Packages.fastavro python3Packages.pytest python3Packages.pytest-asyncio llm ];
 
     meta = with lib; {
       description = "Plugin for LLM adding support for Cohere's Generate and Summarize models";
@@ -181,7 +181,7 @@
   };
 
 
-  command-r = buildPythonPackage rec {
+  command-r = python3Packages.buildPythonPackage rec {
     pname = "command-r";
     version = "0.1";
     pyproject = true;
@@ -192,7 +192,7 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
       description = "Access the Cohere Command R family of models";
@@ -201,7 +201,7 @@
   };
 
 
-  embed-jina = buildPythonPackage rec {
+  embed-jina = python3Packages.buildPythonPackage rec {
     pname = "embed-jina";
     version = "0.1";
     pyproject = true;
@@ -212,7 +212,7 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
       description = "Embedding models from Jina AI";
@@ -221,7 +221,7 @@
   };
 
 
-  embed-onnx = buildPythonPackage rec {
+  embed-onnx = python3Packages.buildPythonPackage rec {
     pname = "embed-onnx";
     version = "0.1";
     pyproject = true;
@@ -232,7 +232,7 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
       description = "Run embedding models using ONNX";
@@ -241,7 +241,7 @@
   };
 
 
-  fireworks = buildPythonPackage rec {
+  fireworks = python3Packages.buildPythonPackage rec {
     pname = "fireworks";
     version = "0.1a0";
     pyproject = true;
@@ -252,7 +252,7 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
       description = "Access fireworks.ai models via API";
@@ -261,7 +261,7 @@
   };
 
 
-  gemini = buildPythonPackage rec {
+  gemini = python3Packages.buildPythonPackage rec {
     pname = "gemini";
     version = "0.1a0";
     pyproject = true;
@@ -272,7 +272,7 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
       description = "LLM plugin to access Google's Gemini family of models";
@@ -281,7 +281,7 @@
   };
 
 
-  gpt4all = buildPythonPackage rec {
+  gpt4all = python3Packages.buildPythonPackage rec {
     pname = "gpt4all";
     version = "0.1";
     pyproject = true;
@@ -292,7 +292,7 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
       description = "Plugin for LLM adding support for GPT4ALL models";
@@ -301,7 +301,7 @@
   };
 
 
-  groq = buildPythonPackage rec {
+  groq = python3Packages.buildPythonPackage rec {
     pname = "groq";
     version = "0.1";
     pyproject = true;
@@ -321,7 +321,7 @@
   };
 
 
-  llama-cpp = buildPythonPackage rec {
+  llama-cpp = python3Packages.buildPythonPackage rec {
     pname = "llama-cpp";
     version = "0.1a0";
     pyproject = true;
@@ -332,7 +332,7 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
       description = "LLM plugin for running models using llama.cpp";
@@ -341,7 +341,7 @@
   };
 
 
-  llamafile = buildPythonPackage rec {
+  llamafile = python3Packages.buildPythonPackage rec {
     pname = "llamafile";
     version = "0.1";
     pyproject = true;
@@ -352,7 +352,7 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
       description = "Access llamafile localhost models via LLM";
@@ -361,7 +361,7 @@
   };
 
 
-  markov = buildPythonPackage rec {
+  markov = python3Packages.buildPythonPackage rec {
     pname = "markov";
     version = "0.1";
     pyproject = true;
@@ -372,7 +372,7 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
       description = "Plugin for LLM adding a Markov chain generating model";
@@ -381,7 +381,7 @@
   };
 
 
-  mistral = buildPythonPackage rec {
+  mistral = python3Packages.buildPythonPackage rec {
     pname = "mistral";
     version = "0.1";
     pyproject = true;
@@ -392,7 +392,7 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ python3Packages.pytest python3Packages.pytest-httpx llm ];
 
     meta = with lib; {
       description = "LLM plugin providing access to Mistral models busing the Mistral API";
@@ -401,7 +401,7 @@
   };
 
 
-  mlc = buildPythonPackage rec {
+  mlc = python3Packages.buildPythonPackage rec {
     pname = "mlc";
     version = "0.1a0";
     pyproject = true;
@@ -412,7 +412,7 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
       description = "LLM plugin for running models using MLC";
@@ -421,7 +421,7 @@
   };
 
 
-  mpt30b = buildPythonPackage rec {
+  mpt30b = python3Packages.buildPythonPackage rec {
     pname = "mpt30b";
     version = "0.1";
     pyproject = true;
@@ -432,7 +432,7 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ python3Packages.pytest python3Packages.transformers python3Packages.ctransformers llm ];
 
     meta = with lib; {
       description = "Plugin for LLM adding support for the MPT-30B language model";
@@ -441,7 +441,7 @@
   };
 
 
-  ollama = buildPythonPackage rec {
+  ollama = python3Packages.buildPythonPackage rec {
     pname = "ollama";
     version = "0.1.0";
     pyproject = true;
@@ -452,7 +452,7 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
       description = "LLM plugin providing access to local Ollama models";
@@ -461,7 +461,7 @@
   };
 
 
-  openrouter = buildPythonPackage rec {
+  openrouter = python3Packages.buildPythonPackage rec {
     pname = "openrouter";
     version = "0.1";
     pyproject = true;
@@ -472,7 +472,7 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ python3Packages.pytest python3Packages.pytest-httpx llm ];
 
     meta = with lib; {
       description = "LLM plugin for models hosted by OpenRouter";
@@ -481,7 +481,7 @@
   };
 
 
-  palm = buildPythonPackage rec {
+  palm = python3Packages.buildPythonPackage rec {
     pname = "palm";
     version = "0.1";
     pyproject = true;
@@ -492,7 +492,7 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ python3Packages.pytest python3Packages.pytest-asyncio llm ];
 
     meta = with lib; {
       description = "Plugin for LLM adding support for Google's PaLM 2 model";
@@ -501,7 +501,7 @@
   };
 
 
-  perplexity = buildPythonPackage rec {
+  perplexity = python3Packages.buildPythonPackage rec {
     pname = "perplexity";
     version = "0.2";
     pyproject = true;
@@ -521,7 +521,7 @@
   };
 
 
-  python = buildPythonPackage rec {
+  python = python3Packages.buildPythonPackage rec {
     pname = "python";
     version = "0.1";
     pyproject = true;
@@ -532,7 +532,7 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
       description = "Run a Python interpreter in the LLM virtual environment";
@@ -541,7 +541,7 @@
   };
 
 
-  reka = buildPythonPackage rec {
+  reka = python3Packages.buildPythonPackage rec {
     pname = "reka";
     version = "0.1a0";
     pyproject = true;
@@ -552,7 +552,7 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
       description = "Access Reka models via the Reka API";
@@ -561,7 +561,7 @@
   };
 
 
-  replicate = buildPythonPackage rec {
+  replicate = python3Packages.buildPythonPackage rec {
     pname = "replicate";
     version = "0.1";
     pyproject = true;
@@ -572,7 +572,7 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
       description = "LLM plugin for models hosted on Replicate";
@@ -581,7 +581,7 @@
   };
 
 
-  sentence-transformers = buildPythonPackage rec {
+  sentence-transformers = python3Packages.buildPythonPackage rec {
     pname = "sentence-transformers";
     version = "0.1";
     pyproject = true;
@@ -592,7 +592,7 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
       description = "Use sentence-transformers for embeddings with LLM";
@@ -601,7 +601,7 @@
   };
 
 
-  together = buildPythonPackage rec {
+  together = python3Packages.buildPythonPackage rec {
     pname = "together";
     version = "0.1";
     pyproject = true;
@@ -612,7 +612,7 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ llm ];
+    propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
       description = "llm together plugin";

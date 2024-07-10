@@ -28,6 +28,31 @@ def version_compare(v1, v2):
     # If all parts are equal so far, longer version is considered newer
     return len(parts2) - len(parts1)
 
+def parse_dependencies(requires_dist):
+    dependencies = set()
+    for req in requires_dist:
+        # ignore version constraints and extras in the name, and skip any
+        # dependencies that are not runtime dependencies
+        match = re.match(r'^([a-zA-Z0-9._-]+)(?:\s*;.*| \(.+\))$', req)
+
+        if match:
+            package_name = match.group(1)
+
+            # skip `llm` itself
+            if package_name == "llm":
+              continue
+
+            package_name = package_name.rstrip('.')
+
+            # check for other `llm` plugins
+            if package_name.startswith("llm-"):
+                stripped_name = package_name.removeprefix("llm-")
+                dependencies.add(f'llmPlugins.{stripped_name}')
+            else:
+                dependencies.add(f'python3Packages.{package_name}')
+
+    return list(dependencies)
+
 def fetch_pypi_info(package_name):
     url = f"https://pypi.org/pypi/{package_name}/json"
     try:
@@ -78,10 +103,10 @@ def generate_nix_expression(plugins_info):
             # Parse dependencies from requires_dist
             
             # Generate the propagatedBuildInputs string
-            package_dependencies = f"python3Packages.{dep}" for dep in parse_dependencies(plugin["dependencies"]])
-            build_inputs = " ".join(package_dependencies +  "llm")
+            package_dependencies = parse_dependencies(plugin["dependencies"])
+            build_inputs = " ".join(package_dependencies + [ "llm" ])
             nix_expr = f'''
-  {stripped_name} = buildPythonPackage rec {{
+  {stripped_name} = python3Packages.buildPythonPackage rec {{
     pname = "{stripped_name}";
     version = "{plugin["version"]}";
     pyproject = true;
@@ -116,7 +141,7 @@ if __name__ == "__main__":
     nix_output = generate_nix_expression(plugins_info)
     
     with open("generated.nix", "w") as f:
-        f.write("{ lib, buildPythonPackage, fetchzip, llm }:\n")
+        f.write("{ lib, python3Packages, fetchzip, llm }:\n")
         f.write(nix_output)
 
     print(f"Generated Nix expressions for {len(plugins_info)} plugins")

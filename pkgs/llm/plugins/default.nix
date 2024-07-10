@@ -1,11 +1,11 @@
 { lib, pkgs, python3Packages }:
 
 let
-  inherit (python3Packages) buildPythonPackage;
+  inherit python3Packages ;
 
   generatedPlugins = import ./generated.nix {
-    inherit lib buildPythonPackage;
-    inherit (pkgs) fetchzip llm;
+    inherit lib python3Packages ;
+    inherit (pkgs) fetchzip llm ;
   };
 
   plugins = generatedPlugins;
