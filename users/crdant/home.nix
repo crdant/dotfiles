@@ -376,11 +376,7 @@ in {
         {
           plugin = rose-pine;
           config = ''
-            require('rose-pine').setup(
-              {
-                dark_variant = 'moon',
-              }
-            )
+            let g:rose_pine_dark_variant = 'moon'
             colorscheme rose-pine
             '';
         }
