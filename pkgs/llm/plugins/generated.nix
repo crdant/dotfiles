@@ -12,6 +12,7 @@
     };
 
     doCheck = false;
+    buildInputs = [ python3Packages.pytest python3Packages.pytest-httpx llm ];
     propagatedBuildInputs = [ python3Packages.pytest python3Packages.pytest-httpx llm ];
 
     meta = with lib; {
@@ -32,6 +33,7 @@
     };
 
     doCheck = false;
+    buildInputs = [ llm ];
     propagatedBuildInputs = [ llm ];
 
     meta = with lib; {
@@ -52,6 +54,7 @@
     };
 
     doCheck = false;
+    buildInputs = [ python3Packages.pytest llm ];
     propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
@@ -72,6 +75,7 @@
     };
 
     doCheck = false;
+    buildInputs = [ python3Packages.pytest python3Packages.click llm ];
     propagatedBuildInputs = [ python3Packages.pytest python3Packages.click llm ];
 
     meta = with lib; {
@@ -92,7 +96,8 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ python3Packages.pytest python3Packages.pytest-recording llm ];
+    buildInputs = [ python3Packages.pytest-recording python3Packages.pytest llm ];
+    propagatedBuildInputs = [ python3Packages.pytest-recording python3Packages.pytest llm ];
 
     meta = with lib; {
       description = "LLM access to Claude 3 by Anthropic";
@@ -112,6 +117,7 @@
     };
 
     doCheck = false;
+    buildInputs = [ python3Packages.pytest llm ];
     propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
@@ -132,6 +138,7 @@
     };
 
     doCheck = false;
+    buildInputs = [ python3Packages.pytest llm ];
     propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
@@ -152,6 +159,7 @@
     };
 
     doCheck = false;
+    buildInputs = [ python3Packages.pytest llm ];
     propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
@@ -172,7 +180,8 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ python3Packages.fastavro python3Packages.pytest python3Packages.pytest-asyncio llm ];
+    buildInputs = [ python3Packages.pytest-asyncio python3Packages.pytest python3Packages.fastavro llm ];
+    propagatedBuildInputs = [ python3Packages.pytest-asyncio python3Packages.pytest python3Packages.fastavro llm ];
 
     meta = with lib; {
       description = "Plugin for LLM adding support for Cohere's Generate and Summarize models";
@@ -192,6 +201,7 @@
     };
 
     doCheck = false;
+    buildInputs = [ python3Packages.pytest llm ];
     propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
@@ -212,6 +222,7 @@
     };
 
     doCheck = false;
+    buildInputs = [ python3Packages.pytest llm ];
     propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
@@ -232,6 +243,7 @@
     };
 
     doCheck = false;
+    buildInputs = [ python3Packages.pytest llm ];
     propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
@@ -252,6 +264,7 @@
     };
 
     doCheck = false;
+    buildInputs = [ python3Packages.pytest llm ];
     propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
@@ -272,6 +285,7 @@
     };
 
     doCheck = false;
+    buildInputs = [ python3Packages.pytest llm ];
     propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
@@ -292,6 +306,7 @@
     };
 
     doCheck = false;
+    buildInputs = [ python3Packages.pytest llm ];
     propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
@@ -312,6 +327,7 @@
     };
 
     doCheck = false;
+    buildInputs = [ llm ];
     propagatedBuildInputs = [ llm ];
 
     meta = with lib; {
@@ -332,6 +348,7 @@
     };
 
     doCheck = false;
+    buildInputs = [ python3Packages.pytest llm ];
     propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
@@ -352,6 +369,7 @@
     };
 
     doCheck = false;
+    buildInputs = [ python3Packages.pytest llm ];
     propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
@@ -372,6 +390,7 @@
     };
 
     doCheck = false;
+    buildInputs = [ python3Packages.pytest llm ];
     propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
@@ -392,6 +411,7 @@
     };
 
     doCheck = false;
+    buildInputs = [ python3Packages.pytest python3Packages.pytest-httpx llm ];
     propagatedBuildInputs = [ python3Packages.pytest python3Packages.pytest-httpx llm ];
 
     meta = with lib; {
@@ -412,6 +432,7 @@
     };
 
     doCheck = false;
+    buildInputs = [ python3Packages.pytest llm ];
     propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
@@ -432,7 +453,8 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ python3Packages.pytest python3Packages.transformers python3Packages.ctransformers llm ];
+    buildInputs = [ python3Packages.pytest python3Packages.ctransformers python3Packages.transformers llm ];
+    propagatedBuildInputs = [ python3Packages.pytest python3Packages.ctransformers python3Packages.transformers llm ];
 
     meta = with lib; {
       description = "Plugin for LLM adding support for the MPT-30B language model";
@@ -452,6 +474,7 @@
     };
 
     doCheck = false;
+    buildInputs = [ python3Packages.pytest llm ];
     propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
@@ -472,6 +495,7 @@
     };
 
     doCheck = false;
+    buildInputs = [ python3Packages.pytest python3Packages.pytest-httpx llm ];
     propagatedBuildInputs = [ python3Packages.pytest python3Packages.pytest-httpx llm ];
 
     meta = with lib; {
@@ -492,7 +516,8 @@
     };
 
     doCheck = false;
-    propagatedBuildInputs = [ python3Packages.pytest python3Packages.pytest-asyncio llm ];
+    buildInputs = [ python3Packages.pytest-asyncio python3Packages.pytest llm ];
+    propagatedBuildInputs = [ python3Packages.pytest-asyncio python3Packages.pytest llm ];
 
     meta = with lib; {
       description = "Plugin for LLM adding support for Google's PaLM 2 model";
@@ -512,6 +537,7 @@
     };
 
     doCheck = false;
+    buildInputs = [ llm ];
     propagatedBuildInputs = [ llm ];
 
     meta = with lib; {
@@ -532,6 +558,7 @@
     };
 
     doCheck = false;
+    buildInputs = [ python3Packages.pytest llm ];
     propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
@@ -552,6 +579,7 @@
     };
 
     doCheck = false;
+    buildInputs = [ python3Packages.pytest llm ];
     propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
@@ -572,6 +600,7 @@
     };
 
     doCheck = false;
+    buildInputs = [ python3Packages.pytest llm ];
     propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
@@ -592,6 +621,7 @@
     };
 
     doCheck = false;
+    buildInputs = [ python3Packages.pytest llm ];
     propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {
@@ -612,6 +642,7 @@
     };
 
     doCheck = false;
+    buildInputs = [ python3Packages.pytest llm ];
     propagatedBuildInputs = [ python3Packages.pytest llm ];
 
     meta = with lib; {

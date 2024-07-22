@@ -117,6 +117,7 @@ def generate_nix_expression(plugins_info):
     }};
 
     doCheck = false;
+    buildInputs = [ {build_inputs} ];
     propagatedBuildInputs = [ {build_inputs} ];
 
     meta = with lib; {{
