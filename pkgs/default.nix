@@ -14,4 +14,7 @@
   mods = pkgs.callPackage ./mods { };
 
   imgpkg = pkgs.callPackage ./imgpkg { };
+
+  iterm-ai = pkgs.callPackage ./iterm-ai { };
+
 }
