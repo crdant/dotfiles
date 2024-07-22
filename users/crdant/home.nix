@@ -127,6 +127,7 @@ in {
       # minikube
       postman
       vimr
+      iterm-ai
       (callPackage ./vimr-wrapper.nix { inherit config ; })
       # vscode
     ] ++ lib.optionals isLinux [
