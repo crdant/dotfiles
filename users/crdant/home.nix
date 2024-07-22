@@ -378,7 +378,7 @@ in {
           config = ''
             let g:rose_pine_dark_variant = 'moon'
             colorscheme rose-pine
-            '';
+          '';
         }
         lsp-zero-nvim
         mason-lspconfig-nvim

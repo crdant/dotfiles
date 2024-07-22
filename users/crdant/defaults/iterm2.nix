@@ -404,7 +404,7 @@
           "Blue Component" = "0.62352943420410156";
           "Green Component" = "0.58039218187332153";
         };
-        "Ansi 8 Color" = {
+        "}Ansi 8 Color" = {
           "Red Component" = "0.43137255311012268";
           "Blue Component" = "0.52549022436141968";
           "Green Component" = "0.41568627953529358";
