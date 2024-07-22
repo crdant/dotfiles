@@ -374,8 +374,15 @@ in {
           ''; 
         }
         {
-          plugin = NeoSolarized;
-          config = "colorscheme NeoSolarized";
+          plugin = rose-pine;
+          config = ''
+            require('rose-pine').setup(
+              {
+                dark_variant = 'moon',
+              }
+            )
+            colorscheme rose-pine
+            '';
         }
         lsp-zero-nvim
         mason-lspconfig-nvim
@@ -584,6 +591,7 @@ in {
       sensibleOnTop = true ;
 
       plugins = [
+        pkgs.tmuxPlugins.rose-pine
         pkgs.tmuxPlugins.yank
         pkgs.tmuxPlugins.vim-tmux-navigator 
       ];
