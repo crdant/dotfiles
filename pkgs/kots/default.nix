@@ -1,17 +1,17 @@
-{ stdenv, lib, buildGoModule, fetchFromGitHub, installShellFiles, pkg-config, bash }:
+{ stdenv, lib, pkgs, buildGoModule, fetchFromGitHub, installShellFiles, pkg-config, bash }:
 
 buildGoModule rec {
   pname = "kots";
-  version = "1.109.13";
+  version = "1.112.1";
 
   src = fetchFromGitHub {
     owner = "replicatedhq";
     repo = "kots";
     rev = "v${version}";
-    sha256 = "sha256-wmJiCikyt/rfIlkreKo64KJcpJUga82GSBTsYd9+0SM=";
+    sha256 = "sha256-Mv/M+VDiKOXU2S1YqWTqJrXwL+yDIJbzklNBfnCeVJg=";
   };
 
-  vendorHash = "sha256-hb2GoDwTGKpDJ80OCYjIkCjMQw4aRxSbO4etLDqlLzM="; 
+  vendorHash = "sha256-I3x6yVycRs5qe0FcV7L5piXM9JyqYYl3keXoKKGp0Zo="; 
 
   subPackages = [ "cmd/kots/" ];
 
