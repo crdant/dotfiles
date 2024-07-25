@@ -68,7 +68,8 @@ in {
     packages = with pkgs; [
       argocd
       azure-cli
-      unstable.certbot-full
+      certbot-full
+      # unstable.certbot-full
       cloudflared
       conftest
       cosign
@@ -95,7 +96,7 @@ in {
       minio-client
       nix-prefetch-git
       nodejs_22
-      open-policy-agent
+      unstable.open-policy-agent
       oras
       packer
       rar
