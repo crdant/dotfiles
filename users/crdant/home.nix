@@ -93,6 +93,7 @@ in {
       kustomize
       kyverno-chainsaw
       mods
+      moreutils
       minio-client
       nix-prefetch-git
       nodejs_22
