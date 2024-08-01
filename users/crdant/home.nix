@@ -77,6 +77,7 @@ in {
       cue
       exercism
       gh
+      git-lfs
       google-cloud-sdk
       govc
       helmfile
