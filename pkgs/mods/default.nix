@@ -2,16 +2,16 @@
 
 buildGoModule rec {
   pname = "mods";
-  version = "1.2.2";
+  version = "1.5.0";
 
   src = fetchFromGitHub {
     owner = "charmbracelet";
     repo = "mods";
     rev = "v${version}";
-    sha256 = "sha256-ecmfWnrd9gwIEGAOIcOeUnfmkKmq9dLxpKqAHJemhvU=";
+    sha256 = "sha256-Niap2qsIJwlDRITkPD2Z7NCiJubkyy8/pvagj5Beq84=";
   };
 
-  vendorHash = "sha256-pJ31Lsa5VVix3BM4RrllQA3MJ/JeNIKfQ8RClyFfXCI=";
+  vendorHash = "sha256-DaSbmu1P/umOAhG901aC+TKa3xXSvUbpYsaiYTr2RJs=";
 
   # nativeBuildInputs = [ installShellFiles pkg-config ];
 
