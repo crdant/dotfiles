@@ -8,12 +8,12 @@
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
     iterm2 = prev.iterm2.overrideAttrs (oldAttrs: let
-      newVersion = "3.5.3";
+      newVersion = "3.5.4";
       in {
         version = newVersion;
         src = prev.fetchzip {
           url = "https://iterm2.com/downloads/stable/iTerm2-${prev.lib.replaceStrings ["."] ["_"] newVersion}.zip";
-          hash = "sha256-uznoyXA3oGad88yZoVBJfLKMu8jK2PAKqwkpLq9fNzM=";
+          hash = "sha256-Sxj8OnaXh+UdAAf2hoHBQ8TuczYykhV37XvalNpwq7U=";
         };
       }
     );
