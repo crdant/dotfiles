@@ -8,12 +8,34 @@
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
     iterm2 = prev.iterm2.overrideAttrs (oldAttrs: let
-      newVersion = "3.5.4";
+      newVersion = "3.5.5";
       in {
         version = newVersion;
         src = prev.fetchzip {
           url = "https://iterm2.com/downloads/stable/iTerm2-${prev.lib.replaceStrings ["."] ["_"] newVersion}.zip";
-          hash = "sha256-Sxj8OnaXh+UdAAf2hoHBQ8TuczYykhV37XvalNpwq7U=";
+          hash = "sha256-ehx95O4Xkv1zVkdbQ/JFaXMEggQeKa4mETYDQrjXOn4=";
+        };
+      }
+    );
+    bruno = prev.bruno.overrideAttrs (oldAttrs: let
+      newVersion = "1.25.0";
+      in {
+        version = newVersion;
+        src = oldAttrs.src // { 
+          rev = "v${newVersion}";
+          hash = "sha256-mOE5RoEOlvI9C0i/pWOulRJTkUgvQITuq2hs7q/p3jo=";
+        };
+      }
+    );
+    tailscale = prev.tailscale.overrideAttrs (oldAttrs: let
+      newVersion = "1.74.0";
+      in {
+        version = newVersion;
+        src = prev.fetchFromGitHub {
+          owner = "tailscale";
+          repo = "tailscale";
+          rev = "v${newVersion}";
+          hash = "sha256-KTg1rxyCgvZAwkGxhFXLff5UggKlqa6VLMItK81JV2k=";
         };
       }
     );
