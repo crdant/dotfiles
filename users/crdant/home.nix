@@ -74,7 +74,7 @@ in {
       conftest
       cosign
       crane
-      cue
+      unstable.cue
       exercism
       gh
       git-lfs
@@ -92,7 +92,7 @@ in {
       kots2helm
       kubeseal
       kustomize
-      kyverno-chainsaw
+      # unstable.kyverno-chainsaw
       mods
       moreutils
       minio-client
@@ -364,6 +364,7 @@ in {
     go = {
       enable = true;
       goPath = "workspace/go";
+      package = pkgs.unstable.go ;
     };
 
     home-manager.enable = true;
