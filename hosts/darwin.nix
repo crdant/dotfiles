@@ -115,6 +115,8 @@
   };
 
   system = {
+    stateVersion = 5 ;
+
     defaults = { 
       NSGlobalDomain = {
         # Increase window resize speed for Cocoa applications
