@@ -37,18 +37,9 @@
         };
       }
     );
-    tailscale = prev.tailscale.overrideAttrs (oldAttrs: let
-      newVersion = "1.74.0";
-      in {
-        version = newVersion;
-        src = prev.fetchFromGitHub {
-          owner = "tailscale";
-          repo = "tailscale";
-          rev = "v${newVersion}";
-          hash = "sha256-KTg1rxyCgvZAwkGxhFXLff5UggKlqa6VLMItK81JV2k=";
-        };
-      }
-    );
+    buildGoModule = prev.buildGoModule.override {
+      go = final.go;
+    };
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
