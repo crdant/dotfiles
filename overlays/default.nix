@@ -7,6 +7,16 @@
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
+    go = prev.go.overrideAttrs (oldAttrs: let
+      newVersion = "1.23.2";
+      in {
+        version = newVersion;
+        src = prev.fetchzip {
+          url = "https://go.dev/dl/go${newVersion}.src.tar.gz";
+          hash = "sha256-ijAvBzFdarc4YICOUvPeSaCSjrjCqdNi451D8rge5gA=";
+        };
+      }
+    );
     iterm2 = prev.iterm2.overrideAttrs (oldAttrs: let
       newVersion = "3.5.5";
       in {
