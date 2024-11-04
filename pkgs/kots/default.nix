@@ -2,16 +2,16 @@
 
 buildGoModule rec {
   pname = "kots";
-  version = "1.114.0";
+  version = "1.120.0";
 
   src = fetchFromGitHub {
     owner = "replicatedhq";
     repo = "kots";
     rev = "v${version}";
-    sha256 = "sha256-so9njaJJRXoUDb5us5wcBA5E5+MjdSgBz+b+s3VJsSY=";
+    sha256 = "sha256-vtFXKkGSPMeTimiyelyaX7SHls52j1U+sp9umm6u9Mc=";
   };
 
-  vendorHash = "sha256-g/rttw5bS81zYBipuRYxo2OxhBQNdQblI2pCfMiQuAQ="; 
+  vendorHash = "sha256-Qo8hG/T9jbqZvsyxr46jp6V8GFE7hmoa+MPplKATs4Y="; 
 
   subPackages = [ "cmd/kots/" ];
 
@@ -25,7 +25,7 @@ buildGoModule rec {
   # Override build phase to use make
   buildPhase = ''
     runHook preBuild
-    make SHELL='${bash}/bin/bash -o pipefail' LDFLAGS='-ldflags "${ldflagsStr}"' kots-real
+    make SHELL='${bash}/bin/bash -o pipefail' LDFLAGS='-ldflags "${ldflagsStr}"' kots
     runHook postBuild
   '';
 
