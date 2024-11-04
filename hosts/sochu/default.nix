@@ -33,7 +33,7 @@
       melange
       mtr
       subversion
-      tinygo
+      unstable.tinygo
       trivy
     ];
   };
