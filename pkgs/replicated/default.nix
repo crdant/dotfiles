@@ -2,16 +2,16 @@
 
 buildGoModule rec {
   pname = "replicated";
-  version = "0.79.0";
+  version = "0.83.13";
 
   src = fetchFromGitHub {
     owner = "replicatedhq";
     repo = "replicated";
     rev = "v${version}";
-    sha256 = "sha256-pwM4Yro0xtCvK0RaDc5KU+TlUU0uBmjG3f7LTDF6lYM=";
+    sha256 = "sha256-BTgxlCWCg7fzmfUu8VEKCvKW9IN5h3DrS88ExC62MQU=";
   };
 
-  vendorHash = "sha256-ek/Y2StC5QiUY81SQENArP9YN5I+afEHGplHARCcZos=";
+  vendorHash = "sha256-YMIB8GAX3DpZ8eazEugOeoLD4Yp84kbWuZdYBG4IWbw=";
 
   subPackages = [ "cli/cmd/" ];
   ldflags = [
@@ -23,6 +23,7 @@ buildGoModule rec {
 
   # Override build phase to use make
   buildPhase = ''
+    export HOME=$(pwd)
     runHook preBuild
     make LDFLAGS='-ldflags "${ldflagsStr}"' build
     runHook postBuild

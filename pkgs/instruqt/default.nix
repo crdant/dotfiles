@@ -7,12 +7,12 @@ let
   isLinux = stdenv.isLinux;
 in stdenv.mkDerivation rec {
   pname = "instruqt-cli";
-  version = "2171-6e951ef";
+  version = "2202-583cf43";
 
   src = fetchzip {
     url = "https://github.com/instruqt/cli/releases/download/${version}/instruqt-${os}-${arch}.zip";
     sha256 = if isDarwin then
-        "sha256-kP/3n0gfV14kAI68K3yPOFEfCBUvRtb04A58bQgddqo="
+        "sha256-ROGKTiwjCIiAwwMjQfzeybZqI4cXLyhgpnCMIgYVj/A="
       else
         "sha256-w3cMvFNHOA8AqhCmew0Adtwuqp2i0L/IgTXdpH+sR9c=";
   };

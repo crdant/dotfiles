@@ -7,15 +7,15 @@ let
   isLinux = stdenv.isLinux;
 in stdenv.mkDerivation rec {
   pname = "troubeleshoot-sbctl";
-  version = "0.9.1";
+  version = "0.14.0";
 
   src = fetchzip {
     url = "https://github.com/replicatedhq/sbctl/releases/download/v${version}/sbctl_${os}_${arch}.tar.gz";
     stripRoot = false;
     sha256 = if isDarwin then
-        "sha256-EQV3972rcl7Yy87X/CFmiSSboxySFAVSbbQzRIGUaBs="
+        "sha256-r+Mfv3IWRNfx449gcdtq+xxrLwY3XeNxZOfGqEdVnGo="
       else
-        "sha256-KBrxBT5cBrc+0GyoFecygK8eGNJrCD5R6ZXlPxbocmU=";
+        "sha256-kqhtkCK4vmHRgbGQeqnnmUMHlCkMXi2l/LU1L8z/7ok=";
   };
 
   # Install the binary

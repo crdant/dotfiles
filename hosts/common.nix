@@ -59,7 +59,7 @@
   environment = {
     systemPackages = with pkgs; [
       _1password
-      age
+      unstable.age
       coreutils
       dogdns
       gist
