@@ -128,6 +128,7 @@ in {
       # gui apps
       # discord
       # minikube
+      bruno
       postman
       vimr
       iterm-ai
@@ -376,7 +377,7 @@ in {
 
       plugins = with pkgs.vimPlugins; [
         conflict-marker-vim
-        copilot-vim
+        # copilot-vim
         editorconfig-nvim
         {
           plugin = fzf-vim;
@@ -396,9 +397,11 @@ in {
         lsp-zero-nvim
         mason-lspconfig-nvim
         mason-nvim
+        supermaven-vim
         vim-surround
         vim-commentary
         vim-repeat
+        vim-speeddating
         vim-tmux-navigator
         zoxide-vim
       ];
@@ -545,6 +548,8 @@ in {
         -- line numbers
         -- set relativenumber
         vim.opt.number = true
+
+        require('supermaven-nvim').setup({})
 
         local lsp_zero = require('lsp-zero')
 

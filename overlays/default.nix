@@ -40,6 +40,9 @@
     buildGoModule = prev.buildGoModule.override {
       go = final.go;
     };
+    vimPlugins = prev.vimPlugins // {
+      supermaven-vim = prev.callPackage ./supermaven-nvim { };
+    };
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
