@@ -18,12 +18,12 @@
       }
     );
     iterm2 = prev.iterm2.overrideAttrs (oldAttrs: let
-      newVersion = "3.5.6";
+      newVersion = "3.5.10";
       in {
         version = newVersion;
         src = prev.fetchzip {
           url = "https://iterm2.com/downloads/stable/iTerm2-${prev.lib.replaceStrings ["."] ["_"] newVersion}.zip";
-          hash = "sha256-UUrbaIdk3kQNHvqJEdBtAI943qCYAoPwKjDQx3TTPFA=";
+          hash = "sha256-tvHAuHitB5Du8hqaBXmWzplrmaLF6QxV8SNsRyfCUfM=";
         };
       }
     );
