@@ -885,6 +885,9 @@ in {
       "karabiner/karabiner.json" = {
         text = builtins.readFile ./config/karabiner/karabiner.json ;
       };
+      "ghostty/config" = {
+        source = ./config/ghostty/config;
+      };
     } // lib.optionalAttrs isLinux { 
       "glow/glow.yml" = {
         text = builtins.readFile ./config/glow/glow.yml ;
