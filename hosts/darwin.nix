@@ -47,11 +47,11 @@
     };
     
     brews = [
+      "ghostty"
       "llm"
     ];
 
     taps = [
-
       "homebrew/bundle"
       "homebrew/cask-drivers"
       "homebrew/cask-fonts"

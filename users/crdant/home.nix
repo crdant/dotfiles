@@ -391,6 +391,7 @@ in {
           plugin = rose-pine;
           config = ''
             let g:rose_pine_dark_variant = 'moon'
+            let g:rose_pine_disable_background = 1 
             colorscheme rose-pine
           '';
         }
@@ -603,6 +604,7 @@ in {
       enable = true ;
       keyMode = "vi" ;
       sensibleOnTop = true ;
+      terminal = "tmux-256color" ;
 
       plugins = [
         pkgs.tmuxPlugins.rose-pine
@@ -884,6 +886,9 @@ in {
     } // lib.optionalAttrs isDarwin { 
       "karabiner/karabiner.json" = {
         text = builtins.readFile ./config/karabiner/karabiner.json ;
+      };
+      "ghostty/config" = {
+        source = ./config/ghostty/config;
       };
     } // lib.optionalAttrs isLinux { 
       "glow/glow.yml" = {
