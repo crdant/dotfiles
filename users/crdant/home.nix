@@ -604,7 +604,7 @@ in {
       enable = true ;
       keyMode = "vi" ;
       sensibleOnTop = true ;
-      terminal = "tmux-256color";
+      terminal = "tmux-256color" ;
 
       plugins = [
         pkgs.tmuxPlugins.rose-pine
