@@ -26,6 +26,11 @@
       fsType = "ext4";
     };
 
+  fileSystems."/nix" =
+    { device = "/dev/disk/by-uuid/fec52b01-effb-4616-bed8-a7502c967406";
+      fsType = "ext4";
+    };
+
   swapDevices =
     [ { device = "/dev/disk/by-uuid/e12ad2b7-69b9-402d-94a4-4e382d0d2c7d"; }
     ];
