@@ -2,16 +2,17 @@
 
 buildGoModule rec {
   pname = "replicated";
-  version = "0.83.13";
+  version = "0.88.0";
 
   src = fetchFromGitHub {
     owner = "replicatedhq";
     repo = "replicated";
     rev = "v${version}";
-    sha256 = "sha256-BTgxlCWCg7fzmfUu8VEKCvKW9IN5h3DrS88ExC62MQU=";
+    sha256 = "sha256-d6TRqS35HbrVrVozoe/j/tDUXyOign0BGktswRR7hTQ=";
   };
 
-  vendorHash = "sha256-YMIB8GAX3DpZ8eazEugOeoLD4Yp84kbWuZdYBG4IWbw=";
+  vendorHash = lib.optionalString stdenv.isLinux  "sha256-8RtrOghG57Cb/HIW0mFo2l2rN07bY3wtaLhMtHOnOR0=" + 
+               lib.optionalString stdenv.isDarwin ""; 
 
   subPackages = [ "cli/cmd/" ];
   ldflags = [
