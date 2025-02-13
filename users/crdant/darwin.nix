@@ -17,6 +17,12 @@ let
   vimr = import ./defaults/vimr.nix ;
 in
 {
+  hombrew = {
+    brews = ]
+      "swiftformat"
+    ];
+  };
+
   system = {
     defaults = { 
       screencapture.location = "/Users/crdant/Documents/Outbox";
