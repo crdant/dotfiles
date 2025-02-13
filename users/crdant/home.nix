@@ -571,6 +571,28 @@ in {
           },
         })
 
+        lspconfig.sourcekit.setup{
+          cmd = { '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp' },
+          filetypes = { 'swift', 'objective-c', 'objective-cpp' },
+          root_dir = lspconfig.util.root_pattern('Package.swift', '.xcodeproj', '.git'),
+          settings = {
+              sourcekit = {
+                  diagnostics = true,
+              }
+          },
+          on_attach = function(client, bufnr)
+              -- Enable completion triggered by <c-x><c-o>
+              vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+              
+              -- Set up your preferred keymappings here
+              local bufopts = { noremap=true, silent=true, buffer=bufnr }
+              vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+              vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+              vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+              vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+          end
+        }
+
         -- edits an Instruqt track in a multiple splits
         function ChallengeEdit(args)
           local dir = args.args
