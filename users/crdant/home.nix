@@ -130,6 +130,7 @@ in {
       # minikube
       bruno
       postman
+      swiftlint
       vimr
       iterm-ai
       (callPackage ./vimr-wrapper.nix { inherit config ; })
