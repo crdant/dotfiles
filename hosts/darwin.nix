@@ -47,7 +47,6 @@
     };
     
     brews = [
-      "ghostty"
       "llm"
     ];
 
@@ -73,6 +72,7 @@
       "font-inconsolata"
       "font-noto-sans"
       "font-open-sans"
+      "ghostty"
       "google-chrome"
       "google-drive"
       "grandperspective"
