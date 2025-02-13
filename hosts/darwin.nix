@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
 
-  documentation.enable = false ;
+  documentation.enable = true ;
 
   imports = [
     ./common.nix
