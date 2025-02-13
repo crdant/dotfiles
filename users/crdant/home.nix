@@ -119,6 +119,7 @@ in {
       tunnelmanager
       vault
       vendir
+      unstable.xcode_16_2
       ytt
       # yubico-pam
       yubico-piv-tool
