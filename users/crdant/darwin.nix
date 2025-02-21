@@ -17,9 +17,10 @@ let
   vimr = import ./defaults/vimr.nix ;
 in
 {
-  hombrew = {
-    brews = ]
+  homebrew = {
+    brews = [
       "swiftformat"
+      "xcode-build-server"
     ];
   };
 

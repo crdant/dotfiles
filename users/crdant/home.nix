@@ -79,6 +79,7 @@ in {
       gh
       git-lfs
       google-cloud-sdk
+      gopls
       govc
       helmfile
       imgpkg
@@ -101,9 +102,11 @@ in {
       unstable.open-policy-agent
       oras
       packer
+      pyright
       rar
       replicated
       ripgrep
+      rust-analyzer
       shellcheck
       sipcalc
       skopeo
@@ -115,11 +118,13 @@ in {
       tcptraceroute
       tektoncd-cli
       terraform
+      terraform-lsp
       troubleshoot-sbctl
       tunnelmanager
+      typescript-language-server
       vault
       vendir
-      unstable.xcode_16_2
+      unstable.darwin.xcode_16_2
       ytt
       # yubico-pam
       yubico-piv-tool
@@ -132,10 +137,11 @@ in {
       bruno
       iterm-ai
       postman
+      sourcekit-lsp
       swiftlint
+      unstable.xcodegen
       vimr
       (callPackage ./vimr-wrapper.nix { inherit config ; })
-      # vscode
     ] ++ lib.optionals isLinux [
       calicoctl
       coreutils
@@ -378,6 +384,7 @@ in {
       vimAlias = true;
 
       plugins = with pkgs.vimPlugins; [
+        cmp-nvim-lsp
         conflict-marker-vim
         # copilot-vim
         editorconfig-nvim
@@ -389,6 +396,8 @@ in {
             let g:fzf_vim.preview_window = []
           ''; 
         }
+        nvim-cmp
+        nvim-lspconfig
         {
           plugin = rose-pine;
           config = ''
@@ -397,9 +406,6 @@ in {
             colorscheme rose-pine
           '';
         }
-        lsp-zero-nvim
-        mason-lspconfig-nvim
-        mason-nvim
         supermaven-vim
         vim-surround
         vim-commentary
@@ -423,6 +429,14 @@ in {
         vim.cmd[[
           "autocmd FocusLost * call feedkeys("\<esc>")
         ]]
+
+        -- language servers
+        require('gopls')
+        require('pyright')
+        require('rust_analyzer')
+        require('sourcekit')
+        require('terraformlsp')
+        require('tsserver')
 
         -- Indentation
 
@@ -507,6 +521,27 @@ in {
           { noremap = true }
         )
 
+        vim.api.nvim_create_autocmd("LspAttach", {
+            callback = function(event)
+                local opts = { buffer = event.buf }
+
+                -- Standard LSP keymaps
+                local keymaps = {
+                    { "n", "gd", vim.lsp.buf.definition, "Go to definition" },
+                    { "n", "K", vim.lsp.buf.hover, "Show documentation" },
+                    { "n", "<leader>rn", vim.lsp.buf.rename, "Rename symbol" },
+                    { "n", "<leader>ca", vim.lsp.buf.code_action, "Code actions" },
+                    { "n", "<leader>f", function() vim.lsp.buf.format { async = true } end, "Format buffer" },
+                }
+
+                -- Apply keybindings
+                for _, keymap in ipairs(keymaps) do
+                    vim.keymap.set(keymap[1], keymap[2], keymap[3], { buffer = event.buf, desc = keymap[4] })
+                end
+            end
+        })
+
+
         -- Appearance
         if vim.fn.has('gui_running') == 1 then
           vim.opt.background = "light"
@@ -553,24 +588,6 @@ in {
         vim.opt.number = true
 
         require('supermaven-nvim').setup({})
-
-        local lsp_zero = require('lsp-zero')
-
-        lsp_zero.on_attach(function(client, bufnr)
-          -- see :help lsp-zero-keybindings
-          -- to learn the available actions
-          lsp_zero.default_keymaps({buffer = bufnr})
-        end)
-
-        require('mason').setup({})
-        require('mason-lspconfig').setup({
-          -- Replace the language servers listed here 
-          -- with the ones you want to install
-          ensure_installed = {'tsserver', 'gopls', 'pyright', 'rust_analyzer'},
-          handlers = {
-            lsp_zero.default_setup,
-          },
-        })
 
         -- edits an Instruqt track in a multiple splits
         function ChallengeEdit(args)
