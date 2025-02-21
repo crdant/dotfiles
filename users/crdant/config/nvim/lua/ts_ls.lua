@@ -1,2 +1,2 @@
 local lspconfig = require'lspconfig'
-lspconfig.terraformlsp.setup()
+lspconfig.ts_ls.setup({})
