@@ -17,6 +17,13 @@ let
   vimr = import ./defaults/vimr.nix ;
 in
 {
+  homebrew = {
+    brews = [
+      "swiftformat"
+      "xcode-build-server"
+    ];
+  };
+
   system = {
     defaults = { 
       screencapture.location = "/Users/crdant/Documents/Outbox";
