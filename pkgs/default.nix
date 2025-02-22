@@ -10,6 +10,11 @@
   kots2helm = pkgs.callPackage ./kots2helm { };
   troubleshoot-sbctl = pkgs.callPackage ./sbctl { };
 
+  # llm-mlx = pkgs.callPackage ./llm-mlx { };
+  # llm-anthropic = pkgs.callPackage ./llm-anthropic { };
+  # llm-perplexity = pkgs.callPackage ./llm-perplexity { };
+  # llm-gemini = pkgs.callPackage ./llm-gemini { }; 
+
   instruqt = pkgs.callPackage ./instruqt { };
   mods = pkgs.callPackage ./mods { };
 

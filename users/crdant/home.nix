@@ -66,6 +66,7 @@ in {
 
     # Specify packages not explicitly configured below
     packages = with pkgs; [
+      unstable.aider-chat
       argocd
       azure-cli
       certbot-full
@@ -97,15 +98,21 @@ in {
       mods
       moreutils
       minio-client
+      nix-init
       nix-prefetch-git
       nodejs_22
       unstable.open-policy-agent
       oras
       packer
       pyright
+      unstable.llm
+      # llm-anthropic
+      # llm-perplexity
+      # llm-gemini
       rar
-      replicated
       ripgrep
+      replicated
+      unstable.repomix
       rust-analyzer
       shellcheck
       sipcalc
@@ -384,6 +391,7 @@ in {
       vimAlias = true;
 
       plugins = with pkgs.vimPlugins; [
+
         cmp-nvim-lsp
         conflict-marker-vim
         # copilot-vim
@@ -396,6 +404,7 @@ in {
             let g:fzf_vim.preview_window = []
           ''; 
         }
+        nvim-aider
         nvim-cmp
         nvim-lspconfig
         {
@@ -406,6 +415,7 @@ in {
             colorscheme rose-pine
           '';
         }
+        snacks-nvim
         supermaven-vim
         vim-surround
         vim-commentary
@@ -435,8 +445,8 @@ in {
         require('pyright')
         require('rust_analyzer')
         require('sourcekit')
-        require('terraformlsp')
-        require('tsserver')
+        require('terraform_lsp')
+        require('ts_ls')
 
         -- Indentation
 
