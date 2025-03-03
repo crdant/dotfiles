@@ -54,6 +54,7 @@
     vimPlugins = prev.vimPlugins // {
       supermaven-vim = prev.callPackage ./supermaven-nvim { };
       nvim-aider = prev.callPackage ./nvim-aider { };
+      xcodebuild-nvim = prev.callPackage ./xcodebuild-nvim { };
     };
   };
 

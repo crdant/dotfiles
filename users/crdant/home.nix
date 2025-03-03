@@ -422,6 +422,7 @@ in {
         vim-repeat
         vim-speeddating
         vim-tmux-navigator
+        xcodebuild-nvim
         zoxide-vim
       ];
 
@@ -448,6 +449,9 @@ in {
         require('terraform_lsp')
         require('ts_ls')
 
+        -- building for macOS/iOS
+        require('xcodebuild')
+        
         -- Indentation
 
         -- Use spaces instead of tabs
