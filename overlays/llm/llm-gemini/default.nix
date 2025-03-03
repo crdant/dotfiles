@@ -4,42 +4,46 @@
   fetchFromGitHub,
 }:
 
-python3.pkgs.buildPythonApplication rec {
-  pname = "llm-mlx";
-  version = "0.2.1";
+python3.pkgs.buildPythonPackage rec {
+  pname = "llm-gemini";
+  version = "0.11";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "simonw";
-    repo = "llm-mlx";
+    repo = "llm-gemini";
     rev = version;
-    hash = "sha256-ePThUA7oB5Q9cTOOCoCrGUn/caSmasudE68dnGHtbNA=";
+    hash = "sha256-xYtfIajEU1iqHvSPDLmg9lHEllcKpVYyUuNZUGNcccw=";
   };
 
   build-system = [
     python3.pkgs.setuptools
+    python3.pkgs.wheel
   ];
 
   dependencies = with python3.pkgs; [
+    httpx
+    ijson
     llm
-    mlx-lm
   ];
 
   optional-dependencies = with python3.pkgs; {
     test = [
+      nest-asyncio
       pytest
+      pytest-recording
     ];
   };
 
   pythonImportsCheck = [
-    "llm_mlx"
+    "llm_gemini"
   ];
 
   meta = {
-    description = "Support for MLX models in LLM";
-    homepage = "https://github.com/simonw/llm-mlx";
+    description = "LLM plugin to access Google's Gemini family of models";
+    homepage = "https://github.com/simonw/llm-gemini";
     license = lib.licenses.asl20;
     maintainers = with lib.maintainers; [ ];
-    mainProgram = "llm-mlx";
+    mainProgram = "llm-gemini";
   };
 }

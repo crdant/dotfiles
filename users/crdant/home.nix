@@ -105,10 +105,7 @@ in {
       oras
       packer
       pyright
-      unstable.llm
-      # llm-anthropic
-      # llm-perplexity
-      # llm-gemini
+      llm
       rar
       ripgrep
       replicated

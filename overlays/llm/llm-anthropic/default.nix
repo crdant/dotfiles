@@ -4,16 +4,16 @@
   fetchFromGitHub,
 }:
 
-python3.pkgs.buildPythonApplication rec {
+python3.pkgs.buildPythonPackage rec {
   pname = "llm-anthropic";
-  version = "0.13";
+  version = "0.15.1";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "simonw";
     repo = "llm-anthropic";
     rev = version;
-    hash = "sha256-eIppCyFu/2VKExkO88iRozC9AVDcRQaUKrNeLU89rrQ=";
+    hash = "sha256-8bVs3MJteOTCiw7n/4pMf+oXMhsQbCSzUFVQqm2ezcE=";
   };
 
   build-system = [

@@ -4,16 +4,16 @@
   fetchFromGitHub,
 }:
 
-python3.pkgs.buildPythonApplication rec {
-  pname = "llm-gemini";
-  version = "0.11";
+python3.pkgs.buildPythonPackage rec {
+  pname = "llm-grop";
+  version = "0.8";
   pyproject = true;
 
   src = fetchFromGitHub {
-    owner = "simonw";
-    repo = "llm-gemini";
-    rev = version;
-    hash = "sha256-xYtfIajEU1iqHvSPDLmg9lHEllcKpVYyUuNZUGNcccw=";
+    owner = "angerman";
+    repo = "llm-groq";
+    rev = "v${version}";
+    hash = "sha256-sZ5d9w43NvypaPrebwZ5BLgRaCHAhd7gBU6uHEdUaF4=";
   };
 
   build-system = [
@@ -22,28 +22,28 @@ python3.pkgs.buildPythonApplication rec {
   ];
 
   dependencies = with python3.pkgs; [
-    httpx
-    ijson
+    groq
     llm
   ];
 
   optional-dependencies = with python3.pkgs; {
     test = [
-      nest-asyncio
+      cogapp
       pytest
+      pytest-asyncio
       pytest-recording
     ];
   };
 
   pythonImportsCheck = [
-    "llm_gemini"
+    "llm_groq"
   ];
 
   meta = {
-    description = "LLM plugin to access Google's Gemini family of models";
-    homepage = "https://github.com/simonw/llm-gemini";
+    description = "LLM access to models hosted by Groq";
+    homepage = "https://github.com/angerman/llm-groq";
     license = lib.licenses.asl20;
     maintainers = with lib.maintainers; [ ];
-    mainProgram = "llm-gemini";
+    mainProgram = "llm-groq";
   };
 }

@@ -51,10 +51,21 @@
     buildGoModule = prev.buildGoModule.override {
       go = final.go;
     };
+
     vimPlugins = prev.vimPlugins // {
       supermaven-vim = prev.callPackage ./supermaven-nvim { };
       nvim-aider = prev.callPackage ./nvim-aider { };
     };
+
+    python3Packages = prev.python3Packages // {
+      llm-anthropic = prev.callPackage ./llm-anthropic { };
+      llm-gemini = prev.callPackage ./llm-perplexity { };
+      llm-groq = prev.callPackage ./llm-groq { };
+      llm-mlx = prev.callPackage ./llm-mlx { };
+      llm-perplexity = prev.callPackage ./llm-perplexity { };
+    };
+
+    llm = prev.callPackage ./llm { };
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
