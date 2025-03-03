@@ -66,7 +66,7 @@ in {
 
     # Specify packages not explicitly configured below
     packages = with pkgs; [
-      unstable.aider-chat
+      aider-chat
       argocd
       azure-cli
       certbot-full
@@ -391,7 +391,7 @@ in {
       vimAlias = true;
 
       plugins = with pkgs.vimPlugins; [
-
+        nvim-aider
         cmp-nvim-lsp
         conflict-marker-vim
         # copilot-vim

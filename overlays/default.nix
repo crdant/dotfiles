@@ -37,6 +37,17 @@
         };
       }
     );
+    aider-chat = prev.aider-chat.overridePythonAttrs (oldAttrs: let
+        newVersion = "0.75.1";
+      in {
+        src = oldAttrs.src // {
+          owner = "Aider-AI";
+          repo = "aider";
+          rev = "v${newVersion}";
+          hash = "sha256-TQDYrkSW58E1/lIBuJsgpXst8OAbaTyNX1SM8mdFgzU=";  
+        };
+      }
+    );
     buildGoModule = prev.buildGoModule.override {
       go = final.go;
     };
