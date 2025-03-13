@@ -8,35 +8,29 @@
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
     go = prev.go.overrideAttrs (oldAttrs: let
-      newVersion = "1.23.2";
+        newVersion = "1.24.1";
+        newBootstrap = prev.buildPackages.go_1_22; # Replace with your desired bootstrap Go version
       in {
         version = newVersion;
-        src = prev.fetchzip {
+
+        src = prev.fetchurl {
           url = "https://go.dev/dl/go${newVersion}.src.tar.gz";
-          hash = "sha256-ijAvBzFdarc4YICOUvPeSaCSjrjCqdNi451D8rge5gA=";
+          hash = "sha256-gkTr9GxlYH2xAiK1gGrrMcH8+JecG2sS9gxnfpo8BlY=";
         };
-      }
-    );
-    iterm2 = prev.iterm2.overrideAttrs (oldAttrs: let
-      newVersion = "3.5.11";
-      in {
-        version = newVersion;
-        src = prev.fetchzip {
-          url = "https://iterm2.com/downloads/stable/iTerm2-${prev.lib.replaceStrings ["."] ["_"] newVersion}.zip";
-          hash = "sha256-vcZL74U9RNjhpIQRUUn6WueYhE/LfLqpb/JgWunY5dI=";
+
+        goBootstrap = newBootstrap; # Override the goBootstrap derivation
+
+        passthru = (oldAttrs.passthru or {}) // {
+          goBootstrap = newBootstrap;
         };
-      }
-    );
-    bruno = prev.bruno.overrideAttrs (oldAttrs: let
-      newVersion = "1.25.0";
-      in {
-        version = newVersion;
-        src = oldAttrs.src // { 
-          rev = "v${newVersion}";
-          hash = "sha256-mOE5RoEOlvI9C0i/pWOulRJTkUgvQITuq2hs7q/p3jo=";
-        };
-      }
-    );
+
+        GOROOT_BOOTSTRAP = "${newBootstrap}/share/go";
+      });
+
+    buildGoModule = prev.buildGoModule.override {
+      go = final.go;
+    };
+
     aider-chat = prev.aider-chat.overridePythonAttrs (oldAttrs: let
         newVersion = "0.75.1";
       in {
@@ -48,9 +42,6 @@
         };
       }
     );
-    buildGoModule = prev.buildGoModule.override {
-      go = final.go;
-    };
 
     vimPlugins = prev.vimPlugins // {
       supermaven-vim = prev.callPackage ./supermaven-nvim { };
