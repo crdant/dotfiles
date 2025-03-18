@@ -1,5 +1,8 @@
 { stdenv, lib, buildGoModule, fetchFromGitHub, installShellFiles }:
-
+let
+  isDarwin = stdenv.isDarwin;
+  isLinux = stdenv.isLinux;
+in
 buildGoModule rec {
   pname = "replicated";
   version = "0.97.0";
@@ -11,7 +14,10 @@ buildGoModule rec {
     sha256 = "sha256-165STG2WD9J3Cjn6dBeFliR74LurhwD5eO33Qz/agpQ=";
   };
 
-  vendorHash = "sha256-GnPRsdNcWxL/eTnbN2uC9oUS0mXyIOUQbvkcSGKQV/Y=";
+  vendorHash = if isDarwin then
+      "sha256-GnPRsdNcWxL/eTnbN2uC9oUS0mXyIOUQbvkcSGKQV/Y="
+    else
+      "sha256-2QpsjeKRut2AZBnL66QSW6ibyNFZcF1fP1qCdRtqDoE=";
 
   subPackages = [ "cli/cmd/" ];
   ldflags = [

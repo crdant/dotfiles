@@ -15,7 +15,7 @@ in stdenv.mkDerivation rec {
     sha256 = if isDarwin then
         "sha256-4kRgTEq0imBnOjDH5nZyN972FASFVKVXMi0DNvnddvM="
       else
-        "";
+        "sha256-+72HlYquAK5dOeZHnkpZZflOARg7wC+gF6uYzGQA93U=";
   };
 
   # Install the binary

@@ -162,7 +162,7 @@ in {
       procps
       pstree
       sipcalc
-      tailscale
+      unstable.tailscale
       tcptraceroute
       yq-go
       zsh-completions

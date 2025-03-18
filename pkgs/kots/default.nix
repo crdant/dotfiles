@@ -1,5 +1,8 @@
 { stdenv, lib, pkgs, buildGoModule, fetchFromGitHub, installShellFiles, pkg-config, bash }:
-
+let
+  isDarwin = stdenv.isDarwin;
+  isLinux = stdenv.isLinux;
+in
 buildGoModule rec {
   pname = "kots";
   version = "1.124.5";
@@ -11,7 +14,10 @@ buildGoModule rec {
     sha256 = "sha256-2XGvH+Yx8Ovu5D17MHcdnwg+IZT8G1OUB5VZSDZWvLA=";
   };
 
-  vendorHash = "sha256-bWX2tcTiAmRmf4gQXRLTZc0juBvxSG7r2eHnq551JdM="; 
+  vendorHash = if isDarwin then 
+      "sha256-bWX2tcTiAmRmf4gQXRLTZc0juBvxSG7r2eHnq551JdM="
+    else
+      "sha256-f5W+etvSFLAtvZ7S7zqq6vwWatC7yyYYipfg3z1y0Qo=";
 
   subPackages = [ "cmd/kots/" ];
 

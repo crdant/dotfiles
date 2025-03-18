@@ -82,6 +82,7 @@
       gist
       git
       glow
+      gnumake
       gnupg
       home-manager
       hostess
@@ -100,7 +101,7 @@
       python311Packages.pip
       ripgrep
       sipcalc
-      tailscale
+      unstable.tailscale
       tcptraceroute
       timg
       tmux
