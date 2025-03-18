@@ -28,7 +28,7 @@ in
     defaults = { 
       screencapture.location = "/Users/crdant/Documents/Outbox";
       CustomUserPreferences = {
-        "com.apple.AddressBook" = addressbook;
+        # "com.apple.AddressBook" = addressbook;
         "com.if.Amphetamine" = amphetamine;
         "com.apple.appstore" = appstore;
         "com.surteesstudios.Bartender" = bartender;

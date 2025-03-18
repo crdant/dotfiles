@@ -13,6 +13,7 @@ in {
   ];
 
   nixpkgs = {
+    config.allowUnfree = true;
     overlays = [
       # Add overlays your own flake exports (from overlays and pkgs dir):
       outputs.overlays.additions
@@ -66,11 +67,10 @@ in {
 
     # Specify packages not explicitly configured below
     packages = with pkgs; [
-      aider-chat
+      unstable.aider-chat
       argocd
       azure-cli
       certbot-full
-      # unstable.certbot-full
       cloudflared
       conftest
       cosign
@@ -89,12 +89,12 @@ in {
       kubectl
       kubernetes-helm
       k0sctl
-      ko
+      unstable.ko
       kots
       kots2helm
       kubeseal
       kustomize
-      # unstable.kyverno-chainsaw
+      unstable.kyverno-chainsaw
       mods
       moreutils
       minio-client
@@ -128,7 +128,6 @@ in {
       typescript-language-server
       vault
       vendir
-      unstable.darwin.xcode_16_2
       ytt
       # yubico-pam
       yubico-piv-tool
@@ -143,6 +142,7 @@ in {
       postman
       sourcekit-lsp
       swiftlint
+      unstable.darwin.xcode_16_2
       unstable.xcodegen
       vimr
       (callPackage ./vimr-wrapper.nix { inherit config ; })
@@ -162,7 +162,7 @@ in {
       procps
       pstree
       sipcalc
-      tailscale
+      unstable.tailscale
       tcptraceroute
       yq-go
       zsh-completions
@@ -377,7 +377,7 @@ in {
     go = {
       enable = true;
       goPath = "workspace/go";
-      package = pkgs.unstable.go ;
+      package = pkgs.go ;
     };
 
     home-manager.enable = true;
