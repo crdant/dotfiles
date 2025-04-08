@@ -80,6 +80,7 @@ in {
       gh
       git-lfs
       google-cloud-sdk
+      unstable.goose-cli
       gopls
       govc
       helmfile
