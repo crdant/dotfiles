@@ -67,7 +67,7 @@ in {
 
     # Specify packages not explicitly configured below
     packages = with pkgs; [
-      unstable.aider-chat
+      unstable.aider-chat-full
       argocd
       azure-cli
       certbot-full
