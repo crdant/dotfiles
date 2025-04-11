@@ -127,6 +127,7 @@ in {
       troubleshoot-sbctl
       tunnelmanager
       typescript-language-server
+      uv
       vault
       vendir
       ytt
@@ -218,6 +219,48 @@ in {
       "Library/Preferences/glow" = {
         source = ./config/glow;
         recursive = true;
+      };
+
+      # "Library/Application Support/io.database.llm/templates" = {
+      #   source = ./config/llm/templates;
+      #   recursive = true;
+      # };
+
+      "Library/Application Support/Claude/claude_desktop_config.json" = {
+        text = 
+          let
+            # Define paths to be templated
+            nerdctlPath = "${config.home.homeDirectory}/.rd/bin/nerdctl";
+            uvxPath = "${pkgs.uv}/bin/uvx";
+            npxPath = "${pkgs.nodejs_22}/bin/npx";
+            
+            # User workspace path
+            workspacePath = "${config.home.homeDirectory}/workspace";
+          in
+          builtins.toJSON {
+            globalShortcut = "Cmd+Space";
+            mcpServers = {
+              fetch = {
+                command = uvxPath;
+                args = ["mcp-server-fetch"];
+              };
+              memory = {
+                command = npxPath;
+                args = ["-y" "@modelcontextprotocol/server-memory"];
+                env = {
+                  MEMORY_FILE_PATH = "${config.xdg.stateHome}/modelcontextprotocol/memory";
+                };
+              };
+              puppeteer = {
+                command = npxPath;
+                args = ["-y" "@modelcontextprotocol/server-puppeteer" ];
+              };
+              time = {
+                command = uvxPath;
+                args = ["mcp-server-time" "--local-timezone=America/New_York"];
+              };
+            };
+          };
       };
     } ;
   };

@@ -22,6 +22,9 @@ in
       "swiftformat"
       "xcode-build-server"
     ];
+    casks = [
+      "claude"
+    ];
   };
 
   system = {
