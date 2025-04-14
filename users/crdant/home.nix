@@ -41,6 +41,54 @@ in {
     secrets = {
       "github/token" = {};
     } ; 
+  } // lib.optionalAttrs isDarwin {
+    templates = {
+      "claude_desktop_config.json" = {
+        path = "${config.home.homeDirectory}/Library/Application Support/Claude/claude_desktop_config.json";
+        mode = "0600";
+        content = 
+          let
+            # Define paths to be templated
+            nerdctlPath = "${config.home.homeDirectory}/.rd/bin/nerdctl";
+            uvxPath = "${pkgs.uv}/bin/uvx";
+            npxPath = "${pkgs.nodejs_22}/bin/npx";
+            
+            # User workspace path
+            workspacePath = "${config.home.homeDirectory}/workspace";
+          in
+          builtins.toJSON {
+            globalShortcut = "Cmd+Space";
+            mcpServers = {
+              fetch = {
+                command = uvxPath;
+                args = ["mcp-server-fetch"];
+              };
+              memory = {
+                command = npxPath;
+                args = ["-y" "@modelcontextprotocol/server-memory"];
+                env = {
+                  MEMORY_FILE_PATH = "${config.xdg.stateHome}/modelcontextprotocol/memory";
+                };
+              };
+              puppeteer = {
+                command = npxPath;
+                args = ["-y" "@modelcontextprotocol/server-puppeteer" ];
+              };
+              time = {
+                command = uvxPath;
+                args = ["mcp-server-time" "--local-timezone=America/New_York"];
+              };
+              github = {
+                command = npxPath;
+                args = ["-y" "@modelcontextprotocol/server-github" ];
+                env = {
+                  GITHUB_TOKEN = "${config.sops.placeholder."github/token"}";
+                };
+              };
+            };
+          };
+      };
+    };
   };
 
   home = {
@@ -151,11 +199,10 @@ in {
       # discord
       # minikube
       bruno
-      iterm-ai
+      # iterm-ai
       postman
       sourcekit-lsp
       swiftlint
-      unstable.darwin.xcode_16_2
       unstable.xcodegen
       vimr
       (callPackage ./vimr-wrapper.nix { inherit config ; })
@@ -237,42 +284,6 @@ in {
       #   recursive = true;
       # };
 
-      "Library/Application Support/Claude/claude_desktop_config.json" = {
-        text = 
-          let
-            # Define paths to be templated
-            nerdctlPath = "${config.home.homeDirectory}/.rd/bin/nerdctl";
-            uvxPath = "${pkgs.uv}/bin/uvx";
-            npxPath = "${pkgs.nodejs_22}/bin/npx";
-            
-            # User workspace path
-            workspacePath = "${config.home.homeDirectory}/workspace";
-          in
-          builtins.toJSON {
-            globalShortcut = "Cmd+Space";
-            mcpServers = {
-              fetch = {
-                command = uvxPath;
-                args = ["mcp-server-fetch"];
-              };
-              memory = {
-                command = npxPath;
-                args = ["-y" "@modelcontextprotocol/server-memory"];
-                env = {
-                  MEMORY_FILE_PATH = "${config.xdg.stateHome}/modelcontextprotocol/memory";
-                };
-              };
-              puppeteer = {
-                command = npxPath;
-                args = ["-y" "@modelcontextprotocol/server-puppeteer" ];
-              };
-              time = {
-                command = uvxPath;
-                args = ["mcp-server-time" "--local-timezone=America/New_York"];
-              };
-            };
-          };
-      };
     } ;
   };
 
