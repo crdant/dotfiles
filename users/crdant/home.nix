@@ -10,6 +10,7 @@ in {
 
   imports = [
     inputs._1password-shell-plugins.hmModules.default
+    inputs.sops-nix.homeManagerModules.sops
   ];
 
   nixpkgs = {
@@ -30,6 +31,16 @@ in {
       #   });
       # })
     ];
+  };
+
+  sops = {
+    defaultSopsFile = ./secrets.yaml;  # Path to your secrets file
+    gnupg = {
+      home = "${config.home.homeDirectory}/.gnupg";
+    };
+    secrets = {
+      "github/token" = {};
+    } ; 
   };
 
   home = {
