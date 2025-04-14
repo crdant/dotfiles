@@ -46,10 +46,6 @@
       upgrade = true;
     };
     
-    brews = [
-      "llm"
-    ];
-
     taps = [
       "homebrew/bundle"
       "homebrew/cask-drivers"
