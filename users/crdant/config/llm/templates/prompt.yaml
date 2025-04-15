@@ -1,0 +1,3 @@
+prompt: >
+  Here's a prompt I want to improve: ${input}. Rewrite it to be more effective,
+  clearer, and more consistent. Explain what you changed and why.
