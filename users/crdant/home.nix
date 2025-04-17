@@ -65,57 +65,61 @@ in {
       "goose/config.yaml" = {
         path = "${config.home.homeDirectory}/.config/goose/config.yaml";
         mode = "0600";
-        content = (pkgs.formats.yaml { }).generate ".aider.conf.yml" {
-          GOOSE_MODEL = "claude-3-7-sonnet-latest";
-          GOOSE_PROVIDER = "anthropic";
-          extensions = {
-            computercontroller = {
-              display_name = null;
-              enabled = true;
-              name = "computercontroller";
-              timeout = null;
-              type = "builtin";
-            };
-            developer = {
-              display_name = null;
-              enabled = true;
-              name = "developer";
-              timeout = null;
-              type = "builtin";
-            };
-            git = {
-              cmd = "${pkgs.uv}/bin/uvx";
-              args = [ "mcp-server-git" ];
-              description = ''
-                A Model Context Protocol server for Git repository interaction
-                and automation. This server provides tools to read, search, and
-                manipulate Git repositories via Large Language Models.
-              '';
-              enabled = true;
-              timeout = 300;
-              type = "stdio";
-            };
-            github = {
-              args = [ "-y" "@modelcontextprotocol/server-github" ];
-              cmd = "${unstable.github-mcp-server}/bin/github-mcp-server";
-              description = "GitHub's official MCP Server";
-              enabled = true;
-              envs = {
-                GITHUB_PERSONAL_ACCESS_TOKEN = config.sops.placeholder."github/token";
+        content = 
+          let 
+            content = (pkgs.formats.yaml { }).generate ".aider.conf.yml" {
+              GOOSE_MODEL = "claude-3-7-sonnet-latest";
+              GOOSE_PROVIDER = "anthropic";
+              extensions = {
+                computercontroller = {
+                  display_name = null;
+                  enabled = true;
+                  name = "computercontroller";
+                  timeout = null;
+                  type = "builtin";
+                };
+                developer = {
+                  display_name = null;
+                  enabled = true;
+                  name = "developer";
+                  timeout = null;
+                  type = "builtin";
+                };
+                git = {
+                  cmd = "${pkgs.uv}/bin/uvx";
+                  args = [ "mcp-server-git" ];
+                  description = ''
+                    A Model Context Protocol server for Git repository interaction
+                    and automation. This server provides tools to read, search, and
+                    manipulate Git repositories via Large Language Models.
+                  '';
+                  enabled = true;
+                  timeout = 300;
+                  type = "stdio";
+                };
+                github = {
+                  args = [ "-y" "@modelcontextprotocol/server-github" ];
+                  cmd = "${pkgs.unstable.github-mcp-server}/bin/github-mcp-server";
+                  description = "GitHub's official MCP Server";
+                  enabled = true;
+                  envs = {
+                    GITHUB_PERSONAL_ACCESS_TOKEN = config.sops.placeholder."github/token";
+                  };
+                  name = "github";
+                  timeout = 300;
+                  type = "stdio";
+                };
+                memory = {
+                  display_name = null;
+                  enabled = true;
+                  name = "memory";
+                  timeout = null;
+                  type = "builtin";
+                };
               };
-              name = "github";
-              timeout = 300;
-              type = "stdio";
             };
-            memory = {
-              display_name = null;
-              enabled = true;
-              name = "memory";
-              timeout = null;
-              type = "builtin";
-            };
-          };
-        };
+        in builtins.readFile content;
+      };
     } // lib.optionalAttrs isDarwin {
       "claude_desktop_config.json" = {
         path = "${config.home.homeDirectory}/Library/Application Support/Claude/claude_desktop_config.json";
@@ -157,7 +161,7 @@ in {
                 args = [ "mcp-server-git" ];
               };
               github = {
-                command = "${unstable.github-mcp-server}/bin/github-mcp-server";
+                command = "${pkgs.unstable.github-mcp-server}/bin/github-mcp-server";
                 args = ["stdio" ];
                 env = {
                   GITHUB_PERSONAL_ACCESS_TOKEN = "${config.sops.placeholder."github/token"}";
@@ -230,7 +234,6 @@ in {
       k0sctl
       unstable.ko
       kots
-      kots2helm
       kubeseal
       kustomize
       unstable.kyverno-chainsaw
