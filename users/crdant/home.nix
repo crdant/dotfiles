@@ -141,10 +141,10 @@ in {
                 args = ["mcp-server-time" "--local-timezone=America/New_York"];
               };
               github = {
-                command = npxPath;
-                args = ["-y" "@modelcontextprotocol/server-github" ];
+                command = "${unstable.github-mcp-server}/bin/github-mcp-server";
+                args = ["stdio" ];
                 env = {
-                  GITHUB_TOKEN = "${config.sops.placeholder."github/token"}";
+                  GITHUB_PERSONAL_ACCESS_TOKEN = "${config.sops.placeholder."github/token"}";
                 };
               };
             };
