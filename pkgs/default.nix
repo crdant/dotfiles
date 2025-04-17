@@ -18,7 +18,4 @@
   instruqt = pkgs.callPackage ./instruqt { };
 
   imgpkg = pkgs.callPackage ./imgpkg { };
-
-  iterm-ai = pkgs.callPackage ./iterm-ai { };
-
 }

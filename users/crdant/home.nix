@@ -219,7 +219,6 @@ in {
       # discord
       # minikube
       bruno
-      # iterm-ai
       postman
       sourcekit-lsp
       swiftlint
