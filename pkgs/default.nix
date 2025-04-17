@@ -16,7 +16,6 @@
   # llm-gemini = pkgs.callPackage ./llm-gemini { }; 
 
   instruqt = pkgs.callPackage ./instruqt { };
-  mods = pkgs.callPackage ./mods { };
 
   imgpkg = pkgs.callPackage ./imgpkg { };
 

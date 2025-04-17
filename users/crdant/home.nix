@@ -175,7 +175,7 @@ in {
       kubeseal
       kustomize
       unstable.kyverno-chainsaw
-      mods
+      unstable.mods
       moreutils
       minio-client
       nix-init
