@@ -11,13 +11,13 @@ buildGoModule rec {
     owner = "replicatedhq";
     repo = "replicated";
     rev = "v${version}";
-    sha256 = "sha256-165STG2WD9J3Cjn6dBeFliR74LurhwD5eO33Qz/agpQ=";
+    sha256 = "sha256-btq8ag3UlcTC7NMIpI7DiFUPSa5ZKYV1FD67t05venk=";
   };
 
   vendorHash = if isDarwin then
-      "sha256-GnPRsdNcWxL/eTnbN2uC9oUS0mXyIOUQbvkcSGKQV/Y="
+      "sha256-OYm8Jd0kLRU3K4fb6kPoPiCJClpger9JSZVoY5WEriQ="
     else
-      "sha256-2QpsjeKRut2AZBnL66QSW6ibyNFZcF1fP1qCdRtqDoE=";
+      "";
 
   subPackages = [ "cli/cmd/" ];
   ldflags = [
