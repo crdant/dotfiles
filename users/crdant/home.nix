@@ -83,6 +83,18 @@ in {
               timeout = null;
               type = "builtin";
             };
+            git = {
+              cmd = "${pkgs.uv}/bin/uvx";
+              args = [ "mcp-server-git" ];
+              description = ''
+                A Model Context Protocol server for Git repository interaction
+                and automation. This server provides tools to read, search, and
+                manipulate Git repositories via Large Language Models.
+              '';
+              enabled = true;
+              timeout = 300;
+              type = "stdio";
+            };
             github = {
               args = [ "-y" "@modelcontextprotocol/server-github" ];
               cmd = "${unstable.github-mcp-server}/bin/github-mcp-server";
@@ -139,6 +151,10 @@ in {
               time = {
                 command = uvxPath;
                 args = ["mcp-server-time" "--local-timezone=America/New_York"];
+              };
+              git = {
+                command = uvxPath;
+                args = [ "mcp-server-git" ];
               };
               github = {
                 command = "${unstable.github-mcp-server}/bin/github-mcp-server";
