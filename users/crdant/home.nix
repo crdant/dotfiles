@@ -62,6 +62,48 @@ in {
             };
           in builtins.readFile content;
       };
+      "goose/config.yaml" = {
+        path = "${config.home.homeDirectory}/.config/goose/config.yaml";
+        mode = "0600";
+        content = (pkgs.formats.yaml { }).generate ".aider.conf.yml" {
+          GOOSE_MODEL = "claude-3-7-sonnet-latest";
+          GOOSE_PROVIDER = "anthropic";
+          extensions = {
+            computercontroller = {
+              display_name = null;
+              enabled = true;
+              name = "computercontroller";
+              timeout = null;
+              type = "builtin";
+            };
+            developer = {
+              display_name = null;
+              enabled = true;
+              name = "developer";
+              timeout = null;
+              type = "builtin";
+            };
+            github = {
+              args = [ "-y" "@modelcontextprotocol/server-github" ];
+              cmd = "${unstable.github-mcp-server}/bin/github-mcp-server";
+              description = "GitHub's official MCP Server";
+              enabled = true;
+              envs = {
+                GITHUB_PERSONAL_ACCESS_TOKEN = config.sops.placeholder."github/token";
+              };
+              name = "github";
+              timeout = 300;
+              type = "stdio";
+            };
+            memory = {
+              display_name = null;
+              enabled = true;
+              name = "memory";
+              timeout = null;
+              type = "builtin";
+            };
+          };
+        };
     } // lib.optionalAttrs isDarwin {
       "claude_desktop_config.json" = {
         path = "${config.home.homeDirectory}/Library/Application Support/Claude/claude_desktop_config.json";
@@ -158,6 +200,7 @@ in {
       exercism
       gh
       git-lfs
+      unstable.github-mcp-server
       google-cloud-sdk
       unstable.goose-cli
       gopls
