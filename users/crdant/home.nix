@@ -1,4 +1,4 @@
-{ inputs, outputs, config, pkgs, lib, username, homeDirectory, gitEmail, ... }:
+{ inputs, outputs, config, pkgs, lib, username, homeDirectory, gitEmail, kind, ... }:
 
 let 
   isDarwin = pkgs.stdenv.isDarwin ;
@@ -40,9 +40,29 @@ in {
     };
     secrets = {
       "github/token" = {};
+      "anthropic/apiKeys/chuck@replicated.com" = {};
+      "anthropic/apiKeys/chuck@crdant.io" = {};
     } ; 
-  } // lib.optionalAttrs isDarwin {
     templates = {
+      ".aider.conf.yml" = {
+        path = "${config.home.homeDirectory}/.aider.conf.yml";
+        mode = "0600";
+        content = 
+          let 
+            hostname = builtins.exec[ "hostname" ];
+            content = (pkgs.formats.yaml { }).generate ".aider.conf.yml" {
+              model = "sonnet";
+              anthropic-api-key = config.sops.placeholder."anthropic/apiKeys/${gitEmail}";
+              cache-prompts = true;
+
+              architect = true;
+              auto-accept-architect = false;
+              multiline = true;
+              vim = true;
+            };
+          in builtins.readFile content;
+      };
+    } // lib.optionalAttrs isDarwin {
       "claude_desktop_config.json" = {
         path = "${config.home.homeDirectory}/Library/Application Support/Claude/claude_desktop_config.json";
         mode = "0600";
@@ -87,8 +107,8 @@ in {
               };
             };
           };
+        };
       };
-    };
   };
 
   home = {
@@ -278,6 +298,7 @@ in {
         source = ./config/glow;
         recursive = true;
       };
+
 
       # "Library/Application Support/io.database.llm/templates" = {
       #   source = ./config/llm/templates;
