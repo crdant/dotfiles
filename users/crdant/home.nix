@@ -42,6 +42,7 @@ in {
       "github/token" = {};
       "anthropic/apiKeys/chuck@replicated.com" = {};
       "anthropic/apiKeys/chuck@crdant.io" = {};
+      "google/maps/apiKey" = {};
     } ; 
     templates = {
       ".aider.conf.yml" = {
@@ -110,6 +111,18 @@ in {
                   timeout = 300;
                   type = "stdio";
                 };
+                google-maps = {
+                  cmd = "${pkgs.nodejs_22}/bin/npx";
+                  args = [ "-y" "@modelcontextprotocol/server-google-maps" ];
+                  description = "MCP Server for the Google Maps API.";
+                  envs = {
+                    GOOGLE_MAPS_API_KEY = "${config.sops.placeholder."google/maps/apiKey"}";
+                  };
+                  name = "google-maps";
+                  enabled = true;
+                  timeout = 300;
+                  type = "stdio";
+                };
                 memory = {
                   display_name = "Memory";
                   enabled = true;
@@ -166,6 +179,13 @@ in {
                 args = ["stdio" ];
                 env = {
                   GITHUB_PERSONAL_ACCESS_TOKEN = "${config.sops.placeholder."github/token"}";
+                };
+              };
+              google-maps = {
+                command = npxPath;
+                args = [ "-y" "@modelcontextprotocol/server-google-maps" ];
+                env = {
+                  GOOGLE_MAPS_API_KEY = "${config.sops.placeholder."google/maps/apiKey"}";
                 };
               };
             };
