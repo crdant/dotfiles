@@ -548,7 +548,6 @@ in {
             let g:fzf_vim.preview_window = []
           ''; 
         }
-        nvim-aider
         nvim-cmp
         nvim-lspconfig
         {
@@ -591,6 +590,10 @@ in {
         require('sourcekit')
         require('terraform_lsp')
         require('ts_ls')
+
+        -- Aider integration
+        require('snacks').setup({})
+        require('nvim_aider').setup({})
 
         -- Indentation
 
