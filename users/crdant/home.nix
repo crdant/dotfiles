@@ -70,6 +70,7 @@ in {
             content = (pkgs.formats.yaml { }).generate ".aider.conf.yml" {
               GOOSE_PROVIDER = "anthropic";
               GOOSE_MODEL = "claude-3-7-sonnet-latest";
+              GOOSE_MODE = "smart_approve";
               extensions = {
                 computercontroller = {
                   display_name = "Computer Controller";
