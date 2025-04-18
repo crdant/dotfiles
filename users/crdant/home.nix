@@ -284,7 +284,6 @@ in {
       syft
       tcptraceroute
       tektoncd-cli
-      terminal-notifier
       terraform
       terraform-lsp
       troubleshoot-sbctl
@@ -306,6 +305,7 @@ in {
       postman
       sourcekit-lsp
       swiftlint
+      terminal-notifier
       unstable.xcodegen
       vimr
       (callPackage ./vimr-wrapper.nix { inherit config ; })
