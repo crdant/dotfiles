@@ -42,6 +42,7 @@ in {
       "github/token" = {};
       "anthropic/apiKeys/chuck@replicated.com" = {};
       "anthropic/apiKeys/chuck@crdant.io" = {};
+      "google/maps/apiKey" = {};
     } ; 
     templates = {
       ".aider.conf.yml" = {
@@ -59,8 +60,79 @@ in {
               auto-accept-architect = false;
               multiline = true;
               vim = true;
+
+              notifications = true;
             };
           in builtins.readFile content;
+      };
+      "goose/config.yaml" = {
+        path = "${config.home.homeDirectory}/.config/goose/config.yaml";
+        mode = "0600";
+        content = 
+          let 
+            content = (pkgs.formats.yaml { }).generate ".aider.conf.yml" {
+              GOOSE_PROVIDER = "anthropic";
+              GOOSE_MODEL = "claude-3-7-sonnet-latest";
+              GOOSE_MODE = "smart_approve";
+              extensions = {
+                computercontroller = {
+                  display_name = "Computer Controller";
+                  enabled = true;
+                  name = "computercontroller";
+                  timeout = 300;
+                  type = "builtin";
+                };
+                developer = {
+                  display_name = "Developer Tools";
+                  enabled = true;
+                  name = "developer";
+                  timeout = 300;
+                  type = "builtin";
+                };
+                git = {
+                  cmd = "${pkgs.uv}/bin/uvx";
+                  args = [ "mcp-server-git" ];
+                  description = "A Model Context Protocol server for Git repository interaction and automation.";
+                  envs = {};
+                  name = "git";
+                  enabled = true;
+                  timeout = 300;
+                  type = "stdio";
+                };
+                github = {
+                  args = [ "stdio" ];
+                  cmd = "${pkgs.unstable.github-mcp-server}/bin/github-mcp-server";
+                  description = "GitHub's official MCP Server";
+                  enabled = true;
+                  envs = {
+                    GITHUB_PERSONAL_ACCESS_TOKEN = config.sops.placeholder."github/token";
+                  };
+                  name = "github";
+                  timeout = 300;
+                  type = "stdio";
+                };
+                google-maps = {
+                  cmd = "${pkgs.nodejs_22}/bin/npx";
+                  args = [ "-y" "@modelcontextprotocol/server-google-maps" ];
+                  description = "MCP Server for the Google Maps API.";
+                  envs = {
+                    GOOGLE_MAPS_API_KEY = "${config.sops.placeholder."google/maps/apiKey"}";
+                  };
+                  name = "google-maps";
+                  enabled = true;
+                  timeout = 300;
+                  type = "stdio";
+                };
+                memory = {
+                  display_name = "Memory";
+                  enabled = true;
+                  name = "memory";
+                  timeout = 300;
+                  type = "builtin";
+                };
+              };
+            };
+        in builtins.readFile content;
       };
     } // lib.optionalAttrs isDarwin {
       "claude_desktop_config.json" = {
@@ -98,11 +170,22 @@ in {
                 command = uvxPath;
                 args = ["mcp-server-time" "--local-timezone=America/New_York"];
               };
+              git = {
+                command = uvxPath;
+                args = [ "mcp-server-git" ];
+              };
               github = {
-                command = npxPath;
-                args = ["-y" "@modelcontextprotocol/server-github" ];
+                command = "${pkgs.unstable.github-mcp-server}/bin/github-mcp-server";
+                args = ["stdio" ];
                 env = {
-                  GITHUB_TOKEN = "${config.sops.placeholder."github/token"}";
+                  GITHUB_PERSONAL_ACCESS_TOKEN = "${config.sops.placeholder."github/token"}";
+                };
+              };
+              google-maps = {
+                command = npxPath;
+                args = [ "-y" "@modelcontextprotocol/server-google-maps" ];
+                env = {
+                  GOOGLE_MAPS_API_KEY = "${config.sops.placeholder."google/maps/apiKey"}";
                 };
               };
             };
@@ -158,6 +241,7 @@ in {
       exercism
       gh
       git-lfs
+      unstable.github-mcp-server
       google-cloud-sdk
       unstable.goose-cli
       gopls
@@ -171,11 +255,10 @@ in {
       k0sctl
       unstable.ko
       kots
-      kots2helm
       kubeseal
       kustomize
       unstable.kyverno-chainsaw
-      mods
+      unstable.mods
       moreutils
       minio-client
       nix-init
@@ -219,10 +302,10 @@ in {
       # discord
       # minikube
       bruno
-      # iterm-ai
       postman
       sourcekit-lsp
       swiftlint
+      terminal-notifier
       unstable.xcodegen
       vimr
       (callPackage ./vimr-wrapper.nix { inherit config ; })
@@ -488,7 +571,6 @@ in {
             let g:fzf_vim.preview_window = []
           ''; 
         }
-        nvim-aider
         nvim-cmp
         nvim-lspconfig
         {
@@ -531,6 +613,10 @@ in {
         require('sourcekit')
         require('terraform_lsp')
         require('ts_ls')
+
+        -- Aider integration
+        require('snacks').setup({})
+        require('nvim_aider').setup({})
 
         -- Indentation
 
@@ -995,6 +1081,14 @@ in {
       "ssh/config.d" = {
         source = ./config/ssh/config.d;
         recursive = true;
+      };
+
+      "git/allowed-signers" = {
+        text = ''
+          # allow FIDO SSH key on my personal Yubikey to sign commits
+          chuck@crdant.io namespaces="git" sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIH76RbmzI1NX9SGvDUUnX0QAVmF5pzr6mHZNG2rd0jAoAAAABHNzaDo= crdant@grappa
+          chuck@replicated.com namespaces="git" sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIH76RbmzI1NX9SGvDUUnX0QAVmF5pzr6mHZNG2rd0jAoAAAABHNzaDo= crdant@grappa
+        '';
       };
     } // lib.optionalAttrs isDarwin { 
       "karabiner/karabiner.json" = {
