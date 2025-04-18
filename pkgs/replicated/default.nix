@@ -5,7 +5,7 @@ let
 in
 buildGoModule rec {
   pname = "replicated";
-  version = "0.97.0";
+  version = "0.101.0";
 
   src = fetchFromGitHub {
     owner = "replicatedhq";
