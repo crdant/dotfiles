@@ -59,6 +59,8 @@ in {
               auto-accept-architect = false;
               multiline = true;
               vim = true;
+
+              notifications = true;
             };
           in builtins.readFile content;
       };
@@ -262,6 +264,7 @@ in {
       syft
       tcptraceroute
       tektoncd-cli
+      terminal-notifier
       terraform
       terraform-lsp
       troubleshoot-sbctl
