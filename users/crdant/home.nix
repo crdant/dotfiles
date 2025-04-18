@@ -68,37 +68,35 @@ in {
         content = 
           let 
             content = (pkgs.formats.yaml { }).generate ".aider.conf.yml" {
-              GOOSE_MODEL = "claude-3-7-sonnet-latest";
               GOOSE_PROVIDER = "anthropic";
+              GOOSE_MODEL = "claude-3-7-sonnet-latest";
               extensions = {
                 computercontroller = {
-                  display_name = null;
+                  display_name = "Computer Controller";
                   enabled = true;
                   name = "computercontroller";
-                  timeout = null;
+                  timeout = 300;
                   type = "builtin";
                 };
                 developer = {
-                  display_name = null;
+                  display_name = "Developer Tools";
                   enabled = true;
                   name = "developer";
-                  timeout = null;
+                  timeout = 300;
                   type = "builtin";
                 };
                 git = {
                   cmd = "${pkgs.uv}/bin/uvx";
                   args = [ "mcp-server-git" ];
-                  description = ''
-                    A Model Context Protocol server for Git repository interaction
-                    and automation. This server provides tools to read, search, and
-                    manipulate Git repositories via Large Language Models.
-                  '';
+                  description = "A Model Context Protocol server for Git repository interaction and automation.";
+                  envs = {};
+                  name = "git";
                   enabled = true;
                   timeout = 300;
                   type = "stdio";
                 };
                 github = {
-                  args = [ "-y" "@modelcontextprotocol/server-github" ];
+                  args = [ "stdio" ];
                   cmd = "${pkgs.unstable.github-mcp-server}/bin/github-mcp-server";
                   description = "GitHub's official MCP Server";
                   enabled = true;
@@ -110,10 +108,10 @@ in {
                   type = "stdio";
                 };
                 memory = {
-                  display_name = null;
+                  display_name = "Memory";
                   enabled = true;
                   name = "memory";
-                  timeout = null;
+                  timeout = 300;
                   type = "builtin";
                 };
               };
