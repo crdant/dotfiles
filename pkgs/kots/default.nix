@@ -17,7 +17,7 @@ buildGoModule rec {
   vendorHash = if isDarwin then 
       "sha256-m4pvaR2206p1RIpG/dt7/6Oz+Q9+dydGIBjAIYVC89g="
     else
-      "";
+      "sha256-nD9/ypW7xTvfo9B/vt8/WlHFtic4EScga7VuURbkHIE=";
 
   subPackages = [ "cmd/kots/" ];
 
