@@ -1082,6 +1082,14 @@ in {
         source = ./config/ssh/config.d;
         recursive = true;
       };
+
+      "git/allowed-signers" = {
+        text = ''
+          # allow FIDO SSH key on my personal Yubikey to sign commits
+          chuck@crdant.io namespaces="git" sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIH76RbmzI1NX9SGvDUUnX0QAVmF5pzr6mHZNG2rd0jAoAAAABHNzaDo= crdant@grappa
+          chuck@replicated.com namespaces="git" sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIH76RbmzI1NX9SGvDUUnX0QAVmF5pzr6mHZNG2rd0jAoAAAABHNzaDo= crdant@grappa
+        '';
+      };
     } // lib.optionalAttrs isDarwin { 
       "karabiner/karabiner.json" = {
         text = builtins.readFile ./config/karabiner/karabiner.json ;
