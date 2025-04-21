@@ -6,7 +6,7 @@
 
 python3.pkgs.buildPythonPackage rec {
   pname = "llm-perplexity";
-  version = "2025.2.0";
+  version = "2025.2.3";
   pyproject = true;
 
   src = fetchFromGitHub {
