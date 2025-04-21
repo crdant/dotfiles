@@ -5,15 +5,15 @@
 }:
 
 python3.pkgs.buildPythonPackage rec {
-  pname = "llm-gemini";
-  version = "0.18.1";
+  pname = "condense-json";
+  version = "0.1.2";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "simonw";
-    repo = "llm-gemini";
+    repo = "condense-json";
     rev = version;
-    hash = "sha256-kQVqMB8uf8tT4lTbyvX5tByUzD2yO1h7hIDhUTycX2A=";
+    hash = "sha256-eZ8d8N7k8VL7dFkORHmp7JmHM1/11Km8BCriWw/LiwE=";
   };
 
   build-system = [
@@ -21,29 +21,23 @@ python3.pkgs.buildPythonPackage rec {
     python3.pkgs.wheel
   ];
 
-  dependencies = with python3.pkgs; [
-    httpx
-    ijson
-    llm
-  ];
-
   optional-dependencies = with python3.pkgs; {
     test = [
-      nest-asyncio
+      cogapp
       pytest
+      pytest-asyncio
       pytest-recording
     ];
   };
 
   pythonImportsCheck = [
-    "llm_gemini"
+    "condense_json"
   ];
 
   meta = {
-    description = "LLM plugin to access Google's Gemini family of models";
-    homepage = "https://github.com/simonw/llm-gemini";
+    description = "Python function for condensing JSON using replacement strings";
+    homepage = "https://github.com/simonw/condense-json";
     license = lib.licenses.asl20;
     maintainers = with lib.maintainers; [ ];
-    mainProgram = "llm-gemini";
   };
 }
