@@ -61,6 +61,7 @@ in {
               multiline = true;
               vim = true;
 
+              watch-files = true;
               notifications = true;
             };
           in builtins.readFile content;
