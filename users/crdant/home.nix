@@ -234,6 +234,7 @@ in {
       argocd
       azure-cli
       certbot-full
+      unstable.claude-code
       cloudflared
       conftest
       cosign
