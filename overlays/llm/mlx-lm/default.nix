@@ -7,7 +7,7 @@
 
 python3.pkgs.buildPythonPackage rec {
   pname = "mlx-lm";  # Note: using underscore in pname as it appears on PyPI
-  version = "0.21.5";  # Updated to the latest version
+  version = "0.22.1";  # Updated to the latest version
   format = "wheel";
   
   src = fetchPypi {
@@ -16,8 +16,7 @@ python3.pkgs.buildPythonPackage rec {
     python = "py3";
     dist = "py3";
     platform = "any";
-    # You'll need to get the actual hash
-    sha256 = "05hzlbdd0s4nr5q0nfl1730ka1inbr76yaszlz71iayyj0hjj05g"; 
+    sha256 = ""; 
   };
   
   # Add required dependencies

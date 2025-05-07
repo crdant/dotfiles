@@ -12,30 +12,30 @@ let
 
   customPython = unstable.python3.override {
     packageOverrides = self: super: {
-      condense-json = self.callPackage ./condense-json { python3 = customPython; };
+      # condense-json = self.callPackage ./condense-json { python3 = customPython; };
 
       anthropic = unstable.python312Packages.anthropic.overrideAttrs (oldAttrs: let
-          newVersion = "0.49.0";
+          newVersion = "0.50.0";
         in {
           version = newVersion;
           src = unstable.fetchFromGitHub {
             owner = "anthropics";
             repo = "anthropic-sdk-python";
             rev = "v${newVersion}";
-            hash = "sha256-vbK8rqCekWbgLAU7YlHUhfV+wB7Q3Rpx0OUYvq3WYWw=";
+            hash = "";
           };
         }
       );
  
       llm = unstable.python312Packages.llm.overrideAttrs (oldAttrs: let
-          newVersion = "0.24.2";
+          newVersion = "0.25";
         in {
           version = newVersion;
           src = unstable.fetchFromGitHub {
             owner = "simonw";
             repo = "llm";
             rev = newVersion;
-            hash = "sha256-G5XKau8sN/AW9icSmJW9ht0wP77QdJkT5xmn7Ej4NeU=";
+            hash = "";
           };
           propagatedBuildInputs = oldAttrs.propagatedBuildInputs ++ [ self.condense-json ];
         }
