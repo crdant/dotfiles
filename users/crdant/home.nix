@@ -475,6 +475,7 @@ in {
         unignore = "update-index --no-skip-worktree";
         ignored = "!git ls-files -v | grep \"^S\"";
         praise = "blame";
+        unstash = "!f() { if [ $# -eq 0 ]; then echo \"Usage: git unstash <file1> [<file2> ...]\"; else for file in \"$@\"; do git checkout stash@{0} -- \"$file\"; done; fi }; f"
       };
 
       extraConfig = {
