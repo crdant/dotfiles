@@ -12,8 +12,8 @@ python3.pkgs.buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "angerman";
     repo = "llm-groq";
-    rev = "v{version}";
-    hash = "";
+    rev = "v${version}";
+    hash = "sha256-sZ5d9w43NvypaPrebwZ5BLgRaCHAhd7gBU6uHEdUaF4=";
   };
 
   build-system = [

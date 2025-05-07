@@ -13,7 +13,7 @@ python3.pkgs.buildPythonPackage rec {
     owner = "hex";
     repo = "llm-perplexity";
     rev = version;
-    hash = "";
+    hash = "sha256-MM4x9I7c8Ghkxm+fpVRyFPMjkzdm4cDjVxErZcXlVdU=";
   };
 
   build-system = [

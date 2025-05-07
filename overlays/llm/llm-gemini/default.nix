@@ -13,7 +13,7 @@ python3.pkgs.buildPythonPackage rec {
     owner = "simonw";
     repo = "llm-gemini";
     rev = version;
-    hash = "";
+    hash = "sha256-+Ax2NQkWzVTImlOzdcgkUNgVTZklHHQkKAV55DCBAP8=";
   };
 
   build-system = [
