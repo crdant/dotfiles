@@ -5,8 +5,8 @@
     src = fetchFromGitHub {
       owner = "GeorgesAlkhouri";
       repo = "nvim-aider";
-      rev = "3554ffdd7f0f91167f83ab3e3475ba08a090061f";
-      sha256 = "sha256-1ApWcUHUCPOo5H7NAiC/M2fN41j9fgPN6Gt3o4hfYbo=";
+      rev = "3d1d733a7a3cf726dc41d1c4f15df01d208c09e5";
+      sha256 = "sha256-6DCHpO37SWagYg1ZqcqRJMox9rZaoPNJYEFXck1sUcs=";
     };
     meta.homepage = "https://github.com/GeorgesAlkhouri/nvim-aider";
 }
