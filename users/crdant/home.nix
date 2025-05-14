@@ -421,11 +421,10 @@ in {
       };
 
 
-      # "Library/Application Support/io.database.llm/templates" = {
-      #   source = ./config/llm/templates;
-      #   recursive = true;
-      # };
-
+      "Library/Application Support/io.datasette.llm/templates" = {
+        source = ./config/llm/templates;
+        recursive = true;
+      };
     } ;
   };
 
