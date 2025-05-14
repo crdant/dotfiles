@@ -269,7 +269,7 @@ in {
       unstable.open-policy-agent
       oras
       packer
-      pyright
+      unstable.pyright
       llm
       rar
       ripgrep
@@ -290,7 +290,7 @@ in {
       terraform-lsp
       troubleshoot-sbctl
       tunnelmanager
-      typescript-language-server
+      unstable.typescript-language-server
       uv
       vault
       vendir
@@ -303,7 +303,7 @@ in {
       # gui apps
       # discord
       # minikube
-      bruno
+      unstable.bruno
       postman
       sourcekit-lsp
       swiftlint
