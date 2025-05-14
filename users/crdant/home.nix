@@ -334,6 +334,11 @@ in {
     ] ;
 
     file = {
+      ".claude" = {
+        source = ./config/claude;
+        recursive = true;
+      };
+
       ".curlrc" = {
         text = "-fL";
       };
