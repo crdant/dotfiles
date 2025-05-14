@@ -43,6 +43,8 @@ in {
       "anthropic/apiKeys/chuck@replicated.com" = {};
       "anthropic/apiKeys/chuck@crdant.io" = {};
       "google/maps/apiKey" = {};
+      "slack/shortrib/slackernews/userToken" = {};
+      "slack/shortrib/slackernews/botToken" = {};
     } ; 
     templates = {
       ".aider.conf.yml" = {
@@ -135,6 +137,7 @@ in {
             };
         in builtins.readFile content;
       };
+    
     } // lib.optionalAttrs isDarwin {
       "claude_desktop_config.json" = {
         path = "${config.home.homeDirectory}/Library/Application Support/Claude/claude_desktop_config.json";
@@ -192,7 +195,34 @@ in {
             };
           };
         };
-      };
+      "slackernews.yml" = {
+        path = "${config.home.homeDirectory}/Library/Application Support/espanso/match/slackernews.yml";
+        mode = "0600";
+        content = 
+          let 
+            content = (pkgs.formats.yaml { }).generate "slackernews.yaml" {
+              matches = [
+                {
+                  trigger = ";id";
+                  replace = "4375036420002.5820986269254";
+                }
+                {
+                trigger = ";secret";
+                replace = "7d75b102878692827aa65b5f564402e7";
+                }
+                {
+                  trigger = ";bot";
+                  replace = "${config.sops.placeholder."slack/shortrib/slackernews/botToken"}";
+                }
+                {
+                  trigger = ";user";
+                  replace = "${config.sops.placeholder."slack/shortrib/slackernews/userToken"}";
+                }
+            ];
+          };
+          in builtins.readFile content;
+        };
+    };
   };
 
   home = {
