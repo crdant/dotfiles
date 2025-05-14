@@ -308,6 +308,7 @@ in {
       sourcekit-lsp
       swiftlint
       terminal-notifier
+      xcbeautify
       unstable.xcodegen
       vimr
       (callPackage ./vimr-wrapper.nix { inherit config ; })
