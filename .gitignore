@@ -11,17 +11,5 @@ work/*
 # nix build results
 result
 
-# ignores for this repo
-files/aws/.aws/cli/cache
-files/aws/.aws/boto/cache
-files/nvim/.config/nvim/plugged
-files/nvim/.config/nvim/.netrwhist
-files/cargo/.cargo/registry
-files/cargo/.cargo/.package-cache
-files/cargo/.cargo/bin
-files/karabiner/.config/karabiner/assets
-files/karabiner/.config/karabiner/automatic_backups
-files/tmux/.tmux/plugins
-files/tmux/sessions
-files/mc/.mc/session
-files/mc/.mc/share
+**/.claude/settings.local.json
+**/.goose
