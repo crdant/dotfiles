@@ -5,13 +5,13 @@ let
 in
 buildGoModule rec {
   pname = "replicated";
-  version = "0.101.0";
+  version = "0.104.0";
 
   src = fetchFromGitHub {
     owner = "replicatedhq";
     repo = "replicated";
     rev = "v${version}";
-    sha256 = "sha256-btq8ag3UlcTC7NMIpI7DiFUPSa5ZKYV1FD67t05venk=";
+    sha256 = "sha256-I95PmIdx/rM/dYo0hNXP6sAStVWMPKtUrp+eMN9HMXw=";
   };
 
   vendorHash = if isDarwin then

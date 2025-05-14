@@ -6,14 +6,14 @@
 
 python3.pkgs.buildPythonPackage rec {
   pname = "llm-perplexity";
-  version = "2025.2.3";
+  version = "2025.4.1";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "hex";
     repo = "llm-perplexity";
     rev = version;
-    hash = "sha256-scwmy2o9e57OdMRtoW2TmkUrSApIMzPu5z6oikPaQ90=";
+    hash = "sha256-MM4x9I7c8Ghkxm+fpVRyFPMjkzdm4cDjVxErZcXlVdU=";
   };
 
   build-system = [

@@ -6,14 +6,14 @@
 
 python3.pkgs.buildPythonPackage rec {
   pname = "llm-groq";
-  version = "0.7";
+  version = "0.8";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "angerman";
     repo = "llm-groq";
-    rev = "57be10aeb6f69b31b067060209688982c409dd51";
-    hash = "sha256-N2VbcY8z7AppZe0X0sk/cKTvb+WlMmWBtTkoLamtKSM=";
+    rev = "v${version}";
+    hash = "sha256-sZ5d9w43NvypaPrebwZ5BLgRaCHAhd7gBU6uHEdUaF4=";
   };
 
   build-system = [
