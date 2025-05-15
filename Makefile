@@ -1,7 +1,7 @@
 # Dynamic Makefile for Nix configurations using nix eval
 
 # Configuration variables
-SHELL := /bin/bash
+SHELL := /usr/bin/env bash
 FLAKE_PATH := .
 NIX := nix
 
