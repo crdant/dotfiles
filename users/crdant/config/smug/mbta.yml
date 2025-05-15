@@ -1,13 +1,14 @@
 sendkeys_timeout: 0
-session: window
+session: mbta
+root: /home/crdant/workspace/mbta-mcp-server
 windows:
 - name: zsh
-  root: /home/crdant/workspace/clusters
   panes:
-  - commands: []
+  - commands: 
+    - claude
   layout: tiled
 - name: nvim
-  root: /home/crdant/workspace/clusters
+  root: /home/crdant/workspace/mbta-mcp-server
   commands:
     - nvim
 
