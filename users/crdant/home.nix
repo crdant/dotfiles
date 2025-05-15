@@ -1037,6 +1037,10 @@ in {
         function window() {
           smug start window
         } 
+
+        function mbta() {
+          smug start mbta
+        } 
       '';
 
       initExtraBeforeCompInit = ''
