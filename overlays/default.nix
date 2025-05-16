@@ -31,6 +31,19 @@
       go = final.go;
     };
 
+    claude-code = final.unstable.claude-code.overrideAttrs (oldAttrs: let
+      newVersion = "0.2.114"; # Your desired version
+      in {
+        version = newVersion;
+      
+        src = prev.fetchzip {
+          url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${newVersion}.tgz";
+          hash = "sha256-el6pRQaMczBTrpC+LA2i60BjEWe50WTZ1vogsCGi/y0="; # Update with correct hash
+        };
+        
+        npmDepsHash = ""; # Update with correct hash
+      });
+
     vimPlugins = prev.vimPlugins // {
       supermaven-vim = prev.callPackage ./supermaven-nvim { };
       nvim-aider = prev.callPackage ./nvim-aider { };

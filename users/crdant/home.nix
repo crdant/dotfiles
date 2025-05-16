@@ -364,11 +364,20 @@ in {
       zsh-completions
     ] ;
 
+    # HACK because Claude code won't follow symlinks, replace with commented out file
+    # stuff below as soon as possible
+    activation = {
+      claude = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        $DRY_RUN_CMD mkdir -p ~/.claude/commands
+        $DRY_RUN_CMD cp -f ${./config/claude/commands}/* ~/.claude/commands/
+      '';
+    };
+
     file = {
-      ".claude" = {
-        source = ./config/claude;
-        recursive = true;
-      };
+      # ".claude" = {
+      #   source = ./config/claude;
+      #   recursive = true;
+      # };
 
       ".curlrc" = {
         text = "-fL";
