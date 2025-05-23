@@ -358,6 +358,7 @@ in {
       procps
       pstree
       sipcalc
+      snowsql
       unstable.tailscale
       tcptraceroute
       yq-go
@@ -398,6 +399,10 @@ in {
         recursive = true;
       };
 
+      ".snowsql" = {
+        source = ./config/snowsql;
+        recursive = true;
+      };
       ".step" = {
         source = ./config/step;
         recursive = true;
@@ -1010,6 +1015,7 @@ in {
         sha1 = "/usr/bin/openssl sha1" ;
         rmd160 = "/usr/bin/openssl rmd160" ;
         lsock = "sudo /usr/sbin/lsof -i -P" ;
+        snowsql="/Applications/SnowSQL.app/Contents/MacOS/snowsql" ;
       };
 
       initExtra = ''
