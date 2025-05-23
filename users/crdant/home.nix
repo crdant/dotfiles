@@ -449,6 +449,7 @@ in {
     _1password-shell-plugins = {
       enable = true;
       plugins = with pkgs; [
+      ] ++ lib.optionals isDarwin [
         awscli2
         gh
         ngrok
