@@ -104,6 +104,8 @@ build: build-home-$(CURRENT_USER) ## Build home-manager configuration for curren
 .PHONY: switch
 switch: switch-home-$(CURRENT_USER) ## Switch to home-manager configuration for current user
 
+.PHONY: user
+default: user
 user: build switch
 $(CURRENT_USER): build switch
  
