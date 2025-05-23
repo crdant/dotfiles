@@ -24,6 +24,7 @@ in
     ];
     casks = [
       "claude"
+      "snowflake-snowsql"
     ];
   };
 
