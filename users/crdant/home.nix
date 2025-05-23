@@ -364,11 +364,22 @@ in {
       zsh-completions
     ] ;
 
+    # HACK because Claude code won't follow symlinks, replace with commented out file
+    # stuff below as soon as possible
+    activation = {
+      claude = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        $DRY_RUN_CMD mkdir -p ${config.xdg.configHome}/replicated/commands
+        $DRY_RUN_CMD cp -f ${./config/claude/commands}/* ${config.xdg.configHome}/replicated/commands/
+        $DRY_RUN_CMD mkdir -p ${config.xdg.configHome}/personal/commands
+        $DRY_RUN_CMD cp -f ${./config/claude/commands}/* ${config.xdg.configHome}/personal/commands/
+      '';
+    };
+
     file = {
-      ".claude" = {
-        source = ./config/claude;
-        recursive = true;
-      };
+      # ".claude" = {
+      #   source = ./config/claude;
+      #   recursive = true;
+      # };
 
       ".curlrc" = {
         text = "-fL";
@@ -1042,6 +1053,13 @@ in {
         export GOVC_USERNAME=administrator@shortrib.local
         # export GOVC_PASSWORD=$(security find-generic-password -a administrator@shortrib.local -s vcenter.lab.shortrib.net -w)
         export GOVC_INSECURE=true
+
+        # set default for Claude config based on hostname
+        if [[ "$(whoami)" == "chuck" ]] ; then
+          export CLAUDE_CONFIG_DIR="${config.xdg.configHome}/replicated/commands"
+        else
+          export CLAUDE_CONFIG_DIR="${config.xdg.configHome}/personal/commands"
+        fi
 
         # GPG Agent as SSH agent
         export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
