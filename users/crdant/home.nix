@@ -45,6 +45,7 @@ in {
       "google/maps/apiKey" = {};
       "slack/shortrib/slackernews/userToken" = {};
       "slack/shortrib/slackernews/botToken" = {};
+      "mbta/apiKey" = {};
     } ; 
     templates = {
       ".aider.conf.yml" = {
@@ -99,6 +100,18 @@ in {
                   envs = {};
                   name = "git";
                   enabled = true;
+                  timeout = 300;
+                  type = "stdio";
+                };
+                mbta = {
+                  args = [ ];
+                  cmd = "${pkgs.mbta-mcp-server}/bin/mbta-mcp-server";
+                  description = "My unofficial MBTA MCP Server";
+                  enabled = true;
+                  envs = {
+                    MBTA_API_KEY = config.sops.placeholder."mbta/apiKey";
+                  };
+                  name = "mbta";
                   timeout = 300;
                   type = "stdio";
                 };
@@ -183,6 +196,13 @@ in {
                 args = ["stdio" ];
                 env = {
                   GITHUB_PERSONAL_ACCESS_TOKEN = "${config.sops.placeholder."github/token"}";
+                };
+              };
+              mbta = {
+                command = "${pkgs.mbta-mcp-server}/bin/mbta-mcp-server";
+                args = [ ];
+                env = {
+                  MBTA_API_KEY = "${config.sops.placeholder."mbta/apiKey"}";
                 };
               };
               google-maps = {
@@ -290,6 +310,7 @@ in {
       kubeseal
       kustomize
       unstable.kyverno-chainsaw
+      mbta-mcp-server
       unstable.mods
       moreutils
       minio-client
@@ -362,7 +383,7 @@ in {
       tcptraceroute
       yq-go
       zsh-completions
-    ] ;
+    ];  
 
     file = {
       ".claude" = {
