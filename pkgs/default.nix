@@ -2,8 +2,10 @@
 # You can build them using 'nix build .#example'
 { pkgs ? import <nixpkgs> {} } : rec {
 
-  vimr = pkgs.callPackage ./vimr { };
+  mbta-mcp-server = pkgs.callPackage ./mbta-mcp-server { };
   tunnelmanager = pkgs.callPackage ./tunnelmanager { };
+
+  vimr = pkgs.callPackage ./vimr { };
 
   replicated = pkgs.callPackage ./replicated { };
   kots = pkgs.callPackage ./kots { };
