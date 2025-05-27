@@ -76,7 +76,7 @@
   environment = {
     systemPackages = with pkgs; [
       _1password-cli
-      unstable.age
+      age
       coreutils
       dogdns
       gist
@@ -101,7 +101,7 @@
       python311Packages.pip
       ripgrep
       sipcalc
-      unstable.tailscale
+      tailscale
       tcptraceroute
       timg
       tmux

@@ -24,11 +24,13 @@ in
     ];
     casks = [
       "claude"
+      "postman"
       "snowflake-snowsql"
     ];
   };
 
   system = {
+    primaryUser = "crdant";
     defaults = { 
       screencapture.location = "/Users/crdant/Documents/Outbox";
       CustomUserPreferences = {

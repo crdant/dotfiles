@@ -7,45 +7,7 @@
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
-    go = prev.go.overrideAttrs (oldAttrs: let
-        newVersion = "1.24.1";
-        newBootstrap = prev.buildPackages.go_1_22; # Replace with your desired bootstrap Go version
-      in {
-        version = newVersion;
-
-        src = prev.fetchurl {
-          url = "https://go.dev/dl/go${newVersion}.src.tar.gz";
-          hash = "sha256-gkTr9GxlYH2xAiK1gGrrMcH8+JecG2sS9gxnfpo8BlY=";
-        };
-
-        goBootstrap = newBootstrap; # Override the goBootstrap derivation
-
-        passthru = (oldAttrs.passthru or {}) // {
-          goBootstrap = newBootstrap;
-        };
-
-        GOROOT_BOOTSTRAP = "${newBootstrap}/share/go";
-      });
-
-    buildGoModule = prev.buildGoModule.override {
-      go = final.go;
-    };
-
-    claude-code = final.unstable.claude-code.overrideAttrs (oldAttrs: let
-      newVersion = "0.2.114"; # Your desired version
-      in {
-        version = newVersion;
-      
-        src = prev.fetchzip {
-          url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${newVersion}.tgz";
-          hash = "sha256-el6pRQaMczBTrpC+LA2i60BjEWe50WTZ1vogsCGi/y0="; # Update with correct hash
-        };
-        
-        npmDepsHash = ""; # Update with correct hash
-      });
-
     vimPlugins = prev.vimPlugins // {
-      supermaven-vim = prev.callPackage ./supermaven-nvim { };
       nvim-aider = prev.callPackage ./nvim-aider { };
     };
 

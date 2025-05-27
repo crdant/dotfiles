@@ -280,7 +280,7 @@ in {
 
     # Specify packages not explicitly configured below
     packages = with pkgs; [
-      unstable.aider-chat-full
+      aider-chat-full
       argocd
       azure-cli
       certbot-full
@@ -295,7 +295,7 @@ in {
       git-lfs
       unstable.github-mcp-server
       google-cloud-sdk
-      unstable.goose-cli
+      goose-cli
       gopls
       govc
       helmfile
@@ -305,22 +305,22 @@ in {
       kubectl
       kubernetes-helm
       k0sctl
-      unstable.ko
+      ko
       kots
       kubeseal
       kustomize
-      unstable.kyverno-chainsaw
+      kyverno-chainsaw
       mbta-mcp-server
-      unstable.mods
+      mods
       moreutils
       minio-client
       nix-init
       nix-prefetch-git
       nodejs_22
-      unstable.open-policy-agent
+      open-policy-agent
       oras
       packer
-      unstable.pyright
+      pyright
       llm
       rar
       ripgrep
@@ -341,7 +341,7 @@ in {
       terraform-lsp
       troubleshoot-sbctl
       tunnelmanager
-      unstable.typescript-language-server
+      typescript-language-server
       uv
       vault
       vendir
@@ -355,7 +355,7 @@ in {
       # discord
       # minikube
       unstable.bruno
-      postman
+      # postman
       sourcekit-lsp
       swiftlint
       terminal-notifier
@@ -658,7 +658,7 @@ in {
           '';
         }
         snacks-nvim
-        supermaven-vim
+        supermaven-nvim
         vim-surround
         vim-commentary
         vim-repeat
