@@ -46,6 +46,7 @@
         "lab.shortrib.net"
         "crdant.net"
       ];
+      fallbackDns = [ "10.25.0.1" ];
     };
     openssh = {
       enable = true;
