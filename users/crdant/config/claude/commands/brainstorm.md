@@ -4,4 +4,9 @@ Once we are done, save the spec as spec.md
 
 Ask if the user wants to create a git repo on github. if so, commit the spec.md to git and push it to the newly created git repo. 
 
-Here’s the idea:
+Here’s the idea: $ARGUMENTS
+
+Remember, only one question at a time. This is an example of a good message:
+"What is your key goal in exploring this idea?" This is an example of a bad
+message: "What is your key goal in exploring this idea? What value does the
+user get from that?"
