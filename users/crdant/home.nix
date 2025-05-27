@@ -355,7 +355,7 @@ in {
       # discord
       # minikube
       unstable.bruno
-      postman
+      # postman
       sourcekit-lsp
       swiftlint
       terminal-notifier
