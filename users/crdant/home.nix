@@ -1052,18 +1052,46 @@ in {
         setopt complete_aliases
         unsetopt hist_verify
 
+        # handle SSH differences between Prompt on iOS and a machine with Yubikey PGP available
+        # if we're connected via a traditional SSH agent it's probably Prompt
+        if [[ -n "$SSH_AUTH_SOCK" ]]; then
+          # use ssh signing with the provided key
+          export GIT_CONFIG_COUNT=3
+          export GIT_CONFIG_KEY_0=gpg.format
+          export GIT_CONFIG_VALUE_0=ssh
+          export GIT_CONFIG_KEY_1=user.signingkey
+          export GIT_CONFIG_VALUE_1=~/.ssh/id_charanda_enclave.pub
+          export GIT_CONFIG_KEY_2=gpg.ssh.allowedSignersFile
+          export GIT_CONFIG_VALUE_2=~/.config/git/allowed-signers
+        else 
+          # GPG Agent as SSH agent
+          export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+        fi
+
         # Tmux convenience functions
         function tmux-has-session() { 
           session=$1
           tmux has-session -t $session 2>/dev/null 
         }
 
+        function smug-session() {
+          session=$1
+          if [[ ! -d "$XDG_RUNTIME_DIR/ssh" ]]; then
+            mkdir -p "$XDG_RUNTIME_DIR/ssh"
+          fi
+          if [[ "SSH_AUTH_SOCK" != "$XDG_RUNTIME_DIR/ssh/s.ssh-agent.smug-$session" ]]; then
+            ln -sf $(readlink -f $SSH_AUTH_SOCK) "$XDG_RUNTIME_DIR/ssh/s.ssh-agent.smug-$session"
+            export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh/s.ssh-agent.smug-$session"
+          fi
+          smug start $session
+        }
+
         function fullscreen() {
-          smug start fullscreen
+          smug-session fullscreen
         } 
 
         function window() {
-          smug start window
+          smug-session window
         } 
       '';
 
@@ -1080,20 +1108,17 @@ in {
         # export GOVC_PASSWORD=$(security find-generic-password -a administrator@shortrib.local -s vcenter.lab.shortrib.net -w)
         export GOVC_INSECURE=true
 
+        # if rancher desktop is installed use it's binaries ONLY for anything not already
+        # installed system-wide
+        if [[ -d $HOME/.rd ]] ; then
+          export PATH=$PATH:"$HOME/.rd/bin"
+        fi
+
         # set default for Claude config based on hostname
         if [[ "$(whoami)" == "chuck" ]] ; then
           export CLAUDE_CONFIG_DIR="${config.xdg.configHome}/replicated/commands"
         else
           export CLAUDE_CONFIG_DIR="${config.xdg.configHome}/personal/commands"
-        fi
-
-        # GPG Agent as SSH agent
-        export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-
-        # if rancher desktop is installed use it's binaries ONLY for anything not already
-        # installed system-wide
-        if [[ -d $HOME/.rd ]] ; then
-          export PATH=$PATH:"$HOME/.rd/bin"
         fi
 
         export REPL_USE_SUDO=y
@@ -1170,6 +1195,8 @@ in {
           # allow FIDO SSH key on my personal Yubikey to sign commits
           chuck@crdant.io namespaces="git" sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIH76RbmzI1NX9SGvDUUnX0QAVmF5pzr6mHZNG2rd0jAoAAAABHNzaDo= crdant@grappa
           chuck@replicated.com namespaces="git" sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIH76RbmzI1NX9SGvDUUnX0QAVmF5pzr6mHZNG2rd0jAoAAAABHNzaDo= crdant@grappa
+          chuck@rcrdant.io namespace="git" ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBKZNf1+SIohm48DXEa1Xssz1ZV8oPxI3Uij1IyZrU3UmQeGkZeu+Vin88qX5UizFat8wd1P88CQk2yaRAIgPKOc=
+          chuck@replicated.com namespace="git" ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBKZNf1+SIohm48DXEa1Xssz1ZV8oPxI3Uij1IyZrU3UmQeGkZeu+Vin88qX5UizFat8wd1P88CQk2yaRAIgPKOc=
         '';
       };
     } // lib.optionalAttrs isDarwin { 
