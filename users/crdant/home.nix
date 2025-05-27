@@ -1015,9 +1015,7 @@ in {
           "kubectx"
           "helm"
           "history-substring-search"
-          "vault"
           "terraform"
-          "ripgrep"
           "zoxide"
           ] ++ pkgs.lib.optionals isDarwin [
             "brew"
