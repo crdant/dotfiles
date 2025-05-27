@@ -69,7 +69,7 @@ build-darwin-$(1): ## Build Darwin configuration for $(1)
 
 .PHONY: switch-darwin-$(1)
 switch-darwin-$(1): ## Switch to Darwin configuration for $(1)
-	./result/sw/bin/darwin-rebuild switch --flake $(FLAKE_PATH) --impure
+	sudo ./result/sw/bin/darwin-rebuild switch --flake $(FLAKE_PATH) --impure
 
 $(1): build-darwin-$(1) switch-darwin-$(1)
 endef

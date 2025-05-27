@@ -7,11 +7,8 @@
     ./common.nix
   ];
 
-  # Make sure the nix daemon always runs
-  nix.useDaemon = true ;
-
   security = {
-    pam.enableSudoTouchIdAuth = true;
+    pam.services.sudo_local.touchIdAuth = true;
 
     pki = {
       installCACerts = true ;
@@ -240,14 +237,14 @@
       };
    };
 
-    activationScripts = {
-      postUserActivation = {
-        text = ''
-          # Following line should allow us to avoid a logout/login cycle
-          /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-        '';
-      };
-    };
+    # activationScripts = {
+    #   postUserActivation = {
+    #     text = ''
+    #       # Following line should allow us to avoid a logout/login cycle
+    #       /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+    #     '';
+    #   };
+    # };
   };
 
 }
