@@ -658,7 +658,7 @@ in {
           '';
         }
         snacks-nvim
-        supermaven-vim
+        supermaven-nvim
         vim-surround
         vim-commentary
         vim-repeat
