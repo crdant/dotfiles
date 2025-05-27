@@ -91,6 +91,7 @@
       knot-dns
       nmap
       neovim
+      nh
       opensc
       openssh
       powershell
