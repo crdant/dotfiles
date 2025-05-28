@@ -31,6 +31,13 @@ in
       extraGroups = [ "adm" "ssher" "sudo" "wheel" ];
     };
 
+    system = {
+      primaryUser = "crdant";
+      defaults = { 
+        screencapture.location = "/Users/crdant/Documents/Outbox";
+      };
+    };
+
   } // lib.optionalAttrs isLinux {
     groups.crdant = {
       gid = 1002;
