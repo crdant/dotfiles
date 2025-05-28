@@ -7,4 +7,11 @@
     home = "/Users/chuck";
     shell = pkgs.zsh;
   };
+
+  system = {
+    primaryUser = "chuck";
+    defaults = { 
+      screencapture.location = "/Users/chuck/Documents/Outbox";
+    };
+  };
 }
