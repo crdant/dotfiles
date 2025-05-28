@@ -7,7 +7,7 @@
 
 python3.pkgs.buildPythonPackage rec {
   pname = "mlx-lm";  # Note: using underscore in pname as it appears on PyPI
-  version = "0.22.1";  # Updated to the latest version
+  version = "0.24.1";  # Updated to the latest version
   format = "wheel";
   
   src = fetchPypi {

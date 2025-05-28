@@ -13,14 +13,14 @@ let
   customPython = unstable.python3.override {
     packageOverrides = self: super: {
       anthropic = unstable.python312Packages.anthropic.overrideAttrs (oldAttrs: let
-          newVersion = "0.50.0";
+          newVersion = "0.52.0";
         in {
           version = newVersion;
           src = unstable.fetchFromGitHub {
             owner = "anthropics";
             repo = "anthropic-sdk-python";
             rev = "v${newVersion}";
-            hash = "sha256-0Qid4MfpgEE6fCH4ih2Z66XR5A6aur4qY7Y2h+1D+L0=";
+            hash = "";
           };
           preBuild = ''
             substituteInPlace pyproject.toml --replace 'hatchling==1.26.3' 'hatchling>=1.26.3'
@@ -30,14 +30,14 @@ let
       );
  
       llm = unstable.python312Packages.llm.overrideAttrs (oldAttrs: let
-          newVersion = "0.25";
+          newVersion = "0.26";
         in {
           version = newVersion;
           src = unstable.fetchFromGitHub {
             owner = "simonw";
             repo = "llm";
             rev = newVersion;
-            hash = "sha256-iH1P0VdpwIItY1In7vlM0Sn44Db23TqFp8GZ79/GMJs=";
+            hash = "";
           };
         }
       );

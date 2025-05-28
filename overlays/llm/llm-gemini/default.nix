@@ -6,14 +6,14 @@
 
 python3.pkgs.buildPythonPackage rec {
   pname = "llm-gemini";
-  version = "0.19";
+  version = "0.21";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "simonw";
     repo = "llm-gemini";
     rev = version;
-    hash = "sha256-+Ax2NQkWzVTImlOzdcgkUNgVTZklHHQkKAV55DCBAP8=";
+    hash = "";
   };
 
   build-system = [
