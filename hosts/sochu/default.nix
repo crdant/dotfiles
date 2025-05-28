@@ -4,6 +4,8 @@
     ../darwin.nix 
   ];
 
+  ids.gids.nixbld = 30000;
+
   homebrew = {
     brews = [
       "chainguard-dev/tap/chainctl"
