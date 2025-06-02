@@ -580,7 +580,6 @@ in {
       vimAlias = true;
 
       plugins = with pkgs.vimPlugins; [
-        nvim-aider
         cmp-nvim-lsp
         conflict-marker-vim
         # copilot-vim
@@ -593,6 +592,8 @@ in {
             let g:fzf_vim.preview_window = []
           ''; 
         }
+        jupytext-nvim
+        nvim-aider
         nvim-cmp
         nvim-lspconfig
         {
@@ -642,6 +643,13 @@ in {
         require('snacks').setup({})
         require('nvim_aider').setup({})
 
+        -- other plugins
+        require('jupytext').setup(
+          {
+            jupytext = '${pkgs.python313Packages.jupytext}/bin/jupytext',
+            format = "markdown"
+          }
+        )
         -- Indentation
 
         -- Use spaces instead of tabs
@@ -759,8 +767,6 @@ in {
             vim.opt_local.spell = true
           end
         })
-
-        -- Lua-based configuration for Neovim
 
         -- Ensure Makefiles use tabs
         vim.api.nvim_create_autocmd("FileType", {
