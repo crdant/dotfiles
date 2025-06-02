@@ -24,8 +24,11 @@ in
     ];
     casks = [
       "claude"
+      "obs"
       "postman"
+      "raspberry-pi-imager"
       "snowflake-snowsql"
+      "superhuman"
     ];
   };
 

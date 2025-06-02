@@ -28,6 +28,7 @@
       golangci-lint
       goreleaser
       instruqt
+      iterm2
       k0sctl
       k9s
       kapp
@@ -36,6 +37,7 @@
       mtr
       subversion
       # tinygo
+      teams
       trivy
     ];
   };

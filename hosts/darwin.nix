@@ -21,16 +21,24 @@
 
   environment = {
     systemPackages = with pkgs; [
+      _1password-gui
+      bartender
       darwin.trash
       duti
-      iterm2
-      karabiner-elements
+      espanso
+      firefox
+      google-chrome
+      grandperspective
+      hexfiend
+      inconsolata
       lima
       m-cli
       mas
+      open-sans
       pinentry_mac
       raycast
       slack
+      tailscale
       zoom-us
     ];
   }; 
@@ -54,33 +62,17 @@
     ];
 
     casks = [
-      "1password"
-      "bartender"
-      "carbon-copy-cloner"
-      "espanso"
-      "firefox"
       "font-bitstream-vera"
       "font-cabin"
       "font-fira-code"
-      "font-inconsolata"
       "font-noto-sans"
-      "font-open-sans"
       "ghostty@tip"
-      "google-chrome"
       "google-drive"
-      "grandperspective"
       "hammerspoon"
-      "hex-fiend"
-      "jetbrains-toolbox"
       "noun-project"
-      "obs"
       "proxyman"
       "quicklook-json"
       "rancher"
-      "raspberry-pi-imager"
-      "raycast"
-      "superhuman"
-      "tailscale"
       "yubico-yubikey-manager"
     ];
 

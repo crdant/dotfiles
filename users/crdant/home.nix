@@ -246,13 +246,16 @@ in {
       helmfile
       imgpkg
       istioctl
-      krew
-      kubectl
-      kubernetes-helm
+      jetbrains-toolbox
+      python313Packages.jupytext
       k0sctl
+      karabiner-elements
       ko
       kots
+      krew
+      kubectl
       kubeseal
+      kubernetes-helm
       kustomize
       kyverno-chainsaw
       mbta-mcp-server
