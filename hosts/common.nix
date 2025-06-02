@@ -97,9 +97,9 @@
       powershell
       procps
       pstree
-      python3
-      python311Packages.requests
-      python311Packages.pip
+      python313
+      python313Packages.requests
+      python313Packages.pip
       ripgrep
       sipcalc
       tailscale
