@@ -9,6 +9,7 @@
   modifications = final: prev: {
     vimPlugins = prev.vimPlugins // {
       nvim-aider = prev.callPackage ./nvim-aider { };
+      # xcodebuild-nvim = prev.callPackage ./xcodebuild-nvim { }; 
     };
 
     python3Packages = prev.python3Packages // {

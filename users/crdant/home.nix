@@ -613,6 +613,8 @@ in {
         vim-speeddating
         vim-tmux-navigator
         zoxide-vim
+      ] ++ lib.optionals isDarwin [
+        # xcodebuild-nvim 
       ];
 
       extraLuaConfig = ''
