@@ -90,7 +90,7 @@ switch-home-$(1): ## Switch to home-manager configuration for $(1)
 check-home-$(1): ## Check home-manager configuration for $(1)
 	home-manager check -b --flake $(FLAKE_PATH)#$(1) --impure
 
-$(1): build-home-$(1) switch-home-$(1)
+$(1): switch-home-$(1)
 endef
 
 $(foreach config,$(HOME_CONFIGS),$(eval $(call home_config_targets,$(config))))
@@ -106,7 +106,7 @@ switch: switch-home-$(CURRENT_USER) ## Switch to home-manager configuration for 
 
 .PHONY: user
 default: user
-user: build switch
+user: switch
 $(CURRENT_USER): build switch
  
 # Host-specific targets
