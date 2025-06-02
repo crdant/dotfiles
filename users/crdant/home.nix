@@ -338,10 +338,8 @@ in {
     # stuff below as soon as possible
     activation = {
       claude = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        $DRY_RUN_CMD mkdir -p ${config.xdg.configHome}/replicated/commands
-        $DRY_RUN_CMD cp -f ${./config/claude/commands}/* ${config.xdg.configHome}/replicated/commands/
-        $DRY_RUN_CMD mkdir -p ${config.xdg.configHome}/personal/commands
-        $DRY_RUN_CMD cp -f ${./config/claude/commands}/* ${config.xdg.configHome}/personal/commands/
+        $DRY_RUN_CMD mkdir -p $HOME/.claude/commands
+        $DRY_RUN_CMD cp -f ${./config/claude/commands}/* $HOME/.claude/commands/
       '';
     };
 
@@ -1066,9 +1064,9 @@ in {
 
         # set default for Claude config based on hostname
         if [[ "$(whoami)" == "chuck" ]] ; then
-          export CLAUDE_CONFIG_DIR="${config.xdg.configHome}/replicated/commands"
+          export CLAUDE_CONFIG_DIR="${config.xdg.configHome}/replicated"
         else
-          export CLAUDE_CONFIG_DIR="${config.xdg.configHome}/personal/commands"
+          export CLAUDE_CONFIG_DIR="${config.xdg.configHome}/personal"
         fi
 
         export REPL_USE_SUDO=y
