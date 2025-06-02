@@ -155,64 +155,9 @@ in {
       "claude_desktop_config.json" = {
         path = "${config.home.homeDirectory}/Library/Application Support/Claude/claude_desktop_config.json";
         mode = "0600";
-        content = 
-          let
-            # Define paths to be templated
-            nerdctlPath = "${config.home.homeDirectory}/.rd/bin/nerdctl";
-            uvxPath = "${pkgs.uv}/bin/uvx";
-            npxPath = "${pkgs.nodejs_22}/bin/npx";
-            
-            # User workspace path
-            workspacePath = "${config.home.homeDirectory}/workspace";
-          in
-          builtins.toJSON {
+        content = builtins.toJSON {
             globalShortcut = "Cmd+Space";
-            mcpServers = {
-              fetch = {
-                command = uvxPath;
-                args = ["mcp-server-fetch"];
-              };
-              memory = {
-                command = npxPath;
-                args = ["-y" "@modelcontextprotocol/server-memory"];
-                env = {
-                  MEMORY_FILE_PATH = "${config.xdg.stateHome}/modelcontextprotocol/memory";
-                };
-              };
-              puppeteer = {
-                command = npxPath;
-                args = ["-y" "@modelcontextprotocol/server-puppeteer" ];
-              };
-              time = {
-                command = uvxPath;
-                args = ["mcp-server-time" "--local-timezone=America/New_York"];
-              };
-              git = {
-                command = uvxPath;
-                args = [ "mcp-server-git" ];
-              };
-              github = {
-                command = "${pkgs.unstable.github-mcp-server}/bin/github-mcp-server";
-                args = ["stdio" ];
-                env = {
-                  GITHUB_PERSONAL_ACCESS_TOKEN = "${config.sops.placeholder."github/token"}";
-                };
-              };
-              mbta = {
-                command = "${pkgs.mbta-mcp-server}/bin/mbta-mcp-server";
-                args = [ ];
-                env = {
-                  MBTA_API_KEY = "${config.sops.placeholder."mbta/apiKey"}";
-                };
-              };
-              google-maps = {
-                command = npxPath;
-                args = [ "-y" "@modelcontextprotocol/server-google-maps" ];
-                env = {
-                  GOOGLE_MAPS_API_KEY = "${config.sops.placeholder."google/maps/apiKey"}";
-                };
-              };
-            };
+            mcpServers = import ./config/mcp.nix { inherit config pkgs; };
           };
         };
       "slackernews.yml" = {
