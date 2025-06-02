@@ -13,7 +13,7 @@
     ];
 
     casks = [
-      "microsoft-teams"
+      "webex"
     ];
   };
 
