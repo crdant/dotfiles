@@ -13,7 +13,7 @@ python3.pkgs.buildPythonPackage rec {
     owner = "simonw";
     repo = "llm-anthropic";
     rev = version;
-    hash = "";
+    hash = "sha256-2fatBKZMttC5flzfC7MWCpduc3m6IOVWZiW1K2dYqis=";
   };
 
   build-system = [

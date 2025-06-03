@@ -1,3 +1,4 @@
+
 {
   lib,
   python3,
@@ -5,15 +6,15 @@
 }:
 
 python3.pkgs.buildPythonPackage rec {
-  pname = "llm-gemini";
-  version = "0.21";
+  pname = "llm-echo";
+  version = "0.3a3";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "simonw";
-    repo = "llm-gemini";
+    repo = "llm-echo";
     rev = version;
-    hash = "sha256-aCP0YjcghzpgceuZRKGTN15wm7OIPCwcJAJJBxh78f4=";
+    hash = "sha256-4345UIyaQx+mYYBAFD5AaX5YbjbnJQt8bKMD5Vl8VJc=";
   };
 
   build-system = [
@@ -22,28 +23,25 @@ python3.pkgs.buildPythonPackage rec {
   ];
 
   dependencies = with python3.pkgs; [
-    httpx
-    ijson
     llm
   ];
 
   optional-dependencies = with python3.pkgs; {
     test = [
-      nest-asyncio
       pytest
-      pytest-recording
+      pytest-asyncio
     ];
   };
 
   pythonImportsCheck = [
-    "llm_gemini"
+    "llm_echo"
   ];
 
   meta = {
-    description = "LLM plugin to access Google's Gemini family of models";
-    homepage = "https://github.com/simonw/llm-gemini";
+    description = "Debug plugin for LLM providing an echo model";
+    homepage = "https://github.com/simonw/llm-echo";
     license = lib.licenses.asl20;
     maintainers = with lib.maintainers; [ ];
-    mainProgram = "llm-gemini";
+    mainProgram = "llm-echo";
   };
 }
