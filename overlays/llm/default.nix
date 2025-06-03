@@ -53,6 +53,7 @@ let
   # Now use this SAME customPython for all package definitions
 
   llm-anthropic = pkgs.callPackage ./llm-anthropic { python3 = customPython; };
+  # llm-fireworks = pkgs.callPackage ./llm-fireworks { python3 = customPython; };
   llm-gemini = pkgs.callPackage ./llm-gemini { python3 = customPython; };
   llm-groq = pkgs.callPackage ./llm-groq { python3 = customPython; };
   llm-mlx = pkgs.callPackage ./llm-mlx { python3 = customPython; };
@@ -67,6 +68,7 @@ let
     (pkgs.callPackage ./llm-gemini { python3 = customPython; })
     (pkgs.callPackage ./llm-groq { python3 = customPython; })
     (pkgs.callPackage ./llm-perplexity { python3 = customPython; })
+    # (pkgs.callPackage ./llm-fireworks { python3 = customPython; })
   ];
 
   # Combine all plugins
