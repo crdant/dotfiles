@@ -74,11 +74,11 @@ let
     llm-groq
     llm-perplexity
     llm-echo
-    llm-fireworkds
+    llm-fireworks
   ];
 
   # Combine all plugins
-  allPlugins = commonPlugins ; # ++ darwinPlugins;
+  allPlugins = commonPlugins ++ darwinPlugins;
   
   # Create the Python environment
   pythonEnv = customPython.withPackages (ps: [ customPython.pkgs.llm ] ++ allPlugins);

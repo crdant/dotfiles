@@ -13,7 +13,7 @@ python3.pkgs.buildPythonPackage rec {
     owner = "simonw";
     repo = "llm-mlx";
     rev = version;
-    hash = "";
+    hash = "sha256-9SGbvhuNeKgMYGa0ZiOLm+H/JbNpvFWBcUL4De5xO4o=";
   };
 
   build-system = [
