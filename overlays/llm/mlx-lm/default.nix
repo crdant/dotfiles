@@ -28,6 +28,7 @@ python3.pkgs.buildPythonPackage rec {
     mlx
     numpy
     transformers
+    sentencepiece
     protobuf
     pyyaml
     jinja2
