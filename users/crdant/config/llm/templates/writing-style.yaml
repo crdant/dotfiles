@@ -1,0 +1,6 @@
+model: claude-4-sonnet
+
+prompt: > 
+  Briefly describe the writing style of the author of this text.
+
+  ${input}

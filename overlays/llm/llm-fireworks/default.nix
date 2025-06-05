@@ -5,41 +5,36 @@
 }:
 
 python3.pkgs.buildPythonPackage rec {
-  pname = "llm-mlx";
-  version = "0.4";
+  pname = "llm-fireworks";
+  version = "0.1a0";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "simonw";
-    repo = "llm-mlx";
+    repo = "llm-fireworks";
     rev = version;
-    hash = "sha256-9SGbvhuNeKgMYGa0ZiOLm+H/JbNpvFWBcUL4De5xO4o=";
+    hash = "sha256-gHSEVs17dAvRYmlvZ90DtdSF69FY23c5gVrPCBn0dto=";
   };
 
   build-system = [
     python3.pkgs.setuptools
+    python3.pkgs.wheel
   ];
 
   dependencies = with python3.pkgs; [
     llm
-    mlx-lm
   ];
 
-  optional-dependencies = with python3.pkgs; {
-    test = [
-      pytest
-    ];
-  };
-
   pythonImportsCheck = [
-    "llm_mlx"
+    "llm_fireworks"
   ];
 
   meta = {
-    description = "Support for MLX models in LLM";
-    homepage = "https://github.com/simonw/llm-mlx";
+    description = "Access fireworks.ai models via API";
+    homepage = "https://github.com/simonw/llm-fireworks";
     license = lib.licenses.asl20;
     maintainers = with lib.maintainers; [ ];
-    mainProgram = "llm-mlx";
+    mainProgram = "llm-fireworks";
   };
 }
+

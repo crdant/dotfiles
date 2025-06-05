@@ -155,64 +155,9 @@ in {
       "claude_desktop_config.json" = {
         path = "${config.home.homeDirectory}/Library/Application Support/Claude/claude_desktop_config.json";
         mode = "0600";
-        content = 
-          let
-            # Define paths to be templated
-            nerdctlPath = "${config.home.homeDirectory}/.rd/bin/nerdctl";
-            uvxPath = "${pkgs.uv}/bin/uvx";
-            npxPath = "${pkgs.nodejs_22}/bin/npx";
-            
-            # User workspace path
-            workspacePath = "${config.home.homeDirectory}/workspace";
-          in
-          builtins.toJSON {
+        content = builtins.toJSON {
             globalShortcut = "Cmd+Space";
-            mcpServers = {
-              fetch = {
-                command = uvxPath;
-                args = ["mcp-server-fetch"];
-              };
-              memory = {
-                command = npxPath;
-                args = ["-y" "@modelcontextprotocol/server-memory"];
-                env = {
-                  MEMORY_FILE_PATH = "${config.xdg.stateHome}/modelcontextprotocol/memory";
-                };
-              };
-              puppeteer = {
-                command = npxPath;
-                args = ["-y" "@modelcontextprotocol/server-puppeteer" ];
-              };
-              time = {
-                command = uvxPath;
-                args = ["mcp-server-time" "--local-timezone=America/New_York"];
-              };
-              git = {
-                command = uvxPath;
-                args = [ "mcp-server-git" ];
-              };
-              github = {
-                command = "${pkgs.unstable.github-mcp-server}/bin/github-mcp-server";
-                args = ["stdio" ];
-                env = {
-                  GITHUB_PERSONAL_ACCESS_TOKEN = "${config.sops.placeholder."github/token"}";
-                };
-              };
-              mbta = {
-                command = "${pkgs.mbta-mcp-server}/bin/mbta-mcp-server";
-                args = [ ];
-                env = {
-                  MBTA_API_KEY = "${config.sops.placeholder."mbta/apiKey"}";
-                };
-              };
-              google-maps = {
-                command = npxPath;
-                args = [ "-y" "@modelcontextprotocol/server-google-maps" ];
-                env = {
-                  GOOGLE_MAPS_API_KEY = "${config.sops.placeholder."google/maps/apiKey"}";
-                };
-              };
-            };
+            mcpServers = import ./config/mcp.nix { inherit config pkgs; };
           };
         };
       "slackernews.yml" = {
@@ -301,13 +246,16 @@ in {
       helmfile
       imgpkg
       istioctl
-      krew
-      kubectl
-      kubernetes-helm
+      jetbrains-toolbox
+      python313Packages.jupytext
       k0sctl
+      karabiner-elements
       ko
       kots
+      krew
+      kubectl
       kubeseal
+      kubernetes-helm
       kustomize
       kyverno-chainsaw
       mbta-mcp-server
@@ -390,10 +338,8 @@ in {
     # stuff below as soon as possible
     activation = {
       claude = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        $DRY_RUN_CMD mkdir -p ${config.xdg.configHome}/replicated/commands
-        $DRY_RUN_CMD cp -f ${./config/claude/commands}/* ${config.xdg.configHome}/replicated/commands/
-        $DRY_RUN_CMD mkdir -p ${config.xdg.configHome}/personal/commands
-        $DRY_RUN_CMD cp -f ${./config/claude/commands}/* ${config.xdg.configHome}/personal/commands/
+        $DRY_RUN_CMD mkdir -p $HOME/.claude/commands
+        $DRY_RUN_CMD cp -f ${./config/claude/commands}/* $HOME/.claude/commands/
       '';
     };
 
@@ -634,7 +580,6 @@ in {
       vimAlias = true;
 
       plugins = with pkgs.vimPlugins; [
-        nvim-aider
         cmp-nvim-lsp
         conflict-marker-vim
         # copilot-vim
@@ -647,6 +592,8 @@ in {
             let g:fzf_vim.preview_window = []
           ''; 
         }
+        jupytext-nvim
+        nvim-aider
         nvim-cmp
         nvim-lspconfig
         {
@@ -665,6 +612,8 @@ in {
         vim-speeddating
         vim-tmux-navigator
         zoxide-vim
+      ] ++ lib.optionals isDarwin [
+        # xcodebuild-nvim 
       ];
 
       extraLuaConfig = ''
@@ -694,6 +643,13 @@ in {
         require('snacks').setup({})
         require('nvim_aider').setup({})
 
+        -- other plugins
+        require('jupytext').setup(
+          {
+            jupytext = '${pkgs.python313Packages.jupytext}/bin/jupytext',
+            format = "markdown"
+          }
+        )
         -- Indentation
 
         -- Use spaces instead of tabs
@@ -811,8 +767,6 @@ in {
             vim.opt_local.spell = true
           end
         })
-
-        -- Lua-based configuration for Neovim
 
         -- Ensure Makefiles use tabs
         vim.api.nvim_create_autocmd("FileType", {
@@ -1116,9 +1070,9 @@ in {
 
         # set default for Claude config based on hostname
         if [[ "$(whoami)" == "chuck" ]] ; then
-          export CLAUDE_CONFIG_DIR="${config.xdg.configHome}/replicated/commands"
+          export CLAUDE_CONFIG_DIR="${config.xdg.configHome}/replicated"
         else
-          export CLAUDE_CONFIG_DIR="${config.xdg.configHome}/personal/commands"
+          export CLAUDE_CONFIG_DIR="${config.xdg.configHome}/personal"
         fi
 
         export REPL_USE_SUDO=y

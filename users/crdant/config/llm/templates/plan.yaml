@@ -1,3 +1,5 @@
+model: o3-mini
+
 prompt: >
   Draft a detailed, step-by-step blueprint for building this project. Then, once
   you have a solid plan, break it down into small, iterative chunks that build on

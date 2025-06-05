@@ -2,31 +2,39 @@
 {
   lib,
   python3,
-  fetchPypi,
+  fetchFromGitHub,
 }:
 
 python3.pkgs.buildPythonPackage rec {
   pname = "mlx-lm";  # Note: using underscore in pname as it appears on PyPI
-  version = "0.22.1";  # Updated to the latest version
-  format = "wheel";
+  version = "0.24.1";  # Updated to the latest version
   
-  src = fetchPypi {
-    inherit pname version;
-    format = "wheel";
-    python = "py3";
-    dist = "py3";
-    platform = "any";
-    sha256 = ""; 
+  src = fetchFromGitHub {
+    owner = "ml-explore";
+    repo = "mlx-lm";
+    rev = "v${version}";
+    hash = "sha256-d//JUhvRpNde1+drWWYJ9lmkXi+buaa1zxDg4rQdt0o="; 
   };
   
+  build-system = [
+    python3.pkgs.setuptools
+    python3.pkgs.wheel
+  ];
+
   # Add required dependencies
   propagatedBuildInputs = with python3.pkgs; [
     # List dependencies here
     # You might need to check the package metadata for actual dependencies
     mlx
+    numpy
+    transformers
+    sentencepiece
+    protobuf
+    pyyaml
+    jinja2
+    huggingface-hub
   ];
   
-  doCheck = false;
   pythonImportsCheck = [ "mlx_lm" ];
   
   meta = {

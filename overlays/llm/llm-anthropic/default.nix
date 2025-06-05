@@ -6,14 +6,14 @@
 
 python3.pkgs.buildPythonPackage rec {
   pname = "llm-anthropic";
-  version = "0.15.1";
+  version = "0.17";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "simonw";
     repo = "llm-anthropic";
     rev = version;
-    hash = "sha256-8bVs3MJteOTCiw7n/4pMf+oXMhsQbCSzUFVQqm2ezcE=";
+    hash = "sha256-2fatBKZMttC5flzfC7MWCpduc3m6IOVWZiW1K2dYqis=";
   };
 
   build-system = [
