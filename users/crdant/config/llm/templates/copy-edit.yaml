@@ -1,0 +1,10 @@
+model: claude-4-sonnet
+
+prompt: > 
+  Can you copy edit this post for me? BE RUTHLESSLY HELPFUL. I want to be
+  clear, helpful, and compelling. Preserve the style of the writer as much as
+  possible. I want a more prose-oriented approach, be sure it doesn't sound
+  like a listicle.
+
+  Track your changes with strikethrough for deletions and underline for
+  additions. Use Markdown syntax for formatting.
