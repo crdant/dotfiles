@@ -84,7 +84,9 @@ in
     description = "Support for MLX models in LLM";
     pythonDeps = ["mlx-lm"];
     platformSpecific = {
-    darwin = {"aarch64": true};
+    darwin = {
+    aarch64 = true;
+  };
   };
   };
 

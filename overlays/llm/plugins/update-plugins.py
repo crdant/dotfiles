@@ -160,6 +160,27 @@ def format_platform_condition(platform_spec: Dict[str, Any]) -> str:
     
     return " || ".join(conditions) if conditions else "true"
 
+def format_nix_value(value):
+    """Convert Python values to Nix syntax."""
+    if isinstance(value, bool):
+        return "true" if value else "false"
+    elif isinstance(value, str):
+        return f'"{value}"'
+    elif isinstance(value, dict):
+        items = []
+        for k, v in value.items():
+            # Use quoted keys if they contain special characters, otherwise unquoted
+            if k.isidentifier():
+                key_str = k
+            else:
+                key_str = f'"{k}"'
+            items.append(f"{key_str} = {format_nix_value(v)};")
+        return "{\n" + "".join(f"    {item}\n" for item in items) + "  }"
+    elif isinstance(value, list):
+        return "[" + " ".join(format_nix_value(item) for item in value) + "]"
+    else:
+        return str(value)
+
 def generate_nix_file(lock_file: Path, output_file: Path) -> None:
     """Generate the Nix file from lock data."""
     with lock_file.open() as f:
@@ -182,10 +203,6 @@ in
         python_deps_nix = "[" + " ".join(f'"{dep}"' for dep in python_deps) + "]"
         
         platform_specific = data.get("platformSpecific", {})
-        platform_nix = "{}" if not platform_specific else "{\n" + "".join(
-            f'    {key} = {json.dumps(value).lower()};\n' 
-            for key, value in platform_specific.items()
-        ) + "  }"
         
         nix_content += f'''  {name} = buildLlmPlugin {{
     pname = "{name}";
@@ -200,6 +217,7 @@ in
     pythonDeps = {python_deps_nix};'''
         
         if platform_specific:
+            platform_nix = format_nix_value(platform_specific)
             nix_content += f'\n    platformSpecific = {platform_nix};'
         
         nix_content += '\n  };\n\n'
@@ -222,7 +240,7 @@ def generate_convenience_overlay(lock_file: Path, overlay_file: Path) -> None:
 # This overlay provides all LLM plugins as top-level packages
 
 final: prev: {{
-  llmPlugins = final.callPackage ./generated-plugins.nix {{}};
+  llmPlugins = final.callPackage ./plugins/generated-plugins.nix {{}};
   
   # Individual plugins available at top level
 ''' + '\n'.join(f'  {name} = final.llmPlugins.{name};' for name in plugin_names) + '''

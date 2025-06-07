@@ -77,7 +77,7 @@ python3Packages.buildPythonPackage (rec {
   inherit buildInputs checkInputs;
 
   # Most LLM plugins don't have comprehensive tests or require API keys
-  doCheck = args.doCheck or false;
+  # doCheck is already inherited above, so we don't redefine it here
 
   pythonImportsCheck = [ (builtins.replaceStrings ["-"] ["_"] pname) ];
 
