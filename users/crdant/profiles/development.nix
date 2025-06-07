@@ -7,5 +7,5 @@
     ../modules/kubernetes.nix
     ../modules/ai.nix
     ../modules/security.nix
-  ] ++ lib.optional pkgs.stdenv.isDarwin ../modules/darwin.nix;
+  ] ;
 }
