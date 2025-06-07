@@ -1,50 +1,106 @@
-{ inputs, outputs, config, pkgs, lib, ... }:
+{ inputs, outputs, config, pkgs, lib, gitEmail, ... }:
 
-{
-  # Homelab-specific SSH configurations
-  programs.ssh.matchBlocks = {
-    "10.13.6.204 bridge.things.crdant.net homebridge.things.crdant.net" = {
-      user = "pi";
+let 
+  isDarwin = pkgs.stdenv.isDarwin;
+  isLinux = pkgs.stdenv.isLinux;
+in {
+  # AI and coding assistant tools
+  home.packages = with pkgs; [
+    aider-chat-full
+    unstable.claude-code
+    goose-cli
+    unstable.github-mcp-server
+    mbta-mcp-server
+    llm
+    mods
+  ];
+  
+  # AI-specific secrets
+  sops = {
+    secrets = {
+      "anthropic/apiKeys/chuck@replicated.com" = {};
+      "anthropic/apiKeys/chuck@crdant.io" = {};
+      "github/token" = {};
+      "google/maps/apiKey" = {};
+      "mbta/apiKey" = {};
     };
-    "exit.crdant.net" = {
-      hostname = "exit.crdant.net";
-      user = "arceus";
-      identityFile = "~/.ssh/id_router.pub";
-      extraOptions = {
-        identityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
-        canonicalizeHostName = "yes";
-        canonicalDomains = "crdant.net walrus-shark.ts.net crdant.io.beta.tailscale.net";
-        identitiesOnly = "yes";
+    templates = {
+      ".aider.conf.yml" = {
+        path = "${config.home.homeDirectory}/.aider.conf.yml";
+        mode = "0600";
+        content = 
+          let 
+            # Create the configuration data structure first
+            aiderConfig = {
+              model = "sonnet";
+              # Use the placeholder directly - this is safe because sops handles the substitution
+              anthropic-api-key = config.sops.placeholder."anthropic/apiKeys/${gitEmail}";
+              cache-prompts = true;
+              architect = true;
+              auto-accept-architect = false;
+              multiline = true;
+              vim = true;
+              watch-files = true;
+              notifications = true;
+            };
+            # Generate the YAML from the data structure
+            yamlContent = (pkgs.formats.yaml { }).generate "aider-config" aiderConfig;
+          in builtins.readFile yamlContent;
       };
-    };
-    "router" = {
-      hostname = "router";
-      user = "arceus";
-      identityFile = "~/.ssh/id_router.pub";
-      extraOptions = {
-        identityAgent = "\"~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock\"";
-        canonicalizeHostName = "yes";
-        canonicalDomains = "lab.shortrib.net walrus-shark.ts.net crdant.io.beta.tailscale.net";
-        identitiesOnly = "yes";
+      
+      "goose/config.yaml" = {
+        path = "${config.home.homeDirectory}/.config/goose/config.yaml";
+        mode = "0600";
+        content = 
+          let 
+            # Same pattern for goose config
+            gooseConfig = {
+              GOOSE_PROVIDER = "anthropic";
+              GOOSE_MODEL = "claude-3-7-sonnet-latest";
+              GOOSE_MODE = "smart_approve";
+              extensions = {
+                # ... your extensions config
+                mbta = {
+                  args = [ ];
+                  cmd = "${pkgs.mbta-mcp-server}/bin/mbta-mcp-server";
+                  description = "My unofficial MBTA MCP Server";
+                  enabled = true;
+                  envs = {
+                    MBTA_API_KEY = config.sops.placeholder."mbta/apiKey";
+                  };
+                  name = "mbta";
+                  timeout = 300;
+                  type = "stdio";
+                };
+                # ... rest of extensions
+              };
+            };
+            yamlContent = (pkgs.formats.yaml { }).generate "goose-config" gooseConfig;
+          in builtins.readFile yamlContent;
       };
-    };
-    "unifi.crdant.net" = {
-      hostname = "unifi.crdant.net";
-      user = "root";
-      identityFile = "~/.ssh/id_unifi.pub";
-      extraOptions = {
-        hostKeyAlgorithms = "+ssh-rsa";
-        identityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
-        identitiesOnly = "yes";
+    } // lib.optionalAttrs isDarwin {
+          "claude_desktop_config.json" = {
+            path = "${config.home.homeDirectory}/Library/Application Support/Claude/claude_desktop_config.json";
+            mode = "0600";
+            content = builtins.toJSON {
+                globalShortcut = "Cmd+Space";
+                mcpServers = import ../config/mcp.nix { inherit config pkgs; };
+              };
+        };
       };
-    };
-    "rye.lab.shortrib.net bourbon.lab.shortrib.net scotch.lab.shortrib.net potstill.lab.shortrib.net shine.lab.shortrib.net malt.lab.shortrib.net vcenter.lab.shortrib.net" = {
-      user = "root";
-      identityFile = "~/.ssh/id_homelab.pub";
-      extraOptions = {
-        identityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
-        identitiesOnly = "yes";
-      };
-    };
   };
+  
+  # AI-specific Neovim plugins
+  programs.neovim.plugins = with pkgs.vimPlugins; [
+    nvim-aider
+  ];
+  
+  programs.neovim.extraLuaConfig = lib.mkAfter ''
+    -- Aider integration
+    require('nvim_aider').setup({})
+  '';
+  
+  programs.zsh.oh-my-zsh.plugins = [
+    "git"
+  ];
 }

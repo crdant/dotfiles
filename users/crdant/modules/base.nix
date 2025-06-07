@@ -35,10 +35,15 @@ in {
       rar
       ripgrep
       smug
+      unstable.tailscale
       zsh-completions
+    ] ++ lib.optionals isDarwin [
+      vimr
+      (callPackage ../vimr-wrapper.nix { inherit config; })
     ] ++ lib.optionals isLinux [
       calicoctl
       coreutils
+      dig
       dogdns
       gist
       gnupg
@@ -364,6 +369,13 @@ in {
     };
   };
   
+  sops = {
+    defaultSopsFile = ../secrets.yaml;  # Path to your secrets file
+    gnupg = {
+      home = "${config.home.homeDirectory}/.gnupg";
+    };
+  };
+
   xdg = {
     enable = true;
     configFile = {
