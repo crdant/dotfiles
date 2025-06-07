@@ -27,29 +27,7 @@ let
         }
       );
  
-      llm = unstable.python312Packages.llm.overrideAttrs (oldAttrs: let
-          newVersion = "0.26";
-        in {
-          version = newVersion;
-          src = unstable.fetchFromGitHub {
-            owner = "simonw";
-            repo = "llm";
-            rev = newVersion;
-            hash = "sha256-KTlNajuZrR0kBX3LatepsNM3PfRVsQn+evEfXTu6juE=";
-          };
-          patches = [ ./001-disable-install-uninstall-commands.patch ];
-          # Override postPatch to remove the problematic substitution
-          postPatch = ''
-            # Your custom post-patch logic here if needed
-            # The original postPatch tries to substitute @listOfPackagedPlugins@ which doesn't exist in your version
-          '';
-
-          # doCheck = false;
-          dontUsePytestCheck = true;
-
-          nativeCheckInputs = (oldAttrs.nativeCheckInputs or []) ++ [ llm-echo ];
-        }
-      );
+      llm = unstable.python312Packages.llm ;
 
       # Fix MLX by removing the obsolete Big Sur patch and using an older nanobind
       nanobind = unstable.python312Packages.nanobind.overrideAttrs (oldAttrs: {
