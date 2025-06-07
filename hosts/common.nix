@@ -97,9 +97,15 @@
       powershell
       procps
       pstree
-      python313
-      python313Packages.requests
-      python313Packages.pip
+      (python313.withPackages (ps: with ps; [
+        pip
+        setuptools
+        wheel
+        requests
+        pyyaml
+        click
+        python-dateutil
+      ]))
       ripgrep
       sipcalc
       tailscale
