@@ -38,6 +38,11 @@ let
             hash = "sha256-KTlNajuZrR0kBX3LatepsNM3PfRVsQn+evEfXTu6juE=";
           };
           patches = [ ./001-disable-install-uninstall-commands.patch ];
+          # Override postPatch to remove the problematic substitution
+          postPatch = ''
+            # Your custom post-patch logic here if needed
+            # The original postPatch tries to substitute @listOfPackagedPlugins@ which doesn't exist in your version
+          '';
 
           # doCheck = false;
           dontUsePytestCheck = true;
