@@ -7,6 +7,7 @@
     cloudflared
     google-cloud-sdk
     govc
+    leftovers
     minio-client
     packer
     terraform

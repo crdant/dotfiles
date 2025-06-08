@@ -6,6 +6,7 @@
   tunnelmanager = pkgs.callPackage ./tunnelmanager { };
 
   vimr = pkgs.callPackage ./vimr { };
+  leftovers = pkgs.callPackage ./leftovers { };
 
   replicated = pkgs.callPackage ./replicated { };
   kots = pkgs.callPackage ./kots { };
