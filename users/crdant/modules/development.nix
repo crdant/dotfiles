@@ -32,6 +32,13 @@ in {
       vimr
       (callPackage ../vimr-wrapper.nix { inherit config; })
     ];
+
+    file = {
+      ".snowsql" = {
+        source = ../config/snowsql;
+        recursive = true;
+      };
+    };
   };
 
   programs = {
@@ -276,15 +283,21 @@ in {
     };
   };
   
-  programs.zsh.oh-my-zsh.plugins = [
-    "git"
-    "gh"
-  ];
-  
-  xdg.configFile = {
-    "nvim" = {
-      source = ../config/nvim;
-      recursive = true;
+  programs = { 
+    zsh = { 
+      oh-my-zsh.plugins = [
+        "git"
+        "gh"
+      ];
     };
   };
+  
+  xdg = {
+    configFile = {
+      "nvim/lua" = {
+        source = ../config/nvim/lua;
+        recursive = true ;
+      };
+    };
+  };  
 }

@@ -73,23 +73,24 @@ in {
         source = ../config/editorconfig;
       };
       
+    } // lib.optionalAttrs isDarwin {
       ".hammerspoon" = {
         source = ../config/hammerspoon;
         recursive = true;
       };
       
-      ".snowsql" = {
-        source = ../config/snowsql;
+      "Library/Application Support/espanso" = {
+        source = ../config/espanso;
         recursive = true;
       };
-    } // lib.optionalAttrs isDarwin {
+
       "Library/Colors/Solarized.clr" = {
         source = ../config/palettes/Solarized.clr;
         recursive = true;
       };
       
-      "Library/Colors/Replicated.clr" = {
-        source = ../config/palettes/Replicated.clr;
+      "Library/Preferences/glow" = {
+        source = ../config/glow;
         recursive = true;
       };
     };
@@ -381,6 +382,11 @@ in {
     configFile = {
       "smug" = {
         source = ../config/smug;
+        recursive = true;
+      };
+
+      "ssh/config.d" = {
+        source = ../config/ssh/config.d;
         recursive = true;
       };
     } // lib.optionalAttrs isDarwin { 

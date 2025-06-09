@@ -5,16 +5,40 @@ let
   isLinux = pkgs.stdenv.isLinux;
 in {
   # AI and coding assistant tools
-  home.packages = with pkgs; [
-    aider-chat-full
-    unstable.claude-code
-    goose-cli
-    unstable.github-mcp-server
-    mbta-mcp-server
-    llm
-    mods
-  ];
+  home = { 
+    packages = with pkgs; [
+      aider-chat-full
+      unstable.claude-code
+      goose-cli
+      unstable.github-mcp-server
+      mbta-mcp-server
+      llm
+      mods
+    ];
   
+ 
+    # HACK because Claude code won't follow symlinks, replace with commented out file
+    # stuff below as soon as possible
+    activation = {
+      claude = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        $DRY_RUN_CMD mkdir -p $HOME/.claude/commands
+        $DRY_RUN_CMD cp -f ${../config/claude/commands}/* $HOME/.claude/commands/
+      '';
+    };
+
+    file = {
+      # ".claude" = {
+      #   source = ./config/claude;
+      #   recursive = true;
+      # };
+    } // lib.optionalAttrs isDarwin {
+      "Library/Application Support/io.datasette.llm/templates" = {
+        source = ../config/llm/templates;
+        recursive = true;
+      };
+    };
+  };
+
   # AI-specific secrets
   sops = {
     secrets = {
@@ -91,16 +115,27 @@ in {
   };
   
   # AI-specific Neovim plugins
-  programs.neovim.plugins = with pkgs.vimPlugins; [
-    nvim-aider
-  ];
+  programs = {
+    neovim = {
+      plugins = with pkgs.vimPlugins; [
+        # nvim-aider
+      ];
   
-  programs.neovim.extraLuaConfig = lib.mkAfter ''
-    -- Aider integration
-    require('nvim_aider').setup({})
-  '';
-  
-  programs.zsh.oh-my-zsh.plugins = [
-    "git"
-  ];
+      extraLuaConfig = lib.mkAfter ''
+        -- Aider integration
+        -- require('nvim_aider').setup({})
+      '';
+    };
+  };
+
+  xdg = {
+    configFile = {
+    } // lib.optionalAttrs isDarwin {
+      "llm/templates" = {
+        source = ../config/llm/templates;
+        recursive = true;
+      };
+    };
+  };
+
 }
