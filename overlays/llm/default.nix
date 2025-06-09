@@ -99,6 +99,7 @@ let
     llmPlugins.llm-perplexity
     llmPlugins.llm-fireworks
     llmPlugins.llm-echo
+    llmPlugins.llm-cmd
   ];
 
   # Combine all plugins
