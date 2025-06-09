@@ -1,0 +1,49 @@
+{
+  "llm-anthropic": {
+    "owner": "simonw",
+    "repo": "llm-anthropic",
+    "description": "LLM access to models by Anthropic, including the Claude series",
+    "pythonDeps": ["anthropic"]
+  },
+  "llm-echo": {
+    "owner": "simonw",
+    "repo": "llm-echo",
+    "description": "Debug plugin for LLM providing an echo model",
+    "pythonDeps": []
+  },
+  "llm-fireworks": {
+    "owner": "simonw",
+    "repo": "llm-fireworks",
+    "description": "Access fireworks.ai models via API",
+    "pythonDeps": []
+  },
+  "llm-gemini": {
+    "owner": "simonw",
+    "repo": "llm-gemini",
+    "description": "LLM plugin to access Google's Gemini family of models",
+    "pythonDeps": ["httpx", "ijson"]
+  },
+  "llm-groq": {
+    "owner": "angerman",
+    "repo": "llm-groq",
+    "description": "LLM access to models hosted by Groq",
+    "pythonDeps": ["groq"]
+  },
+  "llm-mlx": {
+    "owner": "simonw",
+    "repo": "llm-mlx",
+    "description": "Support for MLX models in LLM",
+    "pythonDeps": ["mlx-lm"],
+    "platformSpecific": {
+      "darwin": {
+        "aarch64": true
+      }
+    }
+  },
+  "llm-perplexity": {
+    "owner": "hex",
+    "repo": "llm-perplexity", 
+    "description": "LLM access to pplx-api",
+    "pythonDeps": ["openai"]
+  }
+}
