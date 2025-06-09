@@ -1,7 +1,12 @@
 { inputs, pkgs, lib, ... }:
+
 let
   isDarwin = pkgs.stdenv.isDarwin ;
   isLinux = pkgs.stdenv.isLinux ;
+
+  authorizedKeysFile = builtins.fetchurl {
+    url = "https://github.com/crdant.keys";
+  };
 
   authorizedKeys = let
       content = builtins.readFile authorizedKeysFile;
@@ -21,24 +26,25 @@ in
       shell = pkgs.zsh;
       description = "Chuck D'Antonio";
 
-      openssh.authorizedKeys.keys = authorizedKeys
+      openssh.authorizedKeys.keys = authorizedKeys;
 
     } // lib.optionalAttrs isLinux {
       isNormalUser = true;
       group = "crdant";
       extraGroups = [ "adm" "ssher" "sudo" "wheel" ];
     };
+  };
 
-    system = {
-      primaryUser = "crdant";
-      defaults = { 
-        screencapture.location = "/Users/crdant/Documents/Outbox";
-      };
+  system = {
+    primaryUser = "crdant";
+  } // lib.optionalAttrs isDarwin {
+    defaults = { 
+      screencapture.location = "/Users/crdant/Documents/Outbox";
     };
-
   } // lib.optionalAttrs isLinux {
     groups.crdant = {
       gid = 1002;
     };
   };
+
 }
