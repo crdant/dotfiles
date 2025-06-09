@@ -12,6 +12,7 @@
   kots = pkgs.callPackage ./kots { };
   troubleshoot-sbctl = pkgs.callPackage ./sbctl { };
 
+  llmPlugins = pkgs.callPackage ./llm/plugins { };
   # llm-mlx = pkgs.callPackage ./llm-mlx { };
   # llm-anthropic = pkgs.callPackage ./llm-anthropic { };
   # llm-perplexity = pkgs.callPackage ./llm-perplexity { };

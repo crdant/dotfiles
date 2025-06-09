@@ -9,9 +9,9 @@ from typing import Dict, Any, Optional
 import requests
 from datetime import datetime
 
-def get_latest_commit_info(owner: str, repo: str) -> Dict[str, str]:
-    """Fetch latest commit info from GitHub API."""
-    url = f"https://api.github.com/repos/{owner}/{repo}/commits/HEAD"
+def get_ref_info(owner: str, repo: str, ref: str) -> Dict[str, str]:
+    """Fetch commit info for a specific ref from GitHub API."""
+    url = f"https://api.github.com/repos/{owner}/{repo}/commits/{ref}"
     
     try:
         response = requests.get(url)
@@ -25,96 +25,70 @@ def get_latest_commit_info(owner: str, repo: str) -> Dict[str, str]:
         result = subprocess.run([
             "nix-prefetch-git", 
             "--url", f"https://github.com/{owner}/{repo}",
-            "--rev", rev,
+            "--rev", ref,
             "--quiet"
         ], capture_output=True, text=True, check=True)
         
         prefetch_data = json.loads(result.stdout)
         
+        # Convert hash to SRI format
+        convert_result = subprocess.run([
+            "nix", "hash", "convert", "--hash-algo", "sha256", "--to", "sri",
+            prefetch_data["sha256"]
+        ], capture_output=True, text=True, check=True)
+        
+        sri_hash = convert_result.stdout.strip()
+        
         return {
-            "rev": rev,
-            "sha256": prefetch_data["sha256"],
+            "rev": ref,
+            "sha256": sri_hash,
             "date": commit_date,
             "short_date": commit_date[:10]  # YYYY-MM-DD
         }
         
     except (requests.RequestException, subprocess.CalledProcessError, json.JSONDecodeError) as e:
-        print(f"Error fetching info for {owner}/{repo}: {e}", file=sys.stderr)
+        print(f"Error fetching info for {owner}/{repo}@{ref}: {e}", file=sys.stderr)
         return {
-            "rev": "main",
+            "rev": ref,
             "sha256": "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
             "date": "1970-01-01T00:00:00Z",
             "short_date": "1970-01-01"
         }
 
-def get_latest_release_info(owner: str, repo: str) -> Optional[Dict[str, str]]:
-    """Fetch latest release info from GitHub API."""
-    url = f"https://api.github.com/repos/{owner}/{repo}/releases/latest"
-    
-    try:
-        response = requests.get(url)
-        if response.status_code == 404:
-            return None  # No releases
-        response.raise_for_status()
-        release_data = response.json()
-        
-        tag_name = release_data["tag_name"]
-        # Clean up version tags (remove 'v' prefix if present)
-        version = tag_name.lstrip('v')
-        
-        # Use nix-prefetch-git to get the sha256 for the tag
-        result = subprocess.run([
-            "nix-prefetch-git", 
-            "--url", f"https://github.com/{owner}/{repo}",
-            "--rev", tag_name,
-            "--quiet"
-        ], capture_output=True, text=True, check=True)
-        
-        prefetch_data = json.loads(result.stdout)
-        
-        return {
-            "version": version,
-            "rev": tag_name,
-            "sha256": prefetch_data["sha256"],
-            "date": release_data["published_at"],
-            "short_date": release_data["published_at"][:10]
-        }
-        
-    except (requests.RequestException, subprocess.CalledProcessError, json.JSONDecodeError) as e:
-        print(f"Warning: Could not fetch release info for {owner}/{repo}: {e}", file=sys.stderr)
-        return None
 
 def load_plugin_specs(spec_file: Path) -> Dict[str, Any]:
     """Load plugin specifications from JSON file."""
     with spec_file.open() as f:
         return json.load(f)
 
-def update_plugin_lock(spec_file: Path, lock_file: Path, prefer_releases: bool = True) -> None:
-    """Update the lock file with latest commit/release information."""
+def update_plugin_lock(spec_file: Path, lock_file: Path) -> None:
+    """Update the lock file with commit information for specified refs."""
     specs = load_plugin_specs(spec_file)
     
     print("Updating plugin lock file...")
     lock_data = {}
     
     for name, spec in specs.items():
-        print(f"  Fetching {name}...")
+        ref = spec["ref"]
+        print(f"  Fetching {name}@{ref}...")
         
-        # Try to get release info first if preferred
-        version_info = None
-        if prefer_releases:
-            version_info = get_latest_release_info(spec["owner"], spec["repo"])
+        # Get info for the specific ref
+        ref_info = get_ref_info(spec["owner"], spec["repo"], ref)
         
-        # Fall back to latest commit if no release or not preferred
-        if not version_info:
-            commit_info = get_latest_commit_info(spec["owner"], spec["repo"])
-            version_info = {
-                "version": f"unstable-{commit_info['short_date']}",
-                **commit_info
-            }
+        # Determine version based on ref type
+        if ref.startswith("v") and ref[1:].replace(".", "").replace("-", "").isalnum():
+            # Looks like a version tag
+            version = ref.lstrip("v")
+        elif ref in ["main", "master", "HEAD"] or len(ref) == 40:  # branch or commit hash
+            version = f"unstable-{ref_info['short_date']}"
+        else:
+            # Custom ref (could be branch, tag, etc.)
+            version = f"ref-{ref}"
         
         lock_data[name] = {
             **spec,
-            **version_info
+            "version": version,
+            **ref_info
         }
     
     with lock_file.open('w') as f:
@@ -229,52 +203,17 @@ in
     
     print(f"Generated {output_file}")
 
-def generate_convenience_overlay(lock_file: Path, overlay_file: Path) -> None:
-    """Generate a convenience overlay file for easy integration."""
-    with lock_file.open() as f:
-        lock_data = json.load(f)
-    
-    plugin_names = list(lock_data.keys())
-    
-    overlay_content = f'''# Generated LLM plugins overlay
-# This overlay provides all LLM plugins as top-level packages
-
-final: prev: {{
-  llmPlugins = final.callPackage ./plugins/generated-plugins.nix {{}};
-  
-  # Individual plugins available at top level
-''' + '\n'.join(f'  {name} = final.llmPlugins.{name};' for name in plugin_names) + '''
-
-  # Convenience function to create LLM with selected plugins
-  llmWithPlugins = pluginList: 
-    let
-      pythonEnv = final.python3.withPackages (ps: [ ps.llm ] ++ pluginList);
-    in final.writeShellScriptBin "llm" \'\'
-      exec ${{pythonEnv}}/bin/llm "$@"
-    \'\';
-}}
-'''
-    
-    with overlay_file.open('w') as f:
-        f.write(overlay_content)
-    
-    print(f"Generated convenience overlay: {overlay_file}")
-
 def main():
     script_dir = Path(__file__).parent
     spec_file = script_dir / "llm-plugins.json"
     lock_file = script_dir / "llm-plugins-lock.json"
     output_file = script_dir / "generated-plugins.nix"
-    overlay_file = script_dir / "overlay.nix"
-    
-    prefer_releases = "--prefer-releases" in sys.argv
     
     if len(sys.argv) > 1 and (sys.argv[1] == "--update" or "--update" in sys.argv):
-        update_plugin_lock(spec_file, lock_file, prefer_releases)
+        update_plugin_lock(spec_file, lock_file)
     
     if lock_file.exists():
         generate_nix_file(lock_file, output_file)
-        generate_convenience_overlay(lock_file, overlay_file)
     else:
         print(f"Lock file {lock_file} doesn't exist. Run with --update first.")
         sys.exit(1)
