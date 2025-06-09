@@ -10,20 +10,46 @@ in {
   ];
   
   # Security-related packages
-  home.packages = with pkgs; [
-    certbot-full
-    cosign
-    sops
-    step-cli
-    syft
-    # yubico-pam
-    yubico-piv-tool
-    yubikey-manager
-  ] ++ lib.optionals isLinux [
-    gnupg
-    opensc
-  ];
+  home = {
+    packages = with pkgs; [
+        certbot-full
+        cosign
+        sops
+        step-cli
+        syft
+        # yubico-pam
+        yubico-piv-tool
+        yubikey-manager
+      ] ++ lib.optionals isLinux [
+        gnupg
+        opensc
+      ];
   
+    file = {
+      # ".claude" = {
+      #   source = ./config/claude;
+      #   recursive = true;
+      # };
+
+      # can't quite configure gnupg the way I want within programs.gnupg
+      ".gnupg" = {
+        source = ../config/gnupg;
+        recursive = true;
+      };
+
+      ".step" = {
+        source = ../config/step;
+        recursive = true;
+      };
+
+    } // lib.optionalAttrs isDarwin {
+      ".gnupg/gpg-agent.conf" = {
+        source = ../config/gpg-agent/gpg-agent.conf;
+        recursive = true;
+      };
+    } ;
+  };
+
   programs = {
     _1password-shell-plugins = {
       enable = true;
@@ -60,50 +86,19 @@ in {
     };
   };
   
-  home.file = {
-    ".gnupg" = {
-      source = ../config/gnupg;
-      recursive = true;
-    };
-    
-    ".step" = {
-      source = ../config/step;
-      recursive = true;
-    };
-  } // lib.optionalAttrs isDarwin {
-    ".gnupg/gpg-agent.conf" = {
-      source = ../config/gpg-agent/gpg-agent.conf;
-      recursive = true;
-    };
-  };
   
-  xdg.configFile = {
-    "ssh/config.d" = {
-      source = ../config/ssh/config.d;
-      recursive = true;
-    };
-    
-    "git/allowed-signers" = {
-      text = ''
-        # allow FIDO SSH key on my personal Yubikey to sign commits
-        chuck@crdant.io namespaces="git" sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIH76RbmzI1NX9SGvDUUnX0QAVmF5pzr6mHZNG2rd0jAoAAAABHNzaDo= crdant@grappa
-        chuck@replicated.com namespaces="git" sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIH76RbmzI1NX9SGvDUUnX0QAVmF5pzr6mHZNG2rd0jAoAAAABHNzaDo= crdant@grappa
-        chuck@rcrdant.io namespace="git" ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBKZNf1+SIohm48DXEa1Xssz1ZV8oPxI3Uij1IyZrU3UmQeGkZeu+Vin88qX5UizFat8wd1P88CQk2yaRAIgPKOc=
-        chuck@replicated.com namespace="git" ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBKZNf1+SIohm48DXEa1Xssz1ZV8oPxI3Uij1IyZrU3UmQeGkZeu+Vin88qX5UizFat8wd1P88CQk2yaRAIgPKOc=
+  programs = {
+    zsh = {
+      oh-my-zsh.plugins = [
+        "gpg-agent"
+      ] ++ lib.optionals isDarwin [
+        "gpg-agent"
+      ];
+      
+      envExtra = ''
+        export CERTBOT_ROOT="${config.xdg.dataHome}/certbot"
       '';
     };
-  };
-  
-  programs.zsh = {
-    oh-my-zsh.plugins = [
-      "gpg-agent"
-    ] ++ lib.optionals isDarwin [
-      "gpg-agent"
-    ];
-    
-    envExtra = ''
-      export CERTBOT_ROOT="${config.xdg.dataHome}/certbot"
-    '';
   };
   
   launchd = if isDarwin then {
@@ -139,4 +134,5 @@ in {
   } else {
     enable = false;
   };
+
 }

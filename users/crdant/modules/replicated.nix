@@ -11,6 +11,12 @@ in {
       replicated
       troubleshoot-sbctl
     ];
+    file = lib.optionalAttrs isDarwin {
+      "Library/Colors/Replicated.clr" = {
+        source = ../config/palettes/Replicated.clr;
+        recursive = true;
+      };
+    };
   };  
 
   sops = {
@@ -19,8 +25,7 @@ in {
       "slack/shortrib/slackernews/botToken" = {};
     };
     
-    templates = {
-    } // lib.optionalAttrs isDarwin {
+    templates = lib.optionalAttrs isDarwin {
       "slackernews.yml" = {
         path = "${config.home.homeDirectory}/Library/Application Support/espanso/match/slackernews.yml";
         mode = "0600";
