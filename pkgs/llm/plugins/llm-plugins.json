@@ -1,0 +1,189 @@
+{
+  "llm-anthropic": {
+    "owner": "simonw",
+    "repo": "llm-anthropic",
+    "ref": "0.17",
+    "description": "LLM access to models by Anthropic, including the Claude series",
+    "pythonDeps": ["anthropic"]
+  },
+  "llm-echo": {
+    "owner": "simonw",
+    "repo": "llm-echo",
+    "ref": "0.3a3",
+    "description": "Debug plugin for LLM providing an echo model",
+    "pythonDeps": []
+  },
+  "llm-fireworks": {
+    "owner": "simonw",
+    "repo": "llm-fireworks",
+    "ref": "0.1a0",
+    "description": "Access fireworks.ai models via API",
+    "pythonDeps": []
+  },
+  "llm-gemini": {
+    "owner": "simonw",
+    "repo": "llm-gemini",
+    "ref": "0.22",
+    "description": "LLM plugin to access Google's Gemini family of models",
+    "pythonDeps": ["httpx", "ijson"]
+  },
+  "llm-groq": {
+    "owner": "angerman",
+    "repo": "llm-groq",
+    "ref": "v0.8",
+    "description": "LLM access to models hosted by Groq",
+    "pythonDeps": ["groq"]
+  },
+  "llm-mlx": {
+    "owner": "simonw",
+    "repo": "llm-mlx",
+    "ref": "0.4",
+    "description": "Support for MLX models in LLM",
+    "pythonDeps": ["mlx-lm"],
+    "platformSpecific": {
+      "darwin": {
+        "aarch64": true
+      }
+    }
+  },
+  "llm-perplexity": {
+    "owner": "hex",
+    "repo": "llm-perplexity",
+    "ref": "2025.6.0", 
+    "description": "LLM access to pplx-api",
+    "pythonDeps": ["openai"]
+  },
+  "llm-gguf": {
+    "owner": "simonw",
+    "repo": "llm-gguf",
+    "ref": "0.2",
+    "description": "Uses llama.cpp to run models in GGUF format",
+    "pythonDeps": ["httpx", "llama-cpp-python"]
+  },
+  "llm-ollama": {
+    "owner": "taketwo",
+    "repo": "llm-ollama",
+    "ref": "0.11.0",
+    "description": "Support for local models via Ollama",
+    "pythonDeps": ["ollama", "pydantic"]
+  },
+  "llm-llamafile": {
+    "owner": "simonw",
+    "repo": "llm-llamafile",
+    "ref": "0.1",
+    "description": "Support for local models using llamafile",
+    "pythonDeps": []
+  },
+  "llm-mlc": {
+    "owner": "simonw",
+    "repo": "llm-mlc",
+    "ref": "0.5",
+    "description": "Runs MLC project models, optimized for Apple Silicon",
+    "pythonDeps": ["httpx"]
+  },
+  "llm-gpt4all": {
+    "owner": "simonw",
+    "repo": "llm-gpt4all",
+    "ref": "0.4",
+    "description": "Support for GPT4All locally optimized models",
+    "pythonDeps": ["gpt4all", "httpx"]
+  },
+  "llm-mpt30b": {
+    "owner": "simonw",
+    "repo": "llm-mpt30b",
+    "ref": "0.1",
+    "description": "Support for MPT-30B local model",
+    "pythonDeps": ["ctransformers", "transformers", "huggingface-hub"]
+  },
+  "llm-mistral": {
+    "owner": "simonw",
+    "repo": "llm-mistral",
+    "ref": "0.14",
+    "description": "Mistral AI language and embedding models",
+    "pythonDeps": ["httpx", "httpx-sse"]
+  },
+  "llm-command-r": {
+    "owner": "simonw",
+    "repo": "llm-command-r",
+    "ref": "0.3.1",
+    "description": "Cohere's Command R models",
+    "pythonDeps": ["cohere"]
+  },
+  "llm-reka": {
+    "owner": "simonw",
+    "repo": "llm-reka",
+    "ref": "0.1a0",
+    "description": "Reka family of models",
+    "pythonDeps": ["reka-api"]
+  },
+  "llm-tools-simpleeval": {
+    "owner": "simonw",
+    "repo": "llm-tools-simpleeval",
+    "ref": "0.1.1",
+    "description": "Implements simple expression support for things like mathematics",
+    "pythonDeps": ["simpleeval"]
+  },
+  "llm-tools-quickjs": {
+    "owner": "simonw",
+    "repo": "llm-tools-quickjs",
+    "ref": "0.1",
+    "description": "Provides access to a sandboxed QuickJS JavaScript interpreter",
+    "pythonDeps": ["quickjs"]
+  },
+  "llm-tools-sqlite": {
+    "owner": "simonw",
+    "repo": "llm-tools-sqlite",
+    "ref": "0.1",
+    "description": "Can run read-only SQL queries against local SQLite databases",
+    "pythonDeps": []
+  },
+  "llm-tools-datasette": {
+    "owner": "simonw",
+    "repo": "llm-tools-datasette",
+    "ref": "0.1",
+    "description": "Can run SQL queries against a remote Datasette instance",
+    "pythonDeps": []
+  },
+  "llm-tools-exa": {
+    "owner": "daturkel",
+    "repo": "llm-tools-exa",
+    "ref": "0.4.0",
+    "description": "Can perform web searches and question-answering using exa.ai",
+    "pythonDeps": ["exa-py"]
+  },
+  "llm-sentence-transformers": {
+    "owner": "simonw",
+    "repo": "llm-sentence-transformers",
+    "ref": "0.3.2",
+    "description": "Adds support for embeddings using the sentence-transformers library",
+    "pythonDeps": ["sentence-transformers", "einops"]
+  },
+  "llm-clip": {
+    "owner": "simonw",
+    "repo": "llm-clip",
+    "ref": "0.1",
+    "description": "Provides the CLIP model for embedding images and text",
+    "pythonDeps": ["sentence-transformers"]
+  },
+  "llm-embed-jina": {
+    "owner": "simonw",
+    "repo": "llm-embed-jina",
+    "ref": "0.1.2",
+    "description": "Provides Jina AI's 8K text embedding models",
+    "pythonDeps": ["transformers", "torch"]
+  },
+  "llm-cmd": {
+    "owner": "simonw",
+    "repo": "llm-cmd",
+    "ref": "0.2a0",
+    "description": "Accepts a prompt for a shell command, runs that prompt",
+    "pythonDeps": ["prompt_toolkit", "pygments"]
+  },
+  "llm-python": {
+    "owner": "simonw",
+    "repo": "llm-python",
+    "ref": "0.1",
+    "description": "Adds a 'llm python' command for running a Python interpreter",
+    "pythonDeps": []
+  }
+}

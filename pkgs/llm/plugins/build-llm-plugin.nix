@@ -1,5 +1,5 @@
 # build-llm-plugin.nix
-{ lib, python3Packages, fetchFromGitHub, stdenv }:
+{ pkgs, lib, fetchFromGitHub, stdenv }:
 
 { pname
 , version
@@ -15,6 +15,11 @@
 }@args:
 
 let
+  unstable = import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz") {
+    inherit (pkgs) system;
+  };
+  python3Packages = unstable.python3Packages;
+
   # Check if this plugin is supported on current platform
   isPlatformSupported = 
     if platformSpecific == {} then true
@@ -44,10 +49,10 @@ let
       mkdir -p $out
       echo "This package (${pname}) is not supported on this platform" > $out/README
     '';
-    meta = meta // {
+    meta = {
       broken = true;
       description = "${description} (not supported on this platform)";
-    };
+    } // (args.meta or {});
   };
 
 in
@@ -56,7 +61,6 @@ if !isPlatformSupported then stubPackage else
 
 python3Packages.buildPythonPackage (rec {
   inherit pname version src doCheck;
-  format = "setuptools";
   pyproject = true;
 
   propagatedBuildInputs = with python3Packages; [
@@ -81,7 +85,7 @@ python3Packages.buildPythonPackage (rec {
 
   pythonImportsCheck = [ (builtins.replaceStrings ["-"] ["_"] pname) ];
 
-  meta = with lib; ({
+  meta = with lib; {
     inherit description;
     homepage = "https://github.com/${src.owner}/${src.repo}";
     license = licenses.asl20;
@@ -91,5 +95,5 @@ python3Packages.buildPythonPackage (rec {
       (if platformSpecific ? linux then platforms.linux else []) ++
       (if platformSpecific ? any && platformSpecific.any then platforms.all else [])
     else platforms.unix;
-  } // meta);
+  } // (args.meta or {});
 } // (removeAttrs args [ "pname" "version" "src" "description" "pythonDeps" "buildInputs" "checkInputs" "doCheck" "meta" "platformSpecific" ]))

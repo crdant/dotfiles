@@ -1,0 +1,369 @@
+{
+  "llm-anthropic": {
+    "date": "2025-05-27T20:41:44Z",
+    "description": "LLM access to models by Anthropic, including the Claude series",
+    "owner": "simonw",
+    "pythonDeps": [
+      "anthropic"
+    ],
+    "ref": "0.17",
+    "repo": "llm-anthropic",
+    "rev": "0.17",
+    "sha256": "sha256-2fatBKZMttC5flzfC7MWCpduc3m6IOVWZiW1K2dYqis=",
+    "short_date": "2025-05-27",
+    "version": "ref-0.17"
+  },
+  "llm-clip": {
+    "date": "2023-09-12T19:15:50Z",
+    "description": "Provides the CLIP model for embedding images and text",
+    "owner": "simonw",
+    "pythonDeps": [
+      "sentence-transformers"
+    ],
+    "ref": "0.1",
+    "repo": "llm-clip",
+    "rev": "0.1",
+    "sha256": "sha256-QeX8YBees4W8RdBuYrRX2iv93otXIsUEmfMd914wVfo=",
+    "short_date": "2023-09-12",
+    "version": "ref-0.1"
+  },
+  "llm-cmd": {
+    "date": "2024-09-09T20:59:28Z",
+    "description": "Accepts a prompt for a shell command, runs that prompt",
+    "owner": "simonw",
+    "pythonDeps": [
+      "prompt_toolkit",
+      "pygments"
+    ],
+    "ref": "0.2a0",
+    "repo": "llm-cmd",
+    "rev": "0.2a0",
+    "sha256": "sha256-RhwQEllpee/XP1p0nrgL4m+KjSZzf61J8l1jJGlg94E=",
+    "short_date": "2024-09-09",
+    "version": "ref-0.2a0"
+  },
+  "llm-command-r": {
+    "date": "2025-03-28T05:55:49Z",
+    "description": "Cohere's Command R models",
+    "owner": "simonw",
+    "pythonDeps": [
+      "cohere"
+    ],
+    "ref": "0.3.1",
+    "repo": "llm-command-r",
+    "rev": "0.3.1",
+    "sha256": "sha256-PxICRds9NJQP64HwoL7Oxd39yaIrMdAyQEbhaumJCgo=",
+    "short_date": "2025-03-28",
+    "version": "ref-0.3.1"
+  },
+  "llm-echo": {
+    "date": "2025-05-21T05:13:01Z",
+    "description": "Debug plugin for LLM providing an echo model",
+    "owner": "simonw",
+    "pythonDeps": [],
+    "ref": "0.3a3",
+    "repo": "llm-echo",
+    "rev": "0.3a3",
+    "sha256": "sha256-4345UIyaQx+mYYBAFD5AaX5YbjbnJQt8bKMD5Vl8VJc=",
+    "short_date": "2025-05-21",
+    "version": "ref-0.3a3"
+  },
+  "llm-embed-jina": {
+    "date": "2023-10-26T03:01:57Z",
+    "description": "Provides Jina AI's 8K text embedding models",
+    "owner": "simonw",
+    "pythonDeps": [
+      "transformers",
+      "torch"
+    ],
+    "ref": "0.1.2",
+    "repo": "llm-embed-jina",
+    "rev": "0.1.2",
+    "sha256": "sha256-L9gZ5Phg00oK9cczmXMgP4FRhSvon8b2TmcI/cLPwcg=",
+    "short_date": "2023-10-26",
+    "version": "ref-0.1.2"
+  },
+  "llm-fireworks": {
+    "date": "2024-04-18T23:27:07Z",
+    "description": "Access fireworks.ai models via API",
+    "owner": "simonw",
+    "pythonDeps": [],
+    "ref": "0.1a0",
+    "repo": "llm-fireworks",
+    "rev": "0.1a0",
+    "sha256": "sha256-gHSEVs17dAvRYmlvZ90DtdSF69FY23c5gVrPCBn0dto=",
+    "short_date": "2024-04-18",
+    "version": "ref-0.1a0"
+  },
+  "llm-gemini": {
+    "date": "2025-06-05T17:37:12Z",
+    "description": "LLM plugin to access Google's Gemini family of models",
+    "owner": "simonw",
+    "pythonDeps": [
+      "httpx",
+      "ijson"
+    ],
+    "ref": "0.22",
+    "repo": "llm-gemini",
+    "rev": "0.22",
+    "sha256": "sha256-8zUOP+LNwdUXx4hR3m5lodcVUmB4ZjyiWqWzk2tV9wM=",
+    "short_date": "2025-06-05",
+    "version": "ref-0.22"
+  },
+  "llm-gguf": {
+    "date": "2024-11-21T07:15:09Z",
+    "description": "Uses llama.cpp to run models in GGUF format",
+    "owner": "simonw",
+    "pythonDeps": [
+      "httpx",
+      "llama-cpp-python"
+    ],
+    "ref": "0.2",
+    "repo": "llm-gguf",
+    "rev": "0.2",
+    "sha256": "sha256-ihMOiQnTfgZKICVDoQHLOMahrd+GiB+HwWFBMyIcs0A=",
+    "short_date": "2024-11-21",
+    "version": "ref-0.2"
+  },
+  "llm-gpt4all": {
+    "date": "2024-04-20T00:29:15Z",
+    "description": "Support for GPT4All locally optimized models",
+    "owner": "simonw",
+    "pythonDeps": [
+      "gpt4all",
+      "httpx"
+    ],
+    "ref": "0.4",
+    "repo": "llm-gpt4all",
+    "rev": "0.4",
+    "sha256": "sha256-+UthXEk2BPD8CqQp6yqyIAd9DmFrZ2xx+ySg9t3c9k4=",
+    "short_date": "2024-04-20",
+    "version": "ref-0.4"
+  },
+  "llm-groq": {
+    "date": "2025-01-30T08:51:45Z",
+    "description": "LLM access to models hosted by Groq",
+    "owner": "angerman",
+    "pythonDeps": [
+      "groq"
+    ],
+    "ref": "v0.8",
+    "repo": "llm-groq",
+    "rev": "v0.8",
+    "sha256": "sha256-sZ5d9w43NvypaPrebwZ5BLgRaCHAhd7gBU6uHEdUaF4=",
+    "short_date": "2025-01-30",
+    "version": "0.8"
+  },
+  "llm-llamafile": {
+    "date": "2024-04-22T04:09:10Z",
+    "description": "Support for local models using llamafile",
+    "owner": "simonw",
+    "pythonDeps": [],
+    "ref": "0.1",
+    "repo": "llm-llamafile",
+    "rev": "0.1",
+    "sha256": "sha256-LF1LhKgi7Pm1cRpFweyawDqXiDwfexa37HtpgOs6JoQ=",
+    "short_date": "2024-04-22",
+    "version": "ref-0.1"
+  },
+  "llm-mistral": {
+    "date": "2025-05-28T20:52:06Z",
+    "description": "Mistral AI language and embedding models",
+    "owner": "simonw",
+    "pythonDeps": [
+      "httpx",
+      "httpx-sse"
+    ],
+    "ref": "0.14",
+    "repo": "llm-mistral",
+    "rev": "0.14",
+    "sha256": "sha256-NuiqRA/SCjGq0hJsnHJ/vgdncIKu3oE9WqWGht7QRMc=",
+    "short_date": "2025-05-28",
+    "version": "ref-0.14"
+  },
+  "llm-mlc": {
+    "date": "2023-08-15T04:21:29Z",
+    "description": "Runs MLC project models, optimized for Apple Silicon",
+    "owner": "simonw",
+    "pythonDeps": [
+      "httpx"
+    ],
+    "ref": "0.5",
+    "repo": "llm-mlc",
+    "rev": "0.5",
+    "sha256": "sha256-OZUDEh1rt995BIiB7i2AjmFHRcd7Ls24FQSVJI8r/k8=",
+    "short_date": "2023-08-15",
+    "version": "ref-0.5"
+  },
+  "llm-mlx": {
+    "date": "2025-04-23T17:46:10Z",
+    "description": "Support for MLX models in LLM",
+    "owner": "simonw",
+    "platformSpecific": {
+      "darwin": {
+        "aarch64": true
+      }
+    },
+    "pythonDeps": [
+      "mlx-lm"
+    ],
+    "ref": "0.4",
+    "repo": "llm-mlx",
+    "rev": "0.4",
+    "sha256": "sha256-9SGbvhuNeKgMYGa0ZiOLm+H/JbNpvFWBcUL4De5xO4o=",
+    "short_date": "2025-04-23",
+    "version": "ref-0.4"
+  },
+  "llm-mpt30b": {
+    "date": "2023-07-12T14:17:53Z",
+    "description": "Support for MPT-30B local model",
+    "owner": "simonw",
+    "pythonDeps": [
+      "ctransformers",
+      "transformers",
+      "huggingface-hub"
+    ],
+    "ref": "0.1",
+    "repo": "llm-mpt30b",
+    "rev": "0.1",
+    "sha256": "sha256-LgaKgYyxBiP0SJr0BR8XIrz9K0hf+emK5ycSGxUIdfQ=",
+    "short_date": "2023-07-12",
+    "version": "ref-0.1"
+  },
+  "llm-ollama": {
+    "date": "2025-05-29T08:04:05Z",
+    "description": "Support for local models via Ollama",
+    "owner": "taketwo",
+    "pythonDeps": [
+      "ollama",
+      "pydantic"
+    ],
+    "ref": "0.11.0",
+    "repo": "llm-ollama",
+    "rev": "0.11.0",
+    "sha256": "sha256-iwrDqrPt/zwXypBwD7zDAcen4fQq6PXl7Xj5VUL2KWA=",
+    "short_date": "2025-05-29",
+    "version": "ref-0.11.0"
+  },
+  "llm-perplexity": {
+    "date": "2025-06-04T07:26:20Z",
+    "description": "LLM access to pplx-api",
+    "owner": "hex",
+    "pythonDeps": [
+      "openai"
+    ],
+    "ref": "2025.6.0",
+    "repo": "llm-perplexity",
+    "rev": "2025.6.0",
+    "sha256": "sha256-LTf2TY5bjSb7ARXrhWj1ctGuMpnq2Kl/kv/hrgX/m/M=",
+    "short_date": "2025-06-04",
+    "version": "ref-2025.6.0"
+  },
+  "llm-python": {
+    "date": "2023-10-27T05:36:00Z",
+    "description": "Adds a 'llm python' command for running a Python interpreter",
+    "owner": "simonw",
+    "pythonDeps": [],
+    "ref": "0.1",
+    "repo": "llm-python",
+    "rev": "0.1",
+    "sha256": "sha256-Z991f0AGO5iaCeoG9dkFhTLtuR45PgCS9awCvOAuPPs=",
+    "short_date": "2023-10-27",
+    "version": "ref-0.1"
+  },
+  "llm-reka": {
+    "date": "2024-04-18T02:22:27Z",
+    "description": "Reka family of models",
+    "owner": "simonw",
+    "pythonDeps": [
+      "reka-api"
+    ],
+    "ref": "0.1a0",
+    "repo": "llm-reka",
+    "rev": "0.1a0",
+    "sha256": "sha256-f2z61DyqOwFj0pw15SuMqhC0rMXhKEgID0NEOy6Hz4c=",
+    "short_date": "2024-04-18",
+    "version": "ref-0.1a0"
+  },
+  "llm-sentence-transformers": {
+    "date": "2025-04-23T17:09:21Z",
+    "description": "Adds support for embeddings using the sentence-transformers library",
+    "owner": "simonw",
+    "pythonDeps": [
+      "sentence-transformers",
+      "einops"
+    ],
+    "ref": "0.3.2",
+    "repo": "llm-sentence-transformers",
+    "rev": "0.3.2",
+    "sha256": "sha256-FDDMItKFEYEptiL3EHKgKVxClqRU9RaM3uD3xP0F4OM=",
+    "short_date": "2025-04-23",
+    "version": "ref-0.3.2"
+  },
+  "llm-tools-datasette": {
+    "date": "2025-05-27T20:39:00Z",
+    "description": "Can run SQL queries against a remote Datasette instance",
+    "owner": "simonw",
+    "pythonDeps": [],
+    "ref": "0.1",
+    "repo": "llm-tools-datasette",
+    "rev": "0.1",
+    "sha256": "sha256-Us9bPk2qpTlgJqQ0Cl9QdeqW+h8j+pmnkriM0WXEyyA=",
+    "short_date": "2025-05-27",
+    "version": "ref-0.1"
+  },
+  "llm-tools-exa": {
+    "date": "2025-05-28T02:18:54Z",
+    "description": "Can perform web searches and question-answering using exa.ai",
+    "owner": "daturkel",
+    "pythonDeps": [
+      "exa-py"
+    ],
+    "ref": "0.4.0",
+    "repo": "llm-tools-exa",
+    "rev": "0.4.0",
+    "sha256": "sha256-dEpABHyfZuBft8SQUhSaJuaNfAtbI5zyJwr7nb84akM=",
+    "short_date": "2025-05-28",
+    "version": "ref-0.4.0"
+  },
+  "llm-tools-quickjs": {
+    "date": "2025-05-27T20:36:03Z",
+    "description": "Provides access to a sandboxed QuickJS JavaScript interpreter",
+    "owner": "simonw",
+    "pythonDeps": [
+      "quickjs"
+    ],
+    "ref": "0.1",
+    "repo": "llm-tools-quickjs",
+    "rev": "0.1",
+    "sha256": "sha256-Si3VcHnRUj8Q/N8pRhltPOM6K64TX9DBH/u4WQxQJjQ=",
+    "short_date": "2025-05-27",
+    "version": "ref-0.1"
+  },
+  "llm-tools-simpleeval": {
+    "date": "2025-05-15T02:02:49Z",
+    "description": "Implements simple expression support for things like mathematics",
+    "owner": "simonw",
+    "pythonDeps": [
+      "simpleeval"
+    ],
+    "ref": "0.1.1",
+    "repo": "llm-tools-simpleeval",
+    "rev": "0.1.1",
+    "sha256": "sha256-IOmYu7zoim7Co/xIm5VLaGkCPI0o+2Nb2Pu3U2fH0BU=",
+    "short_date": "2025-05-15",
+    "version": "ref-0.1.1"
+  },
+  "llm-tools-sqlite": {
+    "date": "2025-05-27T20:38:20Z",
+    "description": "Can run read-only SQL queries against local SQLite databases",
+    "owner": "simonw",
+    "pythonDeps": [],
+    "ref": "0.1",
+    "repo": "llm-tools-sqlite",
+    "rev": "0.1",
+    "sha256": "sha256-VAmK4cXzZWTWCU92TwMdhNJPvYPZ88t5BZe8vo60SZY=",
+    "short_date": "2025-05-27",
+    "version": "ref-0.1"
+  }
+}
