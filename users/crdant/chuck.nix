@@ -19,11 +19,12 @@ in
 
     description = "Chuck D'Antonio";
 
-    openssh.authorizedKeys.keys = builtins.trace authorizedKeys authorizedKeys;
+    openssh.authorizedKeys.keys = authorizedKeys;
   };
 
   system = {
     primaryUser = "chuck";
+  } // lib.optionalAttrs isDarwin {
     defaults = { 
       screencapture.location = "/Users/chuck/Documents/Outbox";
     };
