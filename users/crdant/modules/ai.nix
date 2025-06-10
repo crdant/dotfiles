@@ -9,6 +9,7 @@ in {
     packages = with pkgs; [
       aider-chat-full
       unstable.claude-code
+      unstable.fabric-ai
       goose-cli
       unstable.github-mcp-server
       mbta-mcp-server
