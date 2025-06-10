@@ -18,7 +18,11 @@ let
   unstable = import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz") {
     inherit (pkgs) system;
   };
-  python3Packages = unstable.python3Packages;
+   # add depenedcies here that aren't part of the python3Packages set
+  python3Packages = unstable.python3Packages // {
+    exa-py = unstable.callPackage ../../exa-py { };
+    mlx-lm = unstable.callPackage ../../mlx-lm { };
+  };
 
   # Check if this plugin is supported on current platform
   isPlatformSupported = 

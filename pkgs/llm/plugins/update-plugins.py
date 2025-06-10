@@ -4,17 +4,67 @@
 import json
 import subprocess
 import sys
+import os
 from pathlib import Path
 from typing import Dict, Any, Optional
 import requests
 from datetime import datetime
 
+def get_github_headers() -> Dict[str, str]:
+    """Get GitHub API headers with authentication if token is available."""
+    headers = {
+        "Accept": "application/vnd.github.v3+json",
+        "User-Agent": "llm-plugins-updater/1.0"
+    }
+    
+    # Check for GitHub token in environment variables
+    token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GITHUB_AUTH_TOKEN")
+    
+    if token:
+        headers["Authorization"] = f"token {token}"
+        print("Using authenticated GitHub API requests")
+    else:
+        print("Warning: No GitHub token found. Using unauthenticated requests (rate limited to 60/hour)")
+        print("Set GITHUB_TOKEN or GITHUB_AUTH_TOKEN environment variable for higher rate limits")
+    
+    return headers
+
+def check_rate_limit() -> None:
+    """Check and display current GitHub API rate limit status."""
+    headers = get_github_headers()
+    
+    try:
+        response = requests.get("https://api.github.com/rate_limit", headers=headers)
+        response.raise_for_status()
+        rate_data = response.json()
+        
+        core_limit = rate_data["resources"]["core"]
+        remaining = core_limit["remaining"]
+        limit = core_limit["limit"]
+        reset_time = datetime.fromtimestamp(core_limit["reset"])
+        
+        print(f"GitHub API rate limit: {remaining}/{limit} remaining")
+        if remaining < 10:
+            print(f"Warning: Low rate limit! Resets at {reset_time}")
+        
+    except requests.RequestException as e:
+        print(f"Could not check rate limit: {e}", file=sys.stderr)
+
 def get_ref_info(owner: str, repo: str, ref: str) -> Dict[str, str]:
     """Fetch commit info for a specific ref from GitHub API."""
     url = f"https://api.github.com/repos/{owner}/{repo}/commits/{ref}"
+    headers = get_github_headers()
     
     try:
-        response = requests.get(url)
+        response = requests.get(url, headers=headers)
+        
+        # Handle rate limiting
+        if response.status_code == 403 and "rate limit exceeded" in response.text.lower():
+            reset_time = datetime.fromtimestamp(int(response.headers.get("X-RateLimit-Reset", 0)))
+            print(f"Rate limit exceeded! Resets at {reset_time}", file=sys.stderr)
+            print("Please wait or set a GitHub token in GITHUB_TOKEN environment variable", file=sys.stderr)
+            sys.exit(1)
+        
         response.raise_for_status()
         commit_data = response.json()
         
@@ -46,8 +96,27 @@ def get_ref_info(owner: str, repo: str, ref: str) -> Dict[str, str]:
             "short_date": commit_date[:10]  # YYYY-MM-DD
         }
         
-    except (requests.RequestException, subprocess.CalledProcessError, json.JSONDecodeError) as e:
-        print(f"Error fetching info for {owner}/{repo}@{ref}: {e}", file=sys.stderr)
+    except requests.RequestException as e:
+        if hasattr(e, 'response') and e.response is not None:
+            if e.response.status_code == 404:
+                print(f"Repository or ref not found: {owner}/{repo}@{ref}", file=sys.stderr)
+            elif e.response.status_code == 403:
+                print(f"Access forbidden (rate limit?): {owner}/{repo}@{ref}", file=sys.stderr)
+                remaining = e.response.headers.get("X-RateLimit-Remaining", "unknown")
+                print(f"Rate limit remaining: {remaining}", file=sys.stderr)
+            else:
+                print(f"HTTP {e.response.status_code} error for {owner}/{repo}@{ref}: {e}", file=sys.stderr)
+        else:
+            print(f"Network error fetching {owner}/{repo}@{ref}: {e}", file=sys.stderr)
+        
+        return {
+            "rev": ref,
+            "sha256": "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+            "date": "1970-01-01T00:00:00Z",
+            "short_date": "1970-01-01"
+        }
+    except (subprocess.CalledProcessError, json.JSONDecodeError) as e:
+        print(f"Error processing {owner}/{repo}@{ref}: {e}", file=sys.stderr)
         return {
             "rev": ref,
             "sha256": "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
@@ -55,22 +124,61 @@ def get_ref_info(owner: str, repo: str, ref: str) -> Dict[str, str]:
             "short_date": "1970-01-01"
         }
 
+def get_latest_release_or_tag(owner: str, repo: str) -> Optional[str]:
+    """Get the latest release tag, falling back to latest tag if no releases."""
+    headers = get_github_headers()
+    
+    # Try to get latest release first
+    try:
+        url = f"https://api.github.com/repos/{owner}/{repo}/releases/latest"
+        response = requests.get(url, headers=headers)
+        
+        if response.status_code == 200:
+            release_data = response.json()
+            return release_data["tag_name"]
+        elif response.status_code == 404:
+            # No releases, try tags
+            url = f"https://api.github.com/repos/{owner}/{repo}/tags"
+            response = requests.get(url, headers=headers)
+            
+            if response.status_code == 200:
+                tags_data = response.json()
+                if tags_data:
+                    return tags_data[0]["name"]  # Latest tag
+            
+    except requests.RequestException as e:
+        print(f"Error fetching release/tag info for {owner}/{repo}: {e}", file=sys.stderr)
+    
+    return None
 
 def load_plugin_specs(spec_file: Path) -> Dict[str, Any]:
     """Load plugin specifications from JSON file."""
     with spec_file.open() as f:
         return json.load(f)
 
-def update_plugin_lock(spec_file: Path, lock_file: Path) -> None:
+def update_plugin_lock(spec_file: Path, lock_file: Path, update_refs: bool = False) -> None:
     """Update the lock file with commit information for specified refs."""
     specs = load_plugin_specs(spec_file)
+    
+    print("Checking GitHub API rate limit...")
+    check_rate_limit()
     
     print("Updating plugin lock file...")
     lock_data = {}
     
-    for name, spec in specs.items():
+    total_plugins = len(specs)
+    for i, (name, spec) in enumerate(specs.items(), 1):
         ref = spec["ref"]
-        print(f"  Fetching {name}@{ref}...")
+        
+        # Optionally update to latest release/tag
+        if update_refs:
+            latest_ref = get_latest_release_or_tag(spec["owner"], spec["repo"])
+            if latest_ref and latest_ref != ref:
+                print(f"  {name}: updating {ref} -> {latest_ref}")
+                ref = latest_ref
+                spec["ref"] = ref  # Update the spec for the lock file
+        
+        print(f"  [{i}/{total_plugins}] Fetching {name}@{ref}...")
         
         # Get info for the specific ref
         ref_info = get_ref_info(spec["owner"], spec["repo"], ref)
@@ -209,8 +317,10 @@ def main():
     lock_file = script_dir / "llm-plugins-lock.json"
     output_file = script_dir / "generated-plugins.nix"
     
+    update_refs = "--update-refs" in sys.argv
+    
     if len(sys.argv) > 1 and (sys.argv[1] == "--update" or "--update" in sys.argv):
-        update_plugin_lock(spec_file, lock_file)
+        update_plugin_lock(spec_file, lock_file, update_refs)
     
     if lock_file.exists():
         generate_nix_file(lock_file, output_file)

@@ -92,22 +92,78 @@ let
     [ llmPlugins.llm-mlx ]
     else [];
   
-  commonPlugins = [
+  modelPlugins = [
     llmPlugins.llm-anthropic
     llmPlugins.llm-gemini
     llmPlugins.llm-groq
     llmPlugins.llm-perplexity
     llmPlugins.llm-fireworks
     llmPlugins.llm-echo
-    llmPlugins.llm-cmd
   ];
 
+  utilityPlugins = [
+    llmPlugins.llm-cmd
+    # llmPlugins.llm-cmd-comp
+    llmPlugins.llm-jq
+    llmPlugins.llm-python
+  ];
+  
+  fragmentPlugins = [
+    llmPlugins.llm-fragments-site-text
+  ]; 
+  
+  templatePlugins = [
+    llmPlugins.llm-templates-fabric
+  ];
+    
+  toolPlugins = [
+    llmPlugins.llm-tools-simpleeval
+    llmPlugins.llm-tools-quickjs
+    llmPlugins.llm-tools-exa
+    llmPlugins.llm-tools-rag
+  ];
+
+  # fetch shell completion files from the llm-cmd-comp repository
+  fishCompletions = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/CGamesPlay/llm-cmd-comp/refs/heads/main/share/llm-cmd-comp.fish";
+    sha256 = "sha256-zaYOxlYxEUYySc4NUx1tklPm2FBxlr1HKaYlGhlznpA=";
+  };
+  
+  zshCompletions = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/CGamesPlay/llm-cmd-comp/refs/heads/main/share/llm-cmd-comp.zsh";
+    sha256 = "sha256-mVx+BZPxmNo+zwA4DDFQw6EfsM53QOLAvUgwO4wugOI=";
+  };
+  
+  bashCompletions = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/CGamesPlay/llm-cmd-comp/refs/heads/main/share/llm-cmd-comp.bash";
+    sha256 = "sha256-oWb0ZOV7yH9NGfyPUG7R5itTB0IC43nJlJGdnin++B0=";
+  };
+
   # Combine all plugins
-  allPlugins = commonPlugins ; # ++ darwinPlugins;
+  allPlugins = modelPlugins ++ utilityPlugins ++ templatePlugins ++ fragmentPlugins ++ toolPlugins ; #++ darwinPlugins;
   
   # Create the Python environment
   pythonEnv = customPython.withPackages (ps: [ customPython.pkgs.llm ] ++ allPlugins);
+
 in
-  pkgs.writeShellScriptBin "llm" ''
-    exec ${pythonEnv}/bin/llm "$@"
-  ''
+  pkgs.stdenv.mkDerivation {
+    name = "llm";
+    version = "0.26";
+    dontUnpack = true;
+
+    nativeBuildInputs = [
+      pkgs.installShellFiles
+      pkgs.makeWrapper
+    ];
+
+    installPhase = ''
+      runHook preInstall
+      mkdir -p "$out/bin"
+      makeWrapper ${pythonEnv}/bin/llm $out/bin/llm
+      runHook postInstall
+    '';
+
+    postInstall = ''
+      installShellCompletion $fishCompletions $zshCompletions $bashCompletions
+    '';
+  }

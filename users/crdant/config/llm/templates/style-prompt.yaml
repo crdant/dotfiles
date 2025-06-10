@@ -1,0 +1,12 @@
+model: claude-4-sonnet
+
+prompt: > 
+  Create a prompt for an assistant such as yourself to follow to write in the style of the author of this collection of markdown files
+
+  The result of the prompt should include the following:
+
+  * A detailed style guide 
+  * Five sample paragraphs taken from the text that are great examples of the style
+  * Five generatedd paragraphs that do not match the author's style with an explanation of why each one doesn't fit
+
+  ${input}
