@@ -13,6 +13,7 @@
     };
 
     python3Packages = prev.python3Packages // {
+      exa-py = prev.callPackage ./exa-py { };
       mlx-lm = prev.callPackage ./mlx-lm { };
     };
 
