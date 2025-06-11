@@ -233,7 +233,8 @@ in {
 
         # handle SSH differences between Prompt on iOS and a machine with Yubikey PGP available
         # if we're connected via a traditional SSH agent it's probably Prompt
-        if [[ -n "$SSH_AUTH_SOCK" ]]; then
+        GPG_AGENT_SSH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+        if [[ "SSH_AUTH_SOCK" != "$GPG_AGENT_SSH_SOCK" ]]; then
           # use ssh signing with the provided key
           export GIT_CONFIG_COUNT=3
           export GIT_CONFIG_KEY_0=gpg.format
@@ -242,9 +243,6 @@ in {
           export GIT_CONFIG_VALUE_1=~/.ssh/id_charanda_enclave.pub
           export GIT_CONFIG_KEY_2=gpg.ssh.allowedSignersFile
           export GIT_CONFIG_VALUE_2=~/.config/git/allowed-signers
-        else 
-          # GPG Agent as SSH agent
-          export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
         fi
 
         # Tmux convenience functions
