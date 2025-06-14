@@ -50,5 +50,9 @@ in
       GOOGLE_MAPS_API_KEY = "${config.sops.placeholder."google/maps/apiKey"}";
     };
   };
+  repomix = {
+   command = npxPath;
+    args = [ "-y" "repomix" "--mcp" ];
+  };
 }
 
