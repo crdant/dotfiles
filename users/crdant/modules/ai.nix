@@ -183,7 +183,9 @@ in {
   programs = {
     neovim = {
       plugins = with pkgs.vimPlugins; [
-        # nvim-aider
+        neo-tree-nvim
+        nvim-aider
+        snacks-nvim
       ];
   
       extraLuaConfig = lib.mkAfter ''
