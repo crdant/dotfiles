@@ -12,9 +12,10 @@ in {
       unstable.fabric-ai
       goose-cli
       unstable.github-mcp-server
-      mbta-mcp-server
       llm
+      mbta-mcp-server
       mods
+      repomix
     ];
   
  
@@ -84,7 +85,30 @@ in {
               GOOSE_MODEL = "claude-3-7-sonnet-latest";
               GOOSE_MODE = "smart_approve";
               extensions = {
-                # ... your extensions config
+                computercontroller = {
+                  display_name = "Computer Controller";
+                  enabled = true;
+                  name = "computercontroller";
+                  timeout = 300;
+                  type = "builtin";
+                };
+                developer = {
+                  display_name = "Developer Tools";
+                  enabled = true;
+                  name = "developer";
+                  timeout = 300;
+                  type = "builtin";
+                };
+                git = {
+                  cmd = "${pkgs.uv}/bin/uvx";
+                  args = [ "mcp-server-git" ];
+                  description = "A Model Context Protocol server for Git repository interaction and automation.";
+                  envs = {};
+                  name = "git";
+                  enabled = true;
+                  timeout = 300;
+                  type = "stdio";
+                };
                 mbta = {
                   args = [ ];
                   cmd = "${pkgs.mbta-mcp-server}/bin/mbta-mcp-server";
@@ -97,7 +121,47 @@ in {
                   timeout = 300;
                   type = "stdio";
                 };
-                # ... rest of extensions
+                github = {
+                  args = [ "stdio" ];
+                  cmd = "${pkgs.unstable.github-mcp-server}/bin/github-mcp-server";
+                  description = "GitHub's official MCP Server";
+                  enabled = true;
+                  envs = {
+                    GITHUB_PERSONAL_ACCESS_TOKEN = config.sops.placeholder."github/token";
+                  };
+                  name = "github";
+                  timeout = 300;
+                  type = "stdio";
+                };
+                google-maps = {
+                  cmd = "${pkgs.nodejs_22}/bin/npx";
+                  args = [ "-y" "@modelcontextprotocol/server-google-maps" ];
+                  description = "MCP Server for the Google Maps API.";
+                  envs = {
+                    GOOGLE_MAPS_API_KEY = "${config.sops.placeholder."google/maps/apiKey"}";
+                  };
+                  name = "google-maps";
+                  enabled = true;
+                  timeout = 300;
+                  type = "stdio";
+                };
+                memory = {
+                  display_name = "Memory";
+                  enabled = true;
+                  name = "memory";
+                  timeout = 300;
+                  type = "builtin";
+                };
+                repomix = {
+                  display_name = "Repomix";
+                  description = "Pack your codebase into AI-friendly formats";
+                  cmd = "${pkgs.nodejs_22}/bin/npx";
+                  args = [ "-y" "@modelcontextprotocol/server-google-maps" ];
+                  enabled = true;
+                  name = "repomix";
+                  timeout = 300;
+                  type = "stdio";
+                };
               };
             };
             yamlContent = (pkgs.formats.yaml { }).generate "goose-config" gooseConfig;
