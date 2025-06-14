@@ -163,7 +163,6 @@ in {
         jupytext-nvim
         nvim-cmp
         nvim-lspconfig
-        snacks-nvim
         supermaven-nvim
         vim-surround
         vim-commentary
