@@ -18,7 +18,8 @@
     - use present tense with an implied subject of the change being committed
 7. Implement your plan:
     - Write robust, well-documented code.
-    - Include comprehensive tests and debug logging.
+    - Include comprehensive tests and debug logging. Check for existing tests
+      to modify or add to before writing new tests.
     - Verify that all tests pass.
     - Iterate until you have the simplest possible implementation that passes
       all of your tests.
