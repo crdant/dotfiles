@@ -3,14 +3,14 @@
     "after-last-window-action" = "do-nothing";
     "main-window" = {
       "active-tools" = {
-        "com.qvacua.vimr.tools.file-browser" = 1;
+        "com.qvacua.vimr.tools.file-browser" = 0;
         "com.qvacua.vimr.tools.html-preview" = 1;
-        "com.qvacua.vimr.tools.opened-files-list" = 1;
+        "com.qvacua.vimr.tools.opened-files-list" = 0;
         "com.qvacua.vimr.tools.preview" = 1;
       };
       "appearance" = {
         "editor-characterspacing" = 1;
-        "editor-font-name" = "Fira-Code-Retina";
+        "editor-font-name" = "FiraCode-Nerd-Font-Mono";
         "editor-font-size" = 13;
         "editor-linespacing" = 1;
         "editor-uses-ligatures" = 1;

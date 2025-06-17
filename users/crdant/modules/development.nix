@@ -148,6 +148,9 @@ in {
     
     # Development-specific Neovim configuration
     neovim = {
+      extraLuaPackages = ps: [ ps.magick ];
+      extraPackages = [ pkgs.imagemagick ];
+
       plugins = with pkgs.vimPlugins; [
         cmp-nvim-lsp
         conflict-marker-vim
@@ -160,7 +163,10 @@ in {
             let g:fzf_vim.preview_window = []
           ''; 
         }
+        image-nvim
         jupytext-nvim
+        neo-tree-nvim
+        nvim-web-devicons
         nvim-cmp
         nvim-lspconfig
         supermaven-nvim
@@ -189,6 +195,10 @@ in {
             format = "markdown"
           }
         )
+
+        if vim.fn.has('gui_running') ~= 1 then
+          require('image').setup({})
+        end
         
         -- LSP keybindings
         vim.api.nvim_create_autocmd("LspAttach", {
