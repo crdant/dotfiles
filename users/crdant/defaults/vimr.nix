@@ -10,7 +10,7 @@
       };
       "appearance" = {
         "editor-characterspacing" = 1;
-        "editor-font-name" = "Menlo-Regular";
+        "editor-font-name" = "Fira-Code-Retina";
         "editor-font-size" = 13;
         "editor-linespacing" = 1;
         "editor-uses-ligatures" = 1;
