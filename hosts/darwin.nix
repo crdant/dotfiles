@@ -30,7 +30,9 @@
       google-chrome
       grandperspective
       hexfiend
-      inconsolata
+      nerd-fonts.bitstream-vera-sans-mono
+      nerd-fonts.fira-code
+      nerd-fonts.inconsolata
       lima
       m-cli
       mas
@@ -62,9 +64,7 @@
     ];
 
     casks = [
-      "font-bitstream-vera"
       "font-cabin"
-      "font-fira-code"
       "font-noto-sans"
       "ghostty@tip"
       "google-drive"
