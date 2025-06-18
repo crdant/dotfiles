@@ -30,9 +30,6 @@
       google-chrome
       grandperspective
       hexfiend
-      nerd-fonts.bitstream-vera-sans-mono
-      nerd-fonts.fira-code
-      nerd-fonts.inconsolata
       lima
       m-cli
       mas
@@ -45,6 +42,15 @@
     ];
   }; 
  
+  fonts = {
+    packages = with pkgs.nerd-fonts; [
+      fira-code
+      inconsolata
+      noto
+      bitstream-vera-sans-mono
+    ];
+  };
+
   homebrew = {
     enable = true;
     # updates homebrew packages on activation,
