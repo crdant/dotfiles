@@ -13,8 +13,11 @@ in {
     ];
     file = lib.optionalAttrs isDarwin {
       "Library/Colors/Replicated.clr" = {
-        source = ../config/palettes/Replicated.clr;
+        source = ./config/palettes/Replicated.clr;
         recursive = true;
+      };
+      "Library/Application Support/espanso/match/replicated.yml" = {
+        source = ./config/espanso/match/replicated.yml;
       };
     };
   };  

@@ -1,4 +1,4 @@
-{ inputs, outputs, config, pkgs, lib, gitEmail, ... }:
+{ inputs, outputs, config, pkgs, lib, gitEmail, secretsFile ? null, ... }:
 
 let 
   isDarwin = pkgs.stdenv.isDarwin;
@@ -26,25 +26,20 @@ in {
       ];
   
     file = {
-      # ".claude" = {
-      #   source = ./config/claude;
-      #   recursive = true;
-      # };
-
       # can't quite configure gnupg the way I want within programs.gnupg
       ".gnupg" = {
-        source = ../config/gnupg;
+        source = ./config/gnupg;
         recursive = true;
       };
 
       ".step" = {
-        source = ../config/step;
+        source = ./config/step;
         recursive = true;
       };
 
     } // lib.optionalAttrs isDarwin {
       ".gnupg/gpg-agent.conf" = {
-        source = ../config/gpg-agent/gpg-agent.conf;
+        source = ./config/gpg-agent/gpg-agent.conf;
         recursive = true;
       };
     } ;
@@ -79,8 +74,8 @@ in {
     };
   };
   
-  sops = {
-    defaultSopsFile = ../secrets.yaml;  # Path to your secrets file
+  sops = lib.mkIf (secretsFile != null) {
+    defaultSopsFile = secretsFile;
     gnupg = {
       home = "${config.home.homeDirectory}/.gnupg";
     };

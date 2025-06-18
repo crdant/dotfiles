@@ -1,6 +1,9 @@
 { inputs, outputs, config, pkgs, lib, ... }:
 
-{
+let 
+  isDarwin = pkgs.stdenv.isDarwin;
+  isLinux = pkgs.stdenv.isLinux;
+in {
   # Cloud provider tools
   home.packages = with pkgs; [
     azure-cli
@@ -13,7 +16,16 @@
     terraform
     terraform-lsp
     vault
+  ] ++ lib.optionals isLinux [
+    snowsql
   ];
+
+  home.file = {
+    ".snowsql" = {
+      source = ./config/snowsql;
+      recursive = true;
+    };
+  };
   
   programs = {
     awscli = {
@@ -41,6 +53,10 @@
           "vault"
           "terraform"
         ];
+      };
+
+      shellAliases = lib.mkIf isDarwin {
+        snowsql = "/Applications/SnowSQL.app/Contents/MacOS/snowsql";
       };
     
       envExtra = ''

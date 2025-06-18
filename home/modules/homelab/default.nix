@@ -1,7 +1,23 @@
 { inputs, outputs, config, pkgs, lib, ... }:
 
 {
-  # Homelab-specific SSH configurations
+  home = {
+    packages = with pkgs; [
+      powershell
+    ];
+    
+    file = {
+      "ssh/config.d" = {
+        source = ./config/ssh/config.d;
+        recursive = true;
+      };
+    } // lib.optionalAttrs pkgs.stdenv.isDarwin {
+      "Library/Application Support/espanso/match/snippets.yml" = {
+        source = ./config/espanso/match/snippets.yml;
+      };
+    };
+  };
+
   programs = {
     ssh = {
       matchBlocks = {

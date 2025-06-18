@@ -24,7 +24,7 @@ in {
     activation = {
       claude = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         $DRY_RUN_CMD mkdir -p $HOME/.claude/commands
-        $DRY_RUN_CMD cp -f ${../config/claude/commands}/* $HOME/.claude/commands/
+        $DRY_RUN_CMD cp -f ${./config/claude/commands}/* $HOME/.claude/commands/
       '';
     };
 
@@ -35,7 +35,7 @@ in {
       # };
     } // lib.optionalAttrs isDarwin {
       "Library/Application Support/io.datasette.llm/templates" = {
-        source = ../config/llm/templates;
+        source = ./config/llm/templates;
         recursive = true;
       };
     };
@@ -173,7 +173,7 @@ in {
             mode = "0600";
             content = builtins.toJSON {
                 globalShortcut = "Cmd+Space";
-                mcpServers = import ../config/mcp.nix { inherit config pkgs; };
+                mcpServers = import ./config/mcp.nix { inherit config pkgs; };
               };
         };
       };
@@ -199,7 +199,7 @@ in {
     configFile = {
     } // lib.optionalAttrs isDarwin {
       "llm/templates" = {
-        source = ../config/llm/templates;
+        source = ./config/llm/templates;
         recursive = true;
       };
     };

@@ -1,4 +1,4 @@
-{ inputs, outputs, config, pkgs, lib, username, homeDirectory, ... }:
+{ inputs, outputs, config, pkgs, lib, username, homeDirectory, secretsFile ? null, ... }:
 
 let 
   isDarwin = pkgs.stdenv.isDarwin;
@@ -31,37 +31,29 @@ in {
 
     # Basic packages for all environments
     packages = with pkgs; [
+      dogdns
       moreutils
+      nmap
+      pstree
       rar
       ripgrep
+      sipcalc
       smug
+      tcptraceroute
       unstable.tailscale
       zsh-completions
     ] ++ lib.optionals isDarwin [
       vimr
-      (callPackage ../vimr-wrapper.nix { inherit config; })
+      (callPackage ./vimr-wrapper.nix { inherit config; })
     ] ++ lib.optionals isLinux [
-      calicoctl
       coreutils
       dig
-      dogdns
-      gist
       gnupg
       hostess
       jq
-      knot-dns
-      nerdctl
-      nmap
       opensc
-      powershell
       procps
-      pstree
-      sipcalc
-      snowsql
-      unstable.tailscale
-      tcptraceroute
       yq-go
-      zsh-completions
     ];
 
     file = {
@@ -70,27 +62,27 @@ in {
       };
       
       ".editorconfig" = {
-        source = ../config/editorconfig;
+        source = ./config/editorconfig;
       };
       
     } // lib.optionalAttrs isDarwin {
       ".hammerspoon" = {
-        source = ../config/hammerspoon;
+        source = ./config/hammerspoon;
         recursive = true;
       };
       
       "Library/Application Support/espanso" = {
-        source = ../config/espanso;
+        source = ./config/espanso;
         recursive = true;
       };
 
       "Library/Colors/Solarized.clr" = {
-        source = ../config/palettes/Solarized.clr;
+        source = ./config/palettes/Solarized.clr;
         recursive = true;
       };
       
       "Library/Preferences/glow" = {
-        source = ../config/glow;
+        source = ./config/glow;
         recursive = true;
       };
     };
@@ -216,7 +208,6 @@ in {
         sha1 = "/usr/bin/openssl sha1";
         rmd160 = "/usr/bin/openssl rmd160";
         lsock = "sudo /usr/sbin/lsof -i -P";
-        snowsql = "/Applications/SnowSQL.app/Contents/MacOS/snowsql";
       };
       
       initExtra = ''
@@ -372,8 +363,8 @@ in {
     };
   };
   
-  sops = {
-    defaultSopsFile = ../secrets.yaml;  # Path to your secrets file
+  sops = lib.mkIf (secretsFile != null) {
+    defaultSopsFile = secretsFile;
     gnupg = {
       home = "${config.home.homeDirectory}/.gnupg";
     };
@@ -383,24 +374,20 @@ in {
     enable = true;
     configFile = {
       "smug" = {
-        source = ../config/smug;
+        source = ./config/smug;
         recursive = true;
       };
 
-      "ssh/config.d" = {
-        source = ../config/ssh/config.d;
-        recursive = true;
-      };
     } // lib.optionalAttrs isDarwin { 
       "karabiner/karabiner.json" = {
-        text = builtins.readFile ../config/karabiner/karabiner.json;
+        text = builtins.readFile ./config/karabiner/karabiner.json;
       };
       "ghostty/config" = {
-        source = ../config/ghostty/config;
+        source = ./config/ghostty/config;
       };
     } // lib.optionalAttrs isLinux { 
       "glow/glow.yml" = {
-        text = builtins.readFile ../config/glow/glow.yml;
+        text = builtins.readFile ./config/glow/glow.yml;
       };
     };
   };
