@@ -1,111 +1,12 @@
-{ pkgs, ... }:
-{
+{ pkgs, lib, ... }:
 
-  documentation.enable = true ;
-
-  imports = [
-    ./common.nix
-  ];
-
-  security = {
-    pam.services.sudo_local.touchIdAuth = true;
-
-    pki = {
-      installCACerts = true ;
-      certificateFiles = [
-        ../pki/shortrib-labs-e1.crt
-        ../pki/shortrib-labs-r2.crt
-      ];
-    };
-  };
-
-  environment = {
-    systemPackages = with pkgs; [
-      _1password-gui
-      bartender
-      darwin.trash
-      duti
-      espanso
-      firefox
-      google-chrome
-      grandperspective
-      hexfiend
-      lima
-      m-cli
-      mas
-      open-sans
-      pinentry_mac
-      raycast
-      slack
-      tailscale
-      zoom-us
-    ];
-  }; 
- 
-  fonts = {
-    packages = with pkgs.nerd-fonts; [
-      fira-code
-      inconsolata
-      noto
-      bitstream-vera-sans-mono
-    ];
-  };
-
-  homebrew = {
-    enable = true;
-    # updates homebrew packages on activation,
-    onActivation = {
-      autoUpdate = true;
-      upgrade = true;
-    };
-    
-    taps = [
-      "homebrew/bundle"
-      "homebrew/cask-drivers"
-      "homebrew/cask-fonts"
-      "homebrew/cask-versions"
-      "homebrew/services"
-      "OJFord/formulae"
-      "vmware-tanzu/carvel"
-    ];
-
-    casks = [
-      "font-cabin"
-      "font-noto-sans"
-      "ghostty@tip"
-      "google-drive"
-      "hammerspoon"
-      "noun-project"
-      "proxyman"
-      "quicklook-json"
-      "rancher"
-      "yubico-yubikey-manager"
-    ];
-
-    masApps = {
-     # "1Blocker" = 1365531024;
-     "1Password for Safari" = 1569813296;
-     "Amphetamine" = 937984704;
-     "Bear" = 1091189122;
-     "Craft" = 1487937127;
-     "Keynote" = 409183694;
-     "Matter" = 1548677272;
-     "Memory Clean 3" = 1302310792;
-     "Microsoft Excel" = 462058435;
-     "Microsoft PowerPoint" = 462062816;
-     "Microsoft Remote Desktop" = 1295203466;
-     "Numbers" = 409203825;
-     "Pages" = 409201541;
-     "Paprika Recipe Manager 3" = 1303222628;
-     "PopClip" = 445189367;
-     "Todoist" = 585829637;
-     "Twitter" = 1482454543;
-     "Transmit" = 403388562;
-    };
-
-  };
-
-  system = {
+let 
+  isDarwin = pkgs.stdenv.isDarwin;
+  isLinux = pkgs.stdenv.isLinux;
+in {
+  # Platform-specific system defaults and preferences
+  
+  system = lib.mkIf isDarwin {
     stateVersion = 5 ;
 
     defaults = { 
@@ -154,13 +55,13 @@
         # Enable spring loading for all Dock items
         enable-spring-load-actions-on-all-items = true;
 
-        # Don’t show Dashboard as a Space
+        # Don't show Dashboard as a Space
         dashboard-in-overlay = true;
        
-        # Don’t automatically rearrange Spaces based on most recent use
+        # Don't automatically rearrange Spaces based on most recent use
         mru-spaces = false;
         
-        # Don’t show recent applications in Dock
+        # Don't show recent applications in Dock
         show-recents = false;
       };
 
@@ -227,7 +128,7 @@
           # Block pop-up windows 
           "WebKitJavaScriptCanOpenWindowsAutomatically" = false;
           "com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaScriptCanOpenWindowsAutomatically" = false;
-          # Enable “Do Not Track”
+          # Enable "Do Not Track"
           "SendDoNotTrackHTTPHeader" = true;
           # Update extensions automatically
           "InstallExtensionUpdatesAutomatically" = true;
@@ -244,5 +145,4 @@
     #   };
     # };
   };
-
 }

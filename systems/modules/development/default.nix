@@ -1,22 +1,6 @@
-{ inputs, outputs, pkgs, ... }:
-{
-  imports = [
-    ../darwin.nix 
-  ];
-
-  ids.gids.nixbld = 30000;
-
-  homebrew = {
-    brews = [
-      "chainguard-dev/tap/chainctl"
-      "calicoctl"
-    ];
-
-    casks = [
-      "webex"
-    ];
-  };
-
+{ pkgs, ... }: {
+  # Development tools and packages for software engineering workstations
+  
   environment = {
     systemPackages = with pkgs; [
       apko
@@ -41,4 +25,11 @@
       trivy
     ];
   };
-} 
+
+  homebrew = {
+    brews = [
+      "chainguard-dev/tap/chainctl"
+      "calicoctl"
+    ];
+  };
+}

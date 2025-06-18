@@ -94,7 +94,6 @@
       nh
       opensc
       openssh
-      powershell
       procps
       pstree
       (python313.withPackages (ps: with ps; [
@@ -118,8 +117,6 @@
       yq-go
       yubico-pam
       zsh-completions
-    ] ++ lib.optionals pkgs.stdenv.isLinux [
-      espanso
     ];
 
     shells = with pkgs; [ 
