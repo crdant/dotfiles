@@ -138,6 +138,10 @@
         gid = 1001;
       };
     };
-  };
+  } // lib.optionalAttrs isLinux {
+    users.crdant = {
+      uid = 1001;
+    };
+  }
 
 }
