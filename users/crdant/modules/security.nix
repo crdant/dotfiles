@@ -90,7 +90,6 @@ in {
   programs = {
     zsh = {
       oh-my-zsh.plugins = [
-        "gpg-agent"
       ] ++ lib.optionals isDarwin [
         "gpg-agent"
       ];
