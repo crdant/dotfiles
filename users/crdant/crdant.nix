@@ -6,6 +6,7 @@ let
 
   authorizedKeysFile = builtins.fetchurl {
     url = "https://github.com/crdant.keys";
+    sha256 = "sha256-DMSnRs0hYVa7U2FlBIPZoBLoWlzzoJcRlUZqsFfIvww=";
   };
 
   authorizedKeys = let
@@ -33,18 +34,18 @@ in
       group = "crdant";
       extraGroups = [ "adm" "ssher" "sudo" "wheel" ];
     };
-  };
-
-  system = {
-    primaryUser = "crdant";
-  } // lib.optionalAttrs isDarwin {
-    defaults = { 
-      screencapture.location = "/Users/crdant/Documents/Outbox";
-    };
   } // lib.optionalAttrs isLinux {
     groups.crdant = {
       gid = 1002;
     };
   };
 
+
+  system = {
+  } // lib.optionalAttrs isDarwin {
+    primaryUser = "crdant";
+    defaults = { 
+      screencapture.location = "/Users/crdant/Documents/Outbox";
+    };
+  };
 }
