@@ -28,18 +28,18 @@ in {
     file = {
       # can't quite configure gnupg the way I want within programs.gnupg
       ".gnupg" = {
-        source = ../config/gnupg;
+        source = ./config/gnupg;
         recursive = true;
       };
 
       ".step" = {
-        source = ../config/step;
+        source = ./config/step;
         recursive = true;
       };
 
     } // lib.optionalAttrs isDarwin {
       ".gnupg/gpg-agent.conf" = {
-        source = ../config/gpg-agent/gpg-agent.conf;
+        source = ./config/gpg-agent/gpg-agent.conf;
         recursive = true;
       };
     } ;

@@ -62,27 +62,27 @@ in {
       };
       
       ".editorconfig" = {
-        source = ../config/editorconfig;
+        source = ./config/editorconfig;
       };
       
     } // lib.optionalAttrs isDarwin {
       ".hammerspoon" = {
-        source = ../config/hammerspoon;
+        source = ./config/hammerspoon;
         recursive = true;
       };
       
       "Library/Application Support/espanso" = {
-        source = ../config/espanso;
+        source = ./config/espanso;
         recursive = true;
       };
 
       "Library/Colors/Solarized.clr" = {
-        source = ../config/palettes/Solarized.clr;
+        source = ./config/palettes/Solarized.clr;
         recursive = true;
       };
       
       "Library/Preferences/glow" = {
-        source = ../config/glow;
+        source = ./config/glow;
         recursive = true;
       };
     };
@@ -374,24 +374,24 @@ in {
     enable = true;
     configFile = {
       "smug" = {
-        source = ../config/smug;
+        source = ./config/smug;
         recursive = true;
       };
 
       "ssh/config.d" = {
-        source = ../config/ssh/config.d;
+        source = ./config/ssh/config.d;
         recursive = true;
       };
     } // lib.optionalAttrs isDarwin { 
       "karabiner/karabiner.json" = {
-        text = builtins.readFile ../config/karabiner/karabiner.json;
+        text = builtins.readFile ./config/karabiner/karabiner.json;
       };
       "ghostty/config" = {
-        source = ../config/ghostty/config;
+        source = ./config/ghostty/config;
       };
     } // lib.optionalAttrs isLinux { 
       "glow/glow.yml" = {
-        text = builtins.readFile ../config/glow/glow.yml;
+        text = builtins.readFile ./config/glow/glow.yml;
       };
     };
   };

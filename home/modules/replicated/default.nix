@@ -13,7 +13,7 @@ in {
     ];
     file = lib.optionalAttrs isDarwin {
       "Library/Colors/Replicated.clr" = {
-        source = ../config/palettes/Replicated.clr;
+        source = ./config/palettes/Replicated.clr;
         recursive = true;
       };
     };

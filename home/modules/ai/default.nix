@@ -173,7 +173,7 @@ in {
             mode = "0600";
             content = builtins.toJSON {
                 globalShortcut = "Cmd+Space";
-                mcpServers = import ../config/mcp.nix { inherit config pkgs; };
+                mcpServers = import ./config/mcp.nix { inherit config pkgs; };
               };
         };
       };
@@ -199,7 +199,7 @@ in {
     configFile = {
     } // lib.optionalAttrs isDarwin {
       "llm/templates" = {
-        source = ../config/llm/templates;
+        source = ./config/llm/templates;
         recursive = true;
       };
     };
