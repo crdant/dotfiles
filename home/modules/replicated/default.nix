@@ -7,8 +7,10 @@ in {
   # Kubernetes and container-related packages
   home = {
     packages = with pkgs; [
+      instruqt
       kots
       replicated
+      teams
       troubleshoot-sbctl
     ];
     file = lib.optionalAttrs isDarwin {

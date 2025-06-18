@@ -62,15 +62,4 @@ in {
     };
   };
 
-  users = lib.mkIf isLinux { 
-    users.crdant = {
-      uid = 1001;
-    };
-  };
-
-  virtualisation = lib.mkIf isLinux {
-    vmware = {
-      guest.enable = true ;
-    };
-  };
 }

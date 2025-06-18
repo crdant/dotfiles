@@ -3,6 +3,8 @@
 {
   home = {
     packages = with pkgs; [
+      govc
+      minio-client
       powershell
     ];
     

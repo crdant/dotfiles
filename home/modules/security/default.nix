@@ -12,6 +12,7 @@ in {
   # Security-related packages
   home = {
     packages = with pkgs; [
+        age
         certbot-full
         cosign
         sops

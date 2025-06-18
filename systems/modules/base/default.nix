@@ -75,12 +75,7 @@
 
   environment = {
     systemPackages = with pkgs; [
-      _1password-cli
-      age
       coreutils
-      dogdns
-      gist
-      git
       glow
       gnumake
       gnupg
@@ -88,41 +83,27 @@
       hostess
       inetutils
       jq
-      knot-dns
-      nmap
+      mtr
       neovim
       nh
-      opensc
       openssh
-      procps
-      pstree
-      (python313.withPackages (ps: with ps; [
-        pip
-        setuptools
-        wheel
-        requests
-        pyyaml
-        click
-        python-dateutil
-      ]))
       ripgrep
       sipcalc
       tailscale
       tcptraceroute
-      timg
       tmux
       tree
-      virtualenv
       wget
       yq-go
       yubico-pam
       zsh-completions
+    ] ++ lib.optionals isDarwin [
+      darwin.trash
     ];
 
     shells = with pkgs; [ 
       bashInteractive
       fish
-      powershell
       zsh
     ];
 

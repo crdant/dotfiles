@@ -10,9 +10,7 @@ in {
 
   environment = {
     systemPackages = with pkgs; lib.optionals isDarwin [
-      _1password-gui
       bartender
-      darwin.trash
       duti
       espanso
       firefox
@@ -28,9 +26,6 @@ in {
       slack
       tailscale
       zoom-us
-    ] ++ lib.optionals isLinux [
-      powershell
-      espanso
     ];
   }; 
  

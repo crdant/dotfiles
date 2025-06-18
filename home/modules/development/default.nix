@@ -7,21 +7,30 @@ in {
   # Development-related packages
   home = {
     packages = with pkgs; [
+      apko
       exercism
       gh
+      git-filter-repo
       git-lfs
       unstable.cue
+      fermyon-spin
       gopls
+      golangci-lint
+      goreleaser
       unstable.ko
+      melange
       nodejs_22
       nix-init
       nix-prefetch-git
       pyright
       rust-analyzer
       shellcheck
+      subversion
+      trivy
       typescript-language-server
       uv
       python313Packages.jupytext
+      virtualenv
     ] ++ lib.optionals isDarwin [
       jetbrains-toolbox
       sourcekit-lsp

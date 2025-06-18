@@ -10,6 +10,7 @@ in {
       argocd
       conftest
       crane
+      fluxcd
       helmfile
       imgpkg
       istioctl
@@ -17,7 +18,9 @@ in {
       kubectl
       kubernetes-helm
       k0sctl
-      kots
+      k9s
+      kapp
+      kompose
       kubeseal
       kustomize
       kyverno-chainsaw

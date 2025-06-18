@@ -3,26 +3,16 @@
   
   environment = {
     systemPackages = with pkgs; [
-      apko
-      aws-sam-cli
-      eksctl
-      fermyon-spin
-      fluxcd
-      git-filter-repo
-      golangci-lint
-      goreleaser
-      instruqt
-      iterm2
-      k0sctl
-      k9s
-      kapp
-      kompose
-      melange
-      mtr
-      subversion
-      # tinygo
-      teams
-      trivy
+      git
+      (python313.withPackages (ps: with ps; [
+        pip
+        setuptools
+        wheel
+        requests
+        pyyaml
+        click
+        python-dateutil
+      ]))
     ];
   };
 

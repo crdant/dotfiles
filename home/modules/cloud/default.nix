@@ -6,12 +6,12 @@ let
 in {
   # Cloud provider tools
   home.packages = with pkgs; [
+    aws-sam-cli
     azure-cli
     cloudflared
+    eksctl
     google-cloud-sdk
-    govc
     leftovers
-    minio-client
     packer
     terraform
     terraform-lsp

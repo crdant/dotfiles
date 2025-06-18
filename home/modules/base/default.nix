@@ -31,7 +31,10 @@ in {
 
     # Basic packages for all environments
     packages = with pkgs; [
+      _1password-gui
+      _1password-cli
       dogdns
+      iterm2
       moreutils
       nmap
       pstree
