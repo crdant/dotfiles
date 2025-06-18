@@ -16,6 +16,9 @@ in {
         source = ./config/palettes/Replicated.clr;
         recursive = true;
       };
+      "Library/Application Support/espanso/match/replicated.yml" = {
+        source = ./config/espanso/match/replicated.yml;
+      };
     };
   };  
 

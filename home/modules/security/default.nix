@@ -75,7 +75,7 @@ in {
   };
   
   sops = {
-    defaultSopsFile = ../secrets.yaml;  # Path to your secrets file
+    defaultSopsFile = ../users/crdant/secrets.yaml;  # Path to your secrets file
     gnupg = {
       home = "${config.home.homeDirectory}/.gnupg";
     };
