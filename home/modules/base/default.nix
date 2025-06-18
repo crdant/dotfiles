@@ -44,7 +44,7 @@ in {
       zsh-completions
     ] ++ lib.optionals isDarwin [
       vimr
-      (callPackage ../vimr-wrapper.nix { inherit config; })
+      (callPackage ./vimr-wrapper.nix { inherit config; })
     ] ++ lib.optionals isLinux [
       coreutils
       dig
@@ -208,7 +208,6 @@ in {
         sha1 = "/usr/bin/openssl sha1";
         rmd160 = "/usr/bin/openssl rmd160";
         lsock = "sudo /usr/sbin/lsof -i -P";
-        snowsql = "/Applications/SnowSQL.app/Contents/MacOS/snowsql";
       };
       
       initExtra = ''
