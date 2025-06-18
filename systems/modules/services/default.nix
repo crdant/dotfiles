@@ -1,7 +1,12 @@
-{ pkgs, inputs, ... }:
-{
+{ pkgs, lib, inputs, ... }:
 
-  boot = {
+let 
+  isDarwin = pkgs.stdenv.isDarwin;
+  isLinux = pkgs.stdenv.isLinux;
+in {
+  # System services configuration
+  
+  boot = lib.mkIf isLinux {
     loader = {
       systemd-boot = {
         enable = true;
@@ -12,7 +17,7 @@
     };
   };
 
-  networking = {
+  networking = lib.mkIf isLinux {
     firewall = {
       enable = true;
     };
@@ -20,22 +25,7 @@
     enableIPv6 = false;
   };
 
-  security = {
-    pki = {
-      installCACerts = true ;
-      certificateFiles = [
-        ../../../pki/shortrib-labs-e1.crt
-        ../../../pki/shortrib-labs-r2.crt
-      ];
-    };
-    sudo = {
-      enable = true;
-      execWheelOnly = true;
-      wheelNeedsPassword = false ;
-    };
-  };
-
-  services = {
+  services = lib.mkIf isLinux {
     resolved = {
       enable = true;
       domains = [
@@ -56,7 +46,7 @@
     };
   };
 
-  system = {
+  system = lib.mkIf isLinux {
     autoUpgrade = {
       enable = true;
       allowReboot = true;
@@ -72,22 +62,15 @@
     };
   };
 
-  users = { 
+  users = lib.mkIf isLinux { 
     users.crdant = {
       uid = 1001;
     };
   };
 
-  virtualisation = {
+  virtualisation = lib.mkIf isLinux {
     vmware = {
       guest.enable = true ;
     };
-  };
-
-  environment = {
-    systemPackages = with pkgs; [
-      powershell
-      espanso
-    ];
   };
 }

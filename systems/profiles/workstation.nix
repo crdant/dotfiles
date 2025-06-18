@@ -2,6 +2,8 @@
   # Workstation profile - full desktop environment with development tools
   imports = [
     ../modules/base
-    ../modules/darwin
+    ../modules/security
+    ../modules/desktop
+    ../modules/system-defaults
   ];
 }
