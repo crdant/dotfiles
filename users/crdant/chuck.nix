@@ -1,5 +1,8 @@
-{ inputs, pkgs, ... }:
+{ inputs, pkgs, lib, ... }:
 let
+  isDarwin = pkgs.stdenv.isDarwin ;
+  isLinux = pkgs.stdenv.isLinux ;
+
   authorizedKeysFile = builtins.fetchurl {
     url = "https://github.com/crdant.keys";
     sha256 = "sha256-DMSnRs0hYVa7U2FlBIPZoBLoWlzzoJcRlUZqsFfIvww=";

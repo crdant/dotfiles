@@ -31,37 +31,29 @@ in {
 
     # Basic packages for all environments
     packages = with pkgs; [
+      dogdns
       moreutils
+      nmap
+      pstree
       rar
       ripgrep
+      sipcalc
       smug
+      tcptraceroute
       unstable.tailscale
       zsh-completions
     ] ++ lib.optionals isDarwin [
       vimr
       (callPackage ../vimr-wrapper.nix { inherit config; })
     ] ++ lib.optionals isLinux [
-      calicoctl
       coreutils
       dig
-      dogdns
-      gist
       gnupg
       hostess
       jq
-      knot-dns
-      nerdctl
-      nmap
       opensc
-      powershell
       procps
-      pstree
-      sipcalc
-      snowsql
-      unstable.tailscale
-      tcptraceroute
       yq-go
-      zsh-completions
     ];
 
     file = {

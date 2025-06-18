@@ -1,7 +1,12 @@
 { inputs, outputs, config, pkgs, lib, ... }:
 
 {
-  # Homelab-specific SSH configurations
+  home = {
+    packages = with pkgs; [
+      powershell
+    ];  
+  };
+
   programs = {
     ssh = {
       matchBlocks = {

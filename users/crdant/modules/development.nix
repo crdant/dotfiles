@@ -31,6 +31,9 @@ in {
       unstable.xcodegen
       vimr
       (callPackage ../vimr-wrapper.nix { inherit config; })
+    ] ++ lib.optionals isLinux [
+      gist
+      snowsql
     ];
 
     file = {
