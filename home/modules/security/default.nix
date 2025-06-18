@@ -1,4 +1,4 @@
-{ inputs, outputs, config, pkgs, lib, gitEmail, ... }:
+{ inputs, outputs, config, pkgs, lib, gitEmail, secretsFile ? null, ... }:
 
 let 
   isDarwin = pkgs.stdenv.isDarwin;
@@ -74,8 +74,8 @@ in {
     };
   };
   
-  sops = {
-    defaultSopsFile = ../users/crdant/secrets.yaml;  # Path to your secrets file
+  sops = lib.mkIf (secretsFile != null) {
+    defaultSopsFile = secretsFile;
     gnupg = {
       home = "${config.home.homeDirectory}/.gnupg";
     };
