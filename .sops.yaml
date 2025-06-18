@@ -1,5 +1,5 @@
 creation_rules:
 - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
   pgp: 905EBD494A6AA2B774ED5C67621620CDA290611D
-- path_regex: users/crdant/secrets.yaml
+- path_regex: home/users/crdant/secrets.yaml
   pgp: 905EBD494A6AA2B774ED5C67621620CDA290611D

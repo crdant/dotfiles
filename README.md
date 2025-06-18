@@ -114,7 +114,7 @@ make clean
 To customize configurations:
 
 1. Create or modify host configurations in `/hosts/<hostname>/`
-2. Adjust user configurations in `/users/<username>/`
+2. Adjust user configurations in `/home/users/<username>/`
 3. Add custom packages to `/pkgs/`
 4. Create overlays in `/overlays/`
 

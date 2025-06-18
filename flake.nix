@@ -31,7 +31,7 @@
           specialArgs = {inherit inputs outputs;};
           modules = [ 
             ./hosts/mash/default.nix
-            ./users/crdant/crdant.nix
+            ./home/users/crdant/crdant.nix
           ];
         };
       };
@@ -42,8 +42,8 @@
           specialArgs = {inherit inputs outputs;};
           modules = [ 
             ./hosts/grappa/default.nix
-            ./users/crdant/crdant.nix
-            ./users/crdant/darwin.nix
+            ./home/users/crdant/crdant.nix
+            ./home/users/crdant/darwin.nix
           ];
         };
 
@@ -52,8 +52,8 @@
           specialArgs = {inherit inputs outputs;};
           modules = [ 
             ./hosts/sochu/default.nix
-            ./users/crdant/chuck.nix
-            ./users/crdant/darwin.nix
+            ./home/users/crdant/chuck.nix
+            ./home/users/crdant/darwin.nix
           ];
         };
       }; 
@@ -71,7 +71,7 @@
             pkgs = nixpkgs.legacyPackages.${system};
             extraSpecialArgs = {inherit inputs outputs username homeDirectory gitEmail;};
             modules = [ 
-              ./users/crdant/home.nix
+              ./home/users/crdant/home.nix
             ];
           };
 
@@ -87,7 +87,7 @@
             pkgs = nixpkgs.legacyPackages.${system};
             extraSpecialArgs = {inherit inputs outputs username homeDirectory gitEmail;};
             modules = [ 
-              ./users/crdant/home.nix
+              ./home/users/crdant/home.nix
             ];
           };
         };
