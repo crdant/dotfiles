@@ -30,7 +30,7 @@
           system = "x86_64-linux";
           specialArgs = {inherit inputs outputs;};
           modules = [ 
-            ./hosts/mash/default.nix
+            ./systems/hosts/mash/default.nix
             ./home/users/crdant/crdant.nix
           ];
         };
@@ -41,7 +41,7 @@
           system = "aarch64-darwin";
           specialArgs = {inherit inputs outputs;};
           modules = [ 
-            ./hosts/grappa/default.nix
+            ./systems/hosts/grappa/default.nix
             ./home/users/crdant/crdant.nix
             ./home/users/crdant/darwin.nix
           ];
@@ -51,7 +51,7 @@
           system = "aarch64-darwin";
           specialArgs = {inherit inputs outputs;};
           modules = [ 
-            ./hosts/sochu/default.nix
+            ./systems/hosts/sochu/default.nix
             ./home/users/crdant/chuck.nix
             ./home/users/crdant/darwin.nix
           ];

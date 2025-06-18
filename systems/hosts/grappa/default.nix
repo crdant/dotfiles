@@ -1,7 +1,7 @@
 { inputs, outputs, pkgs, ... }:
 {
   imports = [
-    ../darwin.nix 
+    ../../profiles/workstation.nix 
   ];
 
   homebrew = {
