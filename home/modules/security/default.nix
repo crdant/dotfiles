@@ -26,11 +26,6 @@ in {
       ];
   
     file = {
-      # ".claude" = {
-      #   source = ./config/claude;
-      #   recursive = true;
-      # };
-
       # can't quite configure gnupg the way I want within programs.gnupg
       ".gnupg" = {
         source = ../config/gnupg;

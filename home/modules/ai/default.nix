@@ -24,7 +24,7 @@ in {
     activation = {
       claude = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         $DRY_RUN_CMD mkdir -p $HOME/.claude/commands
-        $DRY_RUN_CMD cp -f ${../config/claude/commands}/* $HOME/.claude/commands/
+        $DRY_RUN_CMD cp -f ${./config/claude/commands}/* $HOME/.claude/commands/
       '';
     };
 
@@ -35,7 +35,7 @@ in {
       # };
     } // lib.optionalAttrs isDarwin {
       "Library/Application Support/io.datasette.llm/templates" = {
-        source = ../config/llm/templates;
+        source = ./config/llm/templates;
         recursive = true;
       };
     };
