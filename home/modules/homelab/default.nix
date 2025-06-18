@@ -4,7 +4,14 @@
   home = {
     packages = with pkgs; [
       powershell
-    ];  
+    ];
+    
+    file = {
+      "ssh/config.d" = {
+        source = ./config/ssh/config.d;
+        recursive = true;
+      };
+    };
   };
 
   programs = {

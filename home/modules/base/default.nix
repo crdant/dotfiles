@@ -378,10 +378,6 @@ in {
         recursive = true;
       };
 
-      "ssh/config.d" = {
-        source = ./config/ssh/config.d;
-        recursive = true;
-      };
     } // lib.optionalAttrs isDarwin { 
       "karabiner/karabiner.json" = {
         text = builtins.readFile ./config/karabiner/karabiner.json;
