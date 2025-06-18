@@ -3,6 +3,6 @@
 {
   # Import the full profile by default
   imports = [
-    ./profiles/full.nix
+    ../../profiles/full.nix
   ];
 }
