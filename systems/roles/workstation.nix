@@ -9,5 +9,10 @@
     ../modules/essential-packages
     ../modules/networking-tools
     ../modules/user-management
+    ../modules/security
+    ../modules/services
+    ../modules/desktop
+    ../modules/development
+    ../modules/system-defaults
   ];
 }
