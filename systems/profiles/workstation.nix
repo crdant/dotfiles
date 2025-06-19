@@ -11,4 +11,3 @@
     ../modules/user-management
   ];
 }
-EOF < /dev/null
