@@ -9,7 +9,7 @@
     ];
     
     file = {
-      "ssh/config.d" = {
+      ".config/ssh/config.d" = {
         source = ./config/ssh/config.d;
         recursive = true;
       };
