@@ -1,12 +1,14 @@
-{ pkgs, lib, inputs, ... }:
+{ pkgs, lib, options, ... }:
 
 let 
-  isDarwin = pkgs.stdenv.isDarwin;
-  isLinux = pkgs.stdenv.isLinux;
-in {
-  virtualisation = lib.mkIf isLinux {
-    vmware = {
-      guest.enable = true ;
+  supportsVirtualisation = builtins.hasAttr "virtualisation" options;
+  vmwareConfig = lib.optionalAttrs supportsVirtualisation {
+    virtualisation = {
+      vmware = {
+        guest.enable = true ;
+      };
     };
   };
-}
+in lib.mkMerge [
+  vmwareConfig
+]

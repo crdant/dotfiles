@@ -1,6 +1,11 @@
-{ pkgs, lib, options,... }:
+{ inputs, pkgs, lib, options,... }:
 
 let
+  stateVersion = {
+    stateVersion = if (builtins.typeOf options.system.stateVersion == "string") 
+      then "24.11"
+      else 5;
+  };
   supportsDarwinDefaults = builtins.hasAttr "defaults" options;
   darwinDefaults = lib.optionalAttrs supportsDarwinDefaults {
     defaults = { 
@@ -130,14 +135,72 @@ let
       };
     };
   };
+
+  supportsBoot = builtins.hasAttr "boot" options;
+  bootOptions = lib.optionalAttrs supportsBoot {
+    loader = {
+      systemd-boot = {
+        enable = true;
+      };
+      efi = {
+        canTouchEfiVariables = true;
+      };
+    };
+  };
+
+  supportsFirewall = builtins.hasAttr "firewall" options.networking;
+  firewallConfig = lib.optionalAttrs supportsFirewall {
+    networking = {
+      firewall = {
+        enable = true;
+      };
+    };
+  };
+
+  supportsIPv6 = builtins.hasAttr "enableIPv6" options.networking;
+  ipv6Config = lib.optionalAttrs supportsIPv6 {
+    networking = {
+      enableIPv6 = false;
+    };
+  };
+
+  supportsResolved = builtins.hasAttr "resolvd" options;
+  resolvedConfig = lib.optionalAttrs supportsResolved {
+    services.resolved.enable = true;
+    services.resolved.domains = [
+      "lab.shortrib.net"
+      "crdant.net"
+    ];
+    services.resolvd.fallbackDns = [ "10.25.0.1" ];
+  };
+
+  supportsAutoUpgrade = builtins.hasAttr "autoUpgrade" options;
+  autoUpgradeConfig = lib.optionalAttrs supportsAutoUpgrade {
+    autoUpgrade = {
+      enable = true;
+      allowReboot = true;
+      flake = inputs.self.outPath;
+      flags = [
+        "--update-input"
+        "nixpkgs"
+        "--no-write-lock-file"
+        "-L" # print build logs
+      ];
+      dates = "02:00";
+      randomizedDelaySec = "45min";
+    };
+  };
 in 
 {
   # Platform-specific system defaults and preferences
   
   system = (lib.mkMerge [
-    {
-      stateVersion = "24.11" ;
-    } 
+    stateVersion
+    bootOptions
+    firewallConfig
+    ipv6Config
     darwinDefaults 
+    resolvedConfig
+    autoUpgradeConfig
   ]);
 }

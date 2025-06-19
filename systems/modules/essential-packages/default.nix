@@ -25,6 +25,8 @@ in {
       yq-go
       yubico-pam
     ] ++ lib.optionals isDarwin [
+      mas
+      m-cli
       darwin.trash
     ];
   };

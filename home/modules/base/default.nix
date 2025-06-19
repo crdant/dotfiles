@@ -42,7 +42,6 @@ in {
       sipcalc
       smug
       tcptraceroute
-      unstable.tailscale
       zsh-completions
     ] ++ lib.optionals isDarwin [
       iterm2
