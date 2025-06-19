@@ -1,10 +1,15 @@
-{ inputs, pkgs, lib, options,... }:
+{ inputs, pkgs, lib, options, ... }:
 
 let
+  # Nix-Darwin has the `defaults` attribute, and it requires an integer state
+  # this feels like a real hack, but I can't seem to figure out a cleaner way
+  # that doesn't cause an infinite recursion
+
+  needsIntegerState = builtins.hasAttr "defaults" options;
   stateVersion = {
-    stateVersion = if (builtins.typeOf options.system.stateVersion == "string") 
-      then "24.11"
-      else 5;
+    stateVersion = if needsIntegerState
+      then 5
+      else "24.11";
   };
   supportsDarwinDefaults = builtins.hasAttr "defaults" options;
   darwinDefaults = lib.optionalAttrs supportsDarwinDefaults {
@@ -138,12 +143,14 @@ let
 
   supportsBoot = builtins.hasAttr "boot" options;
   bootOptions = lib.optionalAttrs supportsBoot {
-    loader = {
-      systemd-boot = {
-        enable = true;
-      };
-      efi = {
-        canTouchEfiVariables = true;
+    boot = {
+      loader = {
+        systemd-boot = {
+          enable = true;
+        };
+        efi = {
+          canTouchEfiVariables = true;
+        };
       };
     };
   };
@@ -190,17 +197,19 @@ let
       randomizedDelaySec = "45min";
     };
   };
-in 
-{
-  # Platform-specific system defaults and preferences
+  systemOptions = {
+    # Platform-specific system defaults and preferences
+    system = (lib.mkMerge [
+      stateVersion
+      darwinDefaults 
+      resolvedConfig
+      autoUpgradeConfig
+    ]);
+  };
+in lib.mkMerge [
+  bootOptions
+  firewallConfig
+  ipv6Config
+  systemOptions
+]
   
-  system = (lib.mkMerge [
-    stateVersion
-    bootOptions
-    firewallConfig
-    ipv6Config
-    darwinDefaults 
-    resolvedConfig
-    autoUpgradeConfig
-  ]);
-}
