@@ -18,7 +18,16 @@
     };
 
     llm = prev.callPackage ./llm { };
-
+    
+    tailscale = (prev.tailscale.overrideAttrs (oldAttrs: {
+      src = prev.fetchFromGitHub {
+        owner = "tailscale";
+        repo = "tailscale";
+        rev = "v1.84.2";
+        sha256 = "sha256-dSYophk7oogLmlRBr05Quhx+iMUuJU2VXhAZVtJLTts=";
+      };
+      vendorHash = "sha256-dSYophk7oogLmlRBr05Quhx+iMUuJU2VXhAZVtJLTts=";
+    }));
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
