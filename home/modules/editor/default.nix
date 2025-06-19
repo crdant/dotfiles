@@ -53,6 +53,8 @@ in {
           require('image').setup({})
         end
         
+        require('nix-hash-commands').setup()
+
         -- Core LSP keybindings
         vim.api.nvim_create_autocmd("LspAttach", {
           callback = function(event)
@@ -125,6 +127,16 @@ in {
           end
         })
       '';
+    };
+  };
+
+  xdg = {
+    enable = true;
+    configFile = {
+      "nvim" = {
+        source = ./config/nvim;
+        recursive = true;
+      };
     };
   };
 }

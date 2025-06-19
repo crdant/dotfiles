@@ -141,6 +141,9 @@ in {
       ];
       
       extraConfig = ''
+        # avoids E5113: Error while calling lua chunk: ...ovimPackages/start/image.nvim/lua/image/utils/logger.lua:54: 15:26:14.031612 [image.nvim] tmux does not have allow-passthrough enabled
+        set -g allow-passthrough on
+
         bind r source-file ~/.tmux.conf
 
         # switch panes using Alt-arrow without prefix
@@ -360,6 +363,12 @@ in {
         
         -- line numbers
         vim.opt.number = true
+
+        -- some shortcuts
+        vim.api.nvim_create_user_command('Inline', function(opts)
+          local result = vim.trim(vim.fn.system(opts.args))
+          vim.api.nvim_put({result}, 'c', true, true)
+        end, {nargs = 1})
       '';
     };
   };
