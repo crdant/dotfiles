@@ -2,7 +2,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../profiles/jumpbox.nix 
+    ../../roles/jumpbox.nix 
   ];
 
   system.stateVersion = "24.11";
