@@ -6,14 +6,15 @@ let
 
   supportsOpenSshSettings = builtins.hasAttr "settings" options.services.openssh;
   openSshSettings = lib.optionalAttrs supportsOpenSshSettings {
-    services.openssh.extraConfig = ''
-      StreamLocalBindUnlink yes 
-    ''; 
+    settings = {
+      PermitRootLogin = "no";
+      PasswordAuthentication = false;
+    };
   };
 
   supportsOpenSshExtraConfig = builtins.hasAttr "extraConfig" options.services.openssh;
   openSshExtraConfig = lib.optionalAttrs supportsOpenSshExtraConfig {
-    services.openssh.extraConfig = ''
+    extraConfig = ''
       StreamLocalBindUnlink yes 
     ''; 
   };
