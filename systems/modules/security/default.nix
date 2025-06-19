@@ -5,6 +5,11 @@ let
   isLinux = pkgs.stdenv.isLinux;
 in {
   # Security configuration for both Darwin and Linux
+  environment = {
+    systemPackages = with pkgs; [
+      nmap
+    ];
+  };
   
   security = {
     pki = {

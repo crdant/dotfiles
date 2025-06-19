@@ -4,36 +4,31 @@ let
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
 in {
-  # Kubernetes and container-related packages
+  # Kubernetes-specific tools
   home = {
     packages = with pkgs; [
-      argocd
       conftest
-      crane
       helmfile
-      imgpkg
       istioctl
       krew
       kubectl
       kubernetes-helm
       k0sctl
-      kots
+      k9s
+      kapp
+      kompose
       kubeseal
       kustomize
       kyverno-chainsaw
       open-policy-agent
-      oras
       replicated
-      skopeo
       stern
-      tektoncd-cli
       troubleshoot-sbctl
       tunnelmanager
       vendir
       ytt
     ] ++ lib.optionals isLinux [
       calicoctl
-      nerdctl
     ];
     sessionPath = [
       "$HOME/.krew/bin"
@@ -52,4 +47,3 @@ in {
     };
   };
 }
-

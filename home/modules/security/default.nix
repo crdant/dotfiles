@@ -12,10 +12,9 @@ in {
   # Security-related packages
   home = {
     packages = with pkgs; [
-        certbot-full
+        age
         cosign
         sops
-        step-cli
         syft
         # yubico-pam
         yubico-piv-tool
@@ -32,11 +31,6 @@ in {
         recursive = true;
       };
 
-      ".step" = {
-        source = ./config/step;
-        recursive = true;
-      };
-
     } // lib.optionalAttrs isDarwin {
       ".gnupg/gpg-agent.conf" = {
         source = ./config/gpg-agent/gpg-agent.conf;
@@ -49,10 +43,6 @@ in {
     _1password-shell-plugins = {
       enable = true;
       plugins = with pkgs; [
-      ] ++ lib.optionals isDarwin [
-        awscli2
-        gh
-        ngrok
       ];
     };
     
@@ -89,44 +79,7 @@ in {
         "gpg-agent"
       ];
       
-      envExtra = ''
-        export CERTBOT_ROOT="${config.xdg.dataHome}/certbot"
-      '';
     };
   };
   
-  launchd = if isDarwin then {
-    enable = true;
-    agents = {
-      "io.crdant.certbotRenewal" = {
-        enable = true;
-        config = {
-          Label = "io.crdant.certbotRenewal";
-          ProgramArguments = [
-            "${pkgs.certbot}"
-            "renew"
-            "--config-dir"
-            "${config.xdg.dataHome}/certbot"
-            "--work-dir"
-            "${config.xdg.stateHome}/certbot/var"
-            "--logs-dir"
-            "${config.xdg.stateHome}/certbot/logs"
-          ];
-          StartCalendarInterval = [
-            {
-              Weekday = 3;
-              Hour = 15;
-              Minute = 48;
-            }
-          ];
-          RunAtLoad = true;
-          StandardOutPath = "${config.xdg.stateHome}/certbot/renewal.out";
-          StandardErrorPath = "${config.xdg.stateHome}/certbot/renewal.err";
-        };
-      };
-    };
-  } else {
-    enable = false;
-  };
-
 }

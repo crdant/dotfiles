@@ -1,7 +1,7 @@
 { inputs, outputs, pkgs, ... }:
 {
   imports = [
-    ../../profiles/workstation.nix
+    ../../roles/workstation.nix
     ../../modules/development
   ];
 

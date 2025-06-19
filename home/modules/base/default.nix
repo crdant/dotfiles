@@ -31,6 +31,8 @@ in {
 
     # Basic packages for all environments
     packages = with pkgs; [
+      _1password-gui
+      _1password-cli
       dogdns
       moreutils
       nmap
@@ -40,9 +42,9 @@ in {
       sipcalc
       smug
       tcptraceroute
-      unstable.tailscale
       zsh-completions
     ] ++ lib.optionals isDarwin [
+      iterm2
       vimr
       (callPackage ./vimr-wrapper.nix { inherit config; })
     ] ++ lib.optionals isLinux [
@@ -187,7 +189,6 @@ in {
           "tmux"
           "emoji"
           "history-substring-search"
-          "ripgrep"
           "zoxide"
         ] ++ pkgs.lib.optionals isDarwin [
           "brew"
