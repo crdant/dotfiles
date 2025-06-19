@@ -10,8 +10,9 @@ in {
       instruqt
       kots
       replicated
-      teams
       troubleshoot-sbctl
+    ] ++ lib.optionals isDarwin [
+      teams
     ];
     file = lib.optionalAttrs isDarwin {
       "Library/Colors/Replicated.clr" = {
