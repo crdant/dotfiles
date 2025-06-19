@@ -1,14 +1,8 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, options,... }:
 
-let 
-  isDarwin = pkgs.stdenv.isDarwin;
-  isLinux = pkgs.stdenv.isLinux;
-in {
-  # Platform-specific system defaults and preferences
-  
-  system = lib.mkIf isDarwin {
-    stateVersion = 5 ;
-
+let
+  supportsDarwinDefaults = builtins.hasAttr "defaults" options;
+  darwinDefaults = lib.optionalAttrs supportsDarwinDefaults {
     defaults = { 
       NSGlobalDomain = {
         # Increase window resize speed for Cocoa applications
@@ -134,15 +128,16 @@ in {
           "InstallExtensionUpdatesAutomatically" = true;
         };
       };
-   };
-
-    # activationScripts = {
-    #   postUserActivation = {
-    #     text = ''
-    #       # Following line should allow us to avoid a logout/login cycle
-    #       /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-    #     '';
-    #   };
-    # };
+    };
   };
+in 
+{
+  # Platform-specific system defaults and preferences
+  
+  system = (lib.mkMerge [
+    {
+      stateVersion = "24.11" ;
+    } 
+    darwinDefaults 
+  ]);
 }

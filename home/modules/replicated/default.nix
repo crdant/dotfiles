@@ -7,11 +7,11 @@ in {
   # Kubernetes and container-related packages
   home = {
     packages = with pkgs; [
-      instruqt
       kots
       replicated
       troubleshoot-sbctl
     ] ++ lib.optionals isDarwin [
+      instruqt
       teams
     ];
     file = lib.optionalAttrs isDarwin {

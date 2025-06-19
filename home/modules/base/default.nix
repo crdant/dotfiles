@@ -34,7 +34,6 @@ in {
       _1password-gui
       _1password-cli
       dogdns
-      iterm2
       moreutils
       nmap
       pstree
@@ -46,6 +45,7 @@ in {
       unstable.tailscale
       zsh-completions
     ] ++ lib.optionals isDarwin [
+      iterm2
       vimr
       (callPackage ./vimr-wrapper.nix { inherit config; })
     ] ++ lib.optionals isLinux [

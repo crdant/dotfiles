@@ -1,9 +1,8 @@
-{
-  inputs,
-  outputs,
-  pkgs, 
-  ... 
-}: {
+{ inputs, outputs, pkgs, lib, ... }: 
+let
+  isLinux = pkgs.stdenv.isLinux;
+  isDarwin = pkgs.stdenv.isDarwin;
+in {
 
   nixpkgs = {
     # You can add overlays here
