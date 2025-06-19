@@ -3,11 +3,24 @@
   imports = [
     ../modules/base
     ../modules/development
+    ../modules/editor
+    ../modules/go
+    ../modules/python
+    ../modules/javascript
+    ../modules/swift
+    ../modules/rust
     ../modules/ai
+    ../modules/data
+    ../modules/containers
+    ../modules/cicd
     ../modules/kubernetes
     ../modules/replicated
     ../modules/security
-    ../modules/cloud
+    ../modules/certificates
+    ../modules/aws
+    ../modules/google
+    ../modules/azure
+    ../modules/infrastructure
     ../modules/home-network
     ../modules/homelab
   ];
