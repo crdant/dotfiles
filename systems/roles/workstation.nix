@@ -4,6 +4,7 @@
   # Size: ~120 lines of configuration (equivalent to current base module)
   
   imports = [
+    ../modules/base
     ../modules/nix-core
     ../modules/shells
     ../modules/essential-packages
@@ -14,5 +15,6 @@
     ../modules/desktop
     ../modules/development
     ../modules/system-defaults
+    ../modules/home-lab
   ];
 }

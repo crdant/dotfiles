@@ -4,6 +4,7 @@
   # Needs security, user management, and admin tools
   
   imports = [
+    ../modules/base
     ../modules/nix-core
     ../modules/shells
     ../modules/essential-packages
@@ -11,5 +12,8 @@
     ../modules/user-management
     ../modules/security
     ../modules/services
+    ../modules/development
+    ../modules/system-defaults
+    ../modules/home-lab
   ];
 }
