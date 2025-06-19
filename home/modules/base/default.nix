@@ -190,7 +190,6 @@ in {
           "tmux"
           "emoji"
           "history-substring-search"
-          "ripgrep"
           "zoxide"
         ] ++ pkgs.lib.optionals isDarwin [
           "brew"
