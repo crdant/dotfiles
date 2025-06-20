@@ -5,13 +5,7 @@ let
   # this feels like a real hack, but I can't seem to figure out a cleaner way
   # that doesn't cause an infinite recursion
 
-  needsIntegerState = builtins.hasAttr "defaults" options;
-  stateVersion = {
-    stateVersion = if needsIntegerState
-      then 5
-      else "24.11";
-  };
-  supportsDarwinDefaults = builtins.hasAttr "defaults" options;
+  supportsDarwinDefaults = builtins.hasAttr "defaults" options.system;
   darwinDefaults = lib.optionalAttrs supportsDarwinDefaults {
     defaults = { 
       NSGlobalDomain = {
@@ -200,7 +194,6 @@ let
   systemOptions = {
     # Platform-specific system defaults and preferences
     system = (lib.mkMerge [
-      stateVersion
       darwinDefaults 
       resolvedConfig
       autoUpgradeConfig
