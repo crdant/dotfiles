@@ -109,7 +109,7 @@ let
   ];
   
   fragmentPlugins = [
-    llmPlugins.llm-fragments-site-text
+    # llmPlugins.llm-fragments-site-text
   ]; 
   
   templatePlugins = [
