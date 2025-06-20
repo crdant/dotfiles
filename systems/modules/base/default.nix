@@ -1,8 +1,38 @@
-{ inputs, outputs, pkgs, lib, ... }: 
+{ inputs, outputs, pkgs, lib, options, ... }: 
 let
-  isLinux = pkgs.stdenv.isLinux;
+  isLinux = pkgs.stdenv.isLinux; 
   isDarwin = pkgs.stdenv.isDarwin;
+
+  needsIntegerState = builtins.hasAttr "defaults" options.system;
+  stateVersion = {
+    stateVersion = if needsIntegerState then 5 else "24.11";
+  };
 in {
+  system = lib.mkMerge [
+    stateVersion
+  ];
+
+  # assure flakes and nix command are enabled
+  nix = {
+    extraOptions = ''
+      experimental-features = nix-command flakes
+      '';
+
+    registry = {
+      nixpkgs-unstable = {
+        from = {
+          id = "nixpkgs";
+          type = "indirect";
+        };
+        to = {
+          owner = "NixOS";
+          repo = "nixpkgs";
+          type = "github";
+          ref = "nixos-unstable";
+        };
+      };
+    };
+  };
 
   nixpkgs = {
     # You can add overlays here
@@ -26,28 +56,6 @@ in {
     config = {
       # Disable if you don't want unfree packages
       allowUnfree = true;
-    };
-  };
-
-  # assure flakes and nix command are enabled
-  nix = {
-    extraOptions = ''
-      experimental-features = nix-command flakes
-      '';
-
-    registry = {
-      nixpkgs-unstable = {
-        from = {
-          id = "nixpkgs";
-          type = "indirect";
-        };
-        to = {
-          owner = "NixOS";
-          repo = "nixpkgs";
-          type = "github";
-          ref = "nixos-unstable";
-        };
-      };
     };
   };
 
