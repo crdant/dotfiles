@@ -7,6 +7,10 @@ local M = {}
 local function normalize_github_url(input)
     -- Already a full URL
     if input:match('^https?://') then
+        -- Ensure GitHub URLs end with .git
+        if input:match('github%.com') and not input:match('%.git$') then
+            return input .. '.git'
+        end
         return input
     end
     
@@ -48,6 +52,31 @@ end
 
 -- Setup function to create all commands
 function M.setup()
+    -- Debug command to test URL normalization
+    vim.api.nvim_create_user_command('NixGitHashDebug', function(opts)
+        local input = opts.args
+        local url = normalize_github_url(input)
+        
+        vim.notify('Input: ' .. input, vim.log.levels.INFO)
+        vim.notify('Normalized URL: ' .. (url or 'nil'), vim.log.levels.INFO)
+        
+        if url then
+            -- Test if the URL is accessible
+            local test_cmd = 'git ls-remote ' .. vim.fn.shellescape(url) .. ' HEAD'
+            vim.notify('Testing with: ' .. test_cmd, vim.log.levels.INFO)
+            
+            local result = vim.fn.system(test_cmd)
+            if vim.v.shell_error == 0 then
+                vim.notify('✓ Repository is accessible', vim.log.levels.INFO)
+            else
+                vim.notify('✗ Repository access failed: ' .. result, vim.log.levels.ERROR)
+            end
+        end
+    end, {
+        nargs = 1,
+        desc = 'Debug URL normalization for NixGitHash'
+    })
+
     -- NixUrlHash command for fetching URL hashes
     vim.api.nvim_create_user_command('NixUrlHash', function(opts)
         local url = opts.args
@@ -56,24 +85,26 @@ function M.setup()
             return
         end
         
-        vim.notify('Fetching hash for: ' .. url, vim.log.levels.INFO)
-        
-        -- Run both commands in a pipeline
-        local cmd = string.format(
-            'nix-prefetch-url %s | xargs nix hash convert --hash-algo sha256 --to sri',
-            vim.fn.shellescape(url)
-        )
-        
-        local result = vim.fn.system(cmd)
-        local hash = vim.trim(result)
+        -- First get the hash using nix-prefetch-url
+        local prefetch_result = vim.fn.system('nix-prefetch-url ' .. vim.fn.shellescape(url))
         
         if vim.v.shell_error ~= 0 then
-            vim.notify('Error: ' .. hash, vim.log.levels.ERROR)
+            vim.notify('Error running nix-prefetch-url: ' .. prefetch_result, vim.log.levels.ERROR)
             return
         end
         
-        vim.api.nvim_put({hash}, 'c', true, true)
-        vim.notify('Hash inserted: ' .. hash, vim.log.levels.INFO)
+        -- Extract the last line (the actual hash) and trim it
+        local lines = vim.split(prefetch_result, '\n')
+        local sha256_hash = vim.trim(lines[#lines])
+        
+        -- Convert to SRI format
+        local sri_hash, err = convert_to_sri(sha256_hash)
+        if err then
+            vim.notify(err, vim.log.levels.ERROR)
+            return
+        end
+        
+        vim.api.nvim_put({sri_hash}, 'c', true, true)
     end, {
         nargs = 1,
         desc = 'Fetch URL with nix-prefetch-url and insert SRI hash at cursor'
@@ -108,7 +139,6 @@ function M.setup()
         end
         
         local display_name = input .. (rev and (' at ' .. rev) or '')
-        vim.notify('Fetching git hash for: ' .. display_name, vim.log.levels.INFO)
         
         -- Build command with optional revision
         local cmd = 'nix-prefetch-git ' .. vim.fn.shellescape(url)
@@ -116,22 +146,57 @@ function M.setup()
             cmd = cmd .. ' --rev ' .. vim.fn.shellescape(rev)
         end
         
-        local json_result = vim.fn.system(cmd)
+        local full_output = vim.fn.system(cmd)
         
         if vim.v.shell_error ~= 0 then
-            vim.notify('Error running nix-prefetch-git: ' .. json_result, vim.log.levels.ERROR)
+            vim.notify('Error running nix-prefetch-git (exit code ' .. vim.v.shell_error .. '):', vim.log.levels.ERROR)
+            
+            -- Check for common error patterns and provide helpful messages
+            if full_output:match('could not read Username') then
+                vim.notify('Authentication error: This appears to be a private repository.', vim.log.levels.ERROR)
+                vim.notify('For private repos, you may need to:', vim.log.levels.INFO)
+                vim.notify('  1. Use SSH URL format: git@github.com:owner/repo.git', vim.log.levels.INFO)
+                vim.notify('  2. Or ensure GitHub credentials are configured', vim.log.levels.INFO)
+            elseif full_output:match('fatal: repository .* not found') then
+                vim.notify('Repository not found. Check the URL/path is correct.', vim.log.levels.ERROR)
+            elseif full_output:match('fatal: could not read') then
+                vim.notify('Network or authentication error.', vim.log.levels.ERROR)
+            else
+                vim.notify(full_output, vim.log.levels.ERROR)
+            end
+            
+            -- Additional debugging info
+            vim.notify('Command that failed: ' .. cmd, vim.log.levels.DEBUG)
+            
+            -- Check if nix-prefetch-git is available
+            if vim.fn.executable('nix-prefetch-git') == 0 then
+                vim.notify('nix-prefetch-git is not available in PATH', vim.log.levels.ERROR)
+            end
             return
         end
         
+        -- Extract JSON from the output (everything from first { to last })
+        local json_start = full_output:find('{')
+        local json_end = full_output:find('}[^}]*$')
+        
+        if not json_start or not json_end then
+            vim.notify('Error: Could not find JSON in nix-prefetch-git output', vim.log.levels.ERROR)
+            vim.notify('Full output: ' .. full_output, vim.log.levels.DEBUG)
+            return
+        end
+        
+        local json_result = full_output:sub(json_start, json_end)
         local ok, parsed = pcall(vim.fn.json_decode, json_result)
         if not ok then
-            vim.notify('Error parsing JSON output', vim.log.levels.ERROR)
+            vim.notify('Error parsing JSON output: ' .. tostring(parsed), vim.log.levels.ERROR)
+            vim.notify('Extracted JSON was: ' .. json_result, vim.log.levels.ERROR)
             return
         end
         
         local sha256_hash = parsed.sha256
         if not sha256_hash then
             vim.notify('Error: sha256 field not found in JSON output', vim.log.levels.ERROR)
+            vim.notify('Available fields: ' .. vim.inspect(vim.tbl_keys(parsed)), vim.log.levels.ERROR)
             return
         end
         
@@ -144,7 +209,6 @@ function M.setup()
         
         -- Insert the SRI hash at cursor position
         vim.api.nvim_put({sri_hash}, 'c', true, true)
-        vim.notify('Git hash inserted: ' .. sri_hash, vim.log.levels.INFO)
     end, {
         nargs = '+',
         desc = 'Fetch git repo with nix-prefetch-git and insert SRI hash at cursor'
