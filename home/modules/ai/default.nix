@@ -156,7 +156,7 @@ in {
                   display_name = "Repomix";
                   description = "Pack your codebase into AI-friendly formats";
                   cmd = "${pkgs.nodejs_22}/bin/npx";
-                  args = [ "-y" "@modelcontextprotocol/server-google-maps" ];
+                  args = [ "-y" "repomix" "--mcp" ];
                   enabled = true;
                   name = "repomix";
                   timeout = 300;
