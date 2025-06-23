@@ -12,8 +12,9 @@ in {
     terraform
     terraform-lsp
     vault
+  ] ++ lib.optionals isDarwin [
+    tart
   ];
-
   
   programs = {
     # Terraform-specific Neovim configuration
