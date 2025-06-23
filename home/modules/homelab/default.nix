@@ -1,11 +1,16 @@
 { inputs, outputs, config, pkgs, lib, ... }:
+let 
+  isDarwin = pkgs.stdenv.isDarwin;
+  isLinux = pkgs.stdenv.isLinux;
+in {
 
-{
   home = {
     packages = with pkgs; [
       govc
       minio-client
       powershell
+    ] ++ lib.optionals isDarwin [
+      tart
     ];
     
     file = {

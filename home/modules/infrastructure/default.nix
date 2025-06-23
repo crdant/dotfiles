@@ -5,16 +5,16 @@ let
   isLinux = pkgs.stdenv.isLinux;
 in {
   # Infrastructure and cloud-agnostic tools
-  home.packages = with pkgs; [
-    cloudflared
-    leftovers
-    packer
-    terraform
-    terraform-lsp
-    vault
-  ] ++ lib.optionals isDarwin [
-    tart
-  ];
+  home = {
+    packages = with pkgs; [
+      cloudflared
+      leftovers
+      packer
+      terraform
+      terraform-lsp
+      vault
+    ];
+  };
   
   programs = {
     # Terraform-specific Neovim configuration
