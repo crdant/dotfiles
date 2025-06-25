@@ -1,0 +1,10 @@
+Match exec "[[ $(uname) == 'Darwin' ]]" host *.proj
+  RemoteCommand source ~/.zshrc && cd ~/workspace/projects/%h 
+  RequestTTY Yes
+  HostName mash
+  CanonicalizeHostName yes
+  CanonicalDomains walrus-shark.ts.net lab.shortrib.net 
+  StreamLocalBindUnlink yes
+  RemoteForward /run/user/1001/gnupg/S.gpg-agent %d/.gnupg/S.gpg-agent.extra 
+  RemoteForward /run/user/1001/gnupg/S.gpg-agent.ssh %d/.gnupg/S.gpg-agent.ssh
+
