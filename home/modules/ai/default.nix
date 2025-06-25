@@ -38,6 +38,11 @@ in {
         source = ./config/llm/templates;
         recursive = true;
       };
+    } // lib.optionalAttrs isLinux {
+      "/home/crdant/.config/io.datasette.llm/templates" = {
+        source = ./config/llm/templates;
+        recursive = true;
+      };
     };
   };
 
