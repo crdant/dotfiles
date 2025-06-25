@@ -249,6 +249,7 @@ in {
 
         function smug-session() {
           session=$1
+
           if [[ ! -d "$XDG_RUNTIME_DIR/ssh" ]]; then
             mkdir -p "$XDG_RUNTIME_DIR/ssh"
           fi
@@ -256,7 +257,11 @@ in {
             ln -sf $(readlink -f $SSH_AUTH_SOCK) "$XDG_RUNTIME_DIR/ssh/s.ssh-agent.smug-$session"
             export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh/s.ssh-agent.smug-$session"
           fi
-          smug start $session
+          if [[ -f $(pwd)/.smug.yml ]]; then
+            smug start 
+          else
+            smug start $session
+          fi
         }
 
         function fullscreen() {

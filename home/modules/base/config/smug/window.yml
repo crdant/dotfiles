@@ -2,12 +2,12 @@ sendkeys_timeout: 0
 session: window
 windows:
 - name: zsh
-  root: /home/crdant/workspace/clusters
+  root: ~
   panes:
   - commands: []
   layout: tiled
 - name: nvim
-  root: /home/crdant/workspace/clusters
+  root: ~
   commands:
     - nvim
 
