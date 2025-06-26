@@ -7,6 +7,7 @@
   imports = [
     ../modules/nix-core
     ../modules/hardening
+    ../modules/base
     ../modules/shells
     ../modules/networking-tools
     ../modules/home-lab
