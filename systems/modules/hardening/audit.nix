@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, options, ... }:
 
 let 
   cfg = config.systems.hardening;
