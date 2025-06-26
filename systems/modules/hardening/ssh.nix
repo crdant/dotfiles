@@ -87,8 +87,7 @@ let
         serviceConfig = {
           Label = "com.openssh.sshd";
           Disabled = true;
-          SockServiceName = "ssh";
-          inetdCompatibility.Wait = "yes";
+          RunAtLoad = false;
         };
       };
     };
