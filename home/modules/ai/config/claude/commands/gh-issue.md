@@ -7,60 +7,90 @@ Complete the following development workflow steps in order, treating each as a c
 
 ## Required Steps
 
-### Step 1: Issue Creation and Planning
-- Open a new GitHub issue with a clear, descriptive title
-- Write a comprehensive issue description that includes:
-  - Problem statement or feature request
-  - Acceptance criteria
-  - Technical requirements
-  - Any relevant context or background
+## Step 1: Issue Selection and Analysis
+- Open the specified github issue
+- Review the issue and any related comments to understand the problem or feature request
 
-### Step 2: Detailed Implementation Planning
-- Post a detailed comment on the issue containing your implementation plan
-- Your plan must include:
-  - Technical approach and architecture decisions
-  - List of files that will be created/modified
+## Step 2: Planning and Communication
+Before writing any code, you must:
+- Analyze the selected issue thoroughly to understand the root cause and requirements
+- Research the existing codebase to understand the current implementation
+- Create a detailed implementation plan that includes:
+  - Specific files that need modification
   - Testing strategy
-  - Potential risks or challenges
-  - Estimated timeline
+  - Potential edge cases to consider
+- **Post your complete plan as a comment on the GitHub issue** using this format:
+  ```
+  ## Implementation Plan
+  **Approach**: [Brief description of your solution]
+  **Files to modify**: [List of files]
+  **Testing strategy**: [How you'll test your changes]
+  **Timeline**: [Estimated completion time]
+  ```
+### Step 3: Branch Creation 
+- Create a new feature branch following this exact naming convention: `type/author/description`
+  **Branch naming requirements:**
+  - **Type**: Must be one of: `feature`, `fix`, `chore`, `docs`, `refactor`, `test`
+  - **Author**: Use your GitHub username
+  - **Description**: Use active voice with present tense verb (e.g., "adds-todo-list" ✓, "todo-list" ✗)
 
-### Step 3: Branch Creation and Development
-- Create a new feature branch with a descriptive name that references the issue number
-- Implement your planned solution following these requirements:
-  - Write clean, readable, and maintainable code
-  - Follow established coding standards and conventions
-  - Add comprehensive inline comments and documentation
-  - Include detailed docstrings for all functions and classes
+  **Example:** `feature/crdant/adds-todo-list`
 
-### Step 4: Testing and Quality Assurance
-- Create comprehensive test coverage including:
-  - Unit tests for individual functions/methods
-  - Integration tests for component interactions
-  - Edge case and error condition testing
-- Implement debug logging at appropriate levels
-- Ensure all tests pass locally before proceeding
+## Step 4: Test-Driven Development
+Write unit tests before implementation:
+- Create small, focused tests with the simplest possible implementation
+- Ensure tests clearly validate your planned functionality
+- Verify tests fail initially (confirming you haven't implemented the feature yet)
 
-### Step 5: Code Review Preparation
+## Step 5: Initial Commit
+Commit your tests and push the branch with a commit message that:
+- Uses active voice and present tense
+- Describes the "why" behind changes, not just the "what"
+- Has an implied subject of the change being committed
+
+## Step 6: Implementation
+Develop your solution iteratively:
+- Write robust, well-documented code
+- Include comprehensive tests and debug logging
+- Check for existing tests to modify before creating new ones
+- Verify all tests pass after each iteration
+- Commit each significant iteration with descriptive messages
+- Aim for the simplest implementation that satisfies all requirements
 - Commit your changes with clear, descriptive commit messages
-- Open a pull request that:
-  - References the original issue (use "Fixes #[issue-number]")
-  - Includes a detailed description of changes made
-  - Explains how the solution addresses the original requirements
-  - Lists any breaking changes or migration steps needed
 
-### Step 6: Issue Management
-- Keep the original issue open and actively updated throughout the development process
-- Only close the issue after the pull request has been successfully merged
-- Add final summary comments documenting the completed work
+## Step 7: Code Review Preparation
 
-## Output Format
-For each step, provide:
-1. **Step [Number]: [Step Name]**
-2. Detailed explanation of what you accomplished
-3. Any relevant code snippets, commands, or documentation
-4. Confirmation that the step is complete before moving to the next step
+Push your branch and create a PR with this structure:
 
-## Issue Information
-**GitHub Issue Number:** #[ISSUE_NUMBER]
+**Title:** Concise (≤40 characters), present tense with implied subject
 
-Begin with Step 1 and work through each step systematically. Do not proceed to the next step until the current step is fully complete and documented.
+**Body format:**
+```
+TL;DR
+-----
+
+[1-2 line narrative summary of the change]
+
+
+Details
+-------
+
+[Paragraph(s) explaining intent and impact in narrative form. Focus on why these changes matter and their impact, not what was changed (code review shows the what). Use bullet points sparingly.]
+```
+
+**PR requirements:**
+- Use different verbs to start the Title, TL;DR, and Details sections
+- Always use present tense with the PR as implied subject
+- Never use phrases like "this PR" or "this change"
+- Focus on intent and impact, not implementation details
+- Format section headers with dashes matching the header length
+- Include blank lines between sections
+
+## Step 8: Issue Management
+- **Do not close the GitHub issue** - keep it open until your pull request is reviewed and merged
+- Monitor your PR for feedback and respond promptly to review comments
+- Make requested changes in additional commits to the same branch
+
+# OUTPUT REQUIREMENTS
+
+Execute each step methodically, providing clear explanations for your decisions and ensuring all requirements are met before proceeding to the next step.
