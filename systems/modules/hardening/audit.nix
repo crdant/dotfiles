@@ -200,7 +200,7 @@ let
 
 in 
   {
-    config = lib.mkIf cfg.enable lib.mkMerge [
+    config = lib.mkIf cfg.enable (lib.mkMerge [
       {
         services = lib.mkMerge [
           auditdConfig
@@ -267,6 +267,6 @@ in
     }
     systemdConfig
     launchdConfig
-  ];
+  ]);
 }      
 
