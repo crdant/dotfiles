@@ -5,8 +5,9 @@ let
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
 
-  supportsOpenSSH = builtins.hasAttr "openssh" options.services;
-  opensshConfig = lib.optionalAttrs supportsOpenSSH {
+  # a bit of a hack, uses the `boot` attribute which we know is linux specific
+  nixManagedSssh = builtins.hasAttr "boot" options.services;
+  opensshConfig = lib.optionalAttrs nixManagedSsh {
     services.openssh = {
       enable = true;
       
