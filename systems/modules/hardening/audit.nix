@@ -202,7 +202,7 @@ in
   {
     config = lib.mkIf cfg.enable lib.mkMerge [
       {
-        services = mkMerge [
+        services = lib.mkMerge [
           auditdConfig
           rsyslogConfig
           fail2banConfig
