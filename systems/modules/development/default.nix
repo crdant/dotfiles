@@ -7,6 +7,7 @@ let
       brews = [
         "chainguard-dev/tap/chainctl"
         "calicoctl"
+        "dagger"
       ];
     };
   };
