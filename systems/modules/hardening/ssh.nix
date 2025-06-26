@@ -79,19 +79,8 @@ let
     };
   };
 
-  supportsLaunchd = builtins.hasAttr "launchd" options;
-  launchdConfig = lib.optionalAttrs supportsLaunchd {
-    launchd.daemons = {
-      "com.openssh.sshd" = {
-        command = "${pkgs.openssh}/bin/sshd -D -f /etc/ssh/sshd_config";
-        serviceConfig = {
-          Label = "com.openssh.sshd";
-          Disabled = true;
-          RunAtLoad = false;
-        };
-      };
-    };
-  };
+  # Note: Removed launchd daemon for SSH as it conflicts with system SSH service
+  # The SSH configuration files are sufficient for Darwin hardening
 
   # a bit of a hack, uses the `defaults` attribute which we know is darwin specific
   # to handle some darwin-specific /etc config
@@ -163,7 +152,6 @@ let
 in {
   config = lib.mkIf cfg.enable (lib.mkMerge [
     opensshConfig
-    launchdConfig
     darwinSshConfig
     (lib.optionalAttrs darwinManagedSsh {
       system.activationScripts.ssh-host-keys = {
