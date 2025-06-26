@@ -7,88 +7,87 @@ let
 
   supportAuditd = builtins.hasAttr "auditd" options.services;
   auditdConfig = lib.optionalAttrs supportAuditd {
-      auditd = {
-        enable = true;
+    auditd = {
+      enable = true;
+      
+      rules = [
+        # Delete all existing rules
+        "-D"
         
-        rules = [
-          # Delete all existing rules
-          "-D"
-          
-          # Buffer size
-          "-b 8192"
-          
-          # Failure mode (1 = printk, 2 = panic)
-          "-f 1"
-          
-          # Monitor sudoers changes
-          "-w /etc/sudoers -p wa -k sudo_changes"
-          "-w /etc/sudoers.d/ -p wa -k sudo_changes"
-          
-          # Monitor user/group changes
-          "-w /etc/passwd -p wa -k identity"
-          "-w /etc/group -p wa -k identity"
-          "-w /etc/shadow -p wa -k identity"
-          "-w /etc/gshadow -p wa -k identity"
-          
-          # Monitor SSH configuration
-          "-w /etc/ssh/sshd_config -p wa -k sshd_config"
-          
-          # Monitor system authentication
-          "-w /etc/pam.d/ -p wa -k pam"
-          "-w /etc/security/ -p wa -k security"
-          
-          # Monitor login/logout events
-          "-w /var/log/faillog -p wa -k logins"
-          "-w /var/log/lastlog -p wa -k logins"
-          "-w /var/log/tallylog -p wa -k logins"
-          
-          # Monitor cron
-          "-w /etc/cron.allow -p wa -k cron"
-          "-w /etc/cron.deny -p wa -k cron"
-          "-w /etc/cron.d/ -p wa -k cron"
-          "-w /etc/cron.daily/ -p wa -k cron"
-          "-w /etc/cron.hourly/ -p wa -k cron"
-          "-w /etc/cron.monthly/ -p wa -k cron"
-          "-w /etc/cron.weekly/ -p wa -k cron"
-          "-w /etc/crontab -p wa -k cron"
-          "-w /var/spool/cron/ -p wa -k cron"
-          
-          # Monitor kernel modules
-          "-w /sbin/insmod -p x -k modules"
-          "-w /sbin/rmmod -p x -k modules"
-          "-w /sbin/modprobe -p x -k modules"
-          "-a always,exit -F arch=b64 -S init_module -S delete_module -k modules"
-          
-          # Monitor mount operations
-          "-a always,exit -F arch=b64 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts"
-          "-a always,exit -F arch=b32 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts"
-          
-          # Monitor file deletion
-          "-a always,exit -F arch=b64 -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete"
-          "-a always,exit -F arch=b32 -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete"
-          
-          # Monitor admin actions
-          "-w /var/log/sudo.log -p wa -k sudo_log"
-          
-          # Monitor network configuration
-          "-a always,exit -F arch=b64 -S sethostname -S setdomainname -k network_modifications"
-          "-w /etc/hosts -p wa -k network_modifications"
-          "-w /etc/network/ -p wa -k network_modifications"
-          
-          # Monitor SELinux/AppArmor events
-          "-w /etc/selinux/ -p wa -k mac_policy"
-          "-w /etc/apparmor/ -p wa -k mac_policy"
-          "-w /etc/apparmor.d/ -p wa -k mac_policy"
-          
-          # Monitor use of privileged commands
-          "-a always,exit -F path=/usr/bin/passwd -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-passwd"
-          "-a always,exit -F path=/usr/bin/sudo -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-sudo"
-          "-a always,exit -F path=/usr/bin/su -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-su"
-          
-          # Make configuration immutable
-          "-e 2"
-        ];
-      };
+        # Buffer size
+        "-b 8192"
+        
+        # Failure mode (1 = printk, 2 = panic)
+        "-f 1"
+        
+        # Monitor sudoers changes
+        "-w /etc/sudoers -p wa -k sudo_changes"
+        "-w /etc/sudoers.d/ -p wa -k sudo_changes"
+        
+        # Monitor user/group changes
+        "-w /etc/passwd -p wa -k identity"
+        "-w /etc/group -p wa -k identity"
+        "-w /etc/shadow -p wa -k identity"
+        "-w /etc/gshadow -p wa -k identity"
+        
+        # Monitor SSH configuration
+        "-w /etc/ssh/sshd_config -p wa -k sshd_config"
+        
+        # Monitor system authentication
+        "-w /etc/pam.d/ -p wa -k pam"
+        "-w /etc/security/ -p wa -k security"
+        
+        # Monitor login/logout events
+        "-w /var/log/faillog -p wa -k logins"
+        "-w /var/log/lastlog -p wa -k logins"
+        "-w /var/log/tallylog -p wa -k logins"
+        
+        # Monitor cron
+        "-w /etc/cron.allow -p wa -k cron"
+        "-w /etc/cron.deny -p wa -k cron"
+        "-w /etc/cron.d/ -p wa -k cron"
+        "-w /etc/cron.daily/ -p wa -k cron"
+        "-w /etc/cron.hourly/ -p wa -k cron"
+        "-w /etc/cron.monthly/ -p wa -k cron"
+        "-w /etc/cron.weekly/ -p wa -k cron"
+        "-w /etc/crontab -p wa -k cron"
+        "-w /var/spool/cron/ -p wa -k cron"
+        
+        # Monitor kernel modules
+        "-w /sbin/insmod -p x -k modules"
+        "-w /sbin/rmmod -p x -k modules"
+        "-w /sbin/modprobe -p x -k modules"
+        "-a always,exit -F arch=b64 -S init_module -S delete_module -k modules"
+        
+        # Monitor mount operations
+        "-a always,exit -F arch=b64 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts"
+        "-a always,exit -F arch=b32 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts"
+        
+        # Monitor file deletion
+        "-a always,exit -F arch=b64 -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete"
+        "-a always,exit -F arch=b32 -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete"
+        
+        # Monitor admin actions
+        "-w /var/log/sudo.log -p wa -k sudo_log"
+        
+        # Monitor network configuration
+        "-a always,exit -F arch=b64 -S sethostname -S setdomainname -k network_modifications"
+        "-w /etc/hosts -p wa -k network_modifications"
+        "-w /etc/network/ -p wa -k network_modifications"
+        
+        # Monitor SELinux/AppArmor events
+        "-w /etc/selinux/ -p wa -k mac_policy"
+        "-w /etc/apparmor/ -p wa -k mac_policy"
+        "-w /etc/apparmor.d/ -p wa -k mac_policy"
+        
+        # Monitor use of privileged commands
+        "-a always,exit -F path=/usr/bin/passwd -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-passwd"
+        "-a always,exit -F path=/usr/bin/sudo -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-sudo"
+        "-a always,exit -F path=/usr/bin/su -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-su"
+        
+        # Make configuration immutable
+        "-e 2"
+      ];
     };
   };
 
