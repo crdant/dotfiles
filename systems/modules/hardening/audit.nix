@@ -267,6 +267,6 @@ in
     }
     systemdConfig
     launchdConfig
-  ]
+  ];
 }      
 
