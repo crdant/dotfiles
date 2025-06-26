@@ -4,9 +4,9 @@ let
   cfg = config.systems.hardening;
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
-in {
-  config = lib.mkIf cfg.enable {
-    services = lib.mkIf isLinux {
+
+  supportAuditd = builtins.hasAttr "auditd" options.services;
+  auditdConfig = lib.optionalAttrs supportAuditd {
       auditd = {
         enable = true;
         
@@ -89,154 +89,185 @@ in {
           "-e 2"
         ];
       };
+    };
+  };
+
+  supportRsyslog = builtins.hasAttr "rsyslog" options.services;
+  rsyslogConfig = lib.optionalAttrs supportRsyslog {
+    rsyslog = {
+      enable = true;
       
-      rsyslog = {
-        enable = true;
+      extraConfig = ''
+        # Enhanced logging configuration
         
-        extraConfig = ''
-          # Enhanced logging configuration
-          
-          # Log authentication messages
-          auth,authpriv.*                 /var/log/auth.log
-          
-          # Log all kernel messages
-          kern.*                          /var/log/kern.log
-          
-          # Log anything of level info or higher
-          *.info;mail.none;authpriv.none;cron.none  /var/log/messages
-          
-          # Log cron
-          cron.*                          /var/log/cron.log
-          
-          # Log mail
-          mail.*                          -/var/log/mail.log
-          
-          # Emergency messages
-          *.emerg                         :omusrmsg:*
-          
-          # Forward logs to central syslog server (if configured)
-          # *.* @@remote-syslog-server:514
-          
-          # Log rotate configuration
-          $FileCreateMode 0640
-          $DirCreateMode 0755
-          $Umask 0022
-          
-          # Disable rate limiting
-          $SystemLogRateLimitInterval 0
-          $SystemLogRateLimitBurst 0
-        '';
-      };
-      
-      fail2ban = {
-        enable = true;
+        # Log authentication messages
+        auth,authpriv.*                 /var/log/auth.log
         
-        jails = {
-          ssh-iptables = ''
-            enabled = true
-            filter = sshd
-            action = iptables-multiport[name=SSH, port="ssh", protocol=tcp]
-            logpath = /var/log/auth.log
-            maxretry = 3
-            bantime = 3600
-            findtime = 600
-          '';
-          
-          ssh-ddos = ''
-            enabled = true
-            filter = sshd-ddos
-            action = iptables-multiport[name=SSH, port="ssh", protocol=tcp]
-            logpath = /var/log/auth.log
-            maxretry = 10
-            bantime = 3600
-            findtime = 60
-          '';
-        };
-      };
-    };
-    
-    systemd.services = lib.mkIf isLinux {
-      auditd-configuration = {
-        description = "Configure audit rules";
-        wantedBy = [ "multi-user.target" ];
-        after = [ "auditd.service" ];
+        # Log all kernel messages
+        kern.*                          /var/log/kern.log
         
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = true;
-          ExecStart = "${pkgs.audit}/bin/auditctl -R /etc/audit/audit.rules";
-        };
-      };
-    };
-    
-    environment.systemPackages = with pkgs; [
-      auditbeat
-      filebeat
-    ] ++ lib.optionals isLinux [
-      audit
-      aide
-      logwatch
-      syslog-ng
-    ];
-    
-    launchd.daemons = lib.mkIf isDarwin {
-      "com.hardening.audit" = {
-        command = "${pkgs.bash}/bin/bash -c 'while true; do /usr/bin/log stream --predicate \"eventMessage contains \\\"Authentication\\\" OR eventMessage contains \\\"sudo\\\" OR eventMessage contains \\\"SSH\\\"\" --info >> /var/log/security-audit.log; sleep 60; done'";
-        serviceConfig = {
-          Label = "com.hardening.audit";
-          RunAtLoad = true;
-          KeepAlive = true;
-          StandardErrorPath = "/var/log/audit-error.log";
-          StandardOutPath = "/var/log/audit.log";
-        };
-      };
-    };
-    
-    system.activationScripts.audit-setup = {
-      text = ''
-        # Create log directories with proper permissions
-        mkdir -p /var/log/audit
-        chmod 750 /var/log/audit
+        # Log anything of level info or higher
+        *.info;mail.none;authpriv.none;cron.none  /var/log/messages
         
-        ${if isLinux then ''
-          # Set up audit log rotation
-          cat > /etc/logrotate.d/audit << EOF
-          /var/log/audit/audit.log {
-              daily
-              rotate 30
-              compress
-              delaycompress
-              missingok
-              notifempty
-              create 0600 root root
-              sharedscripts
-              postrotate
-                  /usr/bin/pkill -HUP auditd
-              endscript
-          }
-          EOF
-        '' else ''
-          # macOS log setup
-          mkdir -p /var/log
-          touch /var/log/security-audit.log
-          chmod 640 /var/log/security-audit.log
-        ''}
+        # Log cron
+        cron.*                          /var/log/cron.log
         
-        # Create fail2ban directory
-        mkdir -p /var/log/fail2ban
-        chmod 750 /var/log/fail2ban
+        # Log mail
+        mail.*                          -/var/log/mail.log
+        
+        # Emergency messages
+        *.emerg                         :omusrmsg:*
+        
+        # Forward logs to central syslog server (if configured)
+        # *.* @@remote-syslog-server:514
+        
+        # Log rotate configuration
+        $FileCreateMode 0640
+        $DirCreateMode 0755
+        $Umask 0022
+        
+        # Disable rate limiting
+        $SystemLogRateLimitInterval 0
+        $SystemLogRateLimitBurst 0
       '';
     };
-    
-    environment.etc = lib.mkIf isDarwin {
-      "newsyslog.d/security-audit.conf" = {
-        text = ''
-          # logfilename                      [owner:group]    mode count size when  flags [/pid_file] [sig_num]
-          /var/log/security-audit.log                         640  30    *    @T00  J
-          /var/log/audit.log                                  640  30    *    @T00  J
-          /var/log/audit-error.log                            640  30    *    @T00  J
+  };
+
+  supportsFail2ban = builtins.hasAttr "fail2ban" options.services;
+  fail2banConfig = lib.optionalAttrs supportsFail2ban {
+    fail2ban = {
+      enable = true;
+      
+      jails = {
+        ssh-iptables = ''
+          enabled = true
+          filter = sshd
+          action = iptables-multiport[name=SSH, port="ssh", protocol=tcp]
+          logpath = /var/log/auth.log
+          maxretry = 3
+          bantime = 3600
+          findtime = 600
+        '';
+        
+        ssh-ddos = ''
+          enabled = true
+          filter = sshd-ddos
+          action = iptables-multiport[name=SSH, port="ssh", protocol=tcp]
+          logpath = /var/log/auth.log
+          maxretry = 10
+          bantime = 3600
+          findtime = 60
         '';
       };
     };
   };
-}
+
+  supportsSystemd = builtins.hasAttr "systemd" options.services;
+  systemdConfig = lib.optionalAttrs supportsSystemd {
+    systemd = {
+      service = {
+        auditd-configuration = {
+          description = "Configure audit rules";
+          wantedBy = [ "multi-user.target" ];
+          after = [ "auditd.service" ];
+          
+          serviceConfig = {
+            Type = "oneshot";
+            RemainAfterExit = true;
+            ExecStart = "${pkgs.audit}/bin/auditctl -R /etc/audit/audit.rules";
+          };
+        };
+      };
+    }
+  };
+
+  supportsLaunchd = builtins.hasAttr "launchd" options.services;
+  launchdConfig = lib.optionalAttrs supportsLaunchd {
+    launchd = {
+      daemons = {
+        "net.shortrib.lab.audit" = {
+          command = "${pkgs.bash}/bin/bash -c 'while true; do /usr/bin/log stream --predicate \"eventMessage contains \\\"Authentication\\\" OR eventMessage contains \\\"sudo\\\" OR eventMessage contains \\\"SSH\\\"\" --info >> /var/log/security-audit.log; sleep 60; done'";
+          serviceConfig = {
+            Label = "com.hardening.audit";
+            RunAtLoad = true;
+            KeepAlive = true;
+            StandardErrorPath = "/var/log/audit-error.log";
+            StandardOutPath = "/var/log/audit.log";
+          };
+        };
+      };
+    };
+  };
+
+in 
+  {
+    config = lib.mkIf cfg.enable mkMerge [
+      {
+        services = mkMerge [
+          auditdConfig
+          rsyslogConfig
+          fail2banConfig
+        ];
+      
+        environment.systemPackages = with pkgs; [
+          auditbeat
+          filebeat
+        ] ++ lib.optionals isLinux [
+          audit
+          aide
+          logwatch
+          syslog-ng
+        ];
+
+        system.activationScripts.audit-setup = {
+          text = ''
+            # Create log directories with proper permissions
+            mkdir -p /var/log/audit
+            chmod 750 /var/log/audit
+            
+            ${if isLinux then ''
+              # Set up audit log rotation
+              cat > /etc/logrotate.d/audit << EOF
+              /var/log/audit/audit.log {
+                  daily
+                  rotate 30
+                  compress
+                  delaycompress
+                  missingok
+                  notifempty
+                  create 0600 root root
+                  sharedscripts
+                  postrotate
+                      /usr/bin/pkill -HUP auditd
+                  endscript
+              }
+              EOF
+            '' else ''
+              # macOS log setup
+              mkdir -p /var/log
+              touch /var/log/security-audit.log
+              chmod 640 /var/log/security-audit.log
+            ''}
+            
+            # Create fail2ban directory
+            mkdir -p /var/log/fail2ban
+            chmod 750 /var/log/fail2ban
+          '';
+        };
+        
+        environment.etc = lib.mkIf isDarwin {
+          "newsyslog.d/security-audit.conf" = {
+            text = ''
+              # logfilename                      [owner:group]    mode count size when  flags [/pid_file] [sig_num]
+              /var/log/security-audit.log                         640  30    *    @T00  J
+              /var/log/audit.log                                  640  30    *    @T00  J
+              /var/log/audit-error.log                            640  30    *    @T00  J
+            '';
+          };
+        };
+      };
+    systemdConfig
+    launchdConfig
+  ]
+}      
+

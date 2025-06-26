@@ -1,12 +1,13 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, options, ... }:
 
 let 
   cfg = config.systems.hardening;
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
-in {
-  config = lib.mkIf cfg.enable {
-    networking.firewall = lib.mkIf isLinux {
+
+  supportsNetworkingFirewall = builtins.hasAttr "firewall" options.networking;
+  firewallConfig = lib.optionalAttrs supportsNetworkingFirewall {
+    networking.firewall = {
       enable = true;
       
       allowPing = false;
@@ -65,14 +66,11 @@ in {
         iptables -X port-scanning 2>/dev/null || true
       '';
     };
-    
-    environment.systemPackages = with pkgs; lib.optionals isLinux [
-      iptables
-      nftables
-      ufw
-    ];
-    
-    launchd.daemons = lib.mkIf isDarwin {
+  };
+
+  supportsLaunchd = builtins.hasAttr "launchd" options;
+  launchdConfig = lib.optionalAttrs supportsLaunchd {
+    launchd.daemons = {
       "com.apple.pfctl" = {
         command = "/sbin/pfctl -e -f /etc/pf.conf";
         serviceConfig = {
@@ -83,8 +81,13 @@ in {
         };
       };
     };
-    
-    environment.etc = lib.mkIf isDarwin {
+  };
+
+  # a bit of a hack, uses the `defaults` attribute which we know is darwin specific
+  # to handle some darwin-specific /etc config
+  supportsPf = builtins.hasAttr "defaults" options.environment;
+  pfConfig = lib.optionalAttrs supportsPf {
+    environment.etc = {
       "pf.anchors/hardening" = {
         text = ''
           # macOS pf firewall rules
@@ -135,7 +138,7 @@ in {
         '';
       };
       
-      "pf.conf" = lib.mkIf isDarwin {
+      "pf.conf" = {
         text = ''
           # Load hardening anchor
           anchor "hardening"
@@ -150,15 +153,29 @@ in {
         '';
       };
     };
-    
-    system.activationScripts.firewall-setup = lib.mkIf isDarwin {
-      text = ''
-        # Enable packet filter
-        /usr/sbin/pfctl -e 2>/dev/null || true
-        
-        # Load rules
-        /usr/sbin/pfctl -f /etc/pf.conf 2>/dev/null || true
-      '';
-    };
   };
+
+in {
+  config = lib.mkIf cfg.enable (lib.mkMerge [
+    firewallConfig
+    launchdConfig
+    pfConfig
+    {
+      environment.systemPackages = with pkgs; lib.optionals isLinux [
+        iptables
+        nftables
+        ufw
+      ];
+      
+      system.activationScripts.firewall-setup = lib.mkIf isDarwin {
+        text = ''
+          # Enable packet filter
+          /usr/sbin/pfctl -e 2>/dev/null || true
+          
+          # Load rules
+          /usr/sbin/pfctl -f /etc/pf.conf 2>/dev/null || true
+        '';
+      };
+    }
+  ]);
 }
