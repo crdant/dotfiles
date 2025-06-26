@@ -11,4 +11,6 @@
     ../modules/networking-tools
     ../modules/home-lab
   ];
+
+  systems.hardening.enable = true;
 }

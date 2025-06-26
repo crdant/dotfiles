@@ -1,12 +1,13 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, options, ... }:
 
 let 
   cfg = config.systems.hardening;
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
-in {
-  config = lib.mkIf cfg.enable {
-    services.openssh = lib.mkIf isLinux {
+
+  supportsOpenSSH = builtins.hasAttr "openssh" options.services;
+  opensshConfig = lib.optionalAttrs supportsOpenSSH {
+    services.openssh = {
       enable = true;
       
       settings = {
@@ -75,8 +76,11 @@ in {
         "/etc/ssh/ssh_host_rsa_key"
       ];
     };
-    
-    launchd.daemons = lib.mkIf isDarwin {
+  };
+
+  supportsLaunchd = builtins.hasAttr "launchd" options;
+  launchdConfig = lib.optionalAttrs supportsLaunchd {
+    launchd.daemons = {
       "com.openssh.sshd" = {
         command = "${pkgs.openssh}/bin/sshd -D -f /etc/ssh/sshd_config";
         serviceConfig = {
@@ -87,8 +91,13 @@ in {
         };
       };
     };
-    
-    environment.etc = lib.mkIf isDarwin {
+  };
+
+  # a bit of a hack, uses the `defaults` attribute which we know is darwin specific
+  # to handle some darwin-specific /etc config
+  darwinManagedSsh = builtins.hasAttr "defaults" options.environment;
+  darwinSshConfig = lib.optionalAttrs darwinManagedSsh {
+    environment.etc = {
       "ssh/sshd_config" = {
         text = ''
           # SSH Server configuration for macOS
@@ -149,24 +158,32 @@ in {
         '';
       };
     };
-    
-    system.activationScripts.ssh-host-keys = lib.mkIf isDarwin {
-      text = ''
-        # Generate SSH host keys if they don't exist
-        if [ ! -f /etc/ssh/ssh_host_ed25519_key ]; then
-          ${pkgs.openssh}/bin/ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key -N ""
-        fi
-        if [ ! -f /etc/ssh/ssh_host_rsa_key ]; then
-          ${pkgs.openssh}/bin/ssh-keygen -t rsa -b 4096 -f /etc/ssh/ssh_host_rsa_key -N ""
-        fi
-        
-        # Remove weak host keys
-        rm -f /etc/ssh/ssh_host_dsa_key* /etc/ssh/ssh_host_ecdsa_key*
-        
-        # Set proper permissions
-        chmod 600 /etc/ssh/ssh_host_*_key
-        chmod 644 /etc/ssh/ssh_host_*_key.pub
-      '';
-    };
   };
+
+in {
+  config = lib.mkIf cfg.enable (lib.mkMerge [
+    opensshConfig
+    launchdConfig
+    darwinSshConfig
+    (lib.optionalAttrs darwinManagedSsh {
+      system.activationScripts.ssh-host-keys = {
+        text = ''
+          # Generate SSH host keys if they don't exist
+          if [ ! -f /etc/ssh/ssh_host_ed25519_key ]; then
+            ${pkgs.openssh}/bin/ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key -N ""
+          fi
+          if [ ! -f /etc/ssh/ssh_host_rsa_key ]; then
+            ${pkgs.openssh}/bin/ssh-keygen -t rsa -b 4096 -f /etc/ssh/ssh_host_rsa_key -N ""
+          fi
+          
+          # Remove weak host keys
+          rm -f /etc/ssh/ssh_host_dsa_key* /etc/ssh/ssh_host_ecdsa_key*
+          
+          # Set proper permissions
+          chmod 600 /etc/ssh/ssh_host_*_key
+          chmod 644 /etc/ssh/ssh_host_*_key.pub
+        '';
+      };
+    })
+  ]);
 }
