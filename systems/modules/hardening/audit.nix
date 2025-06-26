@@ -177,7 +177,7 @@ let
           };
         };
       };
-    }
+    };
   };
 
   supportsLaunchd = builtins.hasAttr "launchd" options.services;
