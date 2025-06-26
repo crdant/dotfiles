@@ -36,11 +36,12 @@ Follow these steps in order:
 - Include context from previous steps in each prompt
 - Specify coding best practices and integration requirements
 - Ensure prompts build incrementally without complexity jumps
+- Do not provide the code in the prompt, it will be used to generate the
+  actual code
 
 **Step 6: Create Project Artifacts**
 - Generate GitHub issues for each development step
 - Create plan.md with the complete development roadmap
-- Create todo.md for tracking implementation state
 
 # OUTPUT FORMAT
 
@@ -58,7 +59,10 @@ Structure your response using the following sections:
 ## Implementation Prompts
 
 ### Step [N]: [Step Title]
-**GitHub Issue:** [Issue description]
+
+[Issue description]
+
+[Implementation plan for this step]
 
 ```
 [Detailed prompt for code generation LLM]
@@ -71,17 +75,12 @@ Structure your response using the following sections:
 [Complete development plan]
 ```
 
-### todo.md
-```markdown
-[State tracking template]
-```
-
 # REQUIREMENTS
 
 - Each step must build on previous steps with clear integration points
 - No orphaned or hanging code should be created
 - Prompts must include sufficient context and best practices
 - Steps should progress logically from foundation to complete application
-- All artifacts (plan.md, todo.md, GitHub issues) must be included
+- All artifacts (plan.md, GitHub issues) must be included
 
-Please provide the project specification file path or content to begin the analysis.
+The spec is in a file called: 
