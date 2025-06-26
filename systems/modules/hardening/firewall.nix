@@ -68,20 +68,8 @@ let
     };
   };
 
-  supportsLaunchd = builtins.hasAttr "launchd" options;
-  launchdConfig = lib.optionalAttrs supportsLaunchd {
-    launchd.daemons = {
-      "com.apple.pfctl" = {
-        command = "/sbin/pfctl -e -f /etc/pf.conf";
-        serviceConfig = {
-          Label = "com.apple.pfctl";
-          RunAtLoad = true;
-          StandardErrorPath = "/var/log/pfctl.log";
-          StandardOutPath = "/var/log/pfctl.log";
-        };
-      };
-    };
-  };
+  # Note: Removed launchd daemon for pfctl as it conflicts with system management
+  # The firewall configuration files are sufficient for Darwin
 
   # a bit of a hack, uses the `defaults` attribute which we know is darwin specific
   # to handle some darwin-specific /etc config
@@ -158,7 +146,6 @@ let
 in {
   config = lib.mkIf cfg.enable (lib.mkMerge [
     firewallConfig
-    launchdConfig
     pfConfig
     {
       environment.systemPackages = with pkgs; lib.optionals isLinux [
