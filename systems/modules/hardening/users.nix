@@ -128,8 +128,8 @@ in {
     {
       environment.systemPackages = with pkgs; [
         pam_u2f
-        google-authenticator
       ] ++ lib.optionals isLinux [
+        google-authenticator
         libpwquality
         pam_krb5
       ];
