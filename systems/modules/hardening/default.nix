@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, options,... }:
 
 let 
   cfg = config.systems.hardening;
@@ -25,7 +25,6 @@ in {
     environment.systemPackages = with pkgs; [
       fail2ban
       lynis
-      rkhunter
     ] ++ lib.optionals isLinux [
       aide
       chkrootkit
