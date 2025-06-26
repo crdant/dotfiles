@@ -208,14 +208,13 @@ in
           fail2banConfig
         ];
       
-        environment.systemPackages = with pkgs; [
-          auditbeat
-          filebeat
-        ] ++ lib.optionals isLinux [
+        environment.systemPackages = with pkgs; lib.optionals isLinux [
           audit
           aide
           logwatch
           syslog-ng
+          auditbeat
+          filebeat
         ];
 
         system.activationScripts.audit-setup = {
