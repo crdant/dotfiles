@@ -200,7 +200,7 @@ let
 
 in 
   {
-    config = lib.mkIf cfg.enable mkMerge [
+    config = lib.mkIf cfg.enable lib.mkMerge [
       {
         services = mkMerge [
           auditdConfig
