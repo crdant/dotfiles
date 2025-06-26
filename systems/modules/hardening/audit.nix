@@ -264,7 +264,7 @@ in
             '';
           };
         };
-      };
+    }
     systemdConfig
     launchdConfig
   ]
