@@ -8,7 +8,7 @@ NIX := nix
 # Extract configuration names using nix eval
 NIXOS_SYSTEMS := $(shell $(NIX) eval --impure --json $(FLAKE_PATH)#nixosConfigurations --apply 'builtins.attrNames' 2>/dev/null | tr -d '[]"' | tr ',' ' ' || echo "")
 DARWIN_SYSTEMS := $(shell $(NIX) eval --impure --json $(FLAKE_PATH)#darwinConfigurations --apply 'builtins.attrNames' 2>/dev/null | tr -d '[]"' | tr ',' ' ' || echo "")
-HOME_CONFIGS := $(shell $(NIX) eval --impure --json $(FLAKE_PATH)#homeConfigurations --apply 'builtins.attrNames' 2>/dev/null | tr -d '[]"' | tr ',' ' ' || echo "")
+HOME_CONFIGS := $(shell $(NIX) eval --impure --json $(FLAKE_PATH)#homeConfigurations --apply 'builtins.attrNames' 2>/dev/null | tr -d '[]"' | tr ',' ' ' | sed 's/:/\\:/g' || echo "")
 
 .PHONY: help
 help: ## Show this help menu
