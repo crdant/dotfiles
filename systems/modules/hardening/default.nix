@@ -28,6 +28,7 @@ in {
     ] ++ lib.optionals isLinux [
       aide
       chkrootkit
+      unhide
     ];
   };
 }
