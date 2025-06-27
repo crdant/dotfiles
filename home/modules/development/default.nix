@@ -8,6 +8,7 @@ in {
   home = {
     packages = with pkgs; [
       exercism
+      gh
       git-filter-repo
       git-lfs
       unstable.cue
@@ -26,8 +27,20 @@ in {
       enable = true;
       plugins = with pkgs; [
       ] ++ lib.optionals isDarwin [
+        # gh
         ngrok
       ];
+    };
+       
+    gh = {
+      enable = true;
+      settings = {
+        aliases = {
+          co = "pr checkout";
+          pv = "pr view";
+        };
+        git_protocol = "ssh";
+      };
     };
     
     git = {
@@ -124,6 +137,7 @@ in {
   programs = { 
     zsh = { 
       oh-my-zsh.plugins = [
+        "gh"
         "git"
       ];
     };
