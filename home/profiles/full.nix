@@ -2,6 +2,7 @@
   # Full workstation profile with all modules
   imports = [
     ../modules/base
+    ../modules/desktop
     ../modules/development
     ../modules/editor
     ../modules/go
