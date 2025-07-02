@@ -10,9 +10,9 @@ in {
     packages = with pkgs; [
       _1password-gui
       _1password-cli
+      neovide
     ] ++ lib.optionals isDarwin [
       iterm2
-      neovide
       vimr
       (callPackage ./vimr-wrapper.nix { inherit config; })
     ];
@@ -49,29 +49,6 @@ in {
   programs = {
     # Core Neovim configuration
     neovim = {
-      enable = true;
-      viAlias = true;
-      vimAlias = true;
-      
-      # Core plugins used everywhere
-      plugins = with pkgs.vimPlugins; [
-        editorconfig-nvim
-        {
-          plugin = rose-pine;
-          config = ''
-            let g:rose_pine_dark_variant = 'moon'
-            let g:rose_pine_disable_background = 1 
-            colorscheme rose-pine
-          '';
-        }
-        vim-surround
-        vim-commentary
-        vim-repeat
-        vim-speeddating
-        vim-tmux-navigator
-        zoxide-vim
-      ];
-      
       # Core Lua config (basic settings, keymaps, etc.)
       extraLuaConfig = ''
         -- Appearance
