@@ -206,7 +206,7 @@ in {
         # handle SSH differences between Prompt on iOS and a machine with Yubikey PGP available
         # if we're connected via a traditional SSH agent it's probably Prompt
         GPG_AGENT_SSH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-        if [[ -n "$SSH_AUTH_SOCK" && "$SSH_AUTH_SOCK" != "$GPG_AGENT_SSH_SOCK" ]]; then
+	      if [[ -n "$SSH_AUTH_SOCK" && "$SSH_AUTH_SOCK" != "$GPG_AGENT_SSH_SOCK" && $(readlink -f $SSH_AUTH_SOCK) != $GPG_AGENT_SSH_SOCK ]]; then
           # use ssh signing with the provided key
           export GIT_CONFIG_COUNT=3
           export GIT_CONFIG_KEY_0=gpg.format
