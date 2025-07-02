@@ -10,6 +10,7 @@ in {
       aider-chat-full
       unstable.claude-code
       unstable.fabric-ai
+      gemini-cli
       goose-cli
       unstable.github-mcp-server
       llm
