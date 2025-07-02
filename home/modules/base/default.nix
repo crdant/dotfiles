@@ -31,8 +31,6 @@ in {
 
     # Basic packages for all environments
     packages = with pkgs; [
-      _1password-gui
-      _1password-cli
       dogdns
       moreutils
       nmap
@@ -44,9 +42,6 @@ in {
       tcptraceroute
       zsh-completions
     ] ++ lib.optionals isDarwin [
-      iterm2
-      vimr
-      (callPackage ./vimr-wrapper.nix { inherit config; })
     ] ++ lib.optionals isLinux [
       coreutils
       dig
@@ -68,21 +63,6 @@ in {
       };
       
     } // lib.optionalAttrs isDarwin {
-      ".hammerspoon" = {
-        source = ./config/hammerspoon;
-        recursive = true;
-      };
-      
-      "Library/Application Support/espanso" = {
-        source = ./config/espanso;
-        recursive = true;
-      };
-
-      "Library/Colors/Solarized.clr" = {
-        source = ./config/palettes/Solarized.clr;
-        recursive = true;
-      };
-      
       "Library/Preferences/glow" = {
         source = ./config/glow;
         recursive = true;
@@ -358,11 +338,6 @@ in {
         vim.api.nvim_set_keymap("i", "<LEFT>", "<NOP>", { noremap = true })
         vim.api.nvim_set_keymap("i", "<RIGHT>", "<NOP>", { noremap = true })
         
-        -- Appearance
-        if vim.fn.has('gui_running') == 1 then
-          vim.opt.background = "light"
-        end
-        
         -- line numbers
         vim.opt.number = true
       '';
@@ -383,14 +358,7 @@ in {
         source = ./config/smug;
         recursive = true;
       };
-
     } // lib.optionalAttrs isDarwin { 
-      "karabiner/karabiner.json" = {
-        text = builtins.readFile ./config/karabiner/karabiner.json;
-      };
-      "ghostty/config" = {
-        source = ./config/ghostty/config;
-      };
     } // lib.optionalAttrs isLinux { 
       "glow/glow.yml" = {
         text = builtins.readFile ./config/glow/glow.yml;
