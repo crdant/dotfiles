@@ -22,6 +22,16 @@
       inherit (self) outputs;
       system = builtins.currentSystem;
       isDarwin = nixpkgs.legacyPackages.${system}.stdenv.isDarwin;
+      
+      # Helper function to create home configurations with profiles
+      mkHomeConfig = { username, homeDirectory, gitEmail, profile ? "full" }: 
+        home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.${system};
+          extraSpecialArgs = {inherit inputs outputs username homeDirectory gitEmail profile;};
+          modules = [ 
+            ./home/users/crdant/home.nix
+          ];
+        };
     in {
       overlays = import ./overlays {inherit inputs;};
 
@@ -58,38 +68,40 @@
         };
       }; 
 
-      homeConfigurations = {
-        "chuck" = let 
-            inherit system ;
-            username = "chuck";
-            homeDirectory = if isDarwin then 
-                "/Users/chuck"
-              else
-                "/home/chuck";
-            gitEmail = "chuck@replicated.com";
-          in home-manager.lib.homeManagerConfiguration {
-            pkgs = nixpkgs.legacyPackages.${system};
-            extraSpecialArgs = {inherit inputs outputs username homeDirectory gitEmail;};
-            modules = [ 
-              ./home/users/crdant/home.nix
-            ];
+      homeConfigurations = 
+        let
+          # User configurations with different profiles
+          userConfigs = {
+            chuck = {
+              homeDirectory = if isDarwin then "/Users/chuck" else "/home/chuck";
+              gitEmail = "chuck@replicated.com";
+            };
+            crdant = {
+              homeDirectory = if isDarwin then "/Users/crdant" else "/home/crdant";
+              gitEmail = "chuck@crdant.io";
+            };
           };
-
-        "crdant" = let 
-            inherit system ;
-            username = "crdant";
-            homeDirectory = if isDarwin then 
-                "/Users/crdant"
-              else
-                "/home/crdant";
-            gitEmail = "chuck@crdant.io";
-          in home-manager.lib.homeManagerConfiguration {
-            pkgs = nixpkgs.legacyPackages.${system};
-            extraSpecialArgs = {inherit inputs outputs username homeDirectory gitEmail;};
-            modules = [ 
-              ./home/users/crdant/home.nix
-            ];
-          };
-        };
+          
+          # Available profiles
+          profiles = [ "full" "development" "minimal" "server" ];
+          
+          # Generate configurations for each user-profile combination
+          generateConfigs = userConfigs: profiles:
+            builtins.listToAttrs (
+              builtins.concatLists (
+                builtins.map (username: 
+                  let userConfig = userConfigs.${username}; in
+                  builtins.map (profile: {
+                    name = if profile == "full" then username else "${username}:${profile}";
+                    value = mkHomeConfig {
+                      inherit username profile;
+                      inherit (userConfig) homeDirectory gitEmail;
+                    };
+                  }) profiles
+                ) (builtins.attrNames userConfigs)
+              )
+            );
+        in
+        generateConfigs userConfigs profiles;
     };
 }
