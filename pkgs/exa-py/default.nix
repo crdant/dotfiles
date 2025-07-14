@@ -8,6 +8,12 @@
 python3.pkgs.buildPythonPackage rec {
   pname = "exa-py";
   version = "1.14.6";
+
+
+  pyproject = true;
+  build-system = [ 
+    python3.pkgs.setuptools
+  ];
   
   src = fetchFromGitHub {
     owner = "exa-labs";
