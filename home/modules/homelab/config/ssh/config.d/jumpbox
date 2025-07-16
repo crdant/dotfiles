@@ -1,16 +1,23 @@
 Match exec "[[ $(uname) == 'Darwin' ]]" host mash
   CanonicalizeHostName yes
-  CanonicalDomains walrus-shark.ts.net lab.shortrib.net 
+  CanonicalDomains shortrib.sh walrus-shark.ts.net lab.shortrib.net 
   StreamLocalBindUnlink yes
   RemoteForward /run/user/1001/gnupg/S.gpg-agent %d/.gnupg/S.gpg-agent
   RemoteForward /run/user/1001/gnupg/S.gpg-agent.ssh %d/.gnupg/S.gpg-agent.ssh
+
+Match exec "[[ $(uname) == 'Darwin' ]]" host pisco
+  CanonicalizeHostName yes
+  CanonicalDomains shortrib.sh walrus-shark.ts.net lab.shortrib.net 
+  StreamLocalBindUnlink yes
+  RemoteForward %d/.gnupg/S.gpg-agent %d/.gnupg/S.gpg-agent
+  RemoteForward %d/.gnupg/S.gpg-agent.ssh %d/.gnupg/S.gpg-agent.ssh
 
 Match exec "[[ $(uname) == 'Darwin' ]]" host fullscreen
   RemoteCommand source ~/.zshrc && fullscreen
   RequestTTY Yes
   HostName mash
   CanonicalizeHostName yes
-  CanonicalDomains walrus-shark.ts.net lab.shortrib.net 
+  CanonicalDomains shortrib.sh walrus-shark.ts.net lab.shortrib.net 
   StreamLocalBindUnlink yes
   RemoteForward /run/user/1001/gnupg/S.gpg-agent %d/..gnupg/S.gpg-agent.extra 
   RemoteForward /run/user/1001/gnupg/S.gpg-agent.ssh %d/.gnupg/S.gpg-agent.ssh
@@ -20,7 +27,7 @@ Match exec "[[ $(uname) == 'Darwin' ]]" host window
   RequestTTY Yes
   HostName mash
   CanonicalizeHostName yes
-  CanonicalDomains walrus-shark.ts.net lab.shortrib.net 
+  CanonicalDomains shortrib.sh walrus-shark.ts.net lab.shortrib.net 
   StreamLocalBindUnlink yes
   RemoteForward /run/user/1001/gnupg/S.gpg-agent %d/.gnupg/S.gpg-agent.extra 
   RemoteForward /run/user/1001/gnupg/S.gpg-agent.ssh %d/.gnupg/S.gpg-agent.ssh
