@@ -74,6 +74,12 @@ in {
           end
         })
         
+        vim.api.nvim_create_autocmd("TabNewEntered", {
+          callback = function()
+            vim.cmd("Neotree show")
+          end,
+        })
+
         vim.api.nvim_set_keymap("n", "<C-P>", ":Files<CR>", { noremap = true })
         
         -- Supermaven setup
