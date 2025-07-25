@@ -3,7 +3,7 @@ Match exec "[[ $(uname) == 'Darwin' ]]" host *.mash
   RequestTTY Yes
   HostName mash
   CanonicalizeHostName yes
-  CanonicalDomains walrus-shark.ts.net lab.shortrib.net 
+  CanonicalDomains lab.shortrib.net shortrib.sh 
   StreamLocalBindUnlink yes
   RemoteForward /run/user/1001/gnupg/S.gpg-agent %d/.gnupg/S.gpg-agent.extra 
   RemoteForward /run/user/1001/gnupg/S.gpg-agent.ssh %d/.gnupg/S.gpg-agent.ssh
@@ -11,9 +11,9 @@ Match exec "[[ $(uname) == 'Darwin' ]]" host *.mash
 Match exec "[[ $(uname) == 'Darwin' ]]" host *.pisco
   RemoteCommand source ~/.zshrc && cd ~/workspace/$(basename %n .pisco) && smug-session window
   RequestTTY Yes
-  HostName mash
+  HostName pisco
   CanonicalizeHostName yes
-  CanonicalDomains walrus-shark.ts.net lab.shortrib.net 
+  CanonicalDomains lab.shortrib.net shortrib.sh 
   StreamLocalBindUnlink yes
-  RemoteForward %d/.gnupg/S.gpg-agent %d/.gnupg/S.gpg-agent
-  RemoteForward %d/.gnupg/S.gpg-agent.ssh %d/.gnupg/S.gpg-agent.ssh
+  RemoteForward /Users/crdant/.gnupg/S.gpg-agent %d/.gnupg/S.gpg-agent
+  RemoteForward /Users/crdant/.gnupg/S.gpg-agent.ssh %d/.gnupg/S.gpg-agent.ssh
