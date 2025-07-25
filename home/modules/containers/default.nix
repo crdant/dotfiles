@@ -14,6 +14,8 @@ in {
     oras
     skopeo
     trivy
+  ] ++ lib.optionals isDarwin [
+    colima
   ] ++ lib.optionals isLinux [
     nerdctl
   ];
