@@ -12,6 +12,10 @@ in {
     stateVersion
   ];
 
+  imports = [
+    ./terminfo.nix
+  ];
+
   # assure flakes and nix command are enabled
   nix = {
     extraOptions = ''
@@ -81,6 +85,8 @@ in {
   # bash is enabled by default
 
   environment = {
+    enableAllTerminfo = true;
+
     systemPackages = with pkgs; [
       coreutils
       glow
