@@ -12,7 +12,8 @@ in {
     swiftlint
     terminal-notifier
     xcbeautify
-    unstable.xcodegen
+    # avoid rabbit hole with swift versions
+    # xcodegen
   ];
 
   programs = {

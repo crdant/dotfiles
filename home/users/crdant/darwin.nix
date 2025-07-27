@@ -21,6 +21,7 @@ in
     brews = [
       "swiftformat"
       "xcode-build-server"
+      "xcodegen"
     ];
     casks = [
       "claude"
