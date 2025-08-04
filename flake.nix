@@ -32,7 +32,6 @@
         inherit system;
         overlays = [
           inputs.nur.overlays.default
-          inputs.home-manager.overlays.default
         ];
       };
 
