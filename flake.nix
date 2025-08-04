@@ -12,6 +12,11 @@
     darwin.url = "github:lnl7/nix-darwin/nix-darwin-25.05";
     darwin.inputs.nixpkgs.follows = "nixpkgs"; # ...
 
+    nur = {
+      url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     _1password-shell-plugins.url = "github:1Password/shell-plugins";
     _1password-shell-plugins.inputs.nixpkgs.follows = "home-manager"; # ...
 
@@ -23,10 +28,18 @@
       system = builtins.currentSystem;
       isDarwin = nixpkgs.legacyPackages.${system}.stdenv.isDarwin;
       
+      pkgs = import nixpkgs {
+        inherit system;
+        overlays = [
+          inputs.nur.overlays.default
+          inputs.home-manager.overlays.default
+        ];
+      };
+
       # Helper function to create home configurations with profiles
       mkHomeConfig = { username, homeDirectory, gitEmail, profile ? "full" }: 
         home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${system};
+          inherit pkgs;
           extraSpecialArgs = {inherit inputs outputs username homeDirectory gitEmail profile;};
           modules = [ 
             ./home/users/crdant/home.nix
@@ -51,6 +64,7 @@
           system = "aarch64-darwin";
           specialArgs = {inherit inputs outputs;};
           modules = [ 
+            ./systems/modules/base/terminfo.nix
             ./systems/hosts/grappa/default.nix
             ./home/users/crdant/crdant.nix
             ./home/users/crdant/darwin.nix
@@ -61,6 +75,7 @@
           system = "aarch64-darwin";
           specialArgs = {inherit inputs outputs;};
           modules = [ 
+            ./systems/modules/base/terminfo.nix
             ./systems/hosts/sochu/default.nix
             ./home/users/crdant/chuck.nix
             ./home/users/crdant/darwin.nix
