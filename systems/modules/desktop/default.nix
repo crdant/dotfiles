@@ -27,6 +27,7 @@ let
       casks = [
         "font-cabin"
         "font-noto-sans"
+        "ghostty@tip"
         "google-drive"
         "hammerspoon"
         "noun-project"
@@ -67,7 +68,6 @@ in (lib.mkMerge [
       systemPackages = with pkgs; lib.optionals isDarwin [
         espanso
         firefox
-        ghostty
         google-chrome
         open-sans
         slack
