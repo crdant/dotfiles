@@ -4,6 +4,11 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-25.05-darwin";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
+    nur = {
+      url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     sops-nix.url = "github:Mic92/sops-nix";
 
     home-manager.url = "github:nix-community/home-manager/release-25.05";
@@ -14,10 +19,9 @@
 
     _1password-shell-plugins.url = "github:1Password/shell-plugins";
     _1password-shell-plugins.inputs.nixpkgs.follows = "home-manager"; # ...
-
   };
 
-  outputs = { self, nixpkgs, home-manager, darwin, ...}@inputs: 
+  outputs = { self, nixpkgs, nur, home-manager, darwin, ...}@inputs: 
     let
       inherit (self) outputs;
       system = builtins.currentSystem;
@@ -29,6 +33,7 @@
           pkgs = nixpkgs.legacyPackages.${system};
           extraSpecialArgs = {inherit inputs outputs username homeDirectory gitEmail profile;};
           modules = [ 
+            nur.overlays.default
             ./home/users/crdant/home.nix
           ];
         };
