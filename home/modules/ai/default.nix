@@ -8,6 +8,7 @@ in {
   home = { 
     packages = with pkgs; [
       aider-chat-full
+      nur.repos.charmbracelet.crush
       unstable.claude-code
       unstable.fabric-ai
       gemini-cli
