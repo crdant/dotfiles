@@ -53,6 +53,23 @@ in {
           require('image').setup({})
         end
         
+        -- Neotree setup
+        require('neo-tree').setup({
+          close_if_last_window = true,
+          popup_border_style = "rounded",
+          enable_git_status = true,
+          filesystem = {
+            filtered_items = {
+              visible = true,
+              hide_dotfiles = false,
+              hide_gitignored = true,
+              hide_by_name = {
+                ".git",
+              },
+            },
+          },
+        })
+
         -- Core LSP keybindings
         vim.api.nvim_create_autocmd("LspAttach", {
           callback = function(event)
