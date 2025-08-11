@@ -81,6 +81,62 @@ in {
           in builtins.readFile yamlContent;
       };
       
+      "crush/crush.json" = {
+        path = "${config.home.homeDirectory}/.local/share/crush/crush.json";
+        mode = "0600";
+        content = builtins.toJSON {
+          "$schema" = "https://charm.land/crush.json";
+          providers = {
+            anthropic = {
+              api_key = config.sops.placeholder."anthropic/apiKeys/${gitEmail}";
+            };
+          };
+          models = {
+            large = {
+              model = "claude-opus-4-20250514";
+              provider = "anthropic";
+              max_tokens = 32000;
+            };
+            small = {
+              model = "claude-3-5-haiku-20241022";
+              provider = "anthropic";
+              max_tokens = 5000;
+            };
+          };
+          lsp = {
+            servers = {
+              "Go" = {
+                command = "${pkgs.gopls}/bin/gopls";
+              };
+              "Swift" = {
+                command = "${pkgs.sourcekit-lsp}/bin/sourcekit-lsp";
+              };
+              "Rust" = {
+                command = "${pkgs.rust-analyzer}/bin/rust-analyzer";
+              };
+              "Python" = {
+                command = "${pkgs.pyright}/bin/pyright-langserver";
+              };
+              "JavaScript" = {
+                command = "${pkgs.typescript-language-server}/bin/typescript-language-server --stdio";
+              };
+              "TypeScript" = {
+                command = "${pkgs.typescript-language-server}/bin/typescript-language-server --stdio";
+              };
+              "Markdown" = {
+                command = "${pkgs.markdown-oxide}/bin/markdown-oxide";
+              };
+              "Nix" = {
+                command = "${pkgs.nil}/bin/nil";
+              };
+            };
+          };
+          mcp = {
+            servers = import ./config/mcp.nix { inherit config pkgs; };
+          };
+        };
+      };
+
       "goose/config.yaml" = {
         path = "${config.home.homeDirectory}/.config/goose/config.yaml";
         mode = "0600";

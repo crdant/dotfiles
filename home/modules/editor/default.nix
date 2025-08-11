@@ -6,7 +6,7 @@ let
 in {
   # Core editor configuration
   home.packages = with pkgs; [
-    shellcheck
+    markdown-oxide
   ];
 
   programs = {
