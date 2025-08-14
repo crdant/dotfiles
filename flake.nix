@@ -44,6 +44,7 @@
             ./home/users/crdant/home.nix
           ];
         };
+
     in {
       overlays = import ./overlays {inherit inputs;};
 
@@ -54,6 +55,17 @@
           modules = [ 
             ./systems/hosts/mash/default.nix
             ./home/users/crdant/crdant.nix
+          ];
+        };
+        swan = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = {inherit inputs outputs;};
+          modules = [ 
+            ./systems/hosts/swan/default.nix
+            ./home/users/crdant/crdant.nix
+            ./home/users/crdant/password.nix
+            home-manager.nixosModules.home-manager
+            # ./home/users/crdant/home.nix { profile = "server"; }
           ];
         };
       };
