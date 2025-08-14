@@ -151,7 +151,6 @@ in {
       environment.systemPackages = with pkgs; lib.optionals isLinux [
         iptables
         nftables
-        ufw
       ];
       
       system.activationScripts.firewall-setup = lib.mkIf isDarwin {
