@@ -21,11 +21,6 @@
       fsType = "vfat";
     };
 
-  fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/83e58c28-491e-47af-b5d7-eecb7e9dae95";
-      fsType = "ext4";
-    };
-
   fileSystems."/nix" =
     { device = "/dev/disk/by-uuid/fec52b01-effb-4616-bed8-a7502c967406";
       fsType = "ext4";

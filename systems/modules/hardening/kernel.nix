@@ -75,8 +75,8 @@ let
         "fs.inotify.max_user_watches" = 524288;
         
         # IPv6 privacy extensions
-        "net.ipv6.conf.all.use_tempaddr" = 2;
-        "net.ipv6.conf.default.use_tempaddr" = 2;
+        "net.ipv6.conf.all.use_tempaddr" = lib.mkForce 2;
+        "net.ipv6.conf.default.use_tempaddr" = lib.mkForce 2;
         
         # Protect against time-wait assassination
         "net.ipv4.tcp_rfc1337" = 1;
@@ -90,7 +90,6 @@ let
       };
       
       kernelParams = [
-        "security=apparmor"
         "apparmor=1"
         "page_poison=1"
         "slab_nomerge"
