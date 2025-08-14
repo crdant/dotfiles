@@ -5,14 +5,8 @@
   
   imports = [
     ./server.nix
+    ../modules/dns
   ];
-
-  environment = {
-    systemPackages = with pkgs; [
-      hickory-dns   
-      dogdns
-    ];
-  };
 
 }
 

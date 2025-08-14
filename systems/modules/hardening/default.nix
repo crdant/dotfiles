@@ -9,8 +9,8 @@ in {
     ./ssh.nix
     ./firewall.nix
     ./kernel.nix
-    ./users.nix
-    ./audit.nix
+    # ./users.nix
+    # ./audit.nix
   ];
 
   options.systems.hardening = {

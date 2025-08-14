@@ -32,6 +32,11 @@
       vendorHash = "sha256-QBYCMOWQOBCt+69NtJtluhTZIOiBWcQ78M9Gbki6bN0=";
       doCheck = false; # Disable tests due to undefined symbols in v1.84.2
     }));
+    hickory-dns = (prev.hickory-dns.overrideAttrs (oldAttrs: {
+      cargoBuildFlags = oldAttrs.cargoBuildFlags or [] ++ [
+        "--features" "resolver,dns-over-rusttls,webpki-roots,dnssec-ring"
+      ];
+    }));
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will

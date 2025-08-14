@@ -6,7 +6,7 @@ let
   isLinux = pkgs.stdenv.isLinux;
 
   # a bit of a hack, uses the `boot` attribute which we know is linux specific
-  nixManagedSsh = builtins.hasAttr "boot" options.services;
+  nixManagedSsh = builtins.hasAttr "boot" options;
   opensshConfig = lib.optionalAttrs nixManagedSsh {
     services.openssh = {
       enable = true;
@@ -73,8 +73,15 @@ let
       '';
       
       hostKeys = [
-        "/etc/ssh/ssh_host_ed25519_key"
-        "/etc/ssh/ssh_host_rsa_key"
+        {
+          bits = 4096;
+          path = "/etc/ssh/ssh_host_rsa_key";
+          type = "rsa";
+        }
+        {
+          path = "/etc/ssh/ssh_host_ed25519_key";
+          type = "ed25519";
+        }
       ];
     };
   };

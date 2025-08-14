@@ -1,6 +1,7 @@
-{ inputs, outputs, pkgs, ... }:
+{ inputs, outputs, pkgs, lib, ... }:
 {
   imports = [
+    ./hardware-configuration.nix
     ../../roles/dns.nix 
   ];
 
@@ -10,8 +11,7 @@
     hostName = "swan";
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 22, 53, 853 ];
-      allowedUDPPorts = [ 53 ];
+      allowedTCPPorts = [ 22 ];
     };
   };
 } 
