@@ -34,7 +34,7 @@
     }));
     hickory-dns = (prev.hickory-dns.overrideAttrs (oldAttrs: {
       cargoBuildFlags = oldAttrs.cargoBuildFlags or [] ++ [
-        "--features" "resolver,dns-over-rusttls,webpki-roots,dnssec-ring"
+        "--features" "resolver,recursor,tls-ring,quic-ring,dnssec-ring,rustls-platform-verifier"
       ];
     }));
   };
