@@ -5,16 +5,16 @@
     text = ''
       mkdir -p /etc/hickory/dnssec
       
-      if [ ! -f /etc/hickory/dnssec/ed25519.p8 ]; then
+      if [ ! -f /etc/hickory/dnssec/rsa.p8 ]; then
         ${pkgs.openssl}/bin/openssl genpkey \
-          -algorithm Ed25519 \
-          -pkcs8 \
-          -out /etc/hickory/dnssec/ed25519.p8
+          -algorithm RSA \
+          -out /etc/hickory/dnssec/rsa.p8 \
+          -pkeyopt rsa_keygen_bits:4096
         
-        chmod 600 /etc/hickory/dnssec/ed25519.p8
-        chown hickory-dns:hickory-dns /etc/hickory/dnssec/ed25519.p8
+        chmod 600 /etc/hickory/dnssec/rsa.p8
+        chown hickory-dns:hickory-dns /etc/hickory/dnssec/rsa.p8
         
-        echo "Generated new Ed25519 DNSSEC key for Hickory DNS"
+        echo "Generated new RSA DNSSEC key for Hickory DNS"
       fi
     '';
     deps = [ "users" ];
@@ -49,21 +49,19 @@
 
           [zones.stores]
           type = "sqlite"
-          zone_path = "${zone}.zone"
-          journal_path = "${zone}_dnssec_update.jrnl"
+          zone_file_path = "${zone}.zone"
+          journal_file_path = "${zone}_dnssec_update.jrnl"
           allow_update = true
 
-          [zones.dnssec]
-          key = "/etc/hickory/dnssec/ed25519.p8"
+          [[zones.keys]]
+          key_path = "/etc/hickory/dnssec/rsa.p8"
+          algorithm = "RSASHA256"
+          purpose = "ZoneSigning"
+
+          [[zones.keys]]
+          key_path = "/etc/hickory/dnssec/rsa.p8"
           algorithm = "ED25519"
-
-          [zones.soa]
-          serial = ${toString commonSOA.serial}
-          refresh = ${toString commonSOA.refresh}
-          retry = ${toString commonSOA.retry}
-          expire = ${toString commonSOA.expire}
-          minimum = ${toString commonSOA.minimum}
-
+          purpose = "ZoneUpdateAuth"
         '';
 
         # Generate all internal zones
@@ -71,8 +69,9 @@
 
       in ''
         # Server settings
-        listen_addrs_ipv4 = ["0.0.0.0:53"]
-        listen_addrs_ipv6 = ["[::]:53"]
+        listen_addrs_ipv4 = ["0.0.0.0"]
+        listen_addrs_ipv6 = ["::0"]
+        directory = "/etc/hickory/zones"
 
         # Default zones (required, no DNSSEC)
         [[zones]]
@@ -112,7 +111,7 @@
         type = "recursor"
         roots = "default/root.zone"
         ns_cache_size = 1024
-        response_cache_size = 1048576
+        record_cache_size = 1048576
         recursion_limit = 24
         ns_recursion_limit = 24
 
@@ -130,6 +129,10 @@
       '';
   };
 
+  environment.etc."hickory/zones" = {
+    source = ./config/hickory/zones ;
+  };
+
   # Ensure hickory-dns user exists
   users.users.hickory-dns = {
     isSystemUser = true;
@@ -145,7 +148,14 @@
     # Point to your generated config
     configFile = "/etc/hickory/hickory-dns.toml";
     settings = {
-      directory = "/etc/hickory/zones";
+    };
+  };
+
+  networking = {
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [ 53 853 ];
+      allowedUDPPorts = [ 53 ];
     };
   };
 }
