@@ -13,8 +13,13 @@ in {
   
     file = {
       ".step" = {
-        source = ./config/step;
-        recursive = true;
+        source = pkgs.substituteAllFiles {
+          src = ./config/step;
+          files = [
+            "**/*.json"
+          ];
+          homeDirectory = config.home.homeDirectory;
+        };
       };
     };
   };
