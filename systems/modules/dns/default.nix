@@ -50,7 +50,7 @@
           [zones.stores]
           type = "sqlite"
           zone_file_path = "${zone}.zone"
-          journal_file_path = "${zone}_dnssec_update.jrnl"
+          journal_file_path = "/var/lib/hickory-dns/${zone}_dnssec_update.jrnl"
           allow_update = true
 
           [[zones.keys]]
@@ -158,4 +158,8 @@
       allowedUDPPorts = [ 53 ];
     };
   };
+
+  systemd.tmpfiles.rules = [
+    "d /var/lib/hickory-dns 0755 hickory-dns hickory-dns -"
+  ];
 }
