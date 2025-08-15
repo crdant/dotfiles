@@ -14,7 +14,7 @@
       allowedTCPPorts = [ 22 ];
     };
     interfaces = {
-      eth0 = {
+      ens32 = {
         ipv4 = {
           addresses = [
             {
