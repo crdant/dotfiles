@@ -60,7 +60,7 @@
 
           [[zones.keys]]
           key_path = "/etc/hickory/dnssec/rsa.p8"
-          algorithm = "ED25519"
+          algorithm = "RSASHA256"
           purpose = "ZoneUpdateAuth"
         '';
 
