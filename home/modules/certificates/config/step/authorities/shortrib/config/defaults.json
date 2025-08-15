@@ -1,6 +1,0 @@
-{
-  "ca-url": "https://certificates.shortrib.run",
-  "fingerprint": "21f11fd88a54b9a311190f6918073b6c98a1a10b5ba83f8c0f078a63c55b80ea",
-  "root": "/Users/chuck/.step/authorities/shortrib/certs/root_ca.crt",
-  "redirect-url": ""
-}
