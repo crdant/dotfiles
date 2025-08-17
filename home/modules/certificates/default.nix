@@ -12,9 +12,25 @@ in {
     ];
   
     file = {
-      ".step" = {
-        source = ./config/step;
-        recursive = true;
+      ".step/authorities/shortrib/config/defaults.json" = {
+        text = builtins.toJSON {
+          ca-url = "https://certificates.shortrib.run";
+          fingerprint = "21f11fd88a54b9a311190f6918073b6c98a1a10b5ba83f8c0f078a63c55b80ea";
+          root = "${config.home.homeDirectory}/.step/authorities/shortrib/certs/root_ca.crt";
+          redirect-url = "";
+        };
+      };
+      ".step/authorities/shortrib/certs" = {
+        source = ./config/step/authorities/shortrib/certs;
+      };
+      ".step/profiles" = {
+        source = ./config/step/profiles;
+      };
+     ".step/contexts.json" = {
+        source = ./config/step/contexts.json;
+      };
+     ".step/current-context.json" = {
+        source = ./config/step/current-context.json;
       };
     };
   };
