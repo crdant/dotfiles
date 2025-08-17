@@ -7,6 +7,7 @@ in {
   home = {
     packages = with pkgs; [
       govc
+      knot-dns
       minio-client
       powershell
     ] ++ lib.optionals isDarwin [
