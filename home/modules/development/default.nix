@@ -7,11 +7,12 @@ in {
   # Development-related packages
   home = {
     packages = with pkgs; [
+      unstable.cue
       exercism
       gh
       git-filter-repo
       git-lfs
-      unstable.cue
+      gnumake
       fermyon-spin
       nix-init
       nix-prefetch-git
