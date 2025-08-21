@@ -25,14 +25,6 @@ in
     command = uvxPath;
     args = ["mcp-server-time" "--local-timezone=America/New_York"];
   };
-  github = {
-    command = "${pkgs.unstable.github-mcp-server}/bin/github-mcp-server";
-    type = "http";
-    url = "https://api.githubcopilot.com/mcp";
-    headers = {
-      "Authorization" = "Bearer ${config.sops.placeholder."github/token"}";
-    };
-  };
   mbta = {
     command = "${pkgs.mbta-mcp-server}/bin/mbta-mcp-server";
     args = [ ];
