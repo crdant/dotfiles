@@ -1,7 +1,0 @@
-lab.shortrib.net.    60    IN    SOA    swan.lab.shortrib.net. admin.lab.shortrib.net. (
-                                           2025081501  ; Serial number (YYYYMMDDNN format)
-                                           3600        ; Refresh (1 hour)
-                                           1800        ; Retry (30 minutes)
-                                           604800      ; Expire (1 week)
-                                           60         ; Minimum TTL (5 minutes)
-                                         )

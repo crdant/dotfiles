@@ -32,9 +32,12 @@
       vendorHash = "sha256-QBYCMOWQOBCt+69NtJtluhTZIOiBWcQ78M9Gbki6bN0=";
       doCheck = false; # Disable tests due to undefined symbols in v1.84.2
     }));
-    hickory-dns = (prev.hickory-dns.overrideAttrs (oldAttrs: {
-      cargoBuildFlags = oldAttrs.cargoBuildFlags or [] ++ [
-        "--features" "resolver,recursor,tls-ring,quic-ring,dnssec-ring,rustls-platform-verifier"
+
+    knot-dns = (prev.knot-dns.overrideAttrs (oldAttrs: {
+      configureFlags = oldAttrs.configureFlags or [] ++ [
+        "--enable-dnstap"
+        "--enable-dnsssec"
+        "--enable-gnutls"
       ];
     }));
   };
