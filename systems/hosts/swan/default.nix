@@ -18,7 +18,11 @@
         ipv4 = {
           addresses = [
             {
-              address = "10.105.0.253";
+              address = "10.105.0.251";
+              prefixLength = 24;
+            }
+            {
+              address = "10.105.0.252";
               prefixLength = 24;
             }
           ];
@@ -33,4 +37,14 @@
       # "10.105.0.254"
     ];
   };
+
+  services.dnsServerDefaults = {
+    identity = "shortrib-dns";
+    primaryDnsIP = "10.105.0.251";
+    primaryResolverIP = "10.105.0.252";
+
+    secondaryDnsIP = "10.105.0.253";
+    secondaryResolverIP = "10.105.0.254";
+  };
+
 } 

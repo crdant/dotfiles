@@ -1,165 +1,286 @@
-{ inputs, outputs, pkgs, lib, options, ... }: 
-{
-  # Generate Ed25519 DNSSEC key on activation
-  system.activationScripts.hickory-dnssec-key = {
-    text = ''
-      mkdir -p /etc/hickory/dnssec
-      
-      if [ ! -f /etc/hickory/dnssec/rsa.p8 ]; then
-        ${pkgs.openssl}/bin/openssl genpkey \
-          -algorithm RSA \
-          -out /etc/hickory/dnssec/rsa.p8 \
-          -pkeyopt rsa_keygen_bits:4096
-        
-        chmod 600 /etc/hickory/dnssec/rsa.p8
-        chown hickory-dns:hickory-dns /etc/hickory/dnssec/rsa.p8
-        
-        echo "Generated new RSA DNSSEC key for Hickory DNS"
-      fi
-    '';
-    deps = [ "users" ];
+{ config, pkgs, lib, ... }:
+
+with lib;
+
+let
+  cfg = config.services.dnsServerDefaults;
+  
+  # Use configured values or defaults
+  identity = cfg.identity;
+  primaryDnsIP = cfg.primaryDnsIP;
+  primaryResolverIP = cfg.primaryResolverIP;
+  secondaryDnsIP = cfg.secondaryDnsIP; 
+  secondaryResolverIP = cfg.secondaryResolverIP; 
+  dnsSubnet = cfg.dnsSubnet;
+  updateNetworks = cfg.updateNetworks;
+  domains = cfg.domains;
+
+in {
+
+  # Configuration Options
+  options.services.dnsServerDefaults = {
+    identity = mkOption {
+      type = types.str;
+      default = "shortrib-dns";
+      description = "Identity for the DNS server";
+    };
+
+    primaryDnsIP = mkOption {
+      type = types.str;
+      default = "10.105.0.253";
+      description = "IP address for the primary DNS server (Knot DNS)";
+    };
+
+    primaryResolverIP = mkOption {
+      type = types.str;
+      default = "10.105.0.252";
+      description = "IP address for the primary DNS resolver (Knot Resolver)";
+    };
+
+    secondaryDnsIP = mkOption {
+      type = types.str;
+      default = "10.105.0.251";
+      description = "IP address for the secondary DNS server";
+    };
+
+    secondaryResolverIP = mkOption {
+      type = types.str;
+      default = "10.105.0.254";
+      description = "IP address for the secondary DNS resolver (Knot Resolver)";
+    };
+
+    dnsSubnet = mkOption {
+      type = types.str;
+      default = "10.105.0.0/24";
+      description = "DNS subnet in CIDR notation";
+    };
+
+    updateNetworks = mkOption {
+      type = types.listOf types.str;
+      default = [ "127.0.0.1" "10.25.0.250/24" ];
+      description = "Additional networks allowed for DNS updates";
+    };
+
+    domains = mkOption {
+      type = types.listOf types.str;
+      default = [
+        "shortrib.net"
+        "lab.shortrib.net"
+        "shortrib.app"
+        "shortrib.dev"
+        "shortrib.run"
+      ];
+      description = "List of domains to serve";
+    };
+
+    acmeEmail = mkOption {
+      type = types.str;
+      default = "admin@shortrib.net";
+      description = "Email address for ACME certificate requests";
+    };
+
+    acmeServer = mkOption {
+      type = types.str;
+      default = "https://certificates.shortrib.run/acme/v02/directory";
+      description = "ACME server URL for certificate requests";
+    };
+
+    tlsCertDomain = mkOption {
+      type = types.str;
+      default = "dns.shortrib.net";
+      description = "Domain name for TLS certificate";
+    };
+
+    tsigKeyPath = mkOption {
+      type = types.str;
+      default = "/var/lib/knot/tsig-key";
+      description = "Path to TSIG key file";
+    };
   };
 
-  # Create the Hickory DNS configuration
-  environment.etc."hickory/hickory-dns.toml" = {
-    text = 
-      let
-        # Your internal zones
-        internalZones = [
-          "lab.shortrib.net"
-          "shortrib.app" 
-          "shortrib.dev"
-          "shortrib.run"
-        ];
+  # Configuration Implementation
+  config = {
+    environment = {
+      systemPackages = with pkgs; [
+        openssl
+      ];
+    };
 
-        # Common SOA settings
-        commonSOA = {
-          serial = 2024081401;
-          refresh = 1800;
-          retry = 300;
-          expire = 86400;
-          minimum = 60;  # Good for quick DNSSEC recovery
+    # Knot DNS Configuration
+    services.knot = {
+      enable = true;
+
+      settings = {
+        server = {
+          identity = identity;
+          version = "disabled";
+          
+          # Listening interfaces
+          listen = [
+            "${primaryDnsIP}@53"
+          ];
+
+          listen-tls = {
+            "${primaryDnsIP}@853"
+          };
+
+          cert-file = "/var/lib/acme/${cfg.tlsCertDomain}/fullchain.pem";
+          key-file = "/var/lib/acme/${cfg.tlsCertDomain}/key.pem";
         };
 
-        # Generate TOML for internal zone with DNSSEC
-        internalZoneToml = zone: ''
-          [[zones]]
-          zone = "${zone}"
-          zone_type = "Primary"
+        # TSIG Key for Dynamic Updates
+        # Generate with: openssl rand -base64 32
+        key = [
+          {
+            id = "octodns.shortrib.net";
+            algorithm = "hmac-sha256";
+            # don't do this for real
+            secret = "8Wsl2UV9eO5c9jHAmSm9XBqUTzyTjulyrtajcCs1EyU=";
+          }
+        ];
 
-          [zones.stores]
-          type = "sqlite"
-          zone_file_path = "${zone}.zone"
-          journal_file_path = "/var/lib/hickory-dns/${zone}_dnssec_update.jrnl"
-          allow_update = true
+        # Access Control List for Updates
+        acl = [
+          {
+            id = "update-acl";
+            key = "octodns.shortrib.net";
+            action = ["update" "transfer"];
+            # Allow updates from configured networks
+            address = [ dnsSubnet ] ++ updateNetworks;
+          }
+        ];
 
-          [[zones.keys]]
-          key_path = "/etc/hickory/dnssec/rsa.p8"
-          algorithm = "RSASHA256"
-          purpose = "ZoneSigning"
+        # DNSSEC Policy
+        policy = [ 
+          {
+            id = "automatic-key-management";
+            signing-threads = 4 ;
+            algorithm = "ECDSAP256SHA256";
+            zsk-lifetime = "60d";
+          }
+        ];
 
-          [[zones.keys]]
-          key_path = "/etc/hickory/dnssec/rsa.p8"
-          algorithm = "RSASHA256"
-          purpose = "ZoneUpdateAuth"
-        '';
+        # Zones Configuration
+        zone = map (domain: {
+          domain = domain;
+          file = "/var/lib/knot/zones/${domain}.zone";
+          acl = "update-acl"; 
+          dnssec-signing = "on";
+          dnssec-policy = "automatic-key-management";
+        }) domains;
 
-        # Generate all internal zones
-        allInternalZones = builtins.concatStringsSep "\n" (map internalZoneToml internalZones);
-
-      in ''
-        # Server settings
-        listen_addrs_ipv4 = ["0.0.0.0"]
-        listen_addrs_ipv6 = ["::0"]
-        directory = "/etc/hickory/zones"
-
-        # Default zones (required, no DNSSEC)
-        [[zones]]
-        zone = "localhost"
-        zone_type = "Primary"
-        file = "default/localhost.zone"
-
-        [[zones]]
-        zone = "0.0.127.in-addr.arpa"
-        zone_type = "Primary"
-        file = "default/127.0.0.1.zone"
-
-        [[zones]]
-        zone = "0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa"
-        zone_type = "Primary"
-        file = "default/ipv6_1.zone"
-
-        [[zones]]
-        zone = "255.in-addr.arpa"
-        zone_type = "Primary"
-        file = "default/255.zone"
-
-        [[zones]]
-        zone = "0.in-addr.arpa"
-        zone_type = "Primary"
-        file = "default/0.zone"
-
-        # Internal zones with DNSSEC (templated)
-        ${allInternalZones}
-
-        # External recursive resolver
-        [[zones]]
-        zone = "."
-        zone_type = "External"
-
-        [zones.stores]
-        type = "recursor"
-        roots = "default/root.zone"
-        ns_cache_size = 1024
-        record_cache_size = 1048576
-        recursion_limit = 24
-        ns_recursion_limit = 24
-
-        allow_server = ["127.0.0.254/32"]
-        deny_server = ["0.0.0.0/8", "127.0.0.0/8", "::/128", "::1/128"]
-
-        [zones.stores.cache_policy.default]
-        positive_max_ttl = 86400
-
-        [zones.stores.cache_policy.A]
-        positive_max_ttl = 3600
-
-        [zones.stores.cache_policy.AAAA]
-        positive_max_ttl = 3600
-      '';
-  };
-
-  environment.etc."hickory/zones" = {
-    source = ./config/hickory/zones ;
-  };
-
-  # Ensure hickory-dns user exists
-  users.users.hickory-dns = {
-    isSystemUser = true;
-    group = "hickory-dns";
-    description = "Hickory DNS server user";
-  };
-  
-  users.groups.hickory-dns = {};
-
-  # Enable and configure the service
-  services.hickory-dns = {
-    enable = true;
-    # Point to your generated config
-    configFile = "/etc/hickory/hickory-dns.toml";
-    settings = {
+        # Logging Configuration
+        log = [{
+          target = "syslog";
+          any = "info";
+        }];
+      };
     };
-  };
 
-  networking = {
-    firewall = {
+    # Knot Resolver Configuration
+    services.kresd = {
       enable = true;
-      allowedTCPPorts = [ 53 853 ];
-      allowedUDPPorts = [ 53 ];
-    };
-  };
+      
+      # Listen on both standard and DoT ports
+      listenPlain = [ 
+        "${primaryResolverIP}:53"
+      ];
+      listenTLS = [
+        "${primaryResolverIP}:853"
+      ];
 
-  systemd.tmpfiles.rules = [
-    "d /var/lib/hickory-dns 0755 hickory-dns hickory-dns -"
-  ];
+      # Configuration file
+      extraConfig = ''
+        -- Enable DNSSEC validation
+        modules = {
+          'policy',   -- Access control
+          'view',     -- View-based configuration
+        }
+
+        -- Local zones configuration
+        local_zones = {
+          ${concatMapStringsSep ",\n          " (d: "'${d}'") domains}
+        }
+
+        for _, zone in ipairs(local_zones) do
+          -- Create forwarding for each internal zone name
+          policy.add(policy.suffix(policy.STUB('${primaryDnsIP}'), {todname(zone)}))
+        end
+
+        -- Validate DNSSEC
+        policy.add(policy.all(policy.VALIDATE))
+
+        -- Use root hints for recursive resolution
+        modules.load('hints')
+        hints.root({
+          ['.'] = '${pkgs.knot-resolver}/share/knot-resolver/root.hints'
+        })
+      '';
+    };
+
+    # Persistent Zone Management
+    system.activationScripts.prepareDnsZones = ''
+      # Ensure zone directory exists
+      mkdir -p /var/lib/knot/zones
+
+      # Create initial zone files if they don't exist
+      ${concatMapStrings (domain: ''
+        if [ ! -f "/var/lib/knot/zones/${domain}.zone" ]; then
+          cat > "/var/lib/knot/zones/${domain}.zone" << EOL
+\$ORIGIN ${domain}.
+\$TTL 3600
+
+@ IN SOA ns1.${domain}. admin.${domain}. (
+    $(date +%Y%m%d01) ; Serial
+    3600       ; Refresh
+    1800       ; Retry
+    604800     ; Expire
+    86400 )    ; Minimum TTL
+
+@           IN NS       ns1.${domain}.
+@           IN NS       ns2.${domain}.
+
+ns1         IN A        ${primaryDnsIP}
+ns2         IN A        ${secondaryDnsIP}
+EOL
+          chmod 660 "/var/lib/knot/zones/${domain}.zone"
+          chown knot:knot "/var/lib/knot/zones/${domain}.zone"
+        fi
+      '') domains}
+
+      # Ensure TSIG key exists
+      if [ ! -f ${cfg.tsigKeyPath} ]; then
+        mkdir -p $(dirname ${cfg.tsigKeyPath})
+        openssl rand -base64 32 > ${cfg.tsigKeyPath}
+        chmod 600 ${cfg.tsigKeyPath}
+        chown knot:knot ${cfg.tsigKeyPath}
+      fi
+    '';
+
+    # ACME Configuration
+    security.acme = {
+      acceptTerms = true;
+      defaults = {
+        email = cfg.acmeEmail;
+        server = cfg.acmeServer;
+        listenHTTP = ":80";
+      };
+
+      certs."${cfg.tlsCertDomain}" = {
+        group = "knot";
+        extraDomainNames = [ 
+          "ns.shortrib.net"
+          "swan.lab.shortrib.net"
+          "lyne.lab.shortrib.net"
+        ];
+      };
+    };
+
+    # Firewall Configuration
+    networking.firewall = {
+      allowedTCPPorts = [ 53 853 ];
+      allowedUDPPorts = [ 53 853 ];
+    };
+
+  };
 }
