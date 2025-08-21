@@ -9,6 +9,7 @@ NIX := nix
 NIXOS_SYSTEMS := $(shell $(NIX) eval --impure --json $(FLAKE_PATH)#nixosConfigurations --apply 'builtins.attrNames' 2>/dev/null | tr -d '[]"' | tr ',' ' ' || echo "")
 DARWIN_SYSTEMS := $(shell $(NIX) eval --impure --json $(FLAKE_PATH)#darwinConfigurations --apply 'builtins.attrNames' 2>/dev/null | tr -d '[]"' | tr ',' ' ' || echo "")
 HOME_CONFIGS := $(shell $(NIX) eval --impure --json $(FLAKE_PATH)#homeConfigurations --apply 'builtins.attrNames' 2>/dev/null | tr -d '[]"' | tr ',' ' ' | sed 's/:/\\:/g' || echo "")
+LINUX_PACKAGES := $(shell $(NIX) eval --impure --json $(FLAKE_PATH)#packages.x86_64-linux --apply 'builtins.attrNames' 2>/dev/null | tr -d '[]"' | tr ',' ' ' || echo "")
 
 .PHONY: help
 help: ## Show this help menu
@@ -20,6 +21,7 @@ help: ## Show this help menu
 	@echo "NixOS Systems: $(NIXOS_SYSTEMS)"
 	@echo "Darwin Systems: $(DARWIN_SYSTEMS)"
 	@echo "Home Configurations: $(HOME_CONFIGS)"
+	@echo "Linux Packages: $(LINUX_PACKAGES)"
 
 .PHONY: show
 show: ## Show available configurations in the flake
@@ -29,6 +31,8 @@ show: ## Show available configurations in the flake
 	@for system in $(DARWIN_SYSTEMS); do echo "  $$system"; done
 	@echo "Home Configurations:"
 	@for config in $(HOME_CONFIGS); do echo "  $$config"; done
+	@echo "Linux Packages:"
+	@for pkg in $(LINUX_PACKAGES); do echo "  $$pkg"; done
 
 .PHONY: update
 update: ## Update flake inputs
@@ -94,6 +98,17 @@ $(1): switch-home-$(1)
 endef
 
 $(foreach config,$(HOME_CONFIGS),$(eval $(call home_config_targets,$(config))))
+
+# Generate targets for Linux packages (OVA images, etc)
+define linux_package_targets
+.PHONY: build-pkg-$(1)
+build-pkg-$(1): ## Build Linux package $(1)
+	@NIXPKGS_ALLOW_UNFREE=1 $(NIX) build $(FLAKE_PATH)#packages.x86_64-linux.$(1) --impure
+
+$(1): build-pkg-$(1)
+endef
+
+$(foreach pkg,$(LINUX_PACKAGES),$(eval $(call linux_package_targets,$(pkg))))
 
 # Convenience targets for the current user
 CURRENT_USER := $(shell whoami)
