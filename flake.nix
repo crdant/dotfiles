@@ -20,6 +20,9 @@
     _1password-shell-plugins.url = "github:1Password/shell-plugins";
     _1password-shell-plugins.inputs.nixpkgs.follows = "home-manager"; # ...
 
+    nixos-generators.url = "github:nix-community/nixos-generators";
+    nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
+
   };
 
   outputs = { self, nixpkgs, home-manager, darwin, ...}@inputs: 
@@ -45,6 +48,13 @@
           ];
         };
 
+      # Helper function to create OVA images for x86_64-linux
+      mkOvaImage = import ./lib/mkOvaImage.nix {
+        inherit nixpkgs;
+        system = "x86_64-linux";
+        nixos-generators = inputs.nixos-generators;
+      };
+
     in {
       overlays = import ./overlays {inherit inputs;};
 
@@ -55,17 +65,6 @@
           modules = [ 
             ./systems/hosts/mash/default.nix
             ./home/users/crdant/crdant.nix
-          ];
-        };
-        swan = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = {inherit inputs outputs;};
-          modules = [ 
-            ./systems/hosts/swan/default.nix
-            ./home/users/crdant/crdant.nix
-            ./home/users/crdant/password.nix
-            home-manager.nixosModules.home-manager
-            # ./home/users/crdant/home.nix { profile = "server"; }
           ];
         };
       };
@@ -129,5 +128,21 @@
             );
         in
         generateConfigs userConfigs profiles;
+
+      packages.x86_64-linux = {
+        swanOva = mkOvaImage {
+          modules = [ 
+            ./systems/hosts/swan/default.nix
+            ./home/users/crdant/crdant.nix
+            ./home/users/crdant/password.nix
+            home-manager.nixosModules.home-manager
+          ];
+          specialArgs = {inherit inputs outputs;};
+          name = "swan";
+          domain = "lab.shortrib.net";  # Will create VM named "swan.shortrib.local"
+          ram = 4096;  # 4GB for swan
+          cpus = 2;
+        };
+      };
     };
 }

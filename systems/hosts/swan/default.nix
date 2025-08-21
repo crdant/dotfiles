@@ -9,12 +9,30 @@
 
   networking = {
     hostName = "swan";
+    useDHCP = false;  # Explicitly disable DHCP
     firewall = {
       enable = true;
       allowedTCPPorts = [ 22 ];
     };
     interfaces = {
-      ens32 = {
+      # VMware typically uses ens33 or ens160
+      ens33 = {
+        useDHCP = false;
+        ipv4 = {
+          addresses = [
+            {
+              address = "10.105.0.251";
+              prefixLength = 24;
+            }
+            {
+              address = "10.105.0.252";
+              prefixLength = 24;
+            }
+          ];
+        };
+      };
+      ens160 = {
+        useDHCP = false;
         ipv4 = {
           addresses = [
             {
@@ -32,8 +50,8 @@
 
     defaultGateway = "10.105.0.1";
     nameservers = [
+      "10.105.0.253"
       "10.105.0.1"
-      # "10.105.0.253"
       # "10.105.0.254"
     ];
   };
