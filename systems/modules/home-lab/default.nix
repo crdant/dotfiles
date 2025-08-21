@@ -5,10 +5,20 @@ let
   vmwareConfig = lib.optionalAttrs supportsVirtualisation {
     virtualisation = {
       vmware = {
-        guest.enable = true ;
+        guest = { 
+          enable = true;
+          headless = true;
+        };
       };
     };
   };
 in lib.mkMerge [
   vmwareConfig
+  {
+    services = { 
+      ntp.enable = false;
+      chrony.enable = false;
+      timesyncd.enable = false;
+    };
+  }
 ]
