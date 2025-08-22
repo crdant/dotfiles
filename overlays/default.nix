@@ -7,6 +7,19 @@
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
+    go = prev.go.overrideAttrs (oldAttrs: let
+      newVersion = "1.24.4";
+      in {
+        version = newVersion;
+        src = prev.fetchzip {
+          url = "https://go.dev/dl/go${newVersion}.src.tar.gz";
+          hash = "sha256-VbVkJ2v0ofF/47jR1KJp5tbSQNQ2OUC3vvhPHoJO4Zg=";
+        };
+      }
+    );
+    buildGoModule = prev.buildGoModule.override {
+      go = final.go;
+    };
     vimPlugins = prev.vimPlugins // {
       nvim-aider = prev.callPackage ./nvim-aider { };
       # xcodebuild-nvim = prev.callPackage ./xcodebuild-nvim { }; 
