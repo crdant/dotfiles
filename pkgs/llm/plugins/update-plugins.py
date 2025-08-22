@@ -22,7 +22,6 @@ def get_github_headers() -> Dict[str, str]:
     
     if token:
         headers["Authorization"] = f"token {token}"
-        print("Using authenticated GitHub API requests")
     else:
         print("Warning: No GitHub token found. Using unauthenticated requests (rate limited to 60/hour)")
         print("Set GITHUB_TOKEN or GITHUB_AUTH_TOKEN environment variable for higher rate limits")
@@ -43,7 +42,6 @@ def check_rate_limit() -> None:
         limit = core_limit["limit"]
         reset_time = datetime.fromtimestamp(core_limit["reset"])
         
-        print(f"GitHub API rate limit: {remaining}/{limit} remaining")
         if remaining < 10:
             print(f"Warning: Low rate limit! Resets at {reset_time}")
         
@@ -160,11 +158,10 @@ def update_plugin_lock(spec_file: Path, lock_file: Path, update_refs: bool = Fal
     """Update the lock file with commit information for specified refs."""
     specs = load_plugin_specs(spec_file)
     
-    print("Checking GitHub API rate limit...")
     check_rate_limit()
     
-    print("Updating plugin lock file...")
     lock_data = {}
+    specs_updated = False
     
     total_plugins = len(specs)
     for i, (name, spec) in enumerate(specs.items(), 1):
@@ -177,6 +174,7 @@ def update_plugin_lock(spec_file: Path, lock_file: Path, update_refs: bool = Fal
                 print(f"  {name}: updating {ref} -> {latest_ref}")
                 ref = latest_ref
                 spec["ref"] = ref  # Update the spec for the lock file
+                specs_updated = True
         
         print(f"  [{i}/{total_plugins}] Fetching {name}@{ref}...")
         
@@ -198,6 +196,11 @@ def update_plugin_lock(spec_file: Path, lock_file: Path, update_refs: bool = Fal
             "version": version,
             **ref_info
         }
+    
+    # Write updated specs back to spec file if refs were updated
+    if specs_updated:
+        with spec_file.open('w') as f:
+            json.dump(specs, f, indent=2, sort_keys=True)
     
     with lock_file.open('w') as f:
         json.dump(lock_data, f, indent=2, sort_keys=True)
@@ -309,8 +312,6 @@ in
     with output_file.open('w') as f:
         f.write(nix_content)
     
-    print(f"Generated {output_file}")
-
 def main():
     script_dir = Path(__file__).parent
     spec_file = script_dir / "llm-plugins.json"

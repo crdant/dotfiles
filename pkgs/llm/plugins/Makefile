@@ -20,15 +20,15 @@ help:
 
 # Update plugin versions and generate Nix files
 update:
-	python3 update-plugins.py --update
+	python update-plugins.py --update
 
 # Update using latest releases instead of commits
 update-releases:
-	python3 update-plugins.py --update --prefer-releases
+	python update-plugins.py --update --update-refs
 
 # Just regenerate Nix files from existing lock
 generate:
-	python3 update-plugins.py
+	python update-plugins.py
 
 # Clean generated files
 clean:
@@ -56,7 +56,7 @@ endef
 
 check-all:
 	@echo "Checking all plugins..."
-	@python3 -c "$(CHECK_ALL)"
+	@python -c "$(CHECK_ALL)"
 
 # Show plugins supported on current platform
 show-supported:
@@ -81,7 +81,7 @@ endef
 
 show-all:
 	@echo "All plugins in specification:"
-	@python3 -c "$(SHOW_ALL)"
+	@python -c "$(SHOW_ALL)"
 
 define ADD_PLUGIN
 import json
@@ -132,12 +132,12 @@ add-plugin:
 	read deps; \
 	echo "Platform specific? (y/N):"; \
 	read platform_specific; \
-	python3 -c "$(ADD_PLUGIN)"
+	python -c "$(ADD_PLUGIN)"
 	@echo "Plugin added! Run 'make update' to fetch and generate."
 
 # Development helpers
 dev-shell:
-	nix-shell -p python3 python3Packages.requests python3Packages.pip nix-prefetch-git
+	nix-shell -p python pythonPackages.requests pythonPackages.pip nix-prefetch-git
 
 # Show lock file status
 define STATUS
@@ -153,7 +153,7 @@ status:
 		stat -c %y llm-plugins-lock.json 2>/dev/null || stat -f %Sm llm-plugins-lock.json; \
 		echo ""; \
 		echo "Plugins in lock file:"; \
-		python3 -c "$(STATUS)"; 
+		python -c "$(STATUS)"; 
 	else \
 		echo "No lock file found. Run 'make update' first."; \
 	fi

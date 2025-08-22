@@ -1,31 +1,31 @@
 {
   "llm-anthropic": {
-    "date": "2025-05-22T18:06:18Z",
+    "date": "2025-08-05T17:16:40Z",
     "description": "LLM access to models by Anthropic, including the Claude series",
     "owner": "simonw",
     "pythonDeps": [
       "anthropic"
     ],
-    "ref": "0.16",
+    "ref": "0.18",
     "repo": "llm-anthropic",
-    "rev": "0.16",
-    "sha256": "sha256-oL8jT76jWSJxds9w0/oX0YK9WbfxjsbJ8PTqiirAV7Q=",
-    "short_date": "2025-05-22",
-    "version": "ref-0.16"
+    "rev": "0.18",
+    "sha256": "sha256-eyB68wPc4ALnEypUXN20ru7UfS6yKLp2NJohH3Av9Ls=",
+    "short_date": "2025-08-05",
+    "version": "ref-0.18"
   },
   "llm-anyscale-endpoints": {
-    "date": "2023-08-25T11:22:01Z",
+    "date": "2024-04-21T23:33:46Z",
     "description": "LLM plugin for models hosted on Anyscale Endpoints",
     "owner": "simonw",
     "pythonDeps": [
       "httpx"
     ],
-    "ref": "0.2",
+    "ref": "0.6",
     "repo": "llm-anyscale-endpoints",
-    "rev": "0.2",
-    "sha256": "sha256-YVo5LLDRLUbNncT09X+wnNeuKoHjQMrblQqVpZZcOlk=",
-    "short_date": "2023-08-25",
-    "version": "ref-0.2"
+    "rev": "0.6",
+    "sha256": "sha256-eXSdsoxVWQ9ODoN3TgHrdvitogBDUmmcR86IaeoVim4=",
+    "short_date": "2024-04-21",
+    "version": "ref-0.6"
   },
   "llm-bedrock": {
     "date": "2024-12-04T15:37:11Z",
@@ -56,18 +56,18 @@
     "version": "ref-0.2"
   },
   "llm-bedrock-meta": {
-    "date": "1970-01-01T00:00:00Z",
+    "date": "2024-05-07T12:57:03Z",
     "description": "LLM plugin for Meta Llama models via Amazon Bedrock",
     "owner": "flabat",
     "pythonDeps": [
       "boto3"
     ],
-    "ref": "0.1.0",
+    "ref": "v0.1.8",
     "repo": "llm-bedrock-meta",
-    "rev": "0.1.0",
-    "sha256": "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
-    "short_date": "1970-01-01",
-    "version": "ref-0.1.0"
+    "rev": "v0.1.8",
+    "sha256": "sha256-E7QZ4LSzeXgtUEcfjluURaWoFuqR3nwliNGMqmFQXnY=",
+    "short_date": "2024-05-07",
+    "version": "0.1.8"
   },
   "llm-clip": {
     "date": "2023-09-12T19:15:50Z",
@@ -84,18 +84,18 @@
     "version": "ref-0.1"
   },
   "llm-cluster": {
-    "date": "2023-09-04T15:58:43Z",
+    "date": "2023-09-04T16:33:51Z",
     "description": "Adds a 'llm cluster' command for calculating embedding clusters",
     "owner": "simonw",
     "pythonDeps": [
       "scikit-learn"
     ],
-    "ref": "0.1",
+    "ref": "0.2",
     "repo": "llm-cluster",
-    "rev": "0.1",
-    "sha256": "sha256-BnkvRUkV2MmiFH7SlyAp0WrQcrCkhG8FjgrAGnfVkMQ=",
+    "rev": "0.2",
+    "sha256": "sha256-lNKy8aayMy0L48LaZWocn5pk5t3sReOSJj2sRENDuoE=",
     "short_date": "2023-09-04",
-    "version": "ref-0.1"
+    "version": "ref-0.2"
   },
   "llm-cmd": {
     "date": "2024-09-09T20:59:28Z",
@@ -113,19 +113,18 @@
     "version": "ref-0.2a0"
   },
   "llm-cmd-comp": {
-    "date": "2025-01-19T00:23:55Z",
+    "date": "2025-06-18T01:52:51Z",
     "description": "Shell completion using LLM",
     "owner": "CGamesPlay",
     "pythonDeps": [
-      "prompt_toolkit",
-      "pygments"
+      "prompt_toolkit"
     ],
-    "ref": "v1.1.1",
+    "ref": "v1.2.0",
     "repo": "llm-cmd-comp",
-    "rev": "v1.1.1",
-    "sha256": "sha256-BTlqrwHS6SSQ86vaf9CqNbgFM9RSiRk97dktosLBE78=",
-    "short_date": "2025-01-19",
-    "version": "1.1.1"
+    "rev": "v1.2.0",
+    "sha256": "sha256-0wUM8mJdGB/Y6xs1bYd0VauI8KoTYgbODgJRtCu51XM=",
+    "short_date": "2025-06-18",
+    "version": "1.2.0"
   },
   "llm-cohere": {
     "date": "1970-01-01T00:00:00Z",
@@ -156,30 +155,30 @@
     "version": "ref-0.3.1"
   },
   "llm-deepseek": {
-    "date": "1970-01-01T00:00:00Z",
+    "date": "2025-02-14T16:32:36Z",
     "description": "LLM plugin for DeepSeek models",
     "owner": "abrasumente233",
     "pythonDeps": [
       "httpx"
     ],
-    "ref": "0.2.0",
+    "ref": "0.1.6",
     "repo": "llm-deepseek",
-    "rev": "0.2.0",
-    "sha256": "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
-    "short_date": "1970-01-01",
-    "version": "ref-0.2.0"
+    "rev": "0.1.6",
+    "sha256": "sha256-yrNvIGnU9Q/0H786DsM0wGEwfxZYIk8IXhqC4mWaQAA=",
+    "short_date": "2025-02-14",
+    "version": "ref-0.1.6"
   },
   "llm-echo": {
-    "date": "2025-05-21T05:13:01Z",
+    "date": "2025-05-04T16:15:40Z",
     "description": "Debug plugin for LLM providing an echo model",
     "owner": "simonw",
     "pythonDeps": [],
-    "ref": "0.3a3",
+    "ref": "0.2",
     "repo": "llm-echo",
-    "rev": "0.3a3",
-    "sha256": "sha256-4345UIyaQx+mYYBAFD5AaX5YbjbnJQt8bKMD5Vl8VJc=",
-    "short_date": "2025-05-21",
-    "version": "ref-0.3a3"
+    "rev": "0.2",
+    "sha256": "sha256-KtdsvXJQRJ3EEJ25i6ccbVxMsWlDsxa+HJ7bFzyYGNI=",
+    "short_date": "2025-05-04",
+    "version": "ref-0.2"
   },
   "llm-embed-jina": {
     "date": "2023-10-26T03:01:57Z",
@@ -225,18 +224,18 @@
     "version": "ref-0.1a0"
   },
   "llm-fragments-github": {
-    "date": "1970-01-01T00:00:00Z",
+    "date": "2025-05-12T21:20:12Z",
     "description": "Load GitHub repositories and issues as fragments",
     "owner": "simonw",
     "pythonDeps": [
       "httpx"
     ],
-    "ref": "0.4.1",
+    "ref": "0.4",
     "repo": "llm-fragments-github",
-    "rev": "0.4.1",
-    "sha256": "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
-    "short_date": "1970-01-01",
-    "version": "ref-0.4.1"
+    "rev": "0.4",
+    "sha256": "sha256-7i1WRix5AAEG5EXJqtaU+QY56aL0SePdqz84z+C+iYM=",
+    "short_date": "2025-05-12",
+    "version": "ref-0.4"
   },
   "llm-fragments-pdf": {
     "date": "2025-05-18T21:31:49Z",
@@ -295,19 +294,19 @@
     "version": "ref-0.1.0"
   },
   "llm-gemini": {
-    "date": "2025-06-05T17:37:12Z",
+    "date": "2025-08-18T23:54:16Z",
     "description": "LLM plugin to access Google's Gemini family of models",
     "owner": "simonw",
     "pythonDeps": [
       "httpx",
       "ijson"
     ],
-    "ref": "0.22",
+    "ref": "0.25",
     "repo": "llm-gemini",
-    "rev": "0.22",
-    "sha256": "sha256-8zUOP+LNwdUXx4hR3m5lodcVUmB4ZjyiWqWzk2tV9wM=",
-    "short_date": "2025-06-05",
-    "version": "ref-0.22"
+    "rev": "0.25",
+    "sha256": "sha256-jnPFlLUQ+NSTDUStocUldqT7Z+bjrtzGSOJHfMFCScU=",
+    "short_date": "2025-08-18",
+    "version": "ref-0.25"
   },
   "llm-gguf": {
     "date": "2024-11-21T07:15:09Z",
@@ -340,46 +339,46 @@
     "version": "ref-0.4"
   },
   "llm-grok": {
-    "date": "1970-01-01T00:00:00Z",
+    "date": "2025-07-15T08:59:17Z",
     "description": "LLM plugin providing access to Grok AI models using the xAI API",
     "owner": "Hiepler",
     "pythonDeps": [
       "httpx"
     ],
-    "ref": "0.1.0",
+    "ref": "v1.2.0",
     "repo": "llm-grok",
-    "rev": "0.1.0",
-    "sha256": "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
-    "short_date": "1970-01-01",
-    "version": "ref-0.1.0"
+    "rev": "v1.2.0",
+    "sha256": "sha256-YSpo7dsQ0/s+sS2DXeLq7zHBdktxCr0P96vr6PtEu9o=",
+    "short_date": "2025-07-15",
+    "version": "1.2.0"
   },
   "llm-groq": {
-    "date": "2025-01-30T08:51:45Z",
+    "date": "2025-07-18T02:41:52Z",
     "description": "LLM access to models hosted by Groq",
     "owner": "angerman",
     "pythonDeps": [
       "groq"
     ],
-    "ref": "v0.8",
+    "ref": "v0.9",
     "repo": "llm-groq",
-    "rev": "v0.8",
-    "sha256": "sha256-sZ5d9w43NvypaPrebwZ5BLgRaCHAhd7gBU6uHEdUaF4=",
-    "short_date": "2025-01-30",
-    "version": "0.8"
+    "rev": "v0.9",
+    "sha256": "sha256-9obDB5xz/YFKdnqM/70SC4Ud1t62AsGzAkbGsZTL5Nc=",
+    "short_date": "2025-07-18",
+    "version": "0.9"
   },
   "llm-hacker-news": {
-    "date": "1970-01-01T00:00:00Z",
+    "date": "2025-05-05T17:10:13Z",
     "description": "Import Hacker News conversations as fragments",
     "owner": "simonw",
     "pythonDeps": [
       "httpx"
     ],
-    "ref": "0.2",
+    "ref": "0.1.1",
     "repo": "llm-hacker-news",
-    "rev": "0.2",
-    "sha256": "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
-    "short_date": "1970-01-01",
-    "version": "ref-0.2"
+    "rev": "0.1.1",
+    "sha256": "sha256-pywx9TAN/mnGR6Vv6YsPhLO4R5Geagw/bcydQjvTH5s=",
+    "short_date": "2025-05-05",
+    "version": "ref-0.1.1"
   },
   "llm-jq": {
     "date": "2024-10-27T04:36:06Z",
@@ -394,18 +393,18 @@
     "version": "ref-0.1.1"
   },
   "llm-lambda-labs": {
-    "date": "1970-01-01T00:00:00Z",
+    "date": "2025-03-17T19:59:16Z",
     "description": "LLM plugin for Lambda Labs hosted models",
     "owner": "simonw",
     "pythonDeps": [
       "httpx"
     ],
-    "ref": "0.1",
+    "ref": "0.2",
     "repo": "llm-lambda-labs",
-    "rev": "0.1",
-    "sha256": "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
-    "short_date": "1970-01-01",
-    "version": "ref-0.1"
+    "rev": "0.2",
+    "sha256": "sha256-AZuEXNT5fF54kylIpZL21YA95bnIjMo6miWVTssd/zQ=",
+    "short_date": "2025-03-17",
+    "version": "ref-0.2"
   },
   "llm-llamafile": {
     "date": "2024-04-22T04:09:10Z",
@@ -420,19 +419,19 @@
     "version": "ref-0.1"
   },
   "llm-mistral": {
-    "date": "2025-05-28T20:52:06Z",
+    "date": "2025-07-16T20:29:51Z",
     "description": "Mistral AI language and embedding models",
     "owner": "simonw",
     "pythonDeps": [
       "httpx",
       "httpx-sse"
     ],
-    "ref": "0.14",
+    "ref": "0.15",
     "repo": "llm-mistral",
-    "rev": "0.14",
-    "sha256": "sha256-NuiqRA/SCjGq0hJsnHJ/vgdncIKu3oE9WqWGht7QRMc=",
-    "short_date": "2025-05-28",
-    "version": "ref-0.14"
+    "rev": "0.15",
+    "sha256": "sha256-4ajvsq0sm3/vdiHUuNxHsHKdX58VNNpHIwhWI0ws+08=",
+    "short_date": "2025-07-16",
+    "version": "ref-0.15"
   },
   "llm-mlc": {
     "date": "2023-08-15T04:21:29Z",
@@ -484,33 +483,33 @@
     "version": "ref-0.1"
   },
   "llm-ollama": {
-    "date": "2025-05-29T08:04:05Z",
+    "date": "2025-07-28T10:41:18Z",
     "description": "Support for local models via Ollama",
     "owner": "taketwo",
     "pythonDeps": [
       "ollama",
       "pydantic"
     ],
-    "ref": "0.11.0",
+    "ref": "0.13.0",
     "repo": "llm-ollama",
-    "rev": "0.11.0",
-    "sha256": "sha256-iwrDqrPt/zwXypBwD7zDAcen4fQq6PXl7Xj5VUL2KWA=",
-    "short_date": "2025-05-29",
-    "version": "ref-0.11.0"
+    "rev": "0.13.0",
+    "sha256": "sha256-mWiwUXLpyILH1CCi2b0D3TtInEIfK4dubho9EEkbJ0M=",
+    "short_date": "2025-07-28",
+    "version": "ref-0.13.0"
   },
   "llm-openrouter": {
-    "date": "2024-05-03T23:55:22Z",
+    "date": "2025-04-23T21:37:05Z",
     "description": "LLM plugin for OpenRouter API",
     "owner": "simonw",
     "pythonDeps": [
       "httpx"
     ],
-    "ref": "0.2",
+    "ref": "0.4.1",
     "repo": "llm-openrouter",
-    "rev": "0.2",
-    "sha256": "sha256-tEYzTykNG5USY5LXNnPxtjCr0GLnQ3zqILS07leLHyg=",
-    "short_date": "2024-05-03",
-    "version": "ref-0.2"
+    "rev": "0.4.1",
+    "sha256": "sha256-ojBkyXqEaqTcOv7mzTWL5Ihhb50zeVzeQZNA6DySuVg=",
+    "short_date": "2025-04-23",
+    "version": "ref-0.4.1"
   },
   "llm-perplexity": {
     "date": "2025-06-04T07:26:20Z",
@@ -553,18 +552,18 @@
     "version": "ref-0.1a0"
   },
   "llm-replicate": {
-    "date": "1970-01-01T00:00:00Z",
+    "date": "2024-04-18T17:05:51Z",
     "description": "LLM plugin for models hosted on Replicate",
     "owner": "simonw",
     "pythonDeps": [
       "replicate"
     ],
-    "ref": "0.8",
+    "ref": "0.3.1",
     "repo": "llm-replicate",
-    "rev": "0.8",
-    "sha256": "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
-    "short_date": "1970-01-01",
-    "version": "ref-0.8"
+    "rev": "0.3.1",
+    "sha256": "sha256-TeBi9u+ZCQlvr6+Jp/NdL9YOy2E/1uqL1Y9NRpcaiEQ=",
+    "short_date": "2024-04-18",
+    "version": "ref-0.3.1"
   },
   "llm-sentence-transformers": {
     "date": "2025-04-23T17:09:21Z",
@@ -582,18 +581,18 @@
     "version": "ref-0.3.2"
   },
   "llm-templates-fabric": {
-    "date": "2025-04-07T16:24:39Z",
+    "date": "2025-04-08T05:20:37Z",
     "description": "Access to Fabric collection of prompts",
     "owner": "simonw",
     "pythonDeps": [
       "httpx"
     ],
-    "ref": "0.1",
+    "ref": "0.2",
     "repo": "llm-templates-fabric",
-    "rev": "0.1",
-    "sha256": "sha256-KD8aV7qCvyeEFq6lCOd6S8cPMvARr1ezCzg74SuIB/g=",
-    "short_date": "2025-04-07",
-    "version": "ref-0.1"
+    "rev": "0.2",
+    "sha256": "sha256-tfkSjeT9WstUsNCtVr3fMzqELFCtfYphqf3xFGvHaV0=",
+    "short_date": "2025-04-08",
+    "version": "ref-0.2"
   },
   "llm-templates-github": {
     "date": "2025-04-07T16:06:42Z",
@@ -704,17 +703,17 @@
     "version": "ref-0.1"
   },
   "llm-venice": {
-    "date": "2024-11-26T09:25:33Z",
+    "date": "2025-05-24T19:03:26Z",
     "description": "LLM plugin for Venice AI uncensored models",
     "owner": "ar-jan",
     "pythonDeps": [
       "httpx"
     ],
-    "ref": "0.1.0",
+    "ref": "0.7.0",
     "repo": "llm-venice",
-    "rev": "0.1.0",
-    "sha256": "sha256-+ZJ8znAf6Wfi11HgsnCyhm2qgBUZFKXBHlIY07LeNzQ=",
-    "short_date": "2024-11-26",
-    "version": "ref-0.1.0"
+    "rev": "0.7.0",
+    "sha256": "sha256-vsb3oXGr+2FDJnTwYomICfald1ptben28hAJ8ypKiBI=",
+    "short_date": "2025-05-24",
+    "version": "ref-0.7.0"
   }
 }

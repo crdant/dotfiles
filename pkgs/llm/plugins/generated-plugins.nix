@@ -9,12 +9,12 @@ in
 {
   llm-anthropic = buildLlmPlugin {
     pname = "llm-anthropic";
-    version = "ref-0.16";
+    version = "ref-0.18";
     src = fetchFromGitHub {
       owner = "simonw";
       repo = "llm-anthropic";
-      rev = "0.16";
-      sha256 = "sha256-oL8jT76jWSJxds9w0/oX0YK9WbfxjsbJ8PTqiirAV7Q=";
+      rev = "0.18";
+      sha256 = "sha256-eyB68wPc4ALnEypUXN20ru7UfS6yKLp2NJohH3Av9Ls=";
     };
     description = "LLM access to models by Anthropic, including the Claude series";
     pythonDeps = ["anthropic"];
@@ -22,12 +22,12 @@ in
 
   llm-anyscale-endpoints = buildLlmPlugin {
     pname = "llm-anyscale-endpoints";
-    version = "ref-0.2";
+    version = "ref-0.6";
     src = fetchFromGitHub {
       owner = "simonw";
       repo = "llm-anyscale-endpoints";
-      rev = "0.2";
-      sha256 = "sha256-YVo5LLDRLUbNncT09X+wnNeuKoHjQMrblQqVpZZcOlk=";
+      rev = "0.6";
+      sha256 = "sha256-eXSdsoxVWQ9ODoN3TgHrdvitogBDUmmcR86IaeoVim4=";
     };
     description = "LLM plugin for models hosted on Anyscale Endpoints";
     pythonDeps = ["httpx"];
@@ -61,12 +61,12 @@ in
 
   llm-bedrock-meta = buildLlmPlugin {
     pname = "llm-bedrock-meta";
-    version = "ref-0.1.0";
+    version = "0.1.8";
     src = fetchFromGitHub {
       owner = "flabat";
       repo = "llm-bedrock-meta";
-      rev = "0.1.0";
-      sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+      rev = "v0.1.8";
+      sha256 = "sha256-E7QZ4LSzeXgtUEcfjluURaWoFuqR3nwliNGMqmFQXnY=";
     };
     description = "LLM plugin for Meta Llama models via Amazon Bedrock";
     pythonDeps = ["boto3"];
@@ -87,12 +87,12 @@ in
 
   llm-cluster = buildLlmPlugin {
     pname = "llm-cluster";
-    version = "ref-0.1";
+    version = "ref-0.2";
     src = fetchFromGitHub {
       owner = "simonw";
       repo = "llm-cluster";
-      rev = "0.1";
-      sha256 = "sha256-BnkvRUkV2MmiFH7SlyAp0WrQcrCkhG8FjgrAGnfVkMQ=";
+      rev = "0.2";
+      sha256 = "sha256-lNKy8aayMy0L48LaZWocn5pk5t3sReOSJj2sRENDuoE=";
     };
     description = "Adds a 'llm cluster' command for calculating embedding clusters";
     pythonDeps = ["scikit-learn"];
@@ -113,15 +113,15 @@ in
 
   llm-cmd-comp = buildLlmPlugin {
     pname = "llm-cmd-comp";
-    version = "1.1.1";
+    version = "1.2.0";
     src = fetchFromGitHub {
       owner = "CGamesPlay";
       repo = "llm-cmd-comp";
-      rev = "v1.1.1";
-      sha256 = "sha256-BTlqrwHS6SSQ86vaf9CqNbgFM9RSiRk97dktosLBE78=";
+      rev = "v1.2.0";
+      sha256 = "sha256-0wUM8mJdGB/Y6xs1bYd0VauI8KoTYgbODgJRtCu51XM=";
     };
     description = "Shell completion using LLM";
-    pythonDeps = ["prompt_toolkit" "pygments"];
+    pythonDeps = ["prompt_toolkit"];
   };
 
   llm-cohere = buildLlmPlugin {
@@ -152,12 +152,12 @@ in
 
   llm-deepseek = buildLlmPlugin {
     pname = "llm-deepseek";
-    version = "ref-0.2.0";
+    version = "ref-0.1.6";
     src = fetchFromGitHub {
       owner = "abrasumente233";
       repo = "llm-deepseek";
-      rev = "0.2.0";
-      sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+      rev = "0.1.6";
+      sha256 = "sha256-yrNvIGnU9Q/0H786DsM0wGEwfxZYIk8IXhqC4mWaQAA=";
     };
     description = "LLM plugin for DeepSeek models";
     pythonDeps = ["httpx"];
@@ -165,12 +165,12 @@ in
 
   llm-echo = buildLlmPlugin {
     pname = "llm-echo";
-    version = "ref-0.3a3";
+    version = "ref-0.2";
     src = fetchFromGitHub {
       owner = "simonw";
       repo = "llm-echo";
-      rev = "0.3a3";
-      sha256 = "sha256-4345UIyaQx+mYYBAFD5AaX5YbjbnJQt8bKMD5Vl8VJc=";
+      rev = "0.2";
+      sha256 = "sha256-KtdsvXJQRJ3EEJ25i6ccbVxMsWlDsxa+HJ7bFzyYGNI=";
     };
     description = "Debug plugin for LLM providing an echo model";
     pythonDeps = [];
@@ -217,12 +217,12 @@ in
 
   llm-fragments-github = buildLlmPlugin {
     pname = "llm-fragments-github";
-    version = "ref-0.4.1";
+    version = "ref-0.4";
     src = fetchFromGitHub {
       owner = "simonw";
       repo = "llm-fragments-github";
-      rev = "0.4.1";
-      sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+      rev = "0.4";
+      sha256 = "sha256-7i1WRix5AAEG5EXJqtaU+QY56aL0SePdqz84z+C+iYM=";
     };
     description = "Load GitHub repositories and issues as fragments";
     pythonDeps = ["httpx"];
@@ -282,12 +282,12 @@ in
 
   llm-gemini = buildLlmPlugin {
     pname = "llm-gemini";
-    version = "ref-0.22";
+    version = "ref-0.25";
     src = fetchFromGitHub {
       owner = "simonw";
       repo = "llm-gemini";
-      rev = "0.22";
-      sha256 = "sha256-8zUOP+LNwdUXx4hR3m5lodcVUmB4ZjyiWqWzk2tV9wM=";
+      rev = "0.25";
+      sha256 = "sha256-jnPFlLUQ+NSTDUStocUldqT7Z+bjrtzGSOJHfMFCScU=";
     };
     description = "LLM plugin to access Google's Gemini family of models";
     pythonDeps = ["httpx" "ijson"];
@@ -321,12 +321,12 @@ in
 
   llm-grok = buildLlmPlugin {
     pname = "llm-grok";
-    version = "ref-0.1.0";
+    version = "1.2.0";
     src = fetchFromGitHub {
       owner = "Hiepler";
       repo = "llm-grok";
-      rev = "0.1.0";
-      sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+      rev = "v1.2.0";
+      sha256 = "sha256-YSpo7dsQ0/s+sS2DXeLq7zHBdktxCr0P96vr6PtEu9o=";
     };
     description = "LLM plugin providing access to Grok AI models using the xAI API";
     pythonDeps = ["httpx"];
@@ -334,12 +334,12 @@ in
 
   llm-groq = buildLlmPlugin {
     pname = "llm-groq";
-    version = "0.8";
+    version = "0.9";
     src = fetchFromGitHub {
       owner = "angerman";
       repo = "llm-groq";
-      rev = "v0.8";
-      sha256 = "sha256-sZ5d9w43NvypaPrebwZ5BLgRaCHAhd7gBU6uHEdUaF4=";
+      rev = "v0.9";
+      sha256 = "sha256-9obDB5xz/YFKdnqM/70SC4Ud1t62AsGzAkbGsZTL5Nc=";
     };
     description = "LLM access to models hosted by Groq";
     pythonDeps = ["groq"];
@@ -347,12 +347,12 @@ in
 
   llm-hacker-news = buildLlmPlugin {
     pname = "llm-hacker-news";
-    version = "ref-0.2";
+    version = "ref-0.1.1";
     src = fetchFromGitHub {
       owner = "simonw";
       repo = "llm-hacker-news";
-      rev = "0.2";
-      sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+      rev = "0.1.1";
+      sha256 = "sha256-pywx9TAN/mnGR6Vv6YsPhLO4R5Geagw/bcydQjvTH5s=";
     };
     description = "Import Hacker News conversations as fragments";
     pythonDeps = ["httpx"];
@@ -373,12 +373,12 @@ in
 
   llm-lambda-labs = buildLlmPlugin {
     pname = "llm-lambda-labs";
-    version = "ref-0.1";
+    version = "ref-0.2";
     src = fetchFromGitHub {
       owner = "simonw";
       repo = "llm-lambda-labs";
-      rev = "0.1";
-      sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+      rev = "0.2";
+      sha256 = "sha256-AZuEXNT5fF54kylIpZL21YA95bnIjMo6miWVTssd/zQ=";
     };
     description = "LLM plugin for Lambda Labs hosted models";
     pythonDeps = ["httpx"];
@@ -399,12 +399,12 @@ in
 
   llm-mistral = buildLlmPlugin {
     pname = "llm-mistral";
-    version = "ref-0.14";
+    version = "ref-0.15";
     src = fetchFromGitHub {
       owner = "simonw";
       repo = "llm-mistral";
-      rev = "0.14";
-      sha256 = "sha256-NuiqRA/SCjGq0hJsnHJ/vgdncIKu3oE9WqWGht7QRMc=";
+      rev = "0.15";
+      sha256 = "sha256-4ajvsq0sm3/vdiHUuNxHsHKdX58VNNpHIwhWI0ws+08=";
     };
     description = "Mistral AI language and embedding models";
     pythonDeps = ["httpx" "httpx-sse"];
@@ -456,12 +456,12 @@ in
 
   llm-ollama = buildLlmPlugin {
     pname = "llm-ollama";
-    version = "ref-0.11.0";
+    version = "ref-0.13.0";
     src = fetchFromGitHub {
       owner = "taketwo";
       repo = "llm-ollama";
-      rev = "0.11.0";
-      sha256 = "sha256-iwrDqrPt/zwXypBwD7zDAcen4fQq6PXl7Xj5VUL2KWA=";
+      rev = "0.13.0";
+      sha256 = "sha256-mWiwUXLpyILH1CCi2b0D3TtInEIfK4dubho9EEkbJ0M=";
     };
     description = "Support for local models via Ollama";
     pythonDeps = ["ollama" "pydantic"];
@@ -469,12 +469,12 @@ in
 
   llm-openrouter = buildLlmPlugin {
     pname = "llm-openrouter";
-    version = "ref-0.2";
+    version = "ref-0.4.1";
     src = fetchFromGitHub {
       owner = "simonw";
       repo = "llm-openrouter";
-      rev = "0.2";
-      sha256 = "sha256-tEYzTykNG5USY5LXNnPxtjCr0GLnQ3zqILS07leLHyg=";
+      rev = "0.4.1";
+      sha256 = "sha256-ojBkyXqEaqTcOv7mzTWL5Ihhb50zeVzeQZNA6DySuVg=";
     };
     description = "LLM plugin for OpenRouter API";
     pythonDeps = ["httpx"];
@@ -521,12 +521,12 @@ in
 
   llm-replicate = buildLlmPlugin {
     pname = "llm-replicate";
-    version = "ref-0.8";
+    version = "ref-0.3.1";
     src = fetchFromGitHub {
       owner = "simonw";
       repo = "llm-replicate";
-      rev = "0.8";
-      sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+      rev = "0.3.1";
+      sha256 = "sha256-TeBi9u+ZCQlvr6+Jp/NdL9YOy2E/1uqL1Y9NRpcaiEQ=";
     };
     description = "LLM plugin for models hosted on Replicate";
     pythonDeps = ["replicate"];
@@ -547,12 +547,12 @@ in
 
   llm-templates-fabric = buildLlmPlugin {
     pname = "llm-templates-fabric";
-    version = "ref-0.1";
+    version = "ref-0.2";
     src = fetchFromGitHub {
       owner = "simonw";
       repo = "llm-templates-fabric";
-      rev = "0.1";
-      sha256 = "sha256-KD8aV7qCvyeEFq6lCOd6S8cPMvARr1ezCzg74SuIB/g=";
+      rev = "0.2";
+      sha256 = "sha256-tfkSjeT9WstUsNCtVr3fMzqELFCtfYphqf3xFGvHaV0=";
     };
     description = "Access to Fabric collection of prompts";
     pythonDeps = ["httpx"];
@@ -664,12 +664,12 @@ in
 
   llm-venice = buildLlmPlugin {
     pname = "llm-venice";
-    version = "ref-0.1.0";
+    version = "ref-0.7.0";
     src = fetchFromGitHub {
       owner = "ar-jan";
       repo = "llm-venice";
-      rev = "0.1.0";
-      sha256 = "sha256-+ZJ8znAf6Wfi11HgsnCyhm2qgBUZFKXBHlIY07LeNzQ=";
+      rev = "0.7.0";
+      sha256 = "sha256-vsb3oXGr+2FDJnTwYomICfald1ptben28hAJ8ypKiBI=";
     };
     description = "LLM plugin for Venice AI uncensored models";
     pythonDeps = ["httpx"];
