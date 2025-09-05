@@ -70,6 +70,23 @@ in {
     };
   };
 
+  activation = {
+   workspaceDirectory = lib.hm.dag.entryBefore [ "writeBoundary" ] ''
+      mkdir -p ~/workspace
+      mkdir -p ~/sandbox
+    '';
+
+    customizeOmz = lib.hm.dag.entryAfter [ "writeBoundary" "installPackages" "git" ] ''
+      if [ ! -d ~/workspace/oh-my-zsh-custom ]; then
+        ${pkgs.git}/bin/git clone https://github.com/crdant/oh-my-zsh-custom ~/workspace/oh-my-zsh-custom || {
+          echo "Warning: Failed to clone oh-my-zsh-custom repository. Skipping..."
+        }
+      else
+        echo "oh-my-zsh-custom already exists, skipping clone"
+      fi
+    '';
+  };
+
   nixpkgs = {
     config.allowUnfree = true;
     overlays = [
