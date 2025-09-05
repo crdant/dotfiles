@@ -27,7 +27,6 @@ in {
           ''; 
         }
         image-nvim
-        jupytext-nvim
         neo-tree-nvim
         nvim-web-devicons
         nvim-cmp
