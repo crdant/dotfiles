@@ -2,8 +2,14 @@
 
 let 
   cfg = config.systems.hardening;
-  isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
+  hasSudoRs = builtins.hasAttr "security.sudo-rs" options ;
+  useSudoRsIfAvailable = lib.optionalAttrs hasSudoRs {
+    security.sudo.enable = false;
+    security.sudo-rs = {
+      enable = true;
+    };
+  };
 in {
   imports = [
     ./ssh.nix
@@ -21,14 +27,17 @@ in {
     };
   };
 
-  config = lib.mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [
-      fail2ban
-      lynis
-    ] ++ lib.optionals isLinux [
-      aide
-      chkrootkit
-      unhide
-    ];
-  };
+  config = lib.mkIf cfg.enable (lib.mkMerge [
+    useSudoRsIfAvailable
+    {
+      environment.systemPackages = with pkgs; [
+        fail2ban
+        lynis
+      ] ++ lib.optionals isLinux [
+        aide
+        chkrootkit
+        unhide
+      ];
+    }
+  ]);
 }
