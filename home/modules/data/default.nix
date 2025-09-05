@@ -19,6 +19,13 @@ in {
   };
   
   programs = {
+    neovim = {
+      plugins = with pkgs.vimPlugins; [
+        jupytext-nvim
+        nvim-lspconfig
+      ];
+    };
+
     zsh = {
       shellAliases = lib.mkIf isDarwin {
         snowsql = "/Applications/SnowSQL.app/Contents/MacOS/snowsql";
