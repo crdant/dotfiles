@@ -130,17 +130,30 @@
         generateConfigs userConfigs profiles;
 
       packages.x86_64-linux = {
-        swanOva = mkOvaImage {
-          modules = [ 
-            ./systems/hosts/swan/default.nix
-            ./home/users/crdant/crdant.nix
-            ./home/users/crdant/password.nix
-            home-manager.nixosModules.home-manager
-          ];
-          specialArgs = {inherit inputs outputs;};
+        swan = mkOvaImage {
+            modules = let
+              profilePath = ./home/profiles/server.nix;
+            in [
+              ./systems/hosts/swan/default.nix
+              ./home/users/crdant/crdant.nix
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.users.crdant = {
+                  imports = [ profilePath ];
+                };
+                home-manager.extraSpecialArgs = {
+                  inherit inputs outputs;
+                  username = "crdant";
+                  gitEmail = "crdant@shortrib.io";
+                  homeDirectory = "/home/crdant";
+                  profile = "server";
+                };
+              }
+            ];
+          specialArgs = {inherit inputs outputs ; };
           name = "swan";
-          domain = "lab.shortrib.net";  # Will create VM named "swan.shortrib.local"
-          ram = 4096;  # 4GB for swan
+          domain = "lab.shortrib.net";  
+          ram = 4096;  
           cpus = 2;
         };
       };
