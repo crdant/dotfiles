@@ -102,6 +102,7 @@ in {
   config = {
     environment = {
       systemPackages = with pkgs; [
+        coreutils
         openssl
       ];
     };
