@@ -37,9 +37,6 @@ in {
       ];
 
       extraLuaConfig = ''
-        -- Core editor settings
-        require('snacks').setup({})
-        
         -- Core plugins setup
         require('jupytext').setup(
           {
