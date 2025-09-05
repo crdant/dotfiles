@@ -41,6 +41,32 @@ in
   };
 
 
+  security = {
+  } // lib.optionalAttrs isLinux {
+    sudo.extraRules = [
+      {
+        users = [ "crdant" ];
+        commands = [
+          {
+            command = "ALL";
+            options = [ "NOPASSWD" ];
+          }
+        ];
+      }
+    ];
+    sudo-rs.extraRules = [
+      {
+        users = [ "crdant" ];
+        commands = [
+          {
+            command = "ALL";
+            options = [ "NOPASSWD" ];
+          }
+        ];
+      }
+    ];
+  };
+
   system = {
   } // lib.optionalAttrs isDarwin {
     primaryUser = "crdant";
