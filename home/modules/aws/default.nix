@@ -6,7 +6,7 @@ let
 in {
   # AWS tools and services
   home.packages = with pkgs; [
-    aws-sam-cli
+    # aws-sam-cli
     eksctl
   ];
 
@@ -35,6 +35,7 @@ in {
         };
       };
     };
+
     zsh = {
       oh-my-zsh = {
         plugins = [
