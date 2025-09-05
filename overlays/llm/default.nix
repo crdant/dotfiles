@@ -120,7 +120,7 @@ let
     llmPlugins.llm-tools-simpleeval
     llmPlugins.llm-tools-quickjs
     llmPlugins.llm-tools-exa
-    llmPlugins.llm-tools-rag
+    # llmPlugins.llm-tools-rag
   ];
 
   # fetch shell completion files from the llm-cmd-comp repository
