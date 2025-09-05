@@ -120,35 +120,13 @@ in {
             "${primaryDnsIP}@53"
           ];
 
-          listen-tls = {
+          listen-tls = [
             "${primaryDnsIP}@853"
-          };
+          ];
 
           cert-file = "/var/lib/acme/${cfg.tlsCertDomain}/fullchain.pem";
           key-file = "/var/lib/acme/${cfg.tlsCertDomain}/key.pem";
         };
-
-        # TSIG Key for Dynamic Updates
-        # Generate with: openssl rand -base64 32
-        key = [
-          {
-            id = "octodns.shortrib.net";
-            algorithm = "hmac-sha256";
-            # don't do this for real
-            secret = "8Wsl2UV9eO5c9jHAmSm9XBqUTzyTjulyrtajcCs1EyU=";
-          }
-        ];
-
-        # Access Control List for Updates
-        acl = [
-          {
-            id = "update-acl";
-            key = "octodns.shortrib.net";
-            action = ["update" "transfer"];
-            # Allow updates from configured networks
-            address = [ dnsSubnet ] ++ updateNetworks;
-          }
-        ];
 
         # DNSSEC Policy
         policy = [ 
@@ -160,20 +138,13 @@ in {
           }
         ];
 
-        # Zones Configuration
-        zone = map (domain: {
-          domain = domain;
-          file = "/var/lib/knot/zones/${domain}.zone";
-          acl = "update-acl"; 
-          dnssec-signing = "on";
-          dnssec-policy = "automatic-key-management";
-        }) domains;
-
         # Logging Configuration
         log = [{
           target = "syslog";
           any = "info";
         }];
+
+        include = "/etc/knot.conf.d/*.conf";
       };
     };
 
@@ -193,7 +164,6 @@ in {
       extraConfig = ''
         -- Enable DNSSEC validation
         modules = {
-          'policy',   -- Access control
           'view',     -- View-based configuration
         }
 
@@ -219,43 +189,80 @@ in {
     };
 
     # Persistent Zone Management
-    system.activationScripts.prepareDnsZones = ''
-      # Ensure zone directory exists
-      mkdir -p /var/lib/knot/zones
+    system.activationScripts = {
+      writeDnsConfig = ''
+        # Get runtime information
+        config=/etc/knot.conf.d/octodns.conf
+        octodns_key=$(${pkgs.openssl}/bin/openssl rand -base64 32)
 
-      # Create initial zone files if they don't exist
-      ${concatMapStrings (domain: ''
-        if [ ! -f "/var/lib/knot/zones/${domain}.zone" ]; then
-          cat > "/var/lib/knot/zones/${domain}.zone" << EOL
-\$ORIGIN ${domain}.
-\$TTL 3600
+        mkdir -p $(${pkgs.coreutils}/bin/dirname ''${config})
+        
+        # Write YAML with runtime values
+        cat > ''${config} << EOF
+        key:
+        - id: octodns.shortrib.net
+          algorithm: hmac-sha256
+          secret: ''${octodns_key}
+        
+        acl:
+        - id: update-acl
+          key: octodns.shortrib.net
+          action: update
+          action: transfer
+        EOF
+        
+        # Add addresses from Nix variables
+        ${lib.concatMapStrings (addr: ''
+          echo "  address: ${addr}" >> ''${config}
+        '') ([ dnsSubnet ] ++ updateNetworks)}
+      '';
 
-@ IN SOA ns1.${domain}. admin.${domain}. (
-    $(date +%Y%m%d01) ; Serial
-    3600       ; Refresh
-    1800       ; Retry
-    604800     ; Expire
-    86400 )    ; Minimum TTL
+      writeZonesConfig = let 
+        zonesConfig = {
+          zone = map (domain: {
+            domain = domain;
+            file = "/var/lib/knot/zones/${domain}.zone";
+            acl = "octodns-access";
+            dnssec-signing = "on";
+            dnssec-policy = "automatic-key-management";
+          }) domains;
+        };
+      in ''
+        config=/etc/knot.conf.d/zones.conf
+        mkdir -p $(${pkgs.coreutils}/bin/dirname ''${config})
+        echo '${builtins.toJSON zonesConfig}' | ${pkgs.yq-go}/bin/yq --input-format json --output-format yaml > ''${config}
+      '';
 
-@           IN NS       ns1.${domain}.
-@           IN NS       ns2.${domain}.
+      prepareDnsZones = ''
+        # Ensure zone directory exists
+        mkdir -p /var/lib/knot/zones
 
-ns1         IN A        ${primaryDnsIP}
-ns2         IN A        ${secondaryDnsIP}
-EOL
-          chmod 660 "/var/lib/knot/zones/${domain}.zone"
-          chown knot:knot "/var/lib/knot/zones/${domain}.zone"
-        fi
-      '') domains}
+        # Create initial zone files if they don't exist
+        ${concatMapStrings (domain: ''
+          if [ ! -f "/var/lib/knot/zones/${domain}.zone" ]; then
+            cat > "/var/lib/knot/zones/${domain}.zone" << EOL
+  \$ORIGIN ${domain}.
+  \$TTL 3600
 
-      # Ensure TSIG key exists
-      if [ ! -f ${cfg.tsigKeyPath} ]; then
-        mkdir -p $(dirname ${cfg.tsigKeyPath})
-        openssl rand -base64 32 > ${cfg.tsigKeyPath}
-        chmod 600 ${cfg.tsigKeyPath}
-        chown knot:knot ${cfg.tsigKeyPath}
-      fi
-    '';
+  @ IN SOA ns1.${domain}. admin.${domain}. (
+      $(date +%Y%m%d01) ; Serial
+      3600       ; Refresh
+      1800       ; Retry
+      604800     ; Expire
+      86400 )    ; Minimum TTL
+
+  @           IN NS       ns1.${domain}.
+  @           IN NS       ns2.${domain}.
+
+  ns1         IN A        ${primaryDnsIP}
+  ns2         IN A        ${secondaryDnsIP}
+  EOL
+            chmod 660 "/var/lib/knot/zones/${domain}.zone"
+            chown knot:knot "/var/lib/knot/zones/${domain}.zone"
+          fi
+        '') domains}
+      '';
+    };
 
     # ACME Configuration
     security.acme = {
