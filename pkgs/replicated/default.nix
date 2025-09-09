@@ -17,7 +17,7 @@ buildGoModule rec {
   vendorHash = if isDarwin then
       "sha256-MQN6em11fDxbTLi4UsrmJKMIRrqg2cmWAqFtYMkWiwg="
     else
-      "";
+      "sha256-jmLT3ViYI+NzBaxSZzJJC++oPxsSOKXm3rnwFySGIRg=";
 
   subPackages = [ "cli/cmd/" ];
   ldflags = [
