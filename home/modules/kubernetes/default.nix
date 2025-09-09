@@ -20,7 +20,7 @@ in {
       kubeseal
       kustomize
       kyverno-chainsaw
-      open-policy-agent
+      unstable.open-policy-agent
       replicated
       stern
       troubleshoot-sbctl
