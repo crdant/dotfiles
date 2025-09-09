@@ -145,8 +145,7 @@ in {
           let 
             # Same pattern for goose config
             gooseConfig = {
-              GOOSE_PROVIDER = "anthropic";
-              GOOSE_MODEL = "claude-3-7-sonnet-latest";
+              GOOSE_PROVIDER = "claude-code";
               GOOSE_MODE = "smart_approve";
               extensions = {
                 computercontroller = {
