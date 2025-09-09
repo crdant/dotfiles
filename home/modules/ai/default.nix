@@ -200,14 +200,18 @@ in {
   programs = {
     neovim = {
       plugins = with pkgs.vimPlugins; [
+        claude-code-nvim
         neo-tree-nvim
         nvim-aider
+        plenary-nvim
         snacks-nvim
       ];
   
       extraLuaConfig = lib.mkAfter ''
         -- Aider integration
-        -- require('nvim_aider').setup({})
+        require('nvim_aider').setup({})
+        -- Claude code integration
+        require('claude-code').setup({})
       '';
     };
   };
