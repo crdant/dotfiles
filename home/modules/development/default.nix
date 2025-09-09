@@ -132,17 +132,19 @@ in {
       };
     };
     
-    
-    
-  };
-  
-  programs = { 
+    neovim = {
+      plugins = with pkgs.vimPlugins; [
+        vim-fugitive
+      ];
+    };
+
     zsh = { 
       oh-my-zsh.plugins = [
         "gh"
         "git"
       ];
     };
+    
   };
   
   
