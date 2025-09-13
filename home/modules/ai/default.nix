@@ -8,6 +8,7 @@ in {
   home = { 
     packages = with pkgs; [
       aider-chat-full
+      amp-cli
       nur.repos.charmbracelet.crush
       unstable.claude-code
       unstable.fabric-ai
@@ -144,8 +145,7 @@ in {
           let 
             # Same pattern for goose config
             gooseConfig = {
-              GOOSE_PROVIDER = "anthropic";
-              GOOSE_MODEL = "claude-3-7-sonnet-latest";
+              GOOSE_PROVIDER = "claude-code";
               GOOSE_MODE = "smart_approve";
               extensions = {
                 computercontroller = {
@@ -161,52 +161,6 @@ in {
                   name = "developer";
                   timeout = 300;
                   type = "builtin";
-                };
-                git = {
-                  cmd = "${pkgs.uv}/bin/uvx";
-                  args = [ "mcp-server-git" ];
-                  description = "A Model Context Protocol server for Git repository interaction and automation.";
-                  envs = {};
-                  name = "git";
-                  enabled = true;
-                  timeout = 300;
-                  type = "stdio";
-                };
-                mbta = {
-                  args = [ ];
-                  cmd = "${pkgs.mbta-mcp-server}/bin/mbta-mcp-server";
-                  description = "My unofficial MBTA MCP Server";
-                  enabled = true;
-                  envs = {
-                    MBTA_API_KEY = config.sops.placeholder."mbta/apiKey";
-                  };
-                  name = "mbta";
-                  timeout = 300;
-                  type = "stdio";
-                };
-                github = {
-                  args = [ "stdio" ];
-                  cmd = "${pkgs.unstable.github-mcp-server}/bin/github-mcp-server";
-                  description = "GitHub's official MCP Server";
-                  enabled = true;
-                  envs = {
-                    GITHUB_PERSONAL_ACCESS_TOKEN = config.sops.placeholder."github/token";
-                  };
-                  name = "github";
-                  timeout = 300;
-                  type = "stdio";
-                };
-                google-maps = {
-                  cmd = "${pkgs.nodejs_22}/bin/npx";
-                  args = [ "-y" "@modelcontextprotocol/server-google-maps" ];
-                  description = "MCP Server for the Google Maps API.";
-                  envs = {
-                    GOOGLE_MAPS_API_KEY = "${config.sops.placeholder."google/maps/apiKey"}";
-                  };
-                  name = "google-maps";
-                  enabled = true;
-                  timeout = 300;
-                  type = "stdio";
                 };
                 memory = {
                   display_name = "Memory";
@@ -246,14 +200,18 @@ in {
   programs = {
     neovim = {
       plugins = with pkgs.vimPlugins; [
+        claude-code-nvim
         neo-tree-nvim
         nvim-aider
+        plenary-nvim
         snacks-nvim
       ];
   
       extraLuaConfig = lib.mkAfter ''
         -- Aider integration
-        -- require('nvim_aider').setup({})
+        require('nvim_aider').setup({})
+        -- Claude code integration
+        require('claude-code').setup({})
       '';
     };
   };

@@ -41,7 +41,6 @@ in {
       smug
       tcptraceroute
       zsh-completions
-    ] ++ lib.optionals isDarwin [
     ] ++ lib.optionals isLinux [
       coreutils
       dig
