@@ -1,4 +1,4 @@
-model: claude-4-sonnet
+model: claude-4-opus
 
 prompt: > 
   Can you copy edit this post for me? BE RUTHLESSLY HELPFUL. I want to be
