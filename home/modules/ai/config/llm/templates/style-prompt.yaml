@@ -1,4 +1,4 @@
-model: claude-4-sonnet
+model: claude-4-opus
 
 prompt: > 
   Create a prompt for an assistant such as yourself to follow to write in the style of the author of this collection of markdown files
