@@ -14,9 +14,9 @@ in {
     gist
   ];
 
-  programs = {
-    _1password-shell-plugins = {
-      enable = true;
-    };
-  };
+  # programs = {
+  #   _1password-shell-plugins = {
+  #     enable = true;
+  #   };
+  # };
 }

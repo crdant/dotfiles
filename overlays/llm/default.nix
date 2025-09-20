@@ -5,7 +5,7 @@ let
     inherit (pkgs) system;
   };
   # MLX is only supported on Apple Silicon, and I only use that with Darwin
-  mlx = if pkgs.stdenv.isDarwin && pkgs.stdenv.isAarch64 then unstable.python312Packages.mlx else null;
+  mlx = if pkgs.stdenv.isDarwin && pkgs.stdenv.isAarch64 then unstable.python313Packages.mlx else null;
   llmPlugins = pkgs.llmPlugins;
 
   # Create a single, consistent Python environment
@@ -13,7 +13,7 @@ let
 
   customPython = unstable.python3.override {
     packageOverrides = self: super: {
-      anthropic = unstable.python312Packages.anthropic.overrideAttrs (oldAttrs: let
+      anthropic = unstable.python313Packages.anthropic.overrideAttrs (oldAttrs: let
           newVersion = "0.52.0";
         in {
           version = newVersion;
@@ -23,12 +23,12 @@ let
             rev = "v${newVersion}";
             hash = "sha256-GhWvR5s9qtmn1sctkCmfkp1HCWqw3SV56zlAIQcgIo8=";
           };
-          nativeBuildInputs = (oldAttrs.nativeBuildInputs or []) ++ [ unstable.python312Packages.hatchling ];
+          nativeBuildInputs = (oldAttrs.nativeBuildInputs or []) ++ [ unstable.python313Packages.hatchling ];
         }
       );
  
       # Fix MLX by removing the obsolete Big Sur patch and using an older nanobind
-      nanobind = unstable.python312Packages.nanobind.overrideAttrs (oldAttrs: {
+      nanobind = unstable.python313Packages.nanobind.overrideAttrs (oldAttrs: {
         version = "2.4.0";
         src = unstable.fetchFromGitHub {
           owner = "wjakob";
@@ -38,7 +38,7 @@ let
           fetchSubmodules = true;
         };
       });
-      mlx = if mlx != null then unstable.python312Packages.mlx.overrideAttrs (oldAttrs: let
+      mlx = if mlx != null then unstable.python313Packages.mlx.overrideAttrs (oldAttrs: let
         newVersion = "0.26.0";
       in {
         version = newVersion;
@@ -82,7 +82,7 @@ let
           self.nanobind  # Use our downgraded version
         ];
       }) else null;
-      groq = unstable.python312Packages.groq;
+      groq = unstable.python313Packages.groq;
     };
     self = customPython;  # This makes it self-referential
   };

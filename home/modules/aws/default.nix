@@ -11,12 +11,12 @@ in {
   ];
 
   programs = {
-    _1password-shell-plugins = {
-      enable = true;
-      plugins = with pkgs; [
-        awscli2
-      ];
-    };
+    # _1password-shell-plugins = {
+    #   enable = true;
+    #   plugins = with pkgs; [
+    #     awscli2
+    #   ];
+    # };
     
     awscli = {
       enable = true;

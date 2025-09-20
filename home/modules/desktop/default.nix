@@ -12,9 +12,10 @@ in {
       _1password-cli
       neovide
     ] ++ lib.optionals isDarwin [
-      iterm2
       vimr
       (callPackage ./vimr-wrapper.nix { inherit config; })
+    ] ++ lib.optionals isLinux [
+      obsidian
     ];
 
     file = {
