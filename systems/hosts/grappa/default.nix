@@ -7,7 +7,6 @@
   homebrew = {
     casks = [
       "gqrx"
-      "vmware-fusion"
     ];
 
     masApps = {
