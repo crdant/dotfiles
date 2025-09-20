@@ -26,8 +26,9 @@ in {
     # stuff below as soon as possible
     activation = {
       claude = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        $DRY_RUN_CMD mkdir -p $HOME/.claude/commands
+        $DRY_RUN_CMD mkdir -p $HOME/.claude/commands $HOME/.claude/agents
         $DRY_RUN_CMD cp -f ${./config/claude/commands}/* $HOME/.claude/commands/
+        $DRY_RUN_CMD cp -f ${./config/claude/agents}/* $HOME/.claude/agents/
       '';
     };
 
