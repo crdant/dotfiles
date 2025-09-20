@@ -5,9 +5,9 @@ let
     homebrew = {
       enable = true;
       brews = [
-        "chainguard-dev/tap/chainctl"
         "calicoctl"
         "dagger"
+        "lima"
       ];
     };
   };
