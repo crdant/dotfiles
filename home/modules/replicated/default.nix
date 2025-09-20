@@ -4,9 +4,9 @@ let
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
 in {
-  # Kubernetes and container-related packages
   home = {
     packages = with pkgs; [
+      iterm2
       kots
       replicated
       troubleshoot-sbctl
