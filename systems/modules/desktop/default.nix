@@ -15,11 +15,6 @@ let
       };
       
       taps = [
-        "homebrew/bundle"
-        "homebrew/cask-drivers"
-        "homebrew/cask-fonts"
-        "homebrew/cask-versions"
-        "homebrew/services"
         "OJFord/formulae"
         "vmware-tanzu/carvel"
       ];
@@ -34,7 +29,6 @@ let
         "proxyman"
         "quicklook-json"
         "rancher"
-        "yubico-yubikey-manager"
       ];
 
       masApps = {
@@ -42,20 +36,14 @@ let
        "1Password for Safari" = 1569813296;
        "Amphetamine" = 937984704;
        "Bear" = 1091189122;
-       "Craft" = 1487937127;
        "Keynote" = 409183694;
-       "Matter" = 1548677272;
-       "Memory Clean 3" = 1302310792;
        "Microsoft Excel" = 462058435;
        "Microsoft PowerPoint" = 462062816;
        "Microsoft Remote Desktop" = 1295203466;
        "Numbers" = 409203825;
        "Pages" = 409201541;
-       "Paprika Recipe Manager 3" = 1303222628;
-       "PopClip" = 445189367;
        "Todoist" = 585829637;
-       "Twitter" = 1482454543;
-       "Transmit" = 403388562;
+       "Transmit" = 1436522307;
       };
     };
   };
