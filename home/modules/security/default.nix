@@ -40,11 +40,11 @@ in {
   };
 
   programs = {
-    _1password-shell-plugins = {
-      enable = true;
-      plugins = with pkgs; [
-      ];
-    };
+    # _1password-shell-plugins = {
+    #   enable = true;
+    #   plugins = with pkgs; [
+    #   ];
+    # };
     
     neovim = {
       # Core plugins used everywhere
