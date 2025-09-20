@@ -214,30 +214,72 @@ After implementing each major section:
    - Post update comment on issue
    - Update TodoWrite list
 
-## Step 7: Final Steps
+## Step 7: Final Steps and Pull Request
 
-### For Plan Implementation
-1. Mark all checkboxes complete in the plan file
-2. Run final verification of all success criteria
-3. Create a summary of what was implemented
-4. Note any deviations from the original plan
+### For Both Plan and Issue Implementation
 
-### For Issue Implementation  
-1. Create branch and commit changes:
+1. **Create branch and commit changes**:
    ```bash
    git checkout -b type/username/description
    git add .
    git commit -m "Clear, descriptive message"
-   git push -u origin branch-name
    ```
 
-2. Create pull request:
+2. **Generate professional PR description**:
+   
+   Use the **pull-request-author** agent to create a high-quality PR description:
+   ```
+   Task: Generate pull request description for [feature/fix]
+   Agent: pull-request-author
+   
+   Context:
+   - Implementation: [plan path or issue number]
+   - Key changes: [brief summary]
+   - Test results: [mention if tests pass]
+   
+   Generate a PR description following our team standards.
+   ```
+   
+   The agent will:
+   - Analyze the implementation context
+   - Review git history and changes
+   - Generate a compliant PR description with proper formatting
+   - Focus on WHY and impact, not code details
+
+3. **Create the pull request**:
    ```bash
-   gh pr create --title "Fixes #[issue-number]: [Description]" \
-                --body "See issue #[number] for details"
+   # Push your branch
+   git push -u origin branch-name
+   
+   # Create PR with the generated description
+   gh pr create --title "[Generated title from agent]" \
+                --body "[Generated body from agent]"
    ```
 
-3. Link PR to issue but don't close it
+4. **Link to source**:
+   - For issues: Confirm that the PR includes a link to the issue
+   - For plans: Add comment to PR with plan file reference
+   - Don't close issues until PR is merged
+
+### For Plan Implementation Specifically
+- Mark all checkboxes complete in the plan file
+- Note any deviations from original plan in PR description
+- Reference plan file in PR comment
+
+### For Issue Implementation Specifically  
+- Post final status comment on issue with PR link
+- PR title should include "Fixes #[number]" for auto-linking
+- Keep issue open for reviewer
+
+## Next Steps
+
+After creating the PR, the human can:
+1. Review the PR themselves
+2. Run `/validate` command to get comprehensive validation report
+3. Request reviews from teammates
+4. Make any final adjustments before merge
+
+The validation step is intentionally separate to allow for human judgment about when and how thoroughly to validate.
 
 ## Important Guidelines
 
