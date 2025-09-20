@@ -107,29 +107,76 @@ Post your implementation approach as a GitHub comment:
 Starting implementation now...
 ```
 
-## Step 3: Test-Driven Implementation
+## Step 3: Branch Creation
+
+Create a new feature branch following the naming convention:
+
+**Branch naming convention**: `type/author/description`
+
+**Requirements**:
+- **Type**: Must be one of: `feature`, `fix`, `chore`, `docs`, `refactor`, `test`
+- **Author**: Use your GitHub username or identifier
+- **Description**: Use active voice with present tense verb (e.g., "adds-auth", "fixes-memory-leak")
+  - ✅ Good: "adds-todo-list", "fixes-route-parser", "updates-dependencies"
+  - ❌ Bad: "todo-list", "bug-fix", "added-feature"
+
+**Example**: `feature/username/adds-rate-limiting`
+
+```bash
+git checkout -b type/author/description
+```
+
+## Step 4: Test-Driven Implementation
 
 Whether from plan or issue:
 
 1. **Write tests first** (if not already specified):
    - Find existing test patterns in the codebase
+   - Create small, focused tests
    - Write minimal failing tests
    - Ensure tests capture the intended behavior
    - Run tests to confirm they fail appropriately
 
-2. **Implement incrementally**:
+2. **Initial test commit**:
+   Use the **git-commiter** agent to create a clean commit:
+   ```
+   Task: Create commit for failing tests
+   Agent: git-commiter
+   Context: Just wrote failing tests for [feature]
+   ```
+   
+   The agent will:
+   - Review the changes
+   - Stage only test files explicitly
+   - Create commit with proper message
+
+3. **Implement incrementally**:
    - Make tests pass with minimal code
+   - Write robust, well-documented code
    - Refactor while keeping tests green
    - Add edge case handling
    - Include appropriate logging
 
-3. **Verify continuously**:
+4. **Commit each significant iteration**:
+   Use the **git-commiter** agent for clean, atomic commits:
+   ```
+   Task: Create commit for [what was just implemented]
+   Agent: git-commiter
+   Context: [Brief description of the changes]
+   ```
+   
+   The agent ensures:
+   - Atomic commits that represent logical units
+   - Proper file staging without dangerous commands
+   - Clear messages explaining why changes were made
+
+5. **Verify continuously**:
    - Run test suite after each change
    - Check linting and type checking
    - Ensure no regression in existing tests
    - Update progress tracking (plan checkboxes or issue comments)
 
-## Step 4: Adaptive Implementation
+## Step 5: Adaptive Implementation
 
 When reality doesn't match the plan/issue:
 
@@ -159,7 +206,7 @@ When reality doesn't match the plan/issue:
    - Document why you diverged
    - Ensure the original goal is still met
 
-## Step 5: Progress Tracking
+## Step 6: Progress Tracking
 
 ### For Plans
 Update checkboxes in the plan file as you complete sections:
@@ -188,24 +235,11 @@ Post progress comments on the GitHub issue:
 - Final testing
 ```
 
-## Step 6: Verification and Completion
+## Step 7: Verification and Completion
 
 After implementing each major section:
 
-1. **Run verification commands**:
-   ```bash
-   # Run tests
-   npm test  # or appropriate test command
-   
-   # Check linting
-   npm run lint  # or appropriate lint command
-   
-   # Type checking
-   npm run typecheck  # or appropriate command
-   
-   # Build verification
-   npm run build  # if applicable
-   ```
+1. **Run verification commands** for the project
 
 2. **Fix any issues** before proceeding to next section
 
@@ -214,16 +248,27 @@ After implementing each major section:
    - Post update comment on issue
    - Update TodoWrite list
 
-## Step 7: Final Steps and Pull Request
+## Step 8: Final Steps and Pull Request
 
 ### For Both Plan and Issue Implementation
 
-1. **Create branch and commit changes**:
+1. **Ensure all changes are committed**:
    ```bash
-   git checkout -b type/username/description
-   git add .
-   git commit -m "Clear, descriptive message"
+   # Check for uncommitted changes
+   git status
    ```
+   
+   If changes remain, use the **git-commiter** agent:
+   ```
+   Task: Create final commit(s) for remaining changes
+   Agent: git-commiter
+   Context: Completing [feature] implementation
+   ```
+   
+   The agent will:
+   - Analyze remaining changes
+   - Create atomic commit(s) as needed
+   - Stage files explicitly and safely
 
 2. **Generate professional PR description**:
    
