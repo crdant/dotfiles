@@ -15,6 +15,8 @@ in {
       iterm2
       vimr
       (callPackage ./vimr-wrapper.nix { inherit config; })
+    ] ++ lib.optionals isLinux [
+      obsidian
     ];
 
     file = {
