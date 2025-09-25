@@ -3,8 +3,10 @@
 set -euo pipefail
 
 if [ $# -eq 0 ]; then
+    # Get available packages from the update script
+    available_packages=$(python3 .github/scripts/update-package.py 2>&1 | grep "Available packages:" | cut -d: -f2 | sed 's/^[ ]*//g')
     echo "Usage: $0 <package_name>" >&2
-    echo "Supported packages: vimr, replicated, kots, sbctl" >&2
+    echo "Available packages:$available_packages" >&2
     exit 1
 fi
 

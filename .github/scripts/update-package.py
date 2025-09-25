@@ -10,7 +10,7 @@ import sys
 import os
 import re
 from pathlib import Path
-from typing import Dict, Any, Optional, Tuple
+from typing import Dict, Any, Optional, Tuple, List
 import requests
 from datetime import datetime
 
@@ -125,6 +125,80 @@ def calculate_go_source_hash(owner: str, repo: str, rev: str) -> str:
         print(f"Failed to calculate source hash for {owner}/{repo}@{rev}: {e}", file=sys.stderr)
         raise
 
+def discover_available_packages() -> Dict[str, Dict[str, Any]]:
+    """Discover all available packages from pkgs/ directory and their types."""
+    packages = {}
+    pkgs_dir = Path("pkgs")
+    
+    if not pkgs_dir.exists():
+        return packages
+    
+    for pkg_dir in pkgs_dir.iterdir():
+        if not pkg_dir.is_dir() or pkg_dir.name in ['llm', '__pycache__']:
+            continue
+            
+        default_nix = pkg_dir / "default.nix"
+        if not default_nix.exists():
+            continue
+            
+        try:
+            with default_nix.open() as f:
+                content = f.read()
+            
+            # Determine package type and metadata
+            pkg_info = analyze_package_file(content, pkg_dir.name)
+            if pkg_info:
+                packages[pkg_dir.name] = pkg_info
+                packages[pkg_dir.name]["path"] = default_nix
+                
+        except Exception as e:
+            print(f"Warning: Could not analyze package {pkg_dir.name}: {e}", file=sys.stderr)
+            continue
+    
+    return packages
+
+def analyze_package_file(content: str, dir_name: str) -> Optional[Dict[str, Any]]:
+    """Analyze a package file to determine its type and metadata."""
+    # Extract version information
+    version_match = re.search(r'version\s*=\s*"([^"]+)"', content)
+    if not version_match:
+        return None
+    
+    version = version_match.group(1)
+    
+    # Extract build for VimR-style packages
+    build_match = re.search(r'build\s*=\s*"([^"]+)"', content)
+    build = build_match.group(1) if build_match else None
+    
+    # Determine package type based on patterns
+    if 'fetchurl' in content and 'VimR' in content:
+        pkg_type = 'vimr-binary'
+    elif 'buildGoModule' in content and 'vendorHash' in content:
+        # Check if it has platform-specific vendorHash
+        if 'if isDarwin then' in content and 'vendorHash' in content:
+            pkg_type = 'go-module-platform-specific'
+        else:
+            pkg_type = 'go-module-simple'
+    elif 'fetchzip' in content and ('darwin' in content or 'linux' in content):
+        pkg_type = 'pre-built-binary'
+    elif 'fetchFromGitHub' in content:
+        pkg_type = 'github-source'
+    else:
+        pkg_type = 'unknown'
+    
+    # Extract GitHub repository info if present
+    owner_match = re.search(r'owner\s*=\s*"([^"]+)"', content)
+    repo_match = re.search(r'repo\s*=\s*"([^"]+)"', content)
+    
+    return {
+        "type": pkg_type,
+        "version": version,
+        "build": build,
+        "owner": owner_match.group(1) if owner_match else None,
+        "repo": repo_match.group(1) if repo_match else None,
+        "directory": dir_name
+    }
+
 def read_current_version(package_path: Path) -> Optional[Dict[str, str]]:
     """Read current version information from package file."""
     try:
@@ -223,9 +297,17 @@ def update_vimr(package_path: Path) -> Optional[Dict[str, str]]:
         print(f"Failed to update VimR package file: {e}", file=sys.stderr)
         return None
 
-def update_go_package(package_path: Path, owner: str, repo: str) -> Optional[Dict[str, str]]:
-    """Update Go module package with latest release info."""
-    package_name = package_path.parent.name
+def update_github_source_package(pkg_info: Dict[str, Any]) -> Optional[Dict[str, str]]:
+    """Update a GitHub source package with latest release info."""
+    package_name = pkg_info["directory"]
+    package_path = pkg_info["path"]
+    owner = pkg_info["owner"]
+    repo = pkg_info["repo"]
+    
+    if not owner or not repo:
+        print(f"No GitHub owner/repo found for {package_name}", file=sys.stderr)
+        return None
+        
     print(f"Checking for {package_name} updates...")
     
     current = read_current_version(package_path)
@@ -264,13 +346,14 @@ def update_go_package(package_path: Path, owner: str, repo: str) -> Optional[Dic
         
         # Update version and source hash
         content = re.sub(r'version\s*=\s*"[^"]+";', f'version = "{new_version}";', content)
-        content = re.sub(r'sha256\s*=\s*"[^"]+";', f'sha256 = "{new_source_hash}";', content)
+        content = re.sub(r'(sha256|hash)\s*=\s*"[^"]+";', f'hash = "{new_source_hash}";', content)
         
         with package_path.open("w") as f:
             f.write(content)
             
         print(f"Updated {package_name} package to {new_version} (source hash updated)")
-        print("Note: vendorHash will be updated by separate workflow job")
+        if pkg_info["type"] in ["go-module-platform-specific", "go-module-simple"]:
+            print("Note: vendorHash will be updated by separate workflow job if needed")
         
         # Set GitHub Actions outputs
         if os.environ.get("GITHUB_ACTIONS"):
@@ -290,6 +373,17 @@ def update_go_package(package_path: Path, owner: str, repo: str) -> Optional[Dic
     except Exception as e:
         print(f"Failed to update {package_name} package file: {e}", file=sys.stderr)
         return None
+
+def update_go_package(package_path: Path, owner: str, repo: str) -> Optional[Dict[str, str]]:
+    """Legacy wrapper for backwards compatibility."""
+    pkg_info = {
+        "directory": package_path.parent.name,
+        "path": package_path,
+        "owner": owner,
+        "repo": repo,
+        "type": "go-module-simple"
+    }
+    return update_github_source_package(pkg_info)
 
 def update_sbctl(package_path: Path) -> Optional[Dict[str, str]]:
     """Update sbctl package with latest release info."""
@@ -400,39 +494,44 @@ def update_sbctl(package_path: Path) -> Optional[Dict[str, str]]:
 
 def main():
     """Main entry point."""
-    if len(sys.argv) != 2:
+    if len(sys.argv) < 2:
+        available_packages = discover_available_packages()
         print("Usage: update-package.py <package_name>", file=sys.stderr)
-        print("Supported packages: vimr, replicated, kots, sbctl", file=sys.stderr)
+        print(f"Available packages: {', '.join(sorted(available_packages.keys()))}", file=sys.stderr)
         sys.exit(1)
     
     package_name = sys.argv[1]
     
+    # Discover available packages
+    available_packages = discover_available_packages()
+    
+    if package_name not in available_packages:
+        print(f"Package '{package_name}' not found", file=sys.stderr)
+        print(f"Available packages: {', '.join(sorted(available_packages.keys()))}", file=sys.stderr)
+        sys.exit(1)
+    
+    pkg_info = available_packages[package_name]
+    print(f"Package type detected: {pkg_info['type']}")
+    
     # Check rate limit before starting
     check_rate_limit()
     
-    # Get package path
-    if package_name == "sbctl":
-        # Note: the package directory is named sbctl but the package name in default.nix is troubeleshoot-sbctl
-        package_path = Path("pkgs/sbctl/default.nix")
-    else:
-        package_path = Path(f"pkgs/{package_name}/default.nix")
-    
-    if not package_path.exists():
-        print(f"Package file not found: {package_path}", file=sys.stderr)
-        sys.exit(1)
-    
     # Update based on package type
     result = None
-    if package_name == "vimr":
-        result = update_vimr(package_path)
-    elif package_name == "replicated":
-        result = update_go_package(package_path, "replicatedhq", "replicated")
-    elif package_name == "kots":
-        result = update_go_package(package_path, "replicatedhq", "kots")
-    elif package_name == "sbctl":
-        result = update_sbctl(package_path)
+    
+    if pkg_info["type"] == "vimr-binary":
+        result = update_vimr(pkg_info["path"])
+    elif pkg_info["type"] == "pre-built-binary" and package_name == "sbctl":
+        result = update_sbctl(pkg_info["path"])
+    elif pkg_info["type"] in ["go-module-simple", "go-module-platform-specific", "github-source"]:
+        if pkg_info["owner"] and pkg_info["repo"]:
+            result = update_github_source_package(pkg_info)
+        else:
+            print(f"No GitHub repository information found for {package_name}", file=sys.stderr)
+            sys.exit(1)
     else:
-        print(f"Unknown package: {package_name}", file=sys.stderr)
+        print(f"Package type '{pkg_info['type']}' not yet supported for automatic updates", file=sys.stderr)
+        print(f"Supported types: vimr-binary, pre-built-binary, go-module-simple, go-module-platform-specific, github-source")
         sys.exit(1)
     
     # Set default outputs for GitHub Actions if no update was found
