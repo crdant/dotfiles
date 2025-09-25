@@ -1,7 +1,7 @@
 name: Update sbctl Package
 on:
   schedule:
-    - cron: '0 13 * * 1'  # Weekly on Monday at 1 PM UTC
+    - cron: '45 */4 * * *'  # Every 4 hours, offset by 45 minutes
   workflow_dispatch:
 
 jobs:

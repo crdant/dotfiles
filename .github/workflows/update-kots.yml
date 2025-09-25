@@ -1,7 +1,7 @@
 name: Update KOTS CLI
 on:
   schedule:
-    - cron: '0 12 * * 1'  # Weekly on Monday at 12 PM UTC  
+    - cron: '30 */4 * * *'  # Every 4 hours, offset by 30 minutes  
   workflow_dispatch:
 
 jobs:

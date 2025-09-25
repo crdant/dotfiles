@@ -1,7 +1,7 @@
 name: Update Replicated CLI
 on:
   schedule:
-    - cron: '0 11 * * 1'  # Weekly on Monday at 11 AM UTC  
+    - cron: '15 */4 * * *'  # Every 4 hours, offset by 15 minutes  
   workflow_dispatch:
 
 jobs:

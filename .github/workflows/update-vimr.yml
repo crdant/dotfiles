@@ -1,7 +1,7 @@
 name: Update VimR Package
 on:
   schedule:
-    - cron: '0 10 * * 1'  # Weekly on Monday at 10 AM UTC
+    - cron: '0 */4 * * *'  # Every 4 hours
   workflow_dispatch:
 
 jobs:
