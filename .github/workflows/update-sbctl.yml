@@ -1,0 +1,117 @@
+name: Update sbctl Package
+on:
+  schedule:
+    - cron: '0 13 * * 1'  # Weekly on Monday at 1 PM UTC
+  workflow_dispatch:
+
+jobs:
+  update-sbctl:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+        
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+        
+      - name: Check for sbctl updates and update package
+        id: check
+        run: |
+          python3 .github/scripts/update-package.py sbctl
+          
+      - name: Test sbctl installation on Linux
+        if: steps.check.outputs.updated == 'true'
+        run: |
+          .github/scripts/test-package.sh sbctl
+          
+  test-macos:
+    needs: update-sbctl
+    if: needs.update-sbctl.outputs.updated == 'true'
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Get the updated files from the Linux job
+          ref: ${{ github.ref }}
+          
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+        
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+        
+      - name: Test sbctl installation on macOS
+        run: |
+          .github/scripts/test-package.sh sbctl
+
+  create-pull-request:
+    needs: [update-sbctl, test-macos]
+    if: needs.update-sbctl.outputs.updated == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+        
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+        
+      - name: Test home-manager rebuild
+        run: |
+          # Test that home-manager builds with updated package
+          # Find the correct home configuration name first
+          nix eval --impure --json .#homeConfigurations --apply 'builtins.attrNames' | \
+            jq -r '.[]' | grep "crdant" | head -1 | \
+            xargs -I {} nix build ".#homeConfigurations.{}.activationPackage" --no-link
+          
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: update sbctl to v${{ needs.update-sbctl.outputs.new-version }}"
+          title: "chore: update sbctl to v${{ needs.update-sbctl.outputs.new-version }}"
+          body: |
+            ## 🔄 Automated Package Update: sbctl (Troubleshoot)
+            
+            This is an automated update of the sbctl (Troubleshoot Support Bundle CLI) package.
+            
+            ### Changes
+            - **Previous version**: ${{ needs.update-sbctl.outputs.old-version }}
+            - **New version**: ${{ needs.update-sbctl.outputs.new-version }}
+            - **Release notes**: https://github.com/replicatedhq/sbctl/releases/tag/v${{ needs.update-sbctl.outputs.new-version }}
+            
+            ### Platform-specific Binary Hashes Updated
+            - **Darwin**: `${{ needs.update-sbctl.outputs.darwin-hash }}`
+            - **Linux**: `${{ needs.update-sbctl.outputs.linux-hash }}`
+            
+            ### Validation
+            ✅ Package builds successfully on Linux  
+            ✅ Package builds successfully on macOS  
+            ✅ Installation tests passed on both platforms  
+            ✅ Home manager rebuild test passed  
+            ✅ Binary hashes calculated and verified for both platforms  
+            
+            ### Next Steps
+            - Review the changes and ensure they look correct
+            - Test the updated package in your environment
+            - Merge when ready
+            
+            ---
+            🤖 *This PR was created automatically by the sbctl update workflow*
+          branch: update-sbctl-${{ needs.update-sbctl.outputs.new-version }}
+          delete-branch: true

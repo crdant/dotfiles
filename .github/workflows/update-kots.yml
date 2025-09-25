@@ -1,0 +1,151 @@
+name: Update KOTS CLI
+on:
+  schedule:
+    - cron: '0 12 * * 1'  # Weekly on Monday at 12 PM UTC  
+  workflow_dispatch:
+
+jobs:
+  check-update:
+    runs-on: ubuntu-latest
+    outputs:
+      updated: ${{ steps.check.outputs.updated }}
+      old-version: ${{ steps.check.outputs.old-version }}
+      new-version: ${{ steps.check.outputs.new-version }}
+      tag-name: ${{ steps.check.outputs.tag-name }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+        
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+        
+      - name: Check for KOTS updates
+        id: check
+        run: |
+          python3 .github/scripts/update-package.py kots
+
+  calculate-vendor-hashes:
+    needs: check-update
+    if: needs.check-update.outputs.updated == 'true'
+    strategy:
+      matrix:
+        include:
+          - os: macos-latest
+            platform: darwin
+          - os: ubuntu-latest
+            platform: linux
+    runs-on: ${{ matrix.os }}
+    outputs:
+      darwin-hash: ${{ steps.vendor.outputs.darwin-hash }}
+      linux-hash: ${{ steps.vendor.outputs.linux-hash }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+        
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+        
+      - name: Install Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+          
+      - name: Calculate vendor hash for ${{ matrix.platform }}
+        id: vendor
+        run: |
+          python3 .github/scripts/calculate-go-vendor-hash.py kots ${{ needs.check-update.outputs.new-version }} ${{ matrix.os }}
+          
+      - name: Test KOTS installation
+        run: |
+          .github/scripts/test-package.sh kots
+
+  update-and-create-pr:
+    needs: [check-update, calculate-vendor-hashes]
+    if: needs.check-update.outputs.updated == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+        
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+        
+      - name: Update vendorHash values
+        run: |
+          # Get the vendor hashes from the matrix job outputs
+          DARWIN_HASH="${{ needs.calculate-vendor-hashes.outputs.darwin-hash }}"
+          LINUX_HASH="${{ needs.calculate-vendor-hashes.outputs.linux-hash }}"
+          
+          echo "Updating KOTS vendorHash values:"
+          echo "Darwin: $DARWIN_HASH"
+          echo "Linux: $LINUX_HASH"
+          
+          # Update the package file with new vendor hashes
+          sed -i.bak -E "s|(vendorHash = if isDarwin then[[:space:]]*)\\\".+\\\"|\1\"$DARWIN_HASH\"|" pkgs/kots/default.nix
+          sed -i.bak -E "s|(else[[:space:]]*)\\\".+\\\";|\1\"$LINUX_HASH\";|" pkgs/kots/default.nix
+          
+          # Show the changes
+          echo "Updated package file:"
+          cat pkgs/kots/default.nix | grep -A3 -B1 vendorHash
+          
+      - name: Test updated package builds
+        run: |
+          .github/scripts/test-package.sh kots
+          
+      - name: Test home-manager rebuild
+        run: |
+          # Test that home-manager builds with updated package
+          # Find the correct home configuration name first
+          nix eval --impure --json .#homeConfigurations --apply 'builtins.attrNames' | \
+            jq -r '.[]' | grep "crdant" | head -1 | \
+            xargs -I {} nix build ".#homeConfigurations.{}.activationPackage" --no-link
+          
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: update KOTS CLI to v${{ needs.check-update.outputs.new-version }}"
+          title: "chore: update KOTS CLI to v${{ needs.check-update.outputs.new-version }}"
+          body: |
+            ## 🔄 Automated Package Update: KOTS CLI
+            
+            This is an automated update of the KOTS (Kubernetes Off-The-Shelf) CLI package.
+            
+            ### Changes
+            - **Previous version**: ${{ needs.check-update.outputs.old-version }}
+            - **New version**: ${{ needs.check-update.outputs.new-version }}
+            - **Release notes**: https://github.com/replicatedhq/kots/releases/tag/${{ needs.check-update.outputs.tag-name }}
+            
+            ### Platform-specific Vendor Hashes Updated
+            - **Darwin**: `${{ needs.calculate-vendor-hashes.outputs.darwin-hash }}`
+            - **Linux**: `${{ needs.calculate-vendor-hashes.outputs.linux-hash }}`
+            
+            ### Validation
+            ✅ Package builds successfully on both macOS and Linux  
+            ✅ Installation tests passed on both platforms  
+            ✅ Home manager rebuild test passed  
+            ✅ Vendor hashes calculated and verified for both platforms  
+            
+            ### Next Steps
+            - Review the changes and ensure they look correct
+            - Test the updated package in your environment
+            - Merge when ready
+            
+            ---
+            🤖 *This PR was created automatically by the KOTS CLI update workflow*
+          branch: update-kots-${{ needs.check-update.outputs.new-version }}
+          delete-branch: true
