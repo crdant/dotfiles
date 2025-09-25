@@ -1,0 +1,127 @@
+name: Update All Packages
+on:
+  workflow_dispatch:
+    inputs:
+      packages:
+        description: 'Packages to update (comma-separated, or "all" for all packages)'
+        required: false
+        default: 'all'
+        type: string
+
+jobs:
+  determine-packages:
+    runs-on: ubuntu-latest
+    outputs:
+      packages: ${{ steps.packages.outputs.packages }}
+    steps:
+      - name: Determine packages to update
+        id: packages
+        run: |
+          input_packages="${{ github.event.inputs.packages }}"
+          
+          if [ "$input_packages" = "all" ] || [ -z "$input_packages" ]; then
+            packages='["vimr", "replicated", "kots", "sbctl"]'
+          else
+            # Convert comma-separated list to JSON array
+            IFS=',' read -ra pkg_array <<< "$input_packages"
+            packages='['
+            for i in "${!pkg_array[@]}"; do
+              pkg=$(echo "${pkg_array[$i]}" | xargs)  # trim whitespace
+              if [ $i -gt 0 ]; then
+                packages+=', '
+              fi
+              packages+="\"$pkg\""
+            done
+            packages+=']'
+          fi
+          
+          echo "packages=$packages" >> $GITHUB_OUTPUT
+          echo "Will trigger updates for packages: $packages"
+
+  trigger-vimr-update:
+    needs: determine-packages
+    if: contains(fromJSON(needs.determine-packages.outputs.packages), 'vimr')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger VimR update workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: update-vimr.yml
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  trigger-replicated-update:
+    needs: determine-packages
+    if: contains(fromJSON(needs.determine-packages.outputs.packages), 'replicated')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Replicated update workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: update-replicated.yml
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  trigger-kots-update:
+    needs: determine-packages
+    if: contains(fromJSON(needs.determine-packages.outputs.packages), 'kots')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger KOTS update workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: update-kots.yml
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  trigger-sbctl-update:
+    needs: determine-packages
+    if: contains(fromJSON(needs.determine-packages.outputs.packages), 'sbctl')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger sbctl update workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: update-sbctl.yml
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  summary:
+    needs: [determine-packages, trigger-vimr-update, trigger-replicated-update, trigger-kots-update, trigger-sbctl-update]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Create summary comment
+        run: |
+          packages='${{ needs.determine-packages.outputs.packages }}'
+          
+          echo "## 🚀 Package Update Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Triggered updates for the following packages:" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Parse and display the packages
+          echo "$packages" | jq -r '.[]' | while read -r pkg; do
+            case $pkg in
+              "vimr")
+                echo "- 📱 **VimR**: [Workflow](https://github.com/${{ github.repository }}/actions/workflows/update-vimr.yml)" >> $GITHUB_STEP_SUMMARY
+                ;;
+              "replicated") 
+                echo "- 🔄 **Replicated CLI**: [Workflow](https://github.com/${{ github.repository }}/actions/workflows/update-replicated.yml)" >> $GITHUB_STEP_SUMMARY
+                ;;
+              "kots")
+                echo "- ☸️ **KOTS CLI**: [Workflow](https://github.com/${{ github.repository }}/actions/workflows/update-kots.yml)" >> $GITHUB_STEP_SUMMARY
+                ;;
+              "sbctl")
+                echo "- 🔧 **sbctl**: [Workflow](https://github.com/${{ github.repository }}/actions/workflows/update-sbctl.yml)" >> $GITHUB_STEP_SUMMARY
+                ;;
+            esac
+          done
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Next Steps" >> $GITHUB_STEP_SUMMARY
+          echo "1. Monitor the individual workflow runs to see if updates are available" >> $GITHUB_STEP_SUMMARY
+          echo "2. Review any created pull requests for package updates" >> $GITHUB_STEP_SUMMARY
+          echo "3. Test and merge approved updates" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "🤖 *This summary was generated automatically*" >> $GITHUB_STEP_SUMMARY

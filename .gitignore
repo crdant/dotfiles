@@ -11,6 +11,11 @@ work/*
 # nix build results
 result
 
+# python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
 **/.claude/settings.local.json
 **/.goose
 **/.crush
