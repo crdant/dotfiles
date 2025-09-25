@@ -16,7 +16,7 @@ echo "Testing $PACKAGE_NAME installation on $PLATFORM..."
 # Map package name to Nix package name if needed
 case "$PACKAGE_NAME" in
     "sbctl")
-        NIX_PACKAGE="troubeleshoot-sbctl"  # Note: matches the pname in default.nix
+        NIX_PACKAGE="troubleshoot-sbctl"  # Note: matches the name in pkgs/default.nix
         BINARY_NAME="sbctl"
         ;;
     "kots")
