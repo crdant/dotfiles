@@ -193,7 +193,7 @@ in {
     system.activationScripts = {
       writeDnsConfig = ''
         # Get runtime information
-        config=/etc/knot.conf.d/octodns.conf
+        config=/etc/knot.conf.d/00-octodns.conf
         octodns_key=$(${pkgs.openssl}/bin/openssl rand -base64 32)
 
         mkdir -p $(${pkgs.coreutils}/bin/dirname ''${config})
@@ -206,7 +206,7 @@ in {
           secret: ''${octodns_key}
         
         acl:
-        - id: update-acl
+        - id: octodns-update-access
           key: octodns.shortrib.net
           action: update
           action: transfer
@@ -219,19 +219,22 @@ in {
       '';
 
       writeZonesConfig = let 
-        zonesConfig = {
-          zone = map (domain: {
-            domain = domain;
-            file = "/var/lib/knot/zones/${domain}.zone";
-            acl = "octodns-access";
-            dnssec-signing = "on";
-            dnssec-policy = "automatic-key-management";
-          }) domains;
-        };
+        zonesYaml = ''
+          zone:
+          ${lib.concatMapStrings (domain: ''
+            - domain: ${domain}
+              file: /var/lib/knot/zones/${domain}.zone
+              acl: octodns-update-access
+              dnssec-signing: on
+              dnssec-policy: automatic-key-management
+          '') domains}
+        '';
       in ''
-        config=/etc/knot.conf.d/zones.conf
+        config=/etc/knot.conf.d/01-zones.conf
         mkdir -p $(${pkgs.coreutils}/bin/dirname ''${config})
-        echo '${builtins.toJSON zonesConfig}' | ${pkgs.yq-go}/bin/yq --input-format json --output-format yaml > ''${config}
+        cat > ''${config} <<'EOF'
+        ${zonesYaml}
+        EOF
       '';
 
       prepareDnsZones = ''
