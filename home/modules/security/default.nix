@@ -16,6 +16,7 @@ in {
         cosign
         sops
         syft
+        tunnelmanager
         # yubico-pam
         yubico-piv-tool
         yubikey-manager
