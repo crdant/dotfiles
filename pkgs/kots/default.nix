@@ -18,7 +18,6 @@ buildGoModule rec {
       "sha256-1A0I5Iw+5yTiSCMElSO3FIveAo4nkSTqUf0K0bvcpIs="
     else
       "sha256-ITOJoxEmHIpTpych42Ad03CRB5TKPlNELMK2hXuamkk=";
-      "";
 
   subPackages = [ "cmd/kots/" ];
 
