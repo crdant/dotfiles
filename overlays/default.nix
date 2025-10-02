@@ -20,7 +20,7 @@
     );
 
     buildGo1_25Module = prev.buildGoModule.override {
-      go = final.go;
+      go = final.go1_25;
     };
 
     vimPlugins = prev.vimPlugins // {
