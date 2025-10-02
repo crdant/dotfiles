@@ -20,11 +20,8 @@ in {
       kubeseal
       kustomize
       kyverno-chainsaw
-      unstable.open-policy-agent
-      replicated
+      # open-policy-agent
       stern
-      troubleshoot-sbctl
-      tunnelmanager
       vendir
       ytt
     ] ++ lib.optionals isLinux [
