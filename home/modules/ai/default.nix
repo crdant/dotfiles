@@ -26,16 +26,15 @@ in {
     # stuff below as soon as possible
     activation = {
       claude = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        $DRY_RUN_CMD mkdir -p $HOME/.claude/commands
-        $DRY_RUN_CMD cp -f ${./config/claude/commands}/* $HOME/.claude/commands/
+        for CLAUDE_CONFIG_DIR in  ${config.xdg.configHome}/claude/replicated ${config.xdg.configHome}/claude/personal ; do
+          $DRY_RUN_CMD mkdir -p $CLAUDE_CONFIG_DIR/commands $CLAUDE_CONFIG_DIR/agents
+          $DRY_RUN_CMD cp -f ${./config/claude/commands}/* $CLAUDE_CONFIG_DIR/commands
+          $DRY_RUN_CMD cp -f ${./config/claude/agents}/* $CLAUDE_CONFIG_DIR/agents
+        done
       '';
     };
 
     file = {
-      # ".claude" = {
-      #   source = ./config/claude;
-      #   recursive = true;
-      # };
     } // lib.optionalAttrs isDarwin {
       "Library/Application Support/io.datasette.llm/templates" = {
         source = ./config/llm/templates;
@@ -48,6 +47,35 @@ in {
       };
     };
   };
+
+  programs = {
+    zsh = {
+      envExtra = ''
+        # set default for Claude config based on hostname
+        if [[ "$(whoami)" == "chuck" ]] ; then
+          export CLAUDE_CONFIG_DIR="${config.xdg.configHome}/claude/replicated"
+        else
+          export CLAUDE_CONFIG_DIR="${config.xdg.configHome}/claude/personal"
+        fi
+      '';
+    };
+
+  };
+
+  # uncomment when Claude code can handle symlinks
+  # xdg = {
+  #   enable = true;
+  #   configFile = {
+  #     "claude/personal" = {
+  #       source = ./config/claude;
+  #       recursive = true;
+  #     };
+  #     "claude/replicated" = {
+  #       source = ./config/claude;
+  #       recursive = true;
+  #     };
+  #   };
+  # };
 
   # AI-specific secrets
   sops = {

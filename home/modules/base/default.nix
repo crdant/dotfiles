@@ -284,13 +284,6 @@ in {
           export PATH=$PATH:"$HOME/.rd/bin"
         fi
         
-        # set default for Claude config based on hostname
-        if [[ "$(whoami)" == "chuck" ]] ; then
-          export CLAUDE_CONFIG_DIR="${config.xdg.configHome}/replicated"
-        else
-          export CLAUDE_CONFIG_DIR="${config.xdg.configHome}/personal"
-        fi
-        
         unset RPS1
       '';
     };
