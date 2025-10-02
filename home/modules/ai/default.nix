@@ -26,7 +26,7 @@ in {
     # stuff below as soon as possible
     activation = {
       claude = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        for CLAUDE_CONFIG_DIR in ( ${config.xdg.configHome}/claude/replicated ${config.xdg.configHome}/claude/personal ) ; do
+        for CLAUDE_CONFIG_DIR in  ${config.xdg.configHome}/claude/replicated ${config.xdg.configHome}/claude/personal ; do
           $DRY_RUN_CMD mkdir -p $CLAUDE_CONFIG_DIR/commands $CLAUDE_CONFIG_DIR/agents
           $DRY_RUN_CMD cp -f ${./config/claude/commands}/* $CLAUDE_CONFIG_DIR/commands
           $DRY_RUN_CMD cp -f ${./config/claude/agents}/* $CLAUDE_CONFIG_DIR/agents
@@ -46,7 +46,9 @@ in {
         recursive = true;
       };
     };
+  };
 
+  programs = {
     zsh = {
       envExtra = ''
         # set default for Claude config based on hostname
