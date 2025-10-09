@@ -27,10 +27,21 @@ in {
     activation = {
       claude = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         for CLAUDE_CONFIG_DIR in  ${config.xdg.configHome}/claude/replicated ${config.xdg.configHome}/claude/personal ; do
+          echo "Copying agents and commands to $CLAUDE_CONFIG_DIR..."
           $DRY_RUN_CMD mkdir -p $CLAUDE_CONFIG_DIR/commands $CLAUDE_CONFIG_DIR/agents
           $DRY_RUN_CMD cp -f ${./config/claude/commands}/* $CLAUDE_CONFIG_DIR/commands
           $DRY_RUN_CMD cp -f ${./config/claude/agents}/* $CLAUDE_CONFIG_DIR/agents
         done
+
+        if [ ! -d ~/.claude/agents ]; then
+          echo "Copying Replicated managed agents to the Replicated Claude config directory..."
+          cp -r ~/.claude/config/agents ${config.xdg.configHome}/claude/replicated/agents
+        fi
+
+        if [ ! -d ~/.claude/commands ]; then
+          echo "Copying Replicated managed commands to the Replicated Claude config directory..."
+          cp -r ~/.claude/config/commands ${config.xdg.configHome}/claude/replicated/commands
+        fi
       '';
     };
 
