@@ -5,10 +5,10 @@ distribute modern containerized applications to their customers.
 Here is the company you need to research:
 
 <company_name>
-{{COMPANY_NAME}}
+$1
 </company_name>
 <company_url>
-{{COMPANY_URL}}
+$2
 </company_url>
 
 Your goal is to gather information about this company that will be relevant
