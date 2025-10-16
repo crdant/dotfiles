@@ -10,6 +10,7 @@ in {
       kots
       replicated
       troubleshoot-sbctl
+      unstable.okteto
     ] ++ lib.optionals isDarwin [
       instruqt
       teams
