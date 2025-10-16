@@ -35,15 +35,15 @@
 
     llm = prev.callPackage ./llm { };
     
-    tailscale = (prev.tailscale.overrideAttrs (oldAttrs: let 
-      newVersion = "1.88.3";
+    tailscale = (prev.tailscale.overrideAttrs (oldAttrs: let
+      newVersion = "1.88.4";
     in {
       version = newVersion;
       src = prev.fetchFromGitHub {
         owner = "tailscale";
         repo = "tailscale";
         rev = "v${newVersion}";
-        sha256 = "sha256-gw4oexTyJGeBkCd07RQQdfY14xArgVIMDHKrWu9K+9Q=";
+        sha256 = "sha256-fzJwRTB2U2GuLmv1XUSMLnhyLlp+4kGorLGAvRVjDqw=";
       };
       vendorHash = "sha256-8aE6dWMkTLdWRD9WnLVSzpOQQh61voEnjZAJHtbGCSs=";
       doCheck = false;
