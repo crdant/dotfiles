@@ -6,13 +6,13 @@ let
 in {
   home = {
     packages = with pkgs; [
-      iterm2
       kots
       replicated
       troubleshoot-sbctl
       unstable.okteto
     ] ++ lib.optionals isDarwin [
       instruqt
+      iterm2
       teams
     ];
     file = lib.optionalAttrs isDarwin {
