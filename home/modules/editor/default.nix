@@ -18,6 +18,7 @@ in {
       plugins = with pkgs.vimPlugins; [
         cmp-nvim-lsp
         conflict-marker-vim
+        diffview-nvim
         {
           plugin = fzf-vim;
           config = ''
