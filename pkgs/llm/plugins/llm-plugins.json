@@ -313,7 +313,7 @@
     "ref": "v1.1.1",
     "description": "Shell completion using LLM",
     "pythonDeps": [
-      "prompt_toolkit",
+      "prompt_toolkit"
     ]
   },
   "llm-python": {

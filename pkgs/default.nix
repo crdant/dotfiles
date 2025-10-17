@@ -12,6 +12,7 @@ rec {
   replicated = pkgs.callPackage ./replicated { };
   kots = pkgs.callPackage ./kots { };
   troubleshoot-sbctl = pkgs.callPackage ./sbctl { };
+  helm-beta = pkgs.callPackage ./helm-beta { };
 
   llmPlugins = pkgs.callPackage ./llm/plugins { };
 

@@ -8,11 +8,11 @@ in {
   home = {
     packages = with pkgs; [
       conftest
+      helm-beta
       helmfile
       istioctl
       krew
       kubectl
-      kubernetes-helm
       k0sctl
       k9s
       kapp

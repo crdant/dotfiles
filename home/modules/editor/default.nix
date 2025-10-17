@@ -18,14 +18,16 @@ in {
       plugins = with pkgs.vimPlugins; [
         cmp-nvim-lsp
         conflict-marker-vim
+        diffview-nvim
         {
           plugin = fzf-vim;
           config = ''
             " Initialize configuration dictionary
             let g:fzf_vim = {}
             let g:fzf_vim.preview_window = []
-          ''; 
+          '';
         }
+        gitsigns-nvim
         image-nvim
         neo-tree-nvim
         nvim-web-devicons
@@ -39,7 +41,7 @@ in {
       extraLuaConfig = ''
         -- Core editor settings
         require('snacks').setup({})
-        
+
         -- Core plugins setup
         require('jupytext').setup(
           {
@@ -47,6 +49,9 @@ in {
             format = "markdown"
           }
         )
+
+        -- Gitsigns setup
+        require('gitsigns').setup()
 
         if vim.fn.has('gui_running') ~= 1 then
           require('image').setup({})

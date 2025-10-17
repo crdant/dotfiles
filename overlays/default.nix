@@ -35,15 +35,15 @@
 
     llm = prev.callPackage ./llm { };
     
-    tailscale = (prev.tailscale.overrideAttrs (oldAttrs: let 
-      newVersion = "1.88.3";
+    tailscale = (prev.tailscale.overrideAttrs (oldAttrs: let
+      newVersion = "1.88.4";
     in {
       version = newVersion;
       src = prev.fetchFromGitHub {
         owner = "tailscale";
         repo = "tailscale";
         rev = "v${newVersion}";
-        sha256 = "sha256-gw4oexTyJGeBkCd07RQQdfY14xArgVIMDHKrWu9K+9Q=";
+        sha256 = "sha256-fzJwRTB2U2GuLmv1XUSMLnhyLlp+4kGorLGAvRVjDqw=";
       };
       vendorHash = "sha256-8aE6dWMkTLdWRD9WnLVSzpOQQh61voEnjZAJHtbGCSs=";
       doCheck = false;
@@ -51,13 +51,13 @@
 
     kots = prev.kots.override{ buildGoModule = final.buildGo1_25Module; };
 
-    claude-code = (prev.claude-code.overrideAttrs (oldAttrs: let 
-      newVersion = "2.0.1";
+    claude-code = (prev.claude-code.overrideAttrs (oldAttrs: let
+      newVersion = "2.0.21";
     in {
       version = newVersion;
       src = prev.fetchzip {
         url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${newVersion}.tgz";
-        hash = "sha256-LUbDPFa0lY74MBU4hvmYVntt6hVZy6UUZFN0iB4Eno8=";
+        hash = "sha256-sX9btcy9uEHloAQNvCJFhwh0U/W14NWz2FjkdLXm1Q0=";
       };
     }));
 

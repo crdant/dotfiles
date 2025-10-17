@@ -121,7 +121,7 @@ in
       sha256 = "sha256-BTlqrwHS6SSQ86vaf9CqNbgFM9RSiRk97dktosLBE78=";
     };
     description = "Shell completion using LLM";
-    pythonDeps = ["prompt_toolkit" "pygments"];
+    pythonDeps = ["prompt_toolkit"];
   };
 
   llm-cohere = buildLlmPlugin {
