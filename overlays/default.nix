@@ -52,12 +52,12 @@
     kots = prev.kots.override{ buildGoModule = final.buildGo1_25Module; };
 
     claude-code = (prev.claude-code.overrideAttrs (oldAttrs: let
-      newVersion = "2.0.19";
+      newVersion = "2.0.21";
     in {
       version = newVersion;
       src = prev.fetchzip {
         url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${newVersion}.tgz";
-        hash = "sha256-wUpOZzGrs1VekDt0T+j9t9E+dVPPfjQUJxgqWVU3eGk=";
+        hash = "sha256-sX9btcy9uEHloAQNvCJFhwh0U/W14NWz2FjkdLXm1Q0=";
       };
     }));
 
