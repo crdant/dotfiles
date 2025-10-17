@@ -33,14 +33,17 @@ in {
           $DRY_RUN_CMD cp -f ${./config/claude/agents}/* $CLAUDE_CONFIG_DIR/agents
         done
 
-        if [ ! -d ~/.claude/agents ]; then
-          echo "Copying Replicated managed agents to the Replicated Claude config directory..."
-          cp -r ~/.claude/config/agents ${config.xdg.configHome}/claude/replicated/agents
-        fi
+        # Only on sochu: copy Replicated's auto-installed managed agents/commands
+        if [ "$(hostname -s)" = "sochu" ]; then
+          if [ -d ~/.claude/agents ]; then
+            echo "Copying Replicated managed agents to the Replicated Claude config directory..."
+            $DRY_RUN_CMD cp -r ~/.claude/agents/* ${config.xdg.configHome}/claude/replicated/agents/
+          fi
 
-        if [ ! -d ~/.claude/commands ]; then
-          echo "Copying Replicated managed commands to the Replicated Claude config directory..."
-          cp -r ~/.claude/config/commands ${config.xdg.configHome}/claude/replicated/commands
+          if [ -d ~/.claude/commands ]; then
+            echo "Copying Replicated managed commands to the Replicated Claude config directory..."
+            $DRY_RUN_CMD cp -r ~/.claude/commands/* ${config.xdg.configHome}/claude/replicated/commands/
+          fi
         fi
       '';
     };
