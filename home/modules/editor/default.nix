@@ -42,6 +42,11 @@ in {
         -- Core editor settings
         require('snacks').setup({})
 
+        -- Configure undofile to use XDG state directory
+        vim.opt.undofile = true
+        vim.opt.undodir = vim.fn.stdpath('state') .. '/undo'
+        vim.fn.mkdir(vim.opt.undodir:get()[1], 'p')
+
         -- Core plugins setup
         require('jupytext').setup(
           {
