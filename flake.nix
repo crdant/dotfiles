@@ -70,6 +70,17 @@
       };
 
       darwinConfigurations = {
+	"aguardiente" = darwin.lib.darwinSystem {
+          system = "aarch64-darwin";
+          specialArgs = {inherit inputs outputs;};
+          modules = [ 
+            ./systems/modules/base/terminfo.nix
+            ./systems/hosts/aguardiente/default.nix
+            ./home/users/crdant/crdant.nix
+            ./home/users/crdant/darwin.nix
+          ];
+        };
+
         "grappa" = darwin.lib.darwinSystem {
           system = "aarch64-darwin";
           specialArgs = {inherit inputs outputs;};

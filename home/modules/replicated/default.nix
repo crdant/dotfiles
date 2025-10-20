@@ -4,14 +4,15 @@ let
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
 in {
-  # Kubernetes and container-related packages
   home = {
     packages = with pkgs; [
       kots
       replicated
       troubleshoot-sbctl
+      unstable.okteto
     ] ++ lib.optionals isDarwin [
       instruqt
+      iterm2
       teams
     ];
     file = lib.optionalAttrs isDarwin {

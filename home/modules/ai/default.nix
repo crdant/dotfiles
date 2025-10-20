@@ -10,7 +10,7 @@ in {
       aider-chat-full
       amp-cli
       nur.repos.charmbracelet.crush
-      unstable.claude-code
+      claude-code
       unstable.fabric-ai
       gemini-cli
       goose-cli
@@ -26,16 +26,29 @@ in {
     # stuff below as soon as possible
     activation = {
       claude = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        $DRY_RUN_CMD mkdir -p $HOME/.claude/commands
-        $DRY_RUN_CMD cp -f ${./config/claude/commands}/* $HOME/.claude/commands/
+        for CLAUDE_CONFIG_DIR in  ${config.xdg.configHome}/claude/replicated ${config.xdg.configHome}/claude/personal ; do
+          echo "Copying agents and commands to $CLAUDE_CONFIG_DIR..."
+          $DRY_RUN_CMD mkdir -p $CLAUDE_CONFIG_DIR/commands $CLAUDE_CONFIG_DIR/agents
+          $DRY_RUN_CMD cp -f ${./config/claude/commands}/* $CLAUDE_CONFIG_DIR/commands
+          $DRY_RUN_CMD cp -f ${./config/claude/agents}/* $CLAUDE_CONFIG_DIR/agents
+        done
+
+        # Only on sochu: copy Replicated's auto-installed managed agents/commands
+        if [ "$(hostname -s)" = "sochu" ]; then
+          if [ -d ~/.claude/agents ]; then
+            echo "Copying Replicated managed agents to the Replicated Claude config directory..."
+            $DRY_RUN_CMD cp -r ~/.claude/agents/* ${config.xdg.configHome}/claude/replicated/agents/
+          fi
+
+          if [ -d ~/.claude/commands ]; then
+            echo "Copying Replicated managed commands to the Replicated Claude config directory..."
+            $DRY_RUN_CMD cp -r ~/.claude/commands/* ${config.xdg.configHome}/claude/replicated/commands/
+          fi
+        fi
       '';
     };
 
     file = {
-      # ".claude" = {
-      #   source = ./config/claude;
-      #   recursive = true;
-      # };
     } // lib.optionalAttrs isDarwin {
       "Library/Application Support/io.datasette.llm/templates" = {
         source = ./config/llm/templates;
@@ -48,6 +61,35 @@ in {
       };
     };
   };
+
+  programs = {
+    zsh = {
+      envExtra = ''
+        # set default for Claude config based on hostname
+        if [[ "$(whoami)" == "chuck" ]] ; then
+          export CLAUDE_CONFIG_DIR="${config.xdg.configHome}/claude/replicated"
+        else
+          export CLAUDE_CONFIG_DIR="${config.xdg.configHome}/claude/personal"
+        fi
+      '';
+    };
+
+  };
+
+  # uncomment when Claude code can handle symlinks
+  # xdg = {
+  #   enable = true;
+  #   configFile = {
+  #     "claude/personal" = {
+  #       source = ./config/claude;
+  #       recursive = true;
+  #     };
+  #     "claude/replicated" = {
+  #       source = ./config/claude;
+  #       recursive = true;
+  #     };
+  #   };
+  # };
 
   # AI-specific secrets
   sops = {

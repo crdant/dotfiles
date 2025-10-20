@@ -117,8 +117,7 @@
     "description": "Shell completion using LLM",
     "owner": "CGamesPlay",
     "pythonDeps": [
-      "prompt_toolkit",
-      "pygments"
+      "prompt_toolkit"
     ],
     "ref": "v1.1.1",
     "repo": "llm-cmd-comp",

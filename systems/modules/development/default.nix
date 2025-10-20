@@ -4,10 +4,16 @@ let
   homebrewConfig = lib.optionalAttrs supportsHomebrew {
     homebrew = {
       enable = true;
+      taps = [
+        "humanlayer/humanlayer"
+      ];
       brews = [
-        "chainguard-dev/tap/chainctl"
         "calicoctl"
         "dagger"
+        "lima"
+      ];
+      casks = [
+        "codelayer-nightly"
       ];
     };
   };

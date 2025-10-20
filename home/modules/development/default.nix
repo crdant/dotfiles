@@ -25,14 +25,14 @@ in {
   };
 
   programs = {
-    _1password-shell-plugins = {
-      enable = true;
-      plugins = with pkgs; [
-      ] ++ lib.optionals isDarwin [
-        # gh
-        ngrok
-      ];
-    };
+    # _1password-shell-plugins = {
+    #   enable = true;
+    #   plugins = with pkgs; [
+    #   ] ++ lib.optionals isDarwin [
+    #     # gh
+    #     ngrok
+    #   ];
+    # };
        
     gh = {
       enable = true;
