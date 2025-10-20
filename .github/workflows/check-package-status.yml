@@ -1,0 +1,144 @@
+name: Package Status Check
+on:
+  schedule:
+    - cron: '0 6 * * *'  # Daily at 6 AM UTC
+  workflow_dispatch:
+
+jobs:
+  check-packages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+        
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+        
+      - name: Test all custom packages
+        run: |
+          echo "🔍 Testing all custom packages..."
+
+          # Get list of available packages dynamically
+          # Capture both stdout and stderr, but preserve them separately for diagnostics
+          script_output=$(python3 .github/scripts/update-package.py 2>&1)
+          script_exit_code=$?
+
+          # Note the exit code but don't fail yet - the script exits 1 on usage/help
+          if [ $script_exit_code -ne 0 ]; then
+            echo "⚠️  Note: Script exited with code $script_exit_code (this is expected for usage display)"
+          fi
+
+          # Try to extract available packages from output regardless of exit code
+          available_packages=$(echo "$script_output" | grep "Available packages:" | cut -d: -f2 | sed 's/^[ ]*//g' | tr ',' '\n' | sed 's/^[ ]*//g' | sed 's/[ ]*$//g')
+
+          # Only fail if we cannot extract a valid package list
+          if [ -z "$available_packages" ]; then
+            echo "❌ Error: Failed to extract package list from script output" >&2
+            echo "Script exit code: $script_exit_code" >&2
+            echo "Script output:" >&2
+            echo "$script_output" >&2
+            exit 1
+          fi
+
+          # Convert to array
+          packages=()
+          while IFS= read -r pkg; do
+            [[ -n "$pkg" ]] && packages+=("$pkg")
+          done <<< "$available_packages"
+
+          # Final check that we have packages
+          if [ ${#packages[@]} -eq 0 ]; then
+            echo "❌ Error: Package array is empty after parsing" >&2
+            echo "Script exit code: $script_exit_code" >&2
+            echo "Script output:" >&2
+            echo "$script_output" >&2
+            exit 1
+          fi
+
+          echo "✅ Successfully discovered ${#packages[@]} packages"
+          
+          failed_packages=()
+          
+          for pkg in "${packages[@]}"; do
+            echo ""
+            echo "📦 Testing $pkg..."
+            if .github/scripts/test-package.sh "$pkg"; then
+              echo "✅ $pkg: PASSED"
+            else
+              echo "❌ $pkg: FAILED"
+              failed_packages+=("$pkg")
+            fi
+          done
+          
+          echo ""
+          echo "📋 Summary:"
+          echo "Total packages tested: ${#packages[@]}"
+          echo "Failed packages: ${#failed_packages[@]}"
+          
+          if [ ${#failed_packages[@]} -gt 0 ]; then
+            echo ""
+            echo "❌ Failed packages:"
+            for pkg in "${failed_packages[@]}"; do
+              echo "  - $pkg"
+            done
+            exit 1
+          else
+            echo ""
+            echo "✅ All packages are building successfully!"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+  test-home-manager:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+        
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+        
+      - name: Test home manager configuration builds
+        run: |
+          echo "🏠 Testing home manager configuration builds..."
+          
+          # Get list of home configurations
+          configs=$(nix eval --impure --json .#homeConfigurations --apply 'builtins.attrNames' | jq -r '.[]')
+          
+          failed_configs=()
+          
+          for config in $configs; do
+            echo ""
+            echo "🔧 Testing home configuration: $config"
+            if nix build ".#homeConfigurations.$config.activationPackage" --no-link; then
+              echo "✅ $config: PASSED"
+            else
+              echo "❌ $config: FAILED"
+              failed_configs+=("$config")
+            fi
+          done
+          
+          echo ""
+          echo "📋 Home Manager Summary:"
+          echo "Total configurations tested: $(echo "$configs" | wc -l)"
+          echo "Failed configurations: ${#failed_configs[@]}"
+          
+          if [ ${#failed_configs[@]} -gt 0 ]; then
+            echo ""
+            echo "❌ Failed configurations:"
+            for config in "${failed_configs[@]}"; do
+              echo "  - $config"
+            done
+            exit 1
+          else
+            echo ""
+            echo "✅ All home manager configurations are building successfully!"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
