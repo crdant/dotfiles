@@ -22,12 +22,12 @@
 
   };
 
-  outputs = { self, nixpkgs, home-manager, darwin, ...}@inputs: 
+  outputs = { self, nixpkgs, home-manager, darwin, ...}@inputs:
     let
       inherit (self) outputs;
       system = builtins.currentSystem;
       isDarwin = nixpkgs.legacyPackages.${system}.stdenv.isDarwin;
-      
+
       pkgs = import nixpkgs {
         inherit system;
         overlays = [
@@ -36,11 +36,11 @@
       };
 
       # Helper function to create home configurations with profiles
-      mkHomeConfig = { username, homeDirectory, gitEmail, profile ? "full" }: 
+      mkHomeConfig = { username, homeDirectory, gitEmail, profile ? "full" }:
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           extraSpecialArgs = {inherit inputs outputs username homeDirectory gitEmail profile;};
-          modules = [ 
+          modules = [
             ./home/users/crdant/home.nix
           ];
         };
