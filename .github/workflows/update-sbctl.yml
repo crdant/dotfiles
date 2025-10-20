@@ -10,7 +10,13 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-    
+    outputs:
+      updated: ${{ steps.check.outputs.updated }}
+      old-version: ${{ steps.check.outputs.old-version }}
+      new-version: ${{ steps.check.outputs.new-version }}
+      darwin-hash: ${{ steps.check.outputs.darwin-hash }}
+      linux-hash: ${{ steps.check.outputs.linux-hash }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
