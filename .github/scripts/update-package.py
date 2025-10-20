@@ -260,9 +260,18 @@ def update_vimr(package_path: Path) -> Optional[Dict[str, str]]:
         return None
     
     print(f"VimR update available: {current['version']}-{current['build']} -> {new_version}-{new_build}")
-    
+
+    # Find VimR tarball asset from release
+    assets = release.get("assets", [])
+    tar_asset = next((a for a in assets if a.get("name", "").startswith("VimR-") and a.get("name", "").endswith(".tar.bz2")), None)
+    if not tar_asset:
+        print(f"No VimR tarball asset found in release {tag_name}", file=sys.stderr)
+        return None
+
+    download_url = tar_asset["browser_download_url"]
+    print(f"Found asset: {tar_asset['name']}")
+
     # Calculate new hash
-    download_url = f"https://github.com/qvacua/vimr/releases/download/{tag_name}/VimR-{new_version}.tar.bz2"
     try:
         new_hash = calculate_binary_hash(download_url)
     except Exception as e:
