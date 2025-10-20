@@ -74,6 +74,10 @@ in {
         mkdir -p ~/sandbox
       '';
 
+      launchdLogDirectory = lib.hm.dag.entryBefore [ "writeBoundary" ] ''
+        mkdir -p ${config.xdg.stateHome}/launchd
+      '';
+
       customizeOmz = lib.hm.dag.entryAfter [ "writeBoundary" "installPackages" "git" ] ''
         if [ ! -d ~/workspace/oh-my-zsh-custom ]; then
           ${pkgs.git}/bin/git clone https://github.com/crdant/oh-my-zsh-custom ~/workspace/oh-my-zsh-custom || {
@@ -355,6 +359,36 @@ in {
     };
   };
   
+  launchd = lib.mkIf isDarwin {
+    enable = true;
+    agents = {
+      "io.crdant.env.base" = {
+        enable = true;
+        config = {
+          Label = "io.crdant.env.base";
+          ProgramArguments = [
+            "${pkgs.bash}/bin/bash"
+            "-c"
+            ''
+              # Set PATH for GUI applications
+              launchctl setenv PATH "${config.home.homeDirectory}/.local/bin:${config.home.homeDirectory}/workspace/go/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin"
+
+              # Set editor variables for Git GUI clients and other apps
+              launchctl setenv EDITOR "nvim"
+              launchctl setenv VISUAL "nvim"
+
+              # Set XDG_CONFIG_HOME for XDG-compliant applications
+              launchctl setenv XDG_CONFIG_HOME "${config.xdg.configHome}"
+            ''
+          ];
+          RunAtLoad = true;
+          StandardOutPath = "${config.xdg.stateHome}/launchd/env.base.out";
+          StandardErrorPath = "${config.xdg.stateHome}/launchd/env.base.err";
+        };
+      };
+    };
+  };
+
   sops = lib.mkIf (secretsFile != null) {
     defaultSopsFile = secretsFile;
     gnupg = {
