@@ -106,25 +106,31 @@ def calculate_binary_hash(url: str) -> str:
         raise
 
 def calculate_go_source_hash(owner: str, repo: str, rev: str) -> str:
-    """Calculate hash for a Go source repository using nix-prefetch-git."""
+    """Calculate hash for GitHub source archive (for use with fetchFromGitHub).
+
+    This uses nix-prefetch-url to fetch the GitHub-generated tarball, which is
+    what fetchFromGitHub expects. Note: this is different from a git clone hash.
+    """
+    # GitHub archive URL format
+    archive_url = f"https://github.com/{owner}/{repo}/archive/{rev}.tar.gz"
+
     try:
+        # Use nix-prefetch-url with --unpack to get the tarball hash
         result = subprocess.run([
-            "nix-prefetch-git", 
-            "--url", f"https://github.com/{owner}/{repo}",
-            "--rev", rev,
-            "--quiet"
+            "nix-prefetch-url",
+            "--type", "sha256",
+            "--unpack",
+            archive_url
         ], capture_output=True, text=True, check=True)
-        
-        prefetch_data = json.loads(result.stdout)
-        
+
         # Convert to SRI format
         convert_result = subprocess.run([
             "nix", "hash", "convert", "--hash-algo", "sha256", "--to", "sri",
-            prefetch_data["sha256"]
+            result.stdout.strip()
         ], capture_output=True, text=True, check=True)
-        
+
         return convert_result.stdout.strip()
-        
+
     except subprocess.CalledProcessError as e:
         print(f"Failed to calculate source hash for {owner}/{repo}@{rev}: {e}", file=sys.stderr)
         raise
