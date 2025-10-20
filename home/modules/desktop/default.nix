@@ -96,7 +96,7 @@ in {
 
       # Productivity apps
       ${pkgs.dockutil}/bin/dockutil --add "/Applications/Todoist.app" --no-restart
-      ${pkgs.dockutil}/bin/dockutil --add "/Applications/Bear.app" --no-restart
+      ${pkgs.dockutil}/bin/dockutil --add "/Applications/Obsidian.app" --no-restart
 
       # Media apps
       ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/News.app" --no-restart
@@ -117,7 +117,7 @@ in {
       ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/System Settings.app" --no-restart
 
       # Restart Dock to apply changes
-      killall Dock
+      /usr/bin/killall Dock
 
       echo "Dock configuration complete"
     '';
