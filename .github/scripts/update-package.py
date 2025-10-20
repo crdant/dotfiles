@@ -363,9 +363,13 @@ def update_github_source_package(pkg_info: Dict[str, Any]) -> Optional[Dict[str,
         with package_path.open() as f:
             content = f.read()
         
-        # Update version and source hash
+        # Update version and source hash (preserve original attribute name: sha256 or hash)
         content = re.sub(r'version\s*=\s*"[^"]+";', f'version = "{new_version}";', content)
-        content = re.sub(r'(sha256|hash)\s*=\s*"[^"]+";', f'hash = "{new_source_hash}";', content)
+        content = re.sub(
+            r'(sha256|hash)\s*=\s*"[^"]+";',
+            lambda m: f'{m.group(1)} = "{new_source_hash}";',
+            content
+        )
         
         with package_path.open("w") as f:
             f.write(content)
