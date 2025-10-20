@@ -62,7 +62,7 @@ in {
                 launchctl setenv PATH "${config.home.homeDirectory}/.krew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
               else
                 # Prepend krew to existing PATH if not already present
-                if [[ "$CURRENT_PATH" != *"${config.home.homeDirectory}/.krew/bin"* ]]; then
+                if [[ ":$CURRENT_PATH:" != *":${config.home.homeDirectory}/.krew/bin:"* ]]; then
                   launchctl setenv PATH "${config.home.homeDirectory}/.krew/bin:$CURRENT_PATH"
                 fi
               fi
