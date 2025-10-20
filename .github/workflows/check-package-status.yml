@@ -22,23 +22,22 @@ jobs:
           echo "🔍 Testing all custom packages..."
 
           # Get list of available packages dynamically
+          # Capture both stdout and stderr, but preserve them separately for diagnostics
           script_output=$(python3 .github/scripts/update-package.py 2>&1)
           script_exit_code=$?
 
-          # Check if the script failed
+          # Note the exit code but don't fail yet - the script exits 1 on usage/help
           if [ $script_exit_code -ne 0 ]; then
-            echo "❌ Error: Python script failed with exit code $script_exit_code" >&2
-            echo "Script output:" >&2
-            echo "$script_output" >&2
-            exit 1
+            echo "⚠️  Note: Script exited with code $script_exit_code (this is expected for usage display)"
           fi
 
-          # Extract available packages from output
+          # Try to extract available packages from output regardless of exit code
           available_packages=$(echo "$script_output" | grep "Available packages:" | cut -d: -f2 | sed 's/^[ ]*//g' | tr ',' '\n' | sed 's/^[ ]*//g' | sed 's/[ ]*$//g')
 
-          # Check if we got an empty package list
+          # Only fail if we cannot extract a valid package list
           if [ -z "$available_packages" ]; then
             echo "❌ Error: Failed to extract package list from script output" >&2
+            echo "Script exit code: $script_exit_code" >&2
             echo "Script output:" >&2
             echo "$script_output" >&2
             exit 1
@@ -53,10 +52,13 @@ jobs:
           # Final check that we have packages
           if [ ${#packages[@]} -eq 0 ]; then
             echo "❌ Error: Package array is empty after parsing" >&2
+            echo "Script exit code: $script_exit_code" >&2
             echo "Script output:" >&2
             echo "$script_output" >&2
             exit 1
           fi
+
+          echo "✅ Successfully discovered ${#packages[@]} packages"
           
           failed_packages=()
           
