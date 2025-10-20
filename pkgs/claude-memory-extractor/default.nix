@@ -7,7 +7,7 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "obra";
     repo = "claude-memory-extractor";
-    rev = "main";
+    rev = "384e0302088639cf9a3d40d92cf57e44e25f9044";
     hash = "sha256-lvYit/IZwbHhxU3/jlzHL1AMkJ46BGpoYRnSuovDNhs=";
   };
 
