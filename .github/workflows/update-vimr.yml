@@ -1,0 +1,73 @@
+name: Update VimR Package
+on:
+  schedule:
+    - cron: '0 */4 * * *'  # Every 4 hours
+  workflow_dispatch:
+
+jobs:
+  update-vimr:
+    runs-on: macos-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+        
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+        
+      - name: Check for VimR updates
+        id: check
+        run: |
+          python3 .github/scripts/update-package.py vimr
+          
+      - name: Test VimR installation
+        if: steps.check.outputs.updated == 'true'
+        run: |
+          .github/scripts/test-package.sh vimr
+          
+      - name: Test home-manager rebuild
+        if: steps.check.outputs.updated == 'true'
+        run: |
+          # Test that home-manager builds with updated package
+          # Find the correct home configuration name first
+          nix eval --impure --json .#homeConfigurations --apply 'builtins.attrNames' | \
+            jq -r '.[]' | grep "crdant" | head -1 | \
+            xargs -I {} nix build ".#homeConfigurations.{}.activationPackage" --no-link
+          
+      - name: Create Pull Request
+        if: steps.check.outputs.updated == 'true'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: update VimR to ${{ steps.check.outputs.new-version }}"
+          title: "chore: update VimR to ${{ steps.check.outputs.new-version }}"
+          body: |
+            ## 🔄 Automated Package Update: VimR
+            
+            This is an automated update of the VimR package.
+            
+            ### Changes
+            - **Previous version**: ${{ steps.check.outputs.old-version }}
+            - **New version**: ${{ steps.check.outputs.new-version }}
+            - **Release notes**: https://github.com/qvacua/vimr/releases/tag/${{ steps.check.outputs.new-version }}
+            
+            ### Validation
+            ✅ Package builds successfully  
+            ✅ Installation test passed on macOS  
+            ✅ Home manager rebuild test passed  
+            
+            ### Next Steps
+            - Review the changes and ensure they look correct
+            - Test the updated package in your environment
+            - Merge when ready
+            
+            ---
+            🤖 *This PR was created automatically by the VimR update workflow*
+          branch: update-vimr-${{ steps.check.outputs.new-version }}
+          delete-branch: true

@@ -1,0 +1,114 @@
+name: Package Status Check
+on:
+  schedule:
+    - cron: '0 6 * * *'  # Daily at 6 AM UTC
+  workflow_dispatch:
+
+jobs:
+  check-packages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+        
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+        
+      - name: Test all custom packages
+        run: |
+          echo "🔍 Testing all custom packages..."
+          
+          # Get list of available packages dynamically
+          available_packages=$(python3 .github/scripts/update-package.py 2>&1 | grep "Available packages:" | cut -d: -f2 | sed 's/^[ ]*//g' | tr ',' '\n' | sed 's/^[ ]*//g' | sed 's/[ ]*$//g')
+          
+          # Convert to array
+          packages=()
+          while IFS= read -r pkg; do
+            [[ -n "$pkg" ]] && packages+=("$pkg")
+          done <<< "$available_packages"
+          
+          failed_packages=()
+          
+          for pkg in "${packages[@]}"; do
+            echo ""
+            echo "📦 Testing $pkg..."
+            if .github/scripts/test-package.sh "$pkg"; then
+              echo "✅ $pkg: PASSED"
+            else
+              echo "❌ $pkg: FAILED"
+              failed_packages+=("$pkg")
+            fi
+          done
+          
+          echo ""
+          echo "📋 Summary:"
+          echo "Total packages tested: ${#packages[@]}"
+          echo "Failed packages: ${#failed_packages[@]}"
+          
+          if [ ${#failed_packages[@]} -gt 0 ]; then
+            echo ""
+            echo "❌ Failed packages:"
+            for pkg in "${failed_packages[@]}"; do
+              echo "  - $pkg"
+            done
+            exit 1
+          else
+            echo ""
+            echo "✅ All packages are building successfully!"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+  test-home-manager:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+        
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+        
+      - name: Test home manager configuration builds
+        run: |
+          echo "🏠 Testing home manager configuration builds..."
+          
+          # Get list of home configurations
+          configs=$(nix eval --impure --json .#homeConfigurations --apply 'builtins.attrNames' | jq -r '.[]')
+          
+          failed_configs=()
+          
+          for config in $configs; do
+            echo ""
+            echo "🔧 Testing home configuration: $config"
+            if nix build ".#homeConfigurations.$config.activationPackage" --no-link; then
+              echo "✅ $config: PASSED"
+            else
+              echo "❌ $config: FAILED"
+              failed_configs+=("$config")
+            fi
+          done
+          
+          echo ""
+          echo "📋 Home Manager Summary:"
+          echo "Total configurations tested: $(echo "$configs" | wc -l)"
+          echo "Failed configurations: ${#failed_configs[@]}"
+          
+          if [ ${#failed_configs[@]} -gt 0 ]; then
+            echo ""
+            echo "❌ Failed configurations:"
+            for config in "${failed_configs[@]}"; do
+              echo "  - $config"
+            done
+            exit 1
+          else
+            echo ""
+            echo "✅ All home manager configurations are building successfully!"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
