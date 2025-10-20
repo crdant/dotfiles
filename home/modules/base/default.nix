@@ -379,6 +379,9 @@ in {
 
               # Set XDG_CONFIG_HOME for XDG-compliant applications
               launchctl setenv XDG_CONFIG_HOME "${config.xdg.configHome}"
+
+              # Set SSH_AUTH_SOCK to GPG agent socket for GUI applications
+              launchctl setenv SSH_AUTH_SOCK "${config.home.homeDirectory}/.gnupg/S.gpg-agent.ssh"
             ''
           ];
           RunAtLoad = true;
