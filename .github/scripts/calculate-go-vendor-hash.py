@@ -6,6 +6,7 @@ This script is used by GitHub Actions workflows to determine platform-specific v
 
 import os
 import sys
+import re
 import tempfile
 import subprocess
 import shutil
@@ -13,7 +14,11 @@ from pathlib import Path
 
 def calculate_vendor_hash(owner: str, repo: str, version: str, platform: str) -> str:
     """Calculate vendorHash for Go module on specific platform."""
-    
+
+    # Validate version format (should be semver-like: X.Y.Z or X.Y.Z-suffix)
+    if not re.match(r'^[\d]+\.[\d]+\.[\d]+(-[\w.]+)?$', version):
+        raise ValueError(f"Invalid version format: {version}. Expected semver format (e.g., 1.2.3 or 1.2.3-beta.1)")
+
     print(f"Calculating vendor hash for {owner}/{repo} v{version} on {platform}")
     
     with tempfile.TemporaryDirectory() as temp_dir:

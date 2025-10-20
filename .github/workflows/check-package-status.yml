@@ -20,15 +20,43 @@ jobs:
       - name: Test all custom packages
         run: |
           echo "🔍 Testing all custom packages..."
-          
+
           # Get list of available packages dynamically
-          available_packages=$(python3 .github/scripts/update-package.py 2>&1 | grep "Available packages:" | cut -d: -f2 | sed 's/^[ ]*//g' | tr ',' '\n' | sed 's/^[ ]*//g' | sed 's/[ ]*$//g')
-          
+          script_output=$(python3 .github/scripts/update-package.py 2>&1)
+          script_exit_code=$?
+
+          # Check if the script failed
+          if [ $script_exit_code -ne 0 ]; then
+            echo "❌ Error: Python script failed with exit code $script_exit_code" >&2
+            echo "Script output:" >&2
+            echo "$script_output" >&2
+            exit 1
+          fi
+
+          # Extract available packages from output
+          available_packages=$(echo "$script_output" | grep "Available packages:" | cut -d: -f2 | sed 's/^[ ]*//g' | tr ',' '\n' | sed 's/^[ ]*//g' | sed 's/[ ]*$//g')
+
+          # Check if we got an empty package list
+          if [ -z "$available_packages" ]; then
+            echo "❌ Error: Failed to extract package list from script output" >&2
+            echo "Script output:" >&2
+            echo "$script_output" >&2
+            exit 1
+          fi
+
           # Convert to array
           packages=()
           while IFS= read -r pkg; do
             [[ -n "$pkg" ]] && packages+=("$pkg")
           done <<< "$available_packages"
+
+          # Final check that we have packages
+          if [ ${#packages[@]} -eq 0 ]; then
+            echo "❌ Error: Package array is empty after parsing" >&2
+            echo "Script output:" >&2
+            echo "$script_output" >&2
+            exit 1
+          fi
           
           failed_packages=()
           

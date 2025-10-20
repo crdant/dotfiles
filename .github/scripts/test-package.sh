@@ -33,8 +33,11 @@ esac
 
 echo "Building package: $NIX_PACKAGE"
 
+# Define reusable Nix expression with overlays
+NIX_EXPR="let pkgs = import <nixpkgs> { overlays = [(import ./overlays { inputs = {}; }).additions]; }; in pkgs.$NIX_PACKAGE"
+
 # Build package using overlays (since packages aren't directly exposed in flake)
-if ! nix build --impure --expr "let pkgs = import <nixpkgs> { overlays = [(import ./overlays { inputs = {}; }).additions]; }; in pkgs.$NIX_PACKAGE" --no-link; then
+if ! nix build --impure --expr "$NIX_EXPR" --no-link; then
     echo "❌ Failed to build $NIX_PACKAGE" >&2
     exit 1
 fi
@@ -44,18 +47,18 @@ echo "✅ Package build successful"
 # Test in shell - check if binary is available
 echo "Testing binary availability: $BINARY_NAME"
 
-if nix shell --impure --expr "let pkgs = import <nixpkgs> { overlays = [(import ./overlays { inputs = {}; }).additions]; }; in pkgs.$NIX_PACKAGE" --command which "$BINARY_NAME" >/dev/null 2>&1; then
+if nix shell --impure --expr "$NIX_EXPR" --command which "$BINARY_NAME" >/dev/null 2>&1; then
     echo "✅ Binary $BINARY_NAME is available"
-    
+
     # Try to get version info if possible
     echo "Attempting to get version info..."
-    if nix shell --impure --expr "let pkgs = import <nixpkgs> { overlays = [(import ./overlays { inputs = {}; }).additions]; }; in pkgs.$NIX_PACKAGE" --command "$BINARY_NAME" --version >/dev/null 2>&1; then
-        VERSION_INFO=$(nix shell --impure --expr "let pkgs = import <nixpkgs> { overlays = [(import ./overlays { inputs = {}; }).additions]; }; in pkgs.$NIX_PACKAGE" --command "$BINARY_NAME" --version 2>/dev/null || echo "Version info unavailable")
+    if nix shell --impure --expr "$NIX_EXPR" --command "$BINARY_NAME" --version >/dev/null 2>&1; then
+        VERSION_INFO=$(nix shell --impure --expr "$NIX_EXPR" --command "$BINARY_NAME" --version 2>/dev/null || echo "Version info unavailable")
         echo "Version: $VERSION_INFO"
-    elif nix shell --impure --expr "let pkgs = import <nixpkgs> { overlays = [(import ./overlays { inputs = {}; }).additions]; }; in pkgs.$NIX_PACKAGE" --command "$BINARY_NAME" version >/dev/null 2>&1; then
-        VERSION_INFO=$(nix shell --impure --expr "let pkgs = import <nixpkgs> { overlays = [(import ./overlays { inputs = {}; }).additions]; }; in pkgs.$NIX_PACKAGE" --command "$BINARY_NAME" version 2>/dev/null || echo "Version info unavailable")
+    elif nix shell --impure --expr "$NIX_EXPR" --command "$BINARY_NAME" version >/dev/null 2>&1; then
+        VERSION_INFO=$(nix shell --impure --expr "$NIX_EXPR" --command "$BINARY_NAME" version 2>/dev/null || echo "Version info unavailable")
         echo "Version: $VERSION_INFO"
-    elif nix shell --impure --expr "let pkgs = import <nixpkgs> { overlays = [(import ./overlays { inputs = {}; }).additions]; }; in pkgs.$NIX_PACKAGE" --command "$BINARY_NAME" --help >/dev/null 2>&1; then
+    elif nix shell --impure --expr "$NIX_EXPR" --command "$BINARY_NAME" --help >/dev/null 2>&1; then
         echo "✅ Help command works (version command not available)"
     else
         echo "⚠️  Binary executes but version/help commands may not work"
@@ -73,9 +76,9 @@ case "$PACKAGE_NAME" in
             echo "This suggests the package may not have proper platform restrictions"
         else
             echo "✅ VimR tested on correct platform (macOS)"
-            
-            # Check if VimR app bundle exists  
-            if nix shell --impure --expr "let pkgs = import <nixpkgs> { overlays = [(import ./overlays { inputs = {}; }).additions]; }; in pkgs.$NIX_PACKAGE" --command ls -la /nix/store/*/Applications/VimR.app 2>/dev/null; then
+
+            # Check if VimR app bundle exists
+            if nix shell --impure --expr "$NIX_EXPR" --command ls -la /nix/store/*/Applications/VimR.app 2>/dev/null; then
                 echo "✅ VimR app bundle structure verified"
             else
                 echo "⚠️  VimR app bundle structure could not be verified"

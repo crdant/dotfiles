@@ -38,7 +38,7 @@ def check_rate_limit() -> None:
     headers = get_github_headers()
     
     try:
-        response = requests.get("https://api.github.com/rate_limit", headers=headers)
+        response = requests.get("https://api.github.com/rate_limit", headers=headers, timeout=10)
         response.raise_for_status()
         rate_data = response.json()
         
@@ -60,18 +60,22 @@ def get_latest_release(owner: str, repo: str) -> Dict[str, Any]:
     url = f"https://api.github.com/repos/{owner}/{repo}/releases/latest"
     
     try:
-        response = requests.get(url, headers=headers)
-        
+        response = requests.get(url, headers=headers, timeout=10)
+
         # Handle rate limiting
         if response.status_code == 403 and "rate limit exceeded" in response.text.lower():
             reset_time = datetime.fromtimestamp(int(response.headers.get("X-RateLimit-Reset", 0)))
             print(f"Rate limit exceeded! Resets at {reset_time}", file=sys.stderr)
             print("Please wait or set a GitHub token in GITHUB_TOKEN environment variable", file=sys.stderr)
             sys.exit(1)
-        
+
         response.raise_for_status()
         return response.json()
-        
+
+    except requests.Timeout as e:
+        print(f"Request timed out while fetching release info for {owner}/{repo}", file=sys.stderr)
+        print(f"Network error: {e}", file=sys.stderr)
+        sys.exit(1)
     except requests.RequestException as e:
         if hasattr(e, 'response') and e.response is not None:
             if e.response.status_code == 404:
@@ -212,16 +216,16 @@ def read_current_version(package_path: Path) -> Optional[Dict[str, str]]:
             return None
         
         version = version_match.group(1)
-        
+
         # Extract build for VimR
         build_match = re.search(r'build\s*=\s*"([^"]+)"', content)
         build = build_match.group(1) if build_match else None
-        
-        return {"version": version, "build": build}
-        
+
     except Exception as e:
         print(f"Failed to read {package_path}: {e}", file=sys.stderr)
         return None
+    else:
+        return {"version": version, "build": build}
 
 def update_vimr(package_path: Path) -> Optional[Dict[str, str]]:
     """Update VimR package with latest release info."""
@@ -358,7 +362,7 @@ def update_github_source_package(pkg_info: Dict[str, Any]) -> Optional[Dict[str,
         # Set GitHub Actions outputs
         if os.environ.get("GITHUB_ACTIONS"):
             with open(os.environ["GITHUB_OUTPUT"], "a") as f:
-                f.write(f"updated=true\n")
+                f.write("updated=true\n")
                 f.write(f"old-version={current['version']}\n")
                 f.write(f"new-version={new_version}\n")
                 f.write(f"tag-name={tag_name}\n")
@@ -474,7 +478,7 @@ def update_sbctl(package_path: Path) -> Optional[Dict[str, str]]:
         # Set GitHub Actions outputs
         if os.environ.get("GITHUB_ACTIONS"):
             with open(os.environ["GITHUB_OUTPUT"], "a") as f:
-                f.write(f"updated=true\n")
+                f.write("updated=true\n")
                 f.write(f"old-version={current['version']}\n")
                 f.write(f"new-version={new_version}\n")
                 f.write(f"darwin-hash={darwin_hash}\n")
@@ -531,7 +535,7 @@ def main():
             sys.exit(1)
     else:
         print(f"Package type '{pkg_info['type']}' not yet supported for automatic updates", file=sys.stderr)
-        print(f"Supported types: vimr-binary, pre-built-binary, go-module-simple, go-module-platform-specific, github-source")
+        print("Supported types: vimr-binary, pre-built-binary, go-module-simple, go-module-platform-specific, github-source")
         sys.exit(1)
     
     # Set default outputs for GitHub Actions if no update was found
