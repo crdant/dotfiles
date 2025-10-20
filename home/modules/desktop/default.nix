@@ -12,6 +12,7 @@ in {
       _1password-cli
       neovide
     ] ++ lib.optionals isDarwin [
+      dockutil
       vimr
       (callPackage ./vimr-wrapper.nix { inherit config; })
     ] ++ lib.optionals isLinux [
@@ -63,7 +64,7 @@ in {
   xdg = {
     enable = true;
     configFile = {
-    } // lib.optionalAttrs isDarwin { 
+    } // lib.optionalAttrs isDarwin {
       "karabiner/karabiner.json" = {
         text = builtins.readFile ./config/karabiner/karabiner.json;
       };
@@ -71,6 +72,55 @@ in {
         source = ./config/ghostty/config;
       };
     };
+  };
+
+  # Dock configuration for Darwin
+  home.activation = lib.mkIf isDarwin {
+    configureDock = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      echo "Configuring Dock..."
+
+      # Clear existing dock items
+      ${pkgs.dockutil}/bin/dockutil --remove all --no-restart
+
+      # Third-party applications (in /Applications/)
+      ${pkgs.dockutil}/bin/dockutil --add "/Applications/Ghostty.app" --no-restart
+      ${pkgs.dockutil}/bin/dockutil --add "/Applications/Arc.app" --no-restart
+      ${pkgs.dockutil}/bin/dockutil --add "/Applications/Slack.app" --no-restart
+      ${pkgs.dockutil}/bin/dockutil --add "/Applications/Superhuman.app" --no-restart
+      ${pkgs.dockutil}/bin/dockutil --add "/Applications/zoom.us.app" --no-restart
+      ${pkgs.dockutil}/bin/dockutil --add "/Applications/Twitter.app" --no-restart
+
+      # System applications
+      ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/Messages.app" --no-restart
+      ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/Contacts.app" --no-restart
+
+      # Productivity apps
+      ${pkgs.dockutil}/bin/dockutil --add "/Applications/Todoist.app" --no-restart
+      ${pkgs.dockutil}/bin/dockutil --add "/Applications/Obsidian.app" --no-restart
+
+      # Media apps
+      ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/News.app" --no-restart
+      ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/Music.app" --no-restart
+      ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/TV.app" --no-restart
+      ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/Books.app" --no-restart
+      ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/Photos.app" --no-restart
+
+      # iWork suite
+      ${pkgs.dockutil}/bin/dockutil --add "/Applications/Keynote.app" --no-restart
+      ${pkgs.dockutil}/bin/dockutil --add "/Applications/Numbers.app" --no-restart
+      ${pkgs.dockutil}/bin/dockutil --add "/Applications/Pages.app" --no-restart
+
+      # System utilities
+      ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/App Store.app" --no-restart
+      ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/Utilities/Activity Monitor.app" --no-restart
+      ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/Utilities/Console.app" --no-restart
+      ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/System Settings.app" --no-restart
+
+      # Restart Dock to apply changes
+      /usr/bin/killall Dock
+
+      echo "Dock configuration complete"
+    '';
   };
 }
 
