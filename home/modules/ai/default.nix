@@ -76,6 +76,33 @@ in {
 
   };
 
+  launchd = lib.mkIf isDarwin {
+    enable = true;
+    agents = {
+      "io.crdant.env.ai" = {
+        enable = true;
+        config = {
+          Label = "io.crdant.env.ai";
+          ProgramArguments = [
+            "${pkgs.bash}/bin/bash"
+            "-c"
+            ''
+              # Set CLAUDE_CONFIG_DIR based on username (matches shell logic)
+              if [[ "$(whoami)" == "chuck" ]] ; then
+                launchctl setenv CLAUDE_CONFIG_DIR "${config.xdg.configHome}/claude/replicated"
+              else
+                launchctl setenv CLAUDE_CONFIG_DIR "${config.xdg.configHome}/claude/personal"
+              fi
+            ''
+          ];
+          RunAtLoad = true;
+          StandardOutPath = "${config.xdg.stateHome}/launchd/env.ai.out";
+          StandardErrorPath = "${config.xdg.stateHome}/launchd/env.ai.err";
+        };
+      };
+    };
+  };
+
   # uncomment when Claude code can handle symlinks
   # xdg = {
   #   enable = true;
