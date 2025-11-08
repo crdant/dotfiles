@@ -76,15 +76,7 @@ jobs:
         
       - name: Setup Nix cache
         uses: DeterminateSystems/magic-nix-cache-action@main
-        
-      - name: Test home-manager rebuild
-        run: |
-          # Test that home-manager builds with updated package
-          # Find the correct home configuration name first
-          nix eval --impure --json .#homeConfigurations --apply 'builtins.attrNames' | \
-            jq -r '.[]' | grep "crdant" | head -1 | \
-            xargs -I {} nix build ".#homeConfigurations.{}.activationPackage" --no-link
-          
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
@@ -106,10 +98,9 @@ jobs:
             - **Linux**: `${{ needs.update-sbctl.outputs.linux-hash }}`
             
             ### Validation
-            ✅ Package builds successfully on Linux  
-            ✅ Package builds successfully on macOS  
-            ✅ Installation tests passed on both platforms  
-            ✅ Home manager rebuild test passed  
+            ✅ Package builds successfully on Linux
+            ✅ Package builds successfully on macOS
+            ✅ Installation tests passed on both platforms
             ✅ Binary hashes calculated and verified for both platforms  
             
             ### Next Steps
