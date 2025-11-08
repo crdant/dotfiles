@@ -30,7 +30,7 @@ jobs:
       - name: Check for sbctl updates and update package
         id: check
         run: |
-          python3 .github/scripts/update-package.py sbctl
+          nix-shell -p python3 python3Packages.requests --run "python3 .github/scripts/update-package.py sbctl"
           
       - name: Test sbctl installation on Linux
         if: steps.check.outputs.updated == 'true'

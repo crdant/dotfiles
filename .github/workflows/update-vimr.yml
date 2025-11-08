@@ -24,7 +24,7 @@ jobs:
       - name: Check for VimR updates
         id: check
         run: |
-          python3 .github/scripts/update-package.py vimr
+          nix-shell -p python3 python3Packages.requests --run "python3 .github/scripts/update-package.py vimr"
           
       - name: Test VimR installation
         if: steps.check.outputs.updated == 'true'
