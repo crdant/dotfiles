@@ -117,13 +117,14 @@ jobs:
           echo "Darwin: $DARWIN_HASH"
           echo "Linux: $LINUX_HASH"
 
-          # Update the package file with new vendor hashes
-          sed -i.bak -E "s|(vendorHash = if isDarwin then[[:space:]]*)\\\".+\\\"|\1\"$DARWIN_HASH\"|" pkgs/replicated/default.nix
-          sed -i.bak -E "s|(else[[:space:]]*)\\\".+\\\";|\1\"$LINUX_HASH\";|" pkgs/replicated/default.nix
+          # Update the package file with new vendor hashes (handle multi-line format)
+          # Use perl for multi-line regex replacement
+          perl -i.bak -0pe 's/(vendorHash = if isDarwin then\s*)"sha256-[^"]*"/$1"'"$DARWIN_HASH"'"/s' pkgs/replicated/default.nix
+          perl -i.bak -0pe 's/(else\s*)"sha256-[^"]*";/$1"'"$LINUX_HASH"'";/s' pkgs/replicated/default.nix
 
           # Show the changes
           echo "Updated package file:"
-          cat pkgs/replicated/default.nix | grep -A3 -B1 vendorHash
+          cat pkgs/replicated/default.nix | grep -A4 -B1 vendorHash
           
       - name: Test updated package builds
         run: |
