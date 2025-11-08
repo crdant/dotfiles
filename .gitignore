@@ -16,6 +16,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# editor backup files
+*.bak
+
 **/.claude/settings.local.json
 **/.goose
 **/.crush

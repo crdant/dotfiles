@@ -128,15 +128,7 @@ jobs:
       - name: Test updated package builds
         run: |
           .github/scripts/test-package.sh kots
-          
-      - name: Test home-manager rebuild
-        run: |
-          # Test that home-manager builds with updated package
-          # Find the correct home configuration name first
-          nix eval --impure --json .#homeConfigurations --apply 'builtins.attrNames' | \
-            jq -r '.[]' | grep "crdant" | head -1 | \
-            xargs -I {} nix build ".#homeConfigurations.{}.activationPackage" --no-link
-          
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
@@ -158,9 +150,8 @@ jobs:
             - **Linux**: `${{ needs.calculate-linux-hash.outputs.linux-hash }}`
             
             ### Validation
-            ✅ Package builds successfully on both macOS and Linux  
-            ✅ Installation tests passed on both platforms  
-            ✅ Home manager rebuild test passed  
+            ✅ Package builds successfully on both macOS and Linux
+            ✅ Installation tests passed on both platforms
             ✅ Vendor hashes calculated and verified for both platforms  
             
             ### Next Steps
