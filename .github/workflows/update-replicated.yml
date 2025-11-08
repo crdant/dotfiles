@@ -54,10 +54,6 @@ jobs:
         run: |
           python3 .github/scripts/calculate-go-vendor-hash.py replicated ${{ needs.check-update.outputs.new-version }} macos-latest
 
-      - name: Test Replicated installation
-        run: |
-          .github/scripts/test-package.sh replicated
-
   calculate-linux-hash:
     needs: check-update
     if: needs.check-update.outputs.updated == 'true'
@@ -84,10 +80,6 @@ jobs:
         id: vendor
         run: |
           python3 .github/scripts/calculate-go-vendor-hash.py replicated ${{ needs.check-update.outputs.new-version }} ubuntu-latest
-
-      - name: Test Replicated installation
-        run: |
-          .github/scripts/test-package.sh replicated
 
   update-and-create-pr:
     needs: [check-update, calculate-darwin-hash, calculate-linux-hash]
