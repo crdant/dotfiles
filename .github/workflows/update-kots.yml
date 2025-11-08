@@ -118,9 +118,9 @@ jobs:
           echo "Linux: $LINUX_HASH"
 
           # Update the package file with new vendor hashes (handle multi-line format)
-          # Use perl for multi-line regex replacement
-          perl -i.bak -0pe 's/(vendorHash = if isDarwin then\s*)"sha256-[^"]*"/$1"'"$DARWIN_HASH"'"/s' pkgs/kots/default.nix
-          perl -i.bak -0pe 's/(else\s*)"sha256-[^"]*";/$1"'"$LINUX_HASH"'";/s' pkgs/kots/default.nix
+          # Use perl for multi-line regex replacement with | delimiter to avoid conflicts with / in hashes
+          perl -i.bak -0pe 's|(vendorHash = if isDarwin then\s*)"sha256-[^"]*"|$1"'"$DARWIN_HASH"'"|s' pkgs/kots/default.nix
+          perl -i.bak -0pe 's|(else\s*)"sha256-[^"]*";|$1"'"$LINUX_HASH"'";|s' pkgs/kots/default.nix
 
           # Show the changes
           echo "Updated package file:"
