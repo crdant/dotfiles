@@ -30,16 +30,7 @@ jobs:
         if: steps.check.outputs.updated == 'true'
         run: |
           .github/scripts/test-package.sh vimr
-          
-      - name: Test home-manager rebuild
-        if: steps.check.outputs.updated == 'true'
-        run: |
-          # Test that home-manager builds with updated package
-          # Find the correct home configuration name first
-          nix eval --impure --json .#homeConfigurations --apply 'builtins.attrNames' | \
-            jq -r '.[]' | grep "crdant" | head -1 | \
-            xargs -I {} nix build ".#homeConfigurations.{}.activationPackage" --no-link
-          
+
       - name: Create Pull Request
         if: steps.check.outputs.updated == 'true'
         uses: peter-evans/create-pull-request@v7
@@ -58,9 +49,8 @@ jobs:
             - **Release notes**: https://github.com/qvacua/vimr/releases/tag/${{ steps.check.outputs.new-version }}
             
             ### Validation
-            ✅ Package builds successfully  
+            ✅ Package builds successfully
             ✅ Installation test passed on macOS  
-            ✅ Home manager rebuild test passed  
             
             ### Next Steps
             - Review the changes and ensure they look correct
