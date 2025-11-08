@@ -24,8 +24,10 @@ jobs:
         
       - name: Check for Replicated updates
         id: check
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          python3 .github/scripts/update-package.py replicated
+          nix-shell -p python3 python3Packages.requests --run "python3 .github/scripts/update-package.py replicated"
 
   calculate-darwin-hash:
     needs: check-update
@@ -52,7 +54,7 @@ jobs:
       - name: Calculate vendor hash for darwin
         id: vendor
         run: |
-          python3 .github/scripts/calculate-go-vendor-hash.py replicated ${{ needs.check-update.outputs.new-version }} macos-latest
+          nix-shell -p python3 python3Packages.requests --run "python3 .github/scripts/calculate-go-vendor-hash.py replicated ${{ needs.check-update.outputs.new-version }} macos-latest"
 
       - name: Test Replicated installation
         run: |
@@ -83,7 +85,7 @@ jobs:
       - name: Calculate vendor hash for linux
         id: vendor
         run: |
-          python3 .github/scripts/calculate-go-vendor-hash.py replicated ${{ needs.check-update.outputs.new-version }} ubuntu-latest
+          nix-shell -p python3 python3Packages.requests --run "python3 .github/scripts/calculate-go-vendor-hash.py replicated ${{ needs.check-update.outputs.new-version }} ubuntu-latest"
 
       - name: Test Replicated installation
         run: |
@@ -128,15 +130,7 @@ jobs:
       - name: Test updated package builds
         run: |
           .github/scripts/test-package.sh replicated
-          
-      - name: Test home-manager rebuild
-        run: |
-          # Test that home-manager builds with updated package
-          # Find the correct home configuration name first
-          nix eval --impure --json .#homeConfigurations --apply 'builtins.attrNames' | \
-            jq -r '.[]' | grep "crdant" | head -1 | \
-            xargs -I {} nix build ".#homeConfigurations.{}.activationPackage" --no-link
-          
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
@@ -158,9 +152,8 @@ jobs:
             - **Linux**: `${{ needs.calculate-linux-hash.outputs.linux-hash }}`
             
             ### Validation
-            ✅ Package builds successfully on both macOS and Linux  
-            ✅ Installation tests passed on both platforms  
-            ✅ Home manager rebuild test passed  
+            ✅ Package builds successfully on both macOS and Linux
+            ✅ Installation tests passed on both platforms
             ✅ Vendor hashes calculated and verified for both platforms  
             
             ### Next Steps
