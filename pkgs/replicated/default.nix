@@ -19,6 +19,8 @@ buildGoModule rec {
     else
       "sha256-ufbL6ddpACgaimmz5tEAMAVYO22Am560imDg8SVKBr4=";
 
+  proxyVendor = true;
+
   subPackages = [ "cli/cmd/" ];
   ldflags = [
     "-X github.com/replicatedhq/replicated/pkg/version.version=${version}"
