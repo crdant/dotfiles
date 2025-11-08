@@ -109,24 +109,21 @@ jobs:
           echo "Updated package file (version and source):"
           cat pkgs/replicated/default.nix | head -20
 
-      - name: Update vendorHash values
+      - name: Update vendorHash value
         run: |
-          # Get the vendor hashes from the job outputs
-          DARWIN_HASH="${{ needs.calculate-darwin-hash.outputs.darwin-hash }}"
-          LINUX_HASH="${{ needs.calculate-linux-hash.outputs.linux-hash }}"
+          # Get the vendor hash from darwin job (replicated uses same hash for both platforms)
+          VENDOR_HASH="${{ needs.calculate-darwin-hash.outputs.darwin-hash }}"
 
-          echo "Updating Replicated vendorHash values:"
-          echo "Darwin: $DARWIN_HASH"
-          echo "Linux: $LINUX_HASH"
+          echo "Updating Replicated vendorHash:"
+          echo "Hash: $VENDOR_HASH"
 
-          # Update the package file with new vendor hashes (handle multi-line format)
-          # Use perl for multi-line regex replacement with | delimiter to avoid conflicts with / in hashes
-          perl -i.bak -0pe 's|(vendorHash = if isDarwin then\s*)"sha256-[^"]*"|$1"'"$DARWIN_HASH"'"|s' pkgs/replicated/default.nix
-          perl -i.bak -0pe 's|(else\s*)"sha256-[^"]*";|$1"'"$LINUX_HASH"'";|s' pkgs/replicated/default.nix
+          # Update the package file with new vendor hash
+          # Use perl for simple replacement
+          perl -i.bak -0pe 's|vendorHash = "[^"]*";|vendorHash = "'"$VENDOR_HASH"'";|s' pkgs/replicated/default.nix
 
           # Show the changes
           echo "Updated package file:"
-          cat pkgs/replicated/default.nix | grep -A4 -B1 vendorHash
+          cat pkgs/replicated/default.nix | grep -A2 -B1 vendorHash
           
       - name: Test updated package builds
         run: |
