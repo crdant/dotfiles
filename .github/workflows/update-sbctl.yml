@@ -29,6 +29,8 @@ jobs:
         
       - name: Check for sbctl updates and update package
         id: check
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           nix-shell -p python3 python3Packages.requests --run "python3 .github/scripts/update-package.py sbctl"
           
