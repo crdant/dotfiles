@@ -25,6 +25,10 @@ case "$PACKAGE_NAME" in
         NIX_PACKAGE="kots"
         BINARY_NAME="kubectl-kots"  # KOTS installs as kubectl-kots
         ;;
+    "vimr")
+        NIX_PACKAGE="vimr"
+        BINARY_NAME=""  # VimR is an app bundle, not a CLI binary
+        ;;
     *)
         NIX_PACKAGE="$PACKAGE_NAME"
         BINARY_NAME="$PACKAGE_NAME"
@@ -44,28 +48,32 @@ fi
 
 echo "✅ Package build successful"
 
-# Test in shell - check if binary is available
-echo "Testing binary availability: $BINARY_NAME"
+# Test in shell - check if binary is available (skip for app bundles)
+if [ -n "$BINARY_NAME" ]; then
+    echo "Testing binary availability: $BINARY_NAME"
 
-if nix shell --impure --expr "$NIX_EXPR" --command which "$BINARY_NAME" >/dev/null 2>&1; then
-    echo "✅ Binary $BINARY_NAME is available"
+    if nix shell --impure --expr "$NIX_EXPR" --command which "$BINARY_NAME" >/dev/null 2>&1; then
+        echo "✅ Binary $BINARY_NAME is available"
 
-    # Try to get version info if possible
-    echo "Attempting to get version info..."
-    if nix shell --impure --expr "$NIX_EXPR" --command "$BINARY_NAME" --version >/dev/null 2>&1; then
-        VERSION_INFO=$(nix shell --impure --expr "$NIX_EXPR" --command "$BINARY_NAME" --version 2>/dev/null || echo "Version info unavailable")
-        echo "Version: $VERSION_INFO"
-    elif nix shell --impure --expr "$NIX_EXPR" --command "$BINARY_NAME" version >/dev/null 2>&1; then
-        VERSION_INFO=$(nix shell --impure --expr "$NIX_EXPR" --command "$BINARY_NAME" version 2>/dev/null || echo "Version info unavailable")
-        echo "Version: $VERSION_INFO"
-    elif nix shell --impure --expr "$NIX_EXPR" --command "$BINARY_NAME" --help >/dev/null 2>&1; then
-        echo "✅ Help command works (version command not available)"
+        # Try to get version info if possible
+        echo "Attempting to get version info..."
+        if nix shell --impure --expr "$NIX_EXPR" --command "$BINARY_NAME" --version >/dev/null 2>&1; then
+            VERSION_INFO=$(nix shell --impure --expr "$NIX_EXPR" --command "$BINARY_NAME" --version 2>/dev/null || echo "Version info unavailable")
+            echo "Version: $VERSION_INFO"
+        elif nix shell --impure --expr "$NIX_EXPR" --command "$BINARY_NAME" version >/dev/null 2>&1; then
+            VERSION_INFO=$(nix shell --impure --expr "$NIX_EXPR" --command "$BINARY_NAME" version 2>/dev/null || echo "Version info unavailable")
+            echo "Version: $VERSION_INFO"
+        elif nix shell --impure --expr "$NIX_EXPR" --command "$BINARY_NAME" --help >/dev/null 2>&1; then
+            echo "✅ Help command works (version command not available)"
+        else
+            echo "⚠️  Binary executes but version/help commands may not work"
+        fi
     else
-        echo "⚠️  Binary executes but version/help commands may not work"
+        echo "❌ Binary $BINARY_NAME not found after installation" >&2
+        exit 1
     fi
 else
-    echo "❌ Binary $BINARY_NAME not found after installation" >&2
-    exit 1
+    echo "⚠️  Skipping binary check (package is not a CLI tool)"
 fi
 
 # Platform-specific checks

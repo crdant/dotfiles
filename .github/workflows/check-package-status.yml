@@ -23,7 +23,7 @@ jobs:
 
           # Get list of available packages dynamically
           # Capture both stdout and stderr, but preserve them separately for diagnostics
-          script_output=$(python3 .github/scripts/update-package.py 2>&1)
+          script_output=$(nix-shell -p python3 python3Packages.requests --run "python3 .github/scripts/update-package.py" 2>&1)
           script_exit_code=$?
 
           # Note the exit code but don't fail yet - the script exits 1 on usage/help

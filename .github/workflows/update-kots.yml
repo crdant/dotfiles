@@ -24,8 +24,10 @@ jobs:
         
       - name: Check for KOTS updates
         id: check
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          python3 .github/scripts/update-package.py kots
+          nix-shell -p python3 python3Packages.requests --run "python3 .github/scripts/update-package.py kots"
 
   calculate-darwin-hash:
     needs: check-update
@@ -52,7 +54,7 @@ jobs:
       - name: Calculate vendor hash for darwin
         id: vendor
         run: |
-          python3 .github/scripts/calculate-go-vendor-hash.py kots ${{ needs.check-update.outputs.new-version }} macos-latest
+          nix-shell -p python3 python3Packages.requests --run "python3 .github/scripts/calculate-go-vendor-hash.py kots ${{ needs.check-update.outputs.new-version }} macos-latest"
 
   calculate-linux-hash:
     needs: check-update
@@ -79,7 +81,7 @@ jobs:
       - name: Calculate vendor hash for linux
         id: vendor
         run: |
-          python3 .github/scripts/calculate-go-vendor-hash.py kots ${{ needs.check-update.outputs.new-version }} ubuntu-latest
+          nix-shell -p python3 python3Packages.requests --run "python3 .github/scripts/calculate-go-vendor-hash.py kots ${{ needs.check-update.outputs.new-version }} ubuntu-latest"
 
   update-and-create-pr:
     needs: [check-update, calculate-darwin-hash, calculate-linux-hash]
