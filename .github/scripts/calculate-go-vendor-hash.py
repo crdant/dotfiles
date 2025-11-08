@@ -42,7 +42,10 @@ def calculate_vendor_hash(owner: str, repo: str, version: str, platform: str) ->
         
         # Download dependencies
         print("Downloading Go dependencies...")
-        subprocess.run(["go", "mod", "download"], check=True, capture_output=True)
+        result = subprocess.run(["go", "mod", "download"], capture_output=True, text=True)
+        if result.returncode != 0:
+            print(f"Go mod download failed with stderr:\n{result.stderr}", file=sys.stderr)
+            raise RuntimeError(f"go mod download failed with exit code {result.returncode}")
         
         # Use go mod vendor to create vendor directory
         print("Creating vendor directory...")

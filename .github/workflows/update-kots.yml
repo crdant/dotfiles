@@ -47,7 +47,7 @@ jobs:
       - name: Install Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.21'
+          go-version: '1.25'
 
       - name: Calculate vendor hash for darwin
         id: vendor
@@ -78,7 +78,7 @@ jobs:
       - name: Install Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.21'
+          go-version: '1.25'
 
       - name: Calculate vendor hash for linux
         id: vendor
