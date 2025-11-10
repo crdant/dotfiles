@@ -13,7 +13,7 @@ let
         "lima"
       ];
       casks = [
-        "codelayer-nightly"
+        "codelayer"
       ];
     };
   };
