@@ -16,6 +16,7 @@ in {
       fermyon-spin
       nix-init
       nix-prefetch-git
+      pixi
       shellcheck
       subversion
     ] ++ lib.optionals isDarwin [
