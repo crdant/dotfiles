@@ -29,12 +29,16 @@ jobs:
         run: |
           nix-shell -p python3 python3Packages.requests --run "python3 .github/scripts/update-package.py replicated"
 
-  calculate-darwin-hash:
+  calculate-hash:
     needs: check-update
     if: needs.check-update.outputs.updated == 'true'
-    runs-on: macos-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     outputs:
       darwin-hash: ${{ steps.vendor.outputs.darwin-hash }}
+      linux-hash: ${{ steps.vendor.outputs.linux-hash }}
 
     steps:
       - name: Checkout repository
@@ -55,37 +59,6 @@ jobs:
         id: vendor
         run: |
           nix-shell -p python3 python3Packages.requests --run "python3 .github/scripts/calculate-go-vendor-hash.py replicated ${{ needs.check-update.outputs.new-version }} macos-latest"
-
-      - name: Test Replicated installation
-        run: |
-          .github/scripts/test-package.sh replicated
-
-  calculate-linux-hash:
-    needs: check-update
-    if: needs.check-update.outputs.updated == 'true'
-    runs-on: ubuntu-latest
-    outputs:
-      linux-hash: ${{ steps.vendor.outputs.linux-hash }}
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
-
-      - name: Setup Nix cache
-        uses: DeterminateSystems/magic-nix-cache-action@main
-
-      - name: Install Go
-        uses: actions/setup-go@v6
-        with:
-          go-version: '1.21'
-
-      - name: Calculate vendor hash for linux
-        id: vendor
-        run: |
-          nix-shell -p python3 python3Packages.requests --run "python3 .github/scripts/calculate-go-vendor-hash.py replicated ${{ needs.check-update.outputs.new-version }} ubuntu-latest"
 
       - name: Test Replicated installation
         run: |
@@ -112,8 +85,8 @@ jobs:
       - name: Update vendorHash values
         run: |
           # Get the vendor hashes from the job outputs
-          DARWIN_HASH="${{ needs.calculate-darwin-hash.outputs.darwin-hash }}"
-          LINUX_HASH="${{ needs.calculate-linux-hash.outputs.linux-hash }}"
+          DARWIN_HASH="${{ needs.calculate-hash.outputs.darwin-hash }}"
+          LINUX_HASH="${{ needs.calculate-hash.outputs.linux-hash }}"
           
           echo "Updating Replicated vendorHash values:"
           echo "Darwin: $DARWIN_HASH"
