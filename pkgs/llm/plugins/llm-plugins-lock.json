@@ -102,7 +102,7 @@
     "description": "Accepts a prompt for a shell command, runs that prompt",
     "owner": "simonw",
     "pythonDeps": [
-      "prompt_toolkit",
+      "prompt-toolkit",
       "pygments"
     ],
     "ref": "0.2a0",
@@ -117,7 +117,7 @@
     "description": "Shell completion using LLM",
     "owner": "CGamesPlay",
     "pythonDeps": [
-      "prompt_toolkit"
+      "prompt-toolkit"
     ],
     "ref": "v1.1.1",
     "repo": "llm-cmd-comp",

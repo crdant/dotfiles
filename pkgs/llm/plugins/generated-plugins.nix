@@ -108,7 +108,7 @@ in
       sha256 = "sha256-RhwQEllpee/XP1p0nrgL4m+KjSZzf61J8l1jJGlg94E=";
     };
     description = "Accepts a prompt for a shell command, runs that prompt";
-    pythonDeps = ["prompt_toolkit" "pygments"];
+    pythonDeps = ["prompt-toolkit" "pygments"];
   };
 
   llm-cmd-comp = buildLlmPlugin {
@@ -121,7 +121,7 @@ in
       sha256 = "sha256-BTlqrwHS6SSQ86vaf9CqNbgFM9RSiRk97dktosLBE78=";
     };
     description = "Shell completion using LLM";
-    pythonDeps = ["prompt_toolkit"];
+    pythonDeps = ["prompt-toolkit"];
   };
 
   llm-cohere = buildLlmPlugin {

@@ -303,7 +303,7 @@
     "ref": "0.2a0",
     "description": "Accepts a prompt for a shell command, runs that prompt",
     "pythonDeps": [
-      "prompt_toolkit",
+      "prompt-toolkit",
       "pygments"
     ]
   },
@@ -313,7 +313,7 @@
     "ref": "v1.1.1",
     "description": "Shell completion using LLM",
     "pythonDeps": [
-      "prompt_toolkit"
+      "prompt-toolkit"
     ]
   },
   "llm-python": {
