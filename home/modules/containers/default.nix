@@ -8,6 +8,7 @@ in {
   home.packages = with pkgs; [
     apko
     crane
+    docker-client
     imgpkg
     unstable.ko
     melange

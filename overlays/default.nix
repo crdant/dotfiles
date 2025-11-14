@@ -33,8 +33,6 @@
       mlx-lm = prev.callPackage ./mlx-lm { };
     };
 
-    llm = prev.callPackage ./llm { };
-    
     tailscale = (prev.tailscale.overrideAttrs (oldAttrs: let
       newVersion = "1.88.4";
     in {

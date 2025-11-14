@@ -1,4 +1,4 @@
-theme = dark:rose-pine-moon,light:rose-pine-dawn
+theme = "Rose Pine Moon"
 font-family = "Inconsolata Regular Regular"
 font-size = 11
 copy-on-select = clipboard
