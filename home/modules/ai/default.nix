@@ -15,7 +15,24 @@ in {
       gemini-cli
       goose-cli
       unstable.github-mcp-server
-      llm
+      unstable.llm.withPlugins { 
+        llm-gemini = true; 
+        llm-groq = true; 
+        llm-anthropic = true;
+        llm-gemini = true;
+        llm-groq = true;
+        llm-perplexity = true;
+        llm-fireworks = true;
+        llm-echo = true;
+        llm-cmd = true;
+        llm-jq = true;
+        llm-python = true;
+        llm-templates-fabric = true;
+        llm-tools-simpleeval = true;
+        llm-tools-quickjs = true;
+        llm-tools-sqlite = true;
+        llm-venice = true;
+      }
       mbta-mcp-server
       mods
       repomix
