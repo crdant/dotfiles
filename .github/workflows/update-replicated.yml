@@ -65,7 +65,7 @@ jobs:
           .github/scripts/test-package.sh replicated
 
   update-and-create-pr:
-    needs: [check-update, calculate-darwin-hash, calculate-linux-hash]
+    needs: [check-update, calculate-hash]
     if: needs.check-update.outputs.updated == 'true'
     runs-on: ubuntu-latest
     permissions:
