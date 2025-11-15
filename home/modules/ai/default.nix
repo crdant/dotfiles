@@ -5,12 +5,13 @@ let
   isLinux = pkgs.stdenv.isLinux;
 in {
   # AI and coding assistant tools
-  home = { 
+  home = {
     packages = with pkgs; [
       aider-chat-full
       amp-cli
       nur.repos.charmbracelet.crush
       claude-code
+      claude-memory-extractor
       unstable.fabric-ai
       gemini-cli
       goose-cli
