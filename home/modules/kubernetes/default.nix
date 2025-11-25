@@ -43,4 +43,36 @@ in {
       };
     };
   };
+
+  launchd = lib.mkIf isDarwin {
+    enable = true;
+    agents = {
+      "io.crdant.env.kubernetes" = {
+        enable = true;
+        config = {
+          Label = "io.crdant.env.kubernetes";
+          ProgramArguments = [
+            "${pkgs.bash}/bin/bash"
+            "-c"
+            ''
+              # Add krew bin to PATH for GUI Kubernetes tools
+              CURRENT_PATH=$(launchctl getenv PATH)
+              if [[ -z "$CURRENT_PATH" ]]; then
+                # If PATH doesn't exist yet, set a basic one
+                launchctl setenv PATH "${config.home.homeDirectory}/.krew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+              else
+                # Prepend krew to existing PATH if not already present
+                if [[ ":$CURRENT_PATH:" != *":${config.home.homeDirectory}/.krew/bin:"* ]]; then
+                  launchctl setenv PATH "${config.home.homeDirectory}/.krew/bin:$CURRENT_PATH"
+                fi
+              fi
+            ''
+          ];
+          RunAtLoad = true;
+          StandardOutPath = "${config.xdg.stateHome}/launchd/env.kubernetes.out";
+          StandardErrorPath = "${config.xdg.stateHome}/launchd/env.kubernetes.err";
+        };
+      };
+    };
+  };
 }
