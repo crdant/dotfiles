@@ -32,12 +32,24 @@ in {
         "10.13.6.204 bridge.things.crdant.net homebridge.things.crdant.net" = {
           user = "pi";
         };
-        "rye.lab.shortrib.net bourbon.lab.shortrib.net scotch.lab.shortrib.net potstill.lab.shortrib.net shine.lab.shortrib.net malt.lab.shortrib.net vcenter.lab.shortrib.net" = {
+        "rye.lab.shortrib.net scotch.lab.shortrib.net potstill.lab.shortrib.net shine.lab.shortrib.net malt.lab.shortrib.net vcenter.lab.shortrib.net" = {
           user = "root";
           identityFile = "~/.ssh/id_homelab.pub";
           extraOptions = {
             identityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
             identitiesOnly = "yes";
+          };
+        };
+        "bourbon.lab.shortrib.net" = {
+          user = "nutanix";
+          extraOptions = {
+            passwordAuthentication = "yes";
+          };
+        };
+        "hypervisor.bourbon.lab.shortrib.net" = {
+          user = "root";
+          extraOptions = {
+            passwordAuthentication = "yes";
           };
         };
       };
