@@ -12,13 +12,27 @@ let
       };
     };
   };
+  supportsNtp = builtins.hasAttr "ntp" options.services;
+  disableNtp = lib.optionalAttrs supportsNtp {
+    services = {
+      ntp.enable = false;
+    };
+  };
+  supportsChrony = builtins.hasAttr "chrony" options.services;
+  disableChrony = lib.optionalAttrs supportsChrony {
+    services = {
+      chrony.enable = false;
+    };
+  };
+  supportsTimesyncd = builtins.hasAttr "timestampd" options.services;
+  disableTimesyncd = lib.optionalAttrs supportsTimesyncd {
+    services = {
+      timestampd.enable = false;
+    };
+  };
 in lib.mkMerge [
   vmwareConfig
-  {
-    services = { 
-      ntp.enable = false;
-      chrony.enable = false;
-      timesyncd.enable = false;
-    };
-  }
+  disableNtp
+  disableChrony
+  disableTimesyncd
 ]
