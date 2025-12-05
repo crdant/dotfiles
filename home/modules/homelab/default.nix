@@ -54,9 +54,10 @@ in {
             passwordAuthentication = "yes";
             identityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
             identitiesOnly = "yes";
+          };
         };
 
-        "hypervisor.bourbon.lab.shortrib.net" = {
+        "hypervisor.rye.lab.shortrib.net ahv.rye.lab.shortrib.net hypervisor.bourbon.lab.shortrib.net ahv.bourbon.lab.shortrib.net hypervisor.scotch.lab.shortrib.net ahv.scotch.lab.shortrib.net" = {
           user = "root";
           extraOptions = {
             passwordAuthentication = "yes";
