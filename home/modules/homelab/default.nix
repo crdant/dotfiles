@@ -38,14 +38,24 @@ in {
         "10.13.6.204 bridge.things.crdant.net homebridge.things.crdant.net" = {
           user = "pi";
         };
-        "rye.lab.shortrib.net bourbon.lab.shortrib.net scotch.lab.shortrib.net potstill.lab.shortrib.net shine.lab.shortrib.net malt.lab.shortrib.net vcenter.lab.shortrib.net" = {
-          user = "root";
+
+        "prism.lab.shortrib.net" = {
+          user = "admin";
+          extraOptions = {
+            passwordAuthentication = "yes";
+          };
+        };
+
+        "bourbon.lab.shortrib.net rye.lab.shortrib.net scotch.lab.shortrib.net" = {
+          user = "admin";
           identityFile = "~/.ssh/id_homelab.pub";
           extraOptions = {
+            passwordAuthentication = "yes";
             identityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
             identitiesOnly = "yes";
           };
         };
+        
         "ipmi.rye.lab.shortrib.net ipmi.bourbon.lab.shortrib.net ipmi.scotch.lab.shortrib.net" = {
           user = "arceus";
           identityFile = "~/.ssh/id_ipmi.pub";
@@ -54,6 +64,13 @@ in {
             passwordAuthentication = "yes";
             identityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
             identitiesOnly = "yes";
+          };
+        };
+
+        "hypervisor.rye.lab.shortrib.net ahv.rye.lab.shortrib.net hypervisor.bourbon.lab.shortrib.net ahv.bourbon.lab.shortrib.net hypervisor.scotch.lab.shortrib.net ahv.scotch.lab.shortrib.net" = {
+          user = "root";
+          extraOptions = {
+            passwordAuthentication = "yes";
           };
         };
       };
