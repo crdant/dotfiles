@@ -55,7 +55,7 @@ in {
             identitiesOnly = "yes";
           };
         };
-
+        
         "ipmi.rye.lab.shortrib.net ipmi.bourbon.lab.shortrib.net ipmi.scotch.lab.shortrib.net" = {
           user = "arceus";
           identityFile = "~/.ssh/id_ipmi.pub";
