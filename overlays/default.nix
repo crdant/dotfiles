@@ -34,31 +34,20 @@
     };
 
     tailscale = (prev.tailscale.overrideAttrs (oldAttrs: let
-      newVersion = "1.88.4";
+      newVersion = "1.90.9";
     in {
       version = newVersion;
       src = prev.fetchFromGitHub {
         owner = "tailscale";
         repo = "tailscale";
         rev = "v${newVersion}";
-        sha256 = "sha256-fzJwRTB2U2GuLmv1XUSMLnhyLlp+4kGorLGAvRVjDqw=";
+        sha256 = "";
       };
-      vendorHash = "sha256-8aE6dWMkTLdWRD9WnLVSzpOQQh61voEnjZAJHtbGCSs=";
+      vendorHash = "";
       doCheck = false;
     })).override{ buildGoModule = final.buildGo1_25Module; };
 
     kots = prev.kots.override{ buildGoModule = final.buildGo1_25Module; };
-
-    claude-code = (prev.claude-code.overrideAttrs (oldAttrs: let
-      newVersion = "2.0.21";
-    in {
-      version = newVersion;
-      src = prev.fetchzip {
-        url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${newVersion}.tgz";
-        hash = "sha256-sX9btcy9uEHloAQNvCJFhwh0U/W14NWz2FjkdLXm1Q0=";
-      };
-    }));
-
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will

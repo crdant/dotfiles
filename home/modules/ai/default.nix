@@ -10,7 +10,7 @@ in {
       aider-chat-full
       amp-cli
       nur.repos.charmbracelet.crush
-      claude-code
+      unstable.claude-code
       unstable.fabric-ai
       gemini-cli
       goose-cli
