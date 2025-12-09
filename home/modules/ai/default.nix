@@ -7,7 +7,7 @@ in {
   # AI and coding assistant tools
   home = { 
     packages = with pkgs; [
-      aider-chat-full
+      aider-chat
       amp-cli
       nur.repos.charmbracelet.crush
       unstable.claude-code
