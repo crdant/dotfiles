@@ -12,10 +12,6 @@ in {
     stateVersion
   ];
 
-  imports = [
-    ./terminfo.nix
-  ];
-
   # assure flakes and nix command are enabled
   nix = {
     extraOptions = ''
