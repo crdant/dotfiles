@@ -41,6 +41,9 @@ in (lib.mkMerge [
         unixtools.watch
       ];
     };
+    services = {
+      tailscale.enable = isLinux;
+    };
   }
   homebrewConfig
 ])
