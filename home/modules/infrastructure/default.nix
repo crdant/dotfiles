@@ -14,6 +14,7 @@ in {
       terraform
       terraform-lsp
       vault
+      wrangler
     ];
   };
   
