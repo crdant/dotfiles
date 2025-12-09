@@ -8,12 +8,12 @@
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
     go1_25 = prev.go.overrideAttrs (oldAttrs: let
-      newVersion = "1.25.1";
+      newVersion = "1.25.3";
       in {
         version = newVersion;
         src = prev.fetchzip {
           url = "https://go.dev/dl/go${newVersion}.src.tar.gz";
-          hash = "sha256-jz/CjhXI4jMFHhg7Up/X1FbUyMRTFM1fim3Gj77cU9Q=";
+          hash = "sha256-f2mwGGzj08lYTG3YlbS3RL3Vc8zyPIUUavPTxwqA5zw=";
         };
         patches = [];
       }
@@ -41,9 +41,9 @@
         owner = "tailscale";
         repo = "tailscale";
         rev = "v${newVersion}";
-        sha256 = "";
+        sha256 = "sha256-gfpjP1i9077VR/sDclnz+QXJcCffuS0i33m75zo91kM=";
       };
-      vendorHash = "";
+      vendorHash = "sha256-AUOjLomba75qfzb9Vxc0Sktyeces6hBSuOMgboWcDnE=";
       doCheck = false;
     })).override{ buildGoModule = final.buildGo1_25Module; };
 
