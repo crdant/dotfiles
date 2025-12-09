@@ -59,11 +59,10 @@
       };
 
       darwinConfigurations = {
-	"aguardiente" = darwin.lib.darwinSystem {
+	      "aguardiente" = darwin.lib.darwinSystem {
           system = "aarch64-darwin";
           specialArgs = {inherit inputs outputs;};
           modules = [ 
-            ./systems/modules/base/terminfo.nix
             ./systems/hosts/aguardiente/default.nix
             ./home/users/crdant/crdant.nix
             ./home/users/crdant/darwin.nix
@@ -74,7 +73,6 @@
           system = "aarch64-darwin";
           specialArgs = {inherit inputs outputs;};
           modules = [ 
-            ./systems/modules/base/terminfo.nix
             ./systems/hosts/grappa/default.nix
             ./home/users/crdant/crdant.nix
             ./home/users/crdant/darwin.nix
@@ -85,7 +83,6 @@
           system = "aarch64-darwin";
           specialArgs = {inherit inputs outputs;};
           modules = [ 
-            ./systems/modules/base/terminfo.nix
             ./systems/hosts/sochu/default.nix
             ./home/users/crdant/chuck.nix
             ./home/users/crdant/darwin.nix
