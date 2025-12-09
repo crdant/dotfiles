@@ -61,18 +61,34 @@ in {
 
     ssh = {
       enable = true;
-      hashKnownHosts = true;
-      
+      enableDefaultConfig = false;
+      matchBlocks = {
+        "*" = {
+          user = "crdant";
+          forwardAgent = false;
+          addKeysToAgent = "yes";
+          compression = false;
+          serverAliveInterval = 0;
+          serverAliveCountMax = 3;
+          hashKnownHosts = true;
+          userKnownHostsFile = "~/.ssh/known_hosts";
+          controlMaster = "yes";
+          controlPath = "~/.ssh/master-%r@%n:%p";
+          controlPersist = "no";
+          extraOptions = {
+            passwordAuthentication = "no";
+          };
+        };
+      };
+
       includes = [
         "${config.xdg.configHome}/ssh/config.d/*"
       ];
       
       # Common configs for all hosts
       extraConfig = ''
-        User crdant
         IgnoreUnknown UseKeychain
         UseKeychain yes
-        PasswordAuthentication no
       '';
     };
   };
