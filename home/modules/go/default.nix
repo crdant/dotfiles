@@ -13,7 +13,9 @@ in {
   programs = {
     go = {
       enable = true;
-      goPath = "workspace/go";
+      env = {
+        GOPATH = [ "${config.home.homeDirectory}/workspace/go}" ];
+      };
       package = pkgs.go;
     };
     
