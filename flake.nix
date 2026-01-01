@@ -67,10 +67,31 @@
             ./home/users/crdant/crdant.nix
           ];
         };
-      };
+        swan = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = {inherit inputs outputs;};
+          modules = [ 
+            ./systems/hosts/swan/default.nix
+            ./home/users/crdant/crdant.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.users.crdant = {
+                imports = [ profilePath ];
+              };
+              home-manager.extraSpecialArgs = {
+                inherit inputs outputs;
+                username = "crdant";
+                gitEmail = "crdant@shortrib.io";
+                homeDirectory = "/home/crdant";
+                profile = "server";
+              };
+            }
+          ];
+        };
+     };
 
       darwinConfigurations = {
-	"aguardiente" = darwin.lib.darwinSystem {
+	      "aguardiente" = darwin.lib.darwinSystem {
           system = "aarch64-darwin";
           specialArgs = {inherit inputs outputs;};
           modules = [ 
@@ -139,34 +160,5 @@
             );
         in
         generateConfigs userConfigs profiles;
-
-      packages.x86_64-linux = {
-        swan = mkOvaImage {
-            modules = let
-              profilePath = ./home/profiles/server.nix;
-            in [
-              ./systems/hosts/swan/default.nix
-              ./home/users/crdant/crdant.nix
-              home-manager.nixosModules.home-manager
-              {
-                home-manager.users.crdant = {
-                  imports = [ profilePath ];
-                };
-                home-manager.extraSpecialArgs = {
-                  inherit inputs outputs;
-                  username = "crdant";
-                  gitEmail = "crdant@shortrib.io";
-                  homeDirectory = "/home/crdant";
-                  profile = "server";
-                };
-              }
-            ];
-          specialArgs = {inherit inputs outputs ; };
-          name = "swan";
-          domain = "lab.shortrib.net";  
-          ram = 4096;  
-          cpus = 2;
-        };
-      };
     };
 }
