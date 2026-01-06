@@ -35,8 +35,16 @@ in {
   programs = {
     ssh = {
       matchBlocks = {
-        "10.13.6.204 bridge.things.crdant.net homebridge.things.crdant.net" = {
-          user = "pi";
+        "router" = {
+          hostname = "router";
+          user = "arceus";
+          identityFile = "~/.ssh/id_router.pub";
+          extraOptions = {
+            identityAgent = "\"~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock\"";
+            canonicalizeHostName = "yes";
+            canonicalDomains = "walrus-shark.ts.net lab.shortrib.net";
+            identitiesOnly = "yes";
+          };
         };
 
         "prism.lab.shortrib.net" = {
