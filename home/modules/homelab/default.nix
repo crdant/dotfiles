@@ -35,22 +35,31 @@ in {
   programs = {
     ssh = {
       matchBlocks = {
-        "10.13.6.204 bridge.things.crdant.net homebridge.things.crdant.net" = {
-          user = "pi";
+        "router" = {
+          hostname = "router";
+          user = "arceus";
+          identityFile = "~/.ssh/id_router.pub";
+          extraOptions = {
+            identityAgent = "\"~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock\"";
+            canonicalizeHostName = "yes";
+            canonicalDomains = "walrus-shark.ts.net lab.shortrib.net";
+            identitiesOnly = "yes";
+          };
         };
 
         "prism.lab.shortrib.net" = {
           user = "admin";
+          identityFile = "~/.ssh/id_homelab.pub";
           extraOptions = {
-            passwordAuthentication = "yes";
+            identityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+            identitiesOnly = "yes";
           };
         };
 
         "bourbon.lab.shortrib.net rye.lab.shortrib.net scotch.lab.shortrib.net" = {
-          user = "admin";
+          user = "nutanix";
           identityFile = "~/.ssh/id_homelab.pub";
           extraOptions = {
-            passwordAuthentication = "yes";
             identityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
             identitiesOnly = "yes";
           };
@@ -69,8 +78,10 @@ in {
 
         "hypervisor.rye.lab.shortrib.net ahv.rye.lab.shortrib.net hypervisor.bourbon.lab.shortrib.net ahv.bourbon.lab.shortrib.net hypervisor.scotch.lab.shortrib.net ahv.scotch.lab.shortrib.net" = {
           user = "root";
+          identityFile = "~/.ssh/id_homelab.pub";
           extraOptions = {
-            passwordAuthentication = "yes";
+            identityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+            identitiesOnly = "yes";
           };
         };
       };

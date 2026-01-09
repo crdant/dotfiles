@@ -49,23 +49,17 @@ in {
     git = {
       enable = true;
       
-      userName = "Chuck D'Antonio";
-      userEmail = "${gitEmail}";
-      
       signing = {
         key = "0805EEDF0FEA6ACD";
         signByDefault = true;
       };
       
-      aliases = { 
-        ignore = "update-index --skip-worktree";
-        unignore = "update-index --no-skip-worktree";
-        ignored = "!git ls-files -v | grep \"^S\"";
-        praise = "blame";
-        unstash = "!f() { if [ $# -eq 0 ]; then echo \"Usage: git unstash <file1> [<file2> ...]\"; else for file in \"$@\"; do git checkout stash@{0} -- \"$file\"; done; fi }; f";
-      };
-      
-      extraConfig = {
+      settings = {
+        user = {
+          name = "Chuck D'Antonio";
+          email = "${gitEmail}";
+        };
+
         core = {
           editor = "nvim";
           whitespace = "fix,-indent-with-non-tab,trailing-space,cr-at-eol";
@@ -125,6 +119,14 @@ in {
             process = "git-lfs filter-process";
             required = true;
           };
+        };
+
+        aliases = { 
+          ignore = "update-index --skip-worktree";
+          unignore = "update-index --no-skip-worktree";
+          ignored = "!git ls-files -v | grep \"^S\"";
+          praise = "blame";
+          unstash = "!f() { if [ $# -eq 0 ]; then echo \"Usage: git unstash <file1> [<file2> ...]\"; else for file in \"$@\"; do git checkout stash@{0} -- \"$file\"; done; fi }; f";
         };
       } // lib.optionalAttrs isDarwin {
         credential = {

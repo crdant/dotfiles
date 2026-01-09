@@ -16,6 +16,7 @@
 
   networking = {
     hostName = "mash";
+    enableIPv6 = true;
     firewall = {
       enable = true;
       allowedTCPPorts = [ 22 ];

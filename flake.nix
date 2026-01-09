@@ -2,14 +2,14 @@
   description = "crdant's system configration ";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-25.05-darwin";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-25.11-darwin";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     sops-nix.url = "github:Mic92/sops-nix";
 
-    home-manager.url = "github:nix-community/home-manager/release-25.05";
+    home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    darwin.url = "github:lnl7/nix-darwin/nix-darwin-25.05";
+    darwin.url = "github:lnl7/nix-darwin/nix-darwin-25.11";
     darwin.inputs.nixpkgs.follows = "nixpkgs"; # ...
 
     nur = {
@@ -59,11 +59,10 @@
       };
 
       darwinConfigurations = {
-	"aguardiente" = darwin.lib.darwinSystem {
+	      "aguardiente" = darwin.lib.darwinSystem {
           system = "aarch64-darwin";
           specialArgs = {inherit inputs outputs;};
           modules = [ 
-            ./systems/modules/base/terminfo.nix
             ./systems/hosts/aguardiente/default.nix
             ./home/users/crdant/crdant.nix
             ./home/users/crdant/darwin.nix
@@ -74,7 +73,6 @@
           system = "aarch64-darwin";
           specialArgs = {inherit inputs outputs;};
           modules = [ 
-            ./systems/modules/base/terminfo.nix
             ./systems/hosts/grappa/default.nix
             ./home/users/crdant/crdant.nix
             ./home/users/crdant/darwin.nix
@@ -85,7 +83,6 @@
           system = "aarch64-darwin";
           specialArgs = {inherit inputs outputs;};
           modules = [ 
-            ./systems/modules/base/terminfo.nix
             ./systems/hosts/sochu/default.nix
             ./home/users/crdant/chuck.nix
             ./home/users/crdant/darwin.nix

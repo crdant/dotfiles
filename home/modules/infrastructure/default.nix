@@ -10,9 +10,11 @@ in {
       cloudflared
       leftovers
       packer
+      restic
       terraform
       terraform-lsp
       vault
+      wrangler
     ];
   };
   
