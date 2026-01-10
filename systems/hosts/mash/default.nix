@@ -17,9 +17,27 @@
   networking = {
     hostName = "mash";
     enableIPv6 = true;
+    # Use systemd-networkd for proper integration with systemd-resolved
+    useNetworkd = true;
+    useDHCP = false;
     firewall = {
       enable = true;
       allowedTCPPorts = [ 22 ];
+    };
+  };
+
+  # Configure ens3 via systemd-networkd to get DHCP DNS into resolved
+  systemd.network = {
+    enable = true;
+    networks."10-ens3" = {
+      matchConfig.Name = "ens3";
+      networkConfig = {
+        DHCP = "ipv4";
+        DNSDefaultRoute = true;
+      };
+      dhcpV4Config = {
+        UseDNS = true;
+      };
     };
   };
 
