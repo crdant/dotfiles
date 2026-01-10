@@ -55,5 +55,17 @@
     dnssec = "allow-downgrade";
     # "true" = strict (fail if DoT unavailable), "opportunistic" = use DoT when available
     dnsovertls = "opportunistic";
+    # Skip DNSSEC validation for internal domains where authoritative DNS
+    # is signed externally but internal records are unsigned
+    dnssecNegativeTrustAnchors = [
+      "lab.shortrib.net"
+      "shortrib.net"
+      "shortrib.dev"
+      "shortrib.app"
+      "shortrib.run"
+      "shortrib.io"
+      "shortrib.sh"
+      "shortrib.life"
+    ];
   };
 } 
