@@ -33,9 +33,13 @@
       matchConfig.Name = "ens3";
       networkConfig = {
         DHCP = "ipv4";
+        IPv6AcceptRA = true;
         DNSDefaultRoute = true;
       };
       dhcpV4Config = {
+        UseDNS = true;
+      };
+      ipv6AcceptRAConfig = {
         UseDNS = true;
       };
     };
