@@ -24,7 +24,25 @@ let
       };
     };
   };
+
+  # Skip DNSSEC validation for internal domains where authoritative DNS
+  # is signed externally but internal records are unsigned
+  # See: https://man.archlinux.org/man/core/systemd/dnssec-trust-anchors.d.5.en
+  dnssecConfig = {
+    environment.etc."dnssec-trust-anchors.d/internal.negative".text = ''
+      ; Domains with external DNSSEC signing but unsigned internal records
+      lab.shortrib.net
+      shortrib.net
+      shortrib.dev
+      shortrib.app
+      shortrib.run
+      shortrib.io
+      shortrib.sh
+      shortrib.life
+    '';
+  };
 in lib.mkMerge [
   vmwareConfig
   networkdConfig
+  dnssecConfig
 ]
