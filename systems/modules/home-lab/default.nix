@@ -28,7 +28,7 @@ let
   # Skip DNSSEC validation for internal domains where authoritative DNS
   # is signed externally but internal records are unsigned
   # See: https://man.archlinux.org/man/core/systemd/dnssec-trust-anchors.d.5.en
-  dnssecConfig = {
+  dnssecConfig = lib.optionalAtrs supportsNetworkd {
     environment.etc."dnssec-trust-anchors.d/internal.negative".text = ''
       ; Domains with external DNSSEC signing but unsigned internal records
       lab.shortrib.net
