@@ -165,14 +165,22 @@ let
     };
   };
 
-  supportsResolved = builtins.hasAttr "resolvd" options;
+  supportsResolved = builtins.hasAttr "resolved" options.services;
   resolvedConfig = lib.optionalAttrs supportsResolved {
-    services.resolved.enable = true;
-    services.resolved.domains = [
-      "lab.shortrib.net"
-      "crdant.net"
-    ];
-    services.resolvd.fallbackDns = [ "10.25.0.1" ];
+    services.resolved = {
+      enable = true;
+      dnssec = "allow-downgrade";
+      dnsovertls = "opportunistic";
+    };
+  };
+
+  supportsNetworkd = builtins.hasAttr "useNetworkd" options.networking;
+  networkdConfig = lib.optionalAttrs supportsNetworkd {
+    networking = {
+      useNetworkd = true;
+      useDHCP = false;
+    };
+    systemd.network.enable = true;
   };
 
   supportsAutoUpgrade = builtins.hasAttr "autoUpgrade" options;
@@ -194,8 +202,7 @@ let
   systemOptions = {
     # Platform-specific system defaults and preferences
     system = (lib.mkMerge [
-      darwinDefaults 
-      resolvedConfig
+      darwinDefaults
       autoUpgradeConfig
     ]);
   };
@@ -203,6 +210,8 @@ in lib.mkMerge [
   bootOptions
   firewallConfig
   ipv6Config
+  resolvedConfig
+  networkdConfig
   systemOptions
 ]
   

@@ -41,8 +41,17 @@ let
       shortrib.life
     '';
   };
+
+  supportsTailscale = builtins.hasAttr "tailscale" options.services;
+  tailscaleConfig = lib.optionalAttrs supportsTailscale {
+    services.tailscale = {
+      enable = true;
+      useRoutingFeatures = "client";
+    };
+  };
 in lib.mkMerge [
   vmwareConfig
   networkdConfig
   dnssecConfig
+  tailscaleConfig
 ]
