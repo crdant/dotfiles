@@ -11,6 +11,7 @@ in {
       leftovers
       packer
       restic
+      talosctl
       terraform
       terraform-lsp
       vault
