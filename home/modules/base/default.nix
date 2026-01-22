@@ -52,7 +52,7 @@ in {
       yq-go
     ] ++ lib.optionals isDarwin [
       icalpal
-    ]
+    ];
 
     file = {
       ".curlrc" = {
