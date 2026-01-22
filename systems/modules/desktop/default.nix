@@ -14,11 +14,6 @@ let
         upgrade = true;
       };
       
-      taps = [
-        "OJFord/formulae"
-        "vmware-tanzu/carvel"
-      ];
-
       casks = [
         "font-cabin"
         "font-noto-sans"
@@ -35,7 +30,6 @@ let
        # "1Blocker" = 1365531024;
        "1Password for Safari" = 1569813296;
        "Amphetamine" = 937984704;
-       "Bear" = 1091189122;
        "Keynote" = 409183694;
        "Microsoft Excel" = 462058435;
        "Microsoft PowerPoint" = 462062816;
