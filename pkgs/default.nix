@@ -19,4 +19,6 @@ rec {
   instruqt = pkgs.callPackage ./instruqt { };
 
   imgpkg = pkgs.callPackage ./imgpkg { };
+
+  icalpal = pkgs.callPackage ./icalpal { };
 }

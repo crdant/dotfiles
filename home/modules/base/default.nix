@@ -50,7 +50,9 @@ in {
       opensc
       procps
       yq-go
-    ];
+    ] ++ lib.optionals isDarwin [
+      icalpal
+    ]
 
     file = {
       ".curlrc" = {

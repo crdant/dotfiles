@@ -1,0 +1,11 @@
+source 'https://rubygems.org'
+
+# Dependencies for icalPal (the gem itself is installed from source)
+gem 'plist'
+gem 'sqlite3'
+gem 'mini_portile2'  # dependency of sqlite3
+gem 'logger'
+gem 'csv'
+gem 'json'
+gem 'rdoc'
+gem 'psych'  # provides yaml
