@@ -1,0 +1,57 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    csv (3.3.5)
+    date (3.5.1)
+    erb (6.0.1)
+    json (2.18.0)
+    logger (1.7.0)
+    mini_portile2 (2.8.9)
+    plist (3.7.2)
+    psych (5.3.1)
+      date
+      stringio
+    rdoc (7.1.0)
+      erb
+      psych (>= 4.0.0)
+      tsort
+    sqlite3 (2.9.0)
+      mini_portile2 (~> 2.8.0)
+    sqlite3 (2.9.0-aarch64-linux-gnu)
+    sqlite3 (2.9.0-aarch64-linux-musl)
+    sqlite3 (2.9.0-arm-linux-gnu)
+    sqlite3 (2.9.0-arm-linux-musl)
+    sqlite3 (2.9.0-arm64-darwin)
+    sqlite3 (2.9.0-x86-linux-gnu)
+    sqlite3 (2.9.0-x86-linux-musl)
+    sqlite3 (2.9.0-x86_64-darwin)
+    sqlite3 (2.9.0-x86_64-linux-gnu)
+    sqlite3 (2.9.0-x86_64-linux-musl)
+    stringio (3.2.0)
+    tsort (0.2.0)
+
+PLATFORMS
+  aarch64-linux-gnu
+  aarch64-linux-musl
+  arm-linux-gnu
+  arm-linux-musl
+  arm64-darwin
+  ruby
+  x86-linux-gnu
+  x86-linux-musl
+  x86_64-darwin
+  x86_64-linux-gnu
+  x86_64-linux-musl
+
+DEPENDENCIES
+  csv
+  json
+  logger
+  mini_portile2
+  plist
+  psych
+  rdoc
+  sqlite3
+
+BUNDLED WITH
+   2.7.2
