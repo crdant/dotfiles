@@ -21,4 +21,6 @@ rec {
   imgpkg = pkgs.callPackage ./imgpkg { };
 
   icalpal = pkgs.callPackage ./icalpal { };
+
+  ttok = pkgs.callPackage ./ttok { };
 }

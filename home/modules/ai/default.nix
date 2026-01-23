@@ -34,6 +34,7 @@ in {
       mbta-mcp-server
       mods
       repomix
+      ttok
     ];
   
  
