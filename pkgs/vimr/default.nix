@@ -2,12 +2,12 @@
 
 stdenv.mkDerivation rec {
   pname = "vimr";
-  version = "v0.59.2";
-  build = "20251201.200738";
+  version = "v0.59.3";
+  build = "20251222.155246";
 
   src = fetchurl {
     url = "https://github.com/qvacua/vimr/releases/download/${version}-${build}/VimR-${version}.tar.bz2";
-    sha256 = "sha256-HLNCL/trFhEJsdFQcBWOKntpeKUxTmmPImz/QrlRt7s=";
+    sha256 = "sha256-JNEuXbR0jduDqXtxogayl7RaDcCleiV+RGbj5LA8eps=";
   };
 
   dontFixup = true;
