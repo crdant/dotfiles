@@ -8,6 +8,7 @@ in {
   home = {
     packages = with pkgs; [
       cloudflared
+      doggo
       leftovers
       packer
       restic
