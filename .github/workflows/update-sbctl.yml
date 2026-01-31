@@ -38,25 +38,36 @@ jobs:
         if: steps.check.outputs.updated == 'true'
         run: |
           .github/scripts/test-package.sh sbctl
-          
+
+      - name: Upload modified package file
+        if: steps.check.outputs.updated == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbctl-package
+          path: pkgs/sbctl/default.nix
+          retention-days: 1
+
   test-macos:
     needs: update-sbctl
     if: needs.update-sbctl.outputs.updated == 'true'
     runs-on: macos-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-        with:
-          # Get the updated files from the Linux job
-          ref: ${{ github.ref }}
-          
+
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
-        
+
       - name: Setup Nix cache
         uses: DeterminateSystems/magic-nix-cache-action@main
-        
+
+      - name: Download modified package file
+        uses: actions/download-artifact@v4
+        with:
+          name: sbctl-package
+          path: pkgs/sbctl/
+
       - name: Test sbctl installation on macOS
         run: |
           .github/scripts/test-package.sh sbctl
@@ -68,16 +79,22 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-      
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-        
+
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
-        
+
       - name: Setup Nix cache
         uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Download modified package file
+        uses: actions/download-artifact@v4
+        with:
+          name: sbctl-package
+          path: pkgs/sbctl/
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
@@ -86,31 +103,31 @@ jobs:
           commit-message: "chore: update sbctl to v${{ needs.update-sbctl.outputs.new-version }}"
           title: "chore: update sbctl to v${{ needs.update-sbctl.outputs.new-version }}"
           body: |
-            ## 🔄 Automated Package Update: sbctl (Troubleshoot)
-            
+            ## Automated Package Update: sbctl (Troubleshoot)
+
             This is an automated update of the sbctl (Troubleshoot Support Bundle CLI) package.
-            
+
             ### Changes
             - **Previous version**: ${{ needs.update-sbctl.outputs.old-version }}
             - **New version**: ${{ needs.update-sbctl.outputs.new-version }}
             - **Release notes**: https://github.com/replicatedhq/sbctl/releases/tag/v${{ needs.update-sbctl.outputs.new-version }}
-            
+
             ### Platform-specific Binary Hashes Updated
             - **Darwin**: `${{ needs.update-sbctl.outputs.darwin-hash }}`
             - **Linux**: `${{ needs.update-sbctl.outputs.linux-hash }}`
-            
+
             ### Validation
-            ✅ Package builds successfully on Linux
-            ✅ Package builds successfully on macOS
-            ✅ Installation tests passed on both platforms
-            ✅ Binary hashes calculated and verified for both platforms  
-            
+            - Package builds successfully on Linux
+            - Package builds successfully on macOS
+            - Installation tests passed on both platforms
+            - Binary hashes calculated and verified for both platforms
+
             ### Next Steps
             - Review the changes and ensure they look correct
             - Test the updated package in your environment
             - Merge when ready
-            
+
             ---
-            🤖 *This PR was created automatically by the sbctl update workflow*
+            *This PR was created automatically by the sbctl update workflow*
           branch: update-sbctl-${{ needs.update-sbctl.outputs.new-version }}
           delete-branch: true

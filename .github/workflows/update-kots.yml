@@ -29,6 +29,14 @@ jobs:
         run: |
           nix-shell -p python3 python3Packages.requests --run "python3 .github/scripts/update-package.py kots"
 
+      - name: Upload modified package file
+        if: steps.check.outputs.updated == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: kots-package
+          path: pkgs/kots/default.nix
+          retention-days: 1
+
   calculate-hash:
     needs: check-update
     if: needs.check-update.outputs.updated == 'true'
@@ -36,9 +44,6 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
-    outputs:
-      darwin-hash: ${{ steps.vendor.outputs.darwin-hash }}  # legacy
-      linux-hash: ${{ steps.vendor.outputs.linux-hash }}  # legacy
 
     steps:
       - name: Checkout repository
@@ -53,12 +58,37 @@ jobs:
       - name: Install Go
         uses: actions/setup-go@v6
         with:
-          go-version: '1.24'
+          go-version: 'stable'
 
-      - name: Calculate vendor hash for darwin
+      - name: Calculate vendor hash
         id: vendor
+        env:
+          GOTOOLCHAIN: auto
         run: |
           nix-shell -p python3 python3Packages.requests --run "python3 .github/scripts/calculate-go-vendor-hash.py kots ${{ needs.check-update.outputs.new-version }} ${{ matrix.os }}"
+
+      - name: Save hash to file
+        run: |
+          if [[ "${{ matrix.os }}" == "macos-latest" ]]; then
+            echo "${{ steps.vendor.outputs.vendor-hash }}" > hash.txt
+            echo "artifact_name=kots-darwin-hash" >> $GITHUB_ENV
+          else
+            echo "${{ steps.vendor.outputs.vendor-hash }}" > hash.txt
+            echo "artifact_name=kots-linux-hash" >> $GITHUB_ENV
+          fi
+
+      - name: Upload hash artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.artifact_name }}
+          path: hash.txt
+          retention-days: 1
+
+      - name: Download modified package for testing
+        uses: actions/download-artifact@v4
+        with:
+          name: kots-package
+          path: pkgs/kots/
 
       - name: Test KOTS installation
         run: |
@@ -82,24 +112,48 @@ jobs:
       - name: Setup Nix cache
         uses: DeterminateSystems/magic-nix-cache-action@main
 
+      - name: Download modified package file
+        uses: actions/download-artifact@v4
+        with:
+          name: kots-package
+          path: pkgs/kots/
+
+      - name: Download Darwin hash
+        uses: actions/download-artifact@v4
+        with:
+          name: kots-darwin-hash
+          path: /tmp/darwin-hash/
+
+      - name: Download Linux hash
+        uses: actions/download-artifact@v4
+        with:
+          name: kots-linux-hash
+          path: /tmp/linux-hash/
+
       - name: Update vendorHash values
+        id: update-hashes
         run: |
-          # Get the vendor hashes from the job outputs
-          DARWIN_HASH="${{ needs.calculate-hash.outputs.darwin-hash }}"
-          LINUX_HASH="${{ needs.calculate-hash.outputs.linux-hash }}"
-          
+          # Read the vendor hashes from artifact files
+          DARWIN_HASH=$(cat /tmp/darwin-hash/hash.txt)
+          LINUX_HASH=$(cat /tmp/linux-hash/hash.txt)
+
           echo "Updating KOTS vendorHash values:"
           echo "Darwin: $DARWIN_HASH"
           echo "Linux: $LINUX_HASH"
-          
+
+          # Save for PR body
+          echo "darwin-hash=$DARWIN_HASH" >> $GITHUB_OUTPUT
+          echo "linux-hash=$LINUX_HASH" >> $GITHUB_OUTPUT
+
           # Update the package file with new vendor hashes
           sed -i.bak -E "s|(vendorHash = if isDarwin then[[:space:]]*)\\\".+\\\"|\1\"$DARWIN_HASH\"|" pkgs/kots/default.nix
           sed -i.bak -E "s|(else[[:space:]]*)\\\".+\\\";|\1\"$LINUX_HASH\";|" pkgs/kots/default.nix
-          
+          rm -f pkgs/kots/default.nix.bak
+
           # Show the changes
           echo "Updated package file:"
           cat pkgs/kots/default.nix | grep -A3 -B1 vendorHash
-          
+
       - name: Test updated package builds
         run: |
           .github/scripts/test-package.sh kots
@@ -111,30 +165,30 @@ jobs:
           commit-message: "chore: update KOTS CLI to v${{ needs.check-update.outputs.new-version }}"
           title: "chore: update KOTS CLI to v${{ needs.check-update.outputs.new-version }}"
           body: |
-            ## 🔄 Automated Package Update: KOTS CLI
-            
+            ## Automated Package Update: KOTS CLI
+
             This is an automated update of the KOTS (Kubernetes Off-The-Shelf) CLI package.
-            
+
             ### Changes
             - **Previous version**: ${{ needs.check-update.outputs.old-version }}
             - **New version**: ${{ needs.check-update.outputs.new-version }}
             - **Release notes**: https://github.com/replicatedhq/kots/releases/tag/${{ needs.check-update.outputs.tag-name }}
-            
+
             ### Platform-specific Vendor Hashes Updated
-            - **Darwin**: `${{ needs.calculate-darwin-hash.outputs.darwin-hash }}`
-            - **Linux**: `${{ needs.calculate-linux-hash.outputs.linux-hash }}`
-            
+            - **Darwin**: `${{ steps.update-hashes.outputs.darwin-hash }}`
+            - **Linux**: `${{ steps.update-hashes.outputs.linux-hash }}`
+
             ### Validation
-            ✅ Package builds successfully on both macOS and Linux
-            ✅ Installation tests passed on both platforms
-            ✅ Vendor hashes calculated and verified for both platforms  
-            
+            - Package builds successfully on both macOS and Linux
+            - Installation tests passed on both platforms
+            - Vendor hashes calculated and verified for both platforms
+
             ### Next Steps
             - Review the changes and ensure they look correct
             - Test the updated package in your environment
             - Merge when ready
-            
+
             ---
-            🤖 *This PR was created automatically by the KOTS CLI update workflow*
+            *This PR was created automatically by the KOTS CLI update workflow*
           branch: update-kots-${{ needs.check-update.outputs.new-version }}
           delete-branch: true
