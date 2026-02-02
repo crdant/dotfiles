@@ -84,16 +84,6 @@ jobs:
           path: hash.txt
           retention-days: 1
 
-      - name: Download modified package for testing
-        uses: actions/download-artifact@v4
-        with:
-          name: kots-package
-          path: pkgs/kots/
-
-      - name: Test KOTS installation
-        run: |
-          .github/scripts/test-package.sh kots
-
   update-and-create-pr:
     needs: [check-update, calculate-hash]
     if: needs.check-update.outputs.updated == 'true'

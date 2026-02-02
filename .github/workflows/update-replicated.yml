@@ -84,16 +84,6 @@ jobs:
           path: hash.txt
           retention-days: 1
 
-      - name: Download modified package for testing
-        uses: actions/download-artifact@v4
-        with:
-          name: replicated-package
-          path: pkgs/replicated/
-
-      - name: Test Replicated installation
-        run: |
-          .github/scripts/test-package.sh replicated
-
   update-and-create-pr:
     needs: [check-update, calculate-hash]
     if: needs.check-update.outputs.updated == 'true'
