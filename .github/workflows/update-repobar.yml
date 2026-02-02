@@ -1,0 +1,65 @@
+name: Update RepoBar Package
+on:
+  schedule:
+    - cron: '0 */4 * * *'  # Every 4 hours
+  workflow_dispatch:
+
+jobs:
+  update-reporbar:
+    runs-on: macos-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+        
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+        
+      - name: Check for RepoBar updates
+        id: check
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          nix-shell -p python3 python3Packages.requests --run "python3 .github/scripts/update-package.py repobar"
+          
+      - name: Test RepoBar installation
+        if: steps.check.outputs.updated == 'true'
+        run: |
+          .github/scripts/test-package.sh reporbar
+
+      - name: Create Pull Request
+        if: steps.check.outputs.updated == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: update RepoBar to ${{ steps.check.outputs.new-version }}"
+          title: "chore: update RepoBar to ${{ steps.check.outputs.new-version }}"
+          body: |
+            ## 🔄 Automated Package Update: RepoBar
+            
+            This is an automated update of the RepoBar package.
+            
+            ### Changes
+            - **Previous version**: ${{ steps.check.outputs.old-version }}
+            - **New version**: ${{ steps.check.outputs.new-version }}
+            - **Release notes**: https://github.com/qvacua/reporbar/releases/tag/${{ steps.check.outputs.new-version }}
+            
+            ### Validation
+            ✅ Package builds successfully
+            ✅ Installation test passed on macOS  
+            
+            ### Next Steps
+            - Review the changes and ensure they look correct
+            - Test the updated package in your environment
+            - Merge when ready
+            
+            ---
+            🤖 *This PR was created automatically by the RepoBar update workflow*
+          branch: update-reporbar-${{ steps.check.outputs.new-version }}
+          delete-branch: true

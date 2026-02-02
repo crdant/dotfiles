@@ -20,7 +20,7 @@ jobs:
           input_packages="${{ github.event.inputs.packages }}"
           
           if [ "$input_packages" = "all" ] || [ -z "$input_packages" ]; then
-            packages='["vimr", "replicated", "kots", "sbctl"]'
+            packages='["vimr", "repobar", "replicated", "kots", "sbctl"]'
           else
             # Convert comma-separated list to JSON array
             IFS=',' read -ra pkg_array <<< "$input_packages"

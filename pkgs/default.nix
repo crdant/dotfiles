@@ -7,6 +7,8 @@ rec {
   tunnelmanager = pkgs.callPackage ./tunnelmanager { };
 
   vimr = pkgs.callPackage ./vimr { };
+  repobar = pkgs.callPackage ./repobar { };
+
   leftovers = pkgs.callPackage ./leftovers { };
 
   replicated = pkgs.callPackage ./replicated { };

@@ -15,6 +15,7 @@ in {
       dockutil
       vimr
       (callPackage ./vimr-wrapper.nix { inherit config; })
+      repobar
     ] ++ lib.optionals isLinux [
       obsidian
     ];
