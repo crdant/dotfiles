@@ -5,19 +5,19 @@ let
 in
 buildGoModule rec {
   pname = "kots";
-  version = "1.128.2";
+  version = "1.129.3";
 
   src = fetchFromGitHub {
     owner = "replicatedhq";
     repo = "kots";
     rev = "v${version}";
-    sha256 = "sha256-ArBDD+ntl+AX1l1dXA524MS3MzUYbfG8c29nBzMeRB0=";
+    sha256 = "sha256-rTUYGM0Z2jBTrbSmLocKj1iB4+efn9eWMjr1DB6F/1c=";
   };
 
   vendorHash = if isDarwin then 
-      "sha256-1A0I5Iw+5yTiSCMElSO3FIveAo4nkSTqUf0K0bvcpIs="
+      "sha256-ThgM4tfK12bHR1u8paZEifRSPDejcJwDwWwHtjYQQjk="
     else
-      "sha256-ITOJoxEmHIpTpych42Ad03CRB5TKPlNELMK2hXuamkk=";
+      "sha256-RBIHqKg/BEqgVVzyQSTNk5s9rHLMvw+KnM123j2Mpr0=";
 
   subPackages = [ "cmd/kots/" ];
 
