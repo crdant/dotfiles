@@ -136,13 +136,15 @@ jobs:
           echo "linux-hash=$LINUX_HASH" >> $GITHUB_OUTPUT
 
           # Update the package file with new vendor hashes
-          sed -i.bak -E "s|(vendorHash = if isDarwin then[[:space:]]*)\\\".+\\\"|\1\"$DARWIN_HASH\"|" pkgs/kots/default.nix
-          sed -i.bak -E "s|(else[[:space:]]*)\\\".+\\\";|\1\"$LINUX_HASH\";|" pkgs/kots/default.nix
+          # Darwin hash: line with quoted hash NOT ending in semicolon
+          # Linux hash: line with quoted hash ending in semicolon
+          sed -i.bak -E 's|^([[:space:]]*)"sha256-[^"]+"$|\1"'"$DARWIN_HASH"'"|' pkgs/kots/default.nix
+          sed -i.bak -E 's|^([[:space:]]*)"sha256-[^"]+";$|\1"'"$LINUX_HASH"'";|' pkgs/kots/default.nix
           rm -f pkgs/kots/default.nix.bak
 
           # Show the changes
           echo "Updated package file:"
-          cat pkgs/kots/default.nix | grep -A3 -B1 vendorHash
+          cat pkgs/kots/default.nix | grep -A5 -B1 vendorHash
 
       - name: Test updated package builds
         run: |
