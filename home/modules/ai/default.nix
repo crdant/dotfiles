@@ -41,8 +41,9 @@ in {
     # HACK because Claude code won't follow symlinks, replace with commented out file
     # stuff below as soon as possible
     activation = {
+      # Copy agents and commands to Claude config directories
       claude = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        for CLAUDE_CONFIG_DIR in  ${config.xdg.configHome}/claude/replicated ${config.xdg.configHome}/claude/personal ; do
+        for CLAUDE_CONFIG_DIR in ${config.xdg.configHome}/claude/replicated ${config.xdg.configHome}/claude/personal ; do
           echo "Copying agents and commands to $CLAUDE_CONFIG_DIR..."
           $DRY_RUN_CMD mkdir -p $CLAUDE_CONFIG_DIR/commands $CLAUDE_CONFIG_DIR/agents
           $DRY_RUN_CMD cp -f ${./config/claude/commands}/* $CLAUDE_CONFIG_DIR/commands
@@ -50,18 +51,39 @@ in {
         done
 
         # Only on sochu: copy Replicated's auto-installed managed agents/commands
-        if [ "$(hostname -s)" = "sochu" ]; then
-          if [ -d ~/.claude/agents ]; then
+        if [ "$(/bin/hostname -s)" = "sochu" ]; then
+          if [ -d ~/.claude/agents ] && [ -n "$(ls -A ~/.claude/agents 2>/dev/null)" ]; then
             echo "Copying Replicated managed agents to the Replicated Claude config directory..."
             $DRY_RUN_CMD cp -r ~/.claude/agents/* ${config.xdg.configHome}/claude/replicated/agents/
           fi
 
-          if [ -d ~/.claude/commands ]; then
+          if [ -d ~/.claude/commands ] && [ -n "$(ls -A ~/.claude/commands 2>/dev/null)" ]; then
             echo "Copying Replicated managed commands to the Replicated Claude config directory..."
             $DRY_RUN_CMD cp -r ~/.claude/commands/* ${config.xdg.configHome}/claude/replicated/commands/
           fi
         fi
       '';
+
+      # Update mcpServers in Claude config files
+      claudeMcpServers = lib.hm.dag.entryAfter [ "sops-nix" ] (''
+        MCP_SERVERS="${config.xdg.dataHome}/claude/mcp-servers.json"
+
+        if [ -f "$MCP_SERVERS" ]; then
+          SERVERS=$(cat "$MCP_SERVERS")
+          for CONFIG_DIR in ${config.xdg.configHome}/claude/replicated ${config.xdg.configHome}/claude/personal ; do
+            CONFIG="$CONFIG_DIR/.claude.json"
+            [ -f "$CONFIG" ] || echo '{}' > "$CONFIG"
+            ${pkgs.jq}/bin/jq --argjson servers "$SERVERS" '.mcpServers = $servers' "$CONFIG" > "$CONFIG.tmp" && mv "$CONFIG.tmp" "$CONFIG"
+          done
+        fi
+      '' + lib.optionalString isDarwin ''
+        if [ -f "$MCP_SERVERS" ]; then
+          CONFIG="${config.home.homeDirectory}/Library/Application Support/Claude/claude_desktop_config.json"
+          mkdir -p "$(dirname "$CONFIG")"
+          [ -f "$CONFIG" ] || echo '{}' > "$CONFIG"
+          ${pkgs.jq}/bin/jq --argjson servers "$SERVERS" '.mcpServers = $servers' "$CONFIG" > "$CONFIG.tmp" && mv "$CONFIG.tmp" "$CONFIG"
+        fi
+      '');
     };
 
     file = {
@@ -87,6 +109,9 @@ in {
         else
           export CLAUDE_CONFIG_DIR="${config.xdg.configHome}/claude/personal"
         fi
+
+        # use MCP tool search in Claude Code
+        ENABLE_TOOL_SEARCH=true
       '';
     };
 
@@ -115,6 +140,9 @@ in {
       "github/token" = {};
       "google/maps/apiKey" = {};
       "mbta/apiKey" = {};
+      "firecrawl/api_key" = {};
+      "omni/api_token" = {};
+      "shortcut/api_token" = {};
     };
     templates = {
       ".aider.conf.yml" = {
@@ -199,8 +227,8 @@ in {
       "goose/config.yaml" = {
         path = "${config.home.homeDirectory}/.config/goose/config.yaml";
         mode = "0600";
-        content = 
-          let 
+        content =
+          let
             # Same pattern for goose config
             gooseConfig = {
               GOOSE_PROVIDER = "claude-code";
@@ -242,16 +270,14 @@ in {
             yamlContent = (pkgs.formats.yaml { }).generate "goose-config" gooseConfig;
           in builtins.readFile yamlContent;
       };
-    } // lib.optionalAttrs isDarwin {
-          "claude_desktop_config.json" = {
-            path = "${config.home.homeDirectory}/Library/Application Support/Claude/claude_desktop_config.json";
-            mode = "0600";
-            content = builtins.toJSON {
-                globalShortcut = "Cmd+Space";
-                mcpServers = import ./config/mcp.nix { inherit config pkgs; };
-              };
-        };
+
+      # MCP servers configuration for Claude
+      "mcp-servers.json" = {
+        path = "${config.xdg.dataHome}/claude/mcp-servers.json";
+        mode = "0600";
+        content = builtins.toJSON (import ./config/mcp.nix { inherit config pkgs; });
       };
+    };
   };
   
   # AI-specific Neovim plugins

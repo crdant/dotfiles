@@ -10,13 +10,6 @@ in
     command = uvxPath;
     args = ["mcp-server-fetch"];
   };
-  memory = {
-    command = npxPath;
-    args = ["-y" "@modelcontextprotocol/server-memory"];
-    env = {
-      MEMORY_FILE_PATH = "${config.xdg.stateHome}/modelcontextprotocol/memory";
-    };
-  };
   puppeteer = {
     command = npxPath;
     args = ["-y" "@modelcontextprotocol/server-puppeteer" ];
@@ -24,6 +17,33 @@ in
   time = {
     command = uvxPath;
     args = ["mcp-server-time" "--local-timezone=America/New_York"];
+  };
+  todoist = {
+    type = "http";
+    url = "https://api.todoist.com/rest/v1";
+  };
+  firecrawl = {
+    command = npxPath;
+    args = [ "-y" "firecrawl-mcp" ];
+    env = {
+      FIRECRAWL_API_KEY = "${config.sops.placeholder."firecrawl/api_key"}";
+    };
+  };
+  shortcut = {
+    command = npxPath;
+    args = [ "-y" "firecrawl-mcp" ];
+    env = {
+      SHORTCUT_API_TOKEN = "${config.sops.placeholder."shortcut/api_token"}";
+    };
+  };
+  omni = {
+    command = npxPath;
+    args = [ "@omni-co/mcp" ];
+    env = {
+      DEBUG = "true";
+      MCP_SERVER_URL = "https://replicated.omniapp.co/mcp/https";
+      MCP_API_KEY = "${config.sops.placeholder."omni/api_token"}";
+    };
   };
   github = {
     command = "${pkgs.unstable.github-mcp-server}/bin/github-mcp-server";
