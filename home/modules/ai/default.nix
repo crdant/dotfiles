@@ -66,14 +66,13 @@ in {
 
       # Update mcpServers in Claude config files
       claudeMcpServers = lib.hm.dag.entryAfter [ "sops-nix" ] (''
-        MCP_SERVERS="${config.xdg.dataHome}/claude/mcp-servers.json"
+        MCP_SERVERS="$(cat ${config.sops.templates."mcp-servers.json".path})"
 
-        if [ -f "$MCP_SERVERS" ]; then
-          SERVERS=$(cat "$MCP_SERVERS")
+        if [ -n "$MCP_SERVERS" ]; then
           for CONFIG_DIR in ${config.xdg.configHome}/claude/replicated ${config.xdg.configHome}/claude/personal ; do
             CONFIG="$CONFIG_DIR/.claude.json"
             [ -f "$CONFIG" ] || echo '{}' > "$CONFIG"
-            ${pkgs.jq}/bin/jq --argjson servers "$SERVERS" '.mcpServers = $servers' "$CONFIG" > "$CONFIG.tmp" && mv "$CONFIG.tmp" "$CONFIG"
+            ${pkgs.jq}/bin/jq --argjson servers "$MCP_SERVERS" '.mcpServers = $servers' "$CONFIG" > "$CONFIG.tmp" && mv "$CONFIG.tmp" "$CONFIG"
           done
         fi
       '' + lib.optionalString isDarwin ''
