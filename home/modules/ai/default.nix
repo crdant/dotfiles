@@ -26,10 +26,10 @@ in {
         llm-perplexity = true;
         llm-python = true;
         llm-templates-fabric = true;
-        llm-tools-quickjs = true;
+        llm-tools-quickjs = false;
         llm-tools-simpleeval = true;
         llm-tools-sqlite = true;
-        llm-venice = true;
+        llm-venice = false;
       })
       mbta-mcp-server
       mods
