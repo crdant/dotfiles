@@ -20,7 +20,7 @@ in
   };
   todoist = {
     type = "http";
-    url = "https://api.todoist.com/rest/v1";
+    url = "https://ai.todoist.net/mcp";
   };
   firecrawl = {
     command = npxPath;
@@ -31,7 +31,7 @@ in
   };
   shortcut = {
     command = npxPath;
-    args = [ "-y" "firecrawl-mcp" ];
+    args = [ "-y" "@shortcut/mcp@latest" ];
     env = {
       SHORTCUT_API_TOKEN = "${config.sops.placeholder."shortcut/api_token"}";
     };
