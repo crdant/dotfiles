@@ -75,14 +75,14 @@ in {
             ${pkgs.jq}/bin/jq --argjson servers "$MCP_SERVERS" '.mcpServers = $servers' "$CONFIG" > "$CONFIG.tmp" && mv "$CONFIG.tmp" "$CONFIG"
           done
         fi
-      '' + lib.optionalString isDarwin ''
-        if [ -f "$MCP_SERVERS" ]; then
-          CONFIG="${config.home.homeDirectory}/Library/Application Support/Claude/claude_desktop_config.json"
-          mkdir -p "$(dirname "$CONFIG")"
-          [ -f "$CONFIG" ] || echo '{}' > "$CONFIG"
-          ${pkgs.jq}/bin/jq --argjson servers "$SERVERS" '.mcpServers = $servers' "$CONFIG" > "$CONFIG.tmp" && mv "$CONFIG.tmp" "$CONFIG"
-        fi
-      '');
+      '' ); # ++ lib.optionalString isDarwin ''
+        # if [ -n "$MCP_SERVERS" ]; then
+        #   CONFIG="${config.home.homeDirectory}/Library/Application Support/Claude/claude_desktop_config.json"
+        #   mkdir -p "$(dirname "$CONFIG")"
+        #   [ -f "$CONFIG" ] || echo '{}' > "$CONFIG"
+        #   ${pkgs.jq}/bin/jq --argjson servers "$MCP_SERVERS" '.mcpServers = $servers' "$CONFIG" > "$CONFIG.tmp" && mv "$CONFIG.tmp" "$CONFIG"
+        # fi
+      # '');
     };
 
     file = {
