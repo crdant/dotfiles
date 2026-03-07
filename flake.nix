@@ -88,6 +88,15 @@
             ./home/users/crdant/darwin.nix
           ];
         };
+        "pisco" = darwin.lib.darwinSystem {
+          system = "aarch64-darwin";
+          specialArgs = {inherit inputs outputs;};
+          modules = [ 
+            ./systems/hosts/pisco/default.nix
+            ./home/users/crdant/crdant.nix
+            ./home/users/crdant/darwin.nix
+          ];
+        };
       }; 
 
       homeConfigurations = 
