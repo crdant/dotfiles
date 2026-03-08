@@ -99,7 +99,7 @@ in {
       openssh
       ripgrep
       sipcalc
-      tailscale
+      unstable.tailscale
       tcptraceroute
       tmux
       tree
