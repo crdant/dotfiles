@@ -18,19 +18,34 @@ let
 in
 {
   homebrew = {
+    taps = [
+      "steipete/tap"
+    ];
     brews = [
+      "gogcli"
+      "imsg"
+      "peekaboo"
+      "sonoscli"
+      "summarize"
       "swiftformat"
       "xcode-build-server"
       "xcodegen"
     ];
     casks = [
+      "beeper"
       "claude"
+      "discord"
       "obs"
+      "obsidian"
       "postman"
       "raspberry-pi-imager"
+      "repobar"
       "snowflake-snowsql"
       "superhuman"
     ];
+    masApps = {
+      "Obsidian Web Clipper" = 6720708363;
+    };
   };
 
   system = {

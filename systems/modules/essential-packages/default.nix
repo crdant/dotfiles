@@ -10,6 +10,9 @@ let
       brews = [
         "watch"
       ];
+      masApps = {
+        "Yubico Authenticator" = 1497506650;
+      };
     };
   };
 in (lib.mkMerge [
@@ -34,7 +37,7 @@ in (lib.mkMerge [
         yq-go
         yubico-pam
       ] ++ lib.optionals isDarwin [
-        mas
+        unstable.mas
         m-cli
         darwin.trash
       ] ++ lib.optionals isLinux [
