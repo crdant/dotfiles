@@ -30,6 +30,9 @@ let
        # "1Blocker" = 1365531024;
        "1Password for Safari" = 1569813296;
        "Amphetamine" = 937984704;
+       "Ghostery Privacy Ad Blocker" = 6504861501;
+       "iMovie" = 408981434;
+       "Kagi for Safari" = 1622835804;
        "Keynote" = 409183694;
        "Microsoft Excel" = 462058435;
        "Microsoft PowerPoint" = 462062816;
@@ -38,6 +41,7 @@ let
        "Pages" = 409201541;
        "Todoist" = 585829637;
        "Transmit" = 1436522307;
+       "X" = 1533525753;
       };
     };
   };

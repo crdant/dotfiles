@@ -10,6 +10,9 @@ let
       brews = [
         "watch"
       ];
+      masApps = {
+        "Yubico Authenticator" = 1497506650;
+      };
     };
   };
 in (lib.mkMerge [

@@ -14,6 +14,7 @@ in {
       git-lfs
       gnumake
       fermyon-spin
+      unstable.lima
       nix-init
       nix-prefetch-git
       pixi
