@@ -37,7 +37,7 @@ in (lib.mkMerge [
         yq-go
         yubico-pam
       ] ++ lib.optionals isDarwin [
-        unstable.mas
+        mas
         m-cli
         darwin.trash
       ] ++ lib.optionals isLinux [

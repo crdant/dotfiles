@@ -7,6 +7,8 @@
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
+    mas = final.unstable.mas;
+
     vimPlugins = prev.vimPlugins // {
       nvim-aider = prev.callPackage ./nvim-aider { };
       # xcodebuild-nvim = prev.callPackage ./xcodebuild-nvim { }; 
