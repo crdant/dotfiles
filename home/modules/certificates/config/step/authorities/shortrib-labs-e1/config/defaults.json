@@ -1,0 +1,5 @@
+{
+  "ca-url": "https://shortrib-labs-e1.shortrib.run",
+  "fingerprint": "21f11fd88a54b9a311190f6918073b6c98a1a10b5ba83f8c0f078a63c55b80ea",
+  "root": "/Users/chuck/.dotfiles/.worktrees/step-contexts/home/modules/certificates/config/step/authorities/shortrib-labs-e1/certs/root_ca.crt"
+}

@@ -1,6 +1,10 @@
 {
-    "shortrib": {
-        "profile": "shortrib",
-        "authority": "shortrib"
+    "shortrib-labs-e1": {
+        "profile": "shortrib-labs-e1",
+        "authority": "shortrib-labs-e1"
+    },
+    "shortrib-labs-r5": {
+        "profile": "shortrib-labs-r5",
+        "authority": "shortrib-labs-r5"
     }
 }
