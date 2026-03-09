@@ -4,17 +4,13 @@ let
   homebrewConfig = lib.optionalAttrs supportsHomebrew {
     homebrew = {
       enable = true;
-      taps = [
-        "humanlayer/humanlayer"
-      ];
       brews = [
         "calicoctl"
         "dagger"
-        "lima"
       ];
-      casks = [
-        "codelayer"
-      ];
+      masApps = {
+        "Xcode" = 497799835;
+      };
     };
   };
 in (lib.mkMerge [

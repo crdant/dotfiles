@@ -16,7 +16,7 @@ in {
     skopeo
     trivy
   ] ++ lib.optionals isDarwin [
-    colima
+    unstable.colima
   ] ++ lib.optionals isLinux [
     nerdctl
   ];

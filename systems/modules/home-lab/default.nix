@@ -10,7 +10,7 @@ let
     };
   };
 
-  supportsNetworkd = builtins.hasAttr "network" options.systemd;
+  supportsNetworkd = builtins.hasAttr "systemd" options && builtins.hasAttr "network" options.systemd;
   networkdConfig = lib.optionalAttrs supportsNetworkd {
     systemd.network.networks."20-home-lab-defaults" = {
       # Match all ethernet interfaces as a fallback
@@ -28,7 +28,7 @@ let
   # Skip DNSSEC validation for internal domains where authoritative DNS
   # is signed externally but internal records are unsigned
   # See: https://man.archlinux.org/man/core/systemd/dnssec-trust-anchors.d.5.en
-  dnssecConfig = lib.optionalAtrs supportsNetworkd {
+  dnssecConfig = lib.optionalAttrs supportsNetworkd {
     environment.etc."dnssec-trust-anchors.d/internal.negative".text = ''
       ; Domains with external DNSSEC signing but unsigned internal records
       lab.shortrib.net
@@ -42,10 +42,12 @@ let
     '';
   };
 
-  supportsTailscale = builtins.hasAttr "tailscale" options.services;
+  supportsTailscale = builtins.hasAttr "services" options && builtins.hasAttr "tailscale" options.services;
+  supportsRoutingFeatures = supportsTailscale && builtins.hasAttr "useRoutingFeatures" options.services.tailscale;
   tailscaleConfig = lib.optionalAttrs supportsTailscale {
     services.tailscale = {
-      enable = true;
+      enable = lib.mkForce true;
+    } // lib.optionalAttrs supportsRoutingFeatures {
       useRoutingFeatures = "client";
     };
   };
