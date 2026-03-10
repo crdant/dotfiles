@@ -22,5 +22,8 @@ rec {
 
   icalpal = pkgs.callPackage ./icalpal { };
 
+  # simonw tools
   ttok = pkgs.callPackage ./ttok { };
+  rodney = pkgs.callPackage ./rodney { };
+  showboat = pkgs.callPackage ./showboat { };
 }
