@@ -34,6 +34,8 @@ in {
       mbta-mcp-server
       mods
       repomix
+      rodney
+      showboat
       ttok
     ];
   
