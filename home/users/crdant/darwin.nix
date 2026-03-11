@@ -44,6 +44,8 @@ in
       "superhuman"
     ];
     masApps = {
+      "Flighty" = 1358823008;
+      "Kindle" = 302584613;
       "Obsidian Web Clipper" = 6720708363;
     };
   };

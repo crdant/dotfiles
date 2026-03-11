@@ -8,6 +8,8 @@ let
     homebrew = {
       enable = true;
       brews = [
+        "osxutils"
+        "tccutil"
         "watch"
       ];
       masApps = {

@@ -21,9 +21,11 @@ let
         "google-drive"
         "hammerspoon"
         "noun-project"
+        "popclip"
         "proxyman"
         "quicklook-json"
         "rancher"
+        "tailscale-app"
       ];
 
       masApps = {
@@ -37,11 +39,11 @@ let
        "Microsoft Excel" = 462058435;
        "Microsoft PowerPoint" = 462062816;
        "Microsoft Remote Desktop" = 1295203466;
+       "Microsoft Word" = 462054704;
        "Numbers" = 409203825;
        "Pages" = 409201541;
        "Todoist" = 585829637;
        "Transmit" = 1436522307;
-       "X" = 1533525753;
       };
     };
   };
@@ -51,7 +53,10 @@ in (lib.mkMerge [
     documentation.enable = true;
 
     environment = {
-      systemPackages = with pkgs; lib.optionals isDarwin [
+      systemPackages = with pkgs; [
+        unstable._1password-cli
+      ] ++ lib.optionals isDarwin [
+        unstable._1password-gui
         espanso
         firefox
         google-chrome
@@ -59,7 +64,7 @@ in (lib.mkMerge [
         slack
         zoom-us
       ] ++ lib.optionals isDarwin [
-        bartender
+        unstable.bartender
         duti
         grandperspective
         hexfiend

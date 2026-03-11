@@ -4,11 +4,16 @@ let
   homebrewConfig = lib.optionalAttrs supportsHomebrew {
     homebrew = {
       enable = true;
+      taps = [
+        "chainguard-dev/tap"
+      ];
       brews = [
         "calicoctl"
+        "chainguard-dev/tap/chainctl"
         "dagger"
       ];
       masApps = {
+        "TestFlight" = 899247664;
         "Xcode" = 497799835;
       };
     };

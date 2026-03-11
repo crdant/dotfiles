@@ -8,8 +8,6 @@ in {
   home = {
     # Basic packages for all environments
     packages = with pkgs; [
-      _1password-gui
-      _1password-cli
       neovide
     ] ++ lib.optionals isDarwin [
       dockutil
