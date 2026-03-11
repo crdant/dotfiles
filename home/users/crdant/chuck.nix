@@ -5,7 +5,7 @@ let
 
   authorizedKeysFile = builtins.fetchurl {
     url = "https://github.com/crdant.keys";
-    sha256 = "sha256-DMSnRs0hYVa7U2FlBIPZoBLoWlzzoJcRlUZqsFfIvww=";
+    sha256 = "sha256-ZsQD4lIGz/vWKvee26gTKhX6Qf4U7HeNvgHmGB0Qo2A=";
   };
 
   authorizedKeys = let
