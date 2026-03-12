@@ -9,6 +9,7 @@ in {
     packages = with pkgs; [
       aider-chat
       amp-cli
+      ollama
       nur.repos.charmbracelet.crush
       unstable.claude-code
       unstable.fabric-ai

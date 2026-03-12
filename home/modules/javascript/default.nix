@@ -6,6 +6,7 @@ let
 in {
   # JavaScript/TypeScript development tools
   home.packages = with pkgs; [
+    bun
     nodejs_22
     typescript-language-server
   ];
