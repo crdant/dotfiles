@@ -33,17 +33,24 @@ in
       "xcodegen"
     ];
     casks = [
+      "arc"
       "beeper"
       "claude"
       "codelayer"
       "discord"
+      "lens"
+      "loom"
       "obs"
       "obsidian"
       "postman"
       "raspberry-pi-imager"
       "repobar"
+      "macwhisper"
+      "monologue"
+      "notion-calendar"
       "snowflake-snowsql"
       "superhuman"
+      "thebrowsercompany-dia"
     ];
     masApps = {
       "Flighty" = 1358823008;

@@ -9,6 +9,7 @@ in {
     # Basic packages for all environments
     packages = with pkgs; [
       neovide
+      unstable.spotify
     ] ++ lib.optionals isDarwin [
       dockutil
       vimr

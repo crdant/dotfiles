@@ -15,6 +15,7 @@ let
       };
       
       casks = [
+        "displaybuddy"
         "font-cabin"
         "font-noto-sans"
         "ghostty@tip"
@@ -57,6 +58,7 @@ in (lib.mkMerge [
         unstable._1password-cli
       ] ++ lib.optionals isDarwin [
         unstable._1password-gui
+        chatgpt
         espanso
         firefox
         google-chrome
