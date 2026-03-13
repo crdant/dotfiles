@@ -19,6 +19,7 @@ in
 {
   homebrew = {
     taps = [
+      "humanlayer/humanlayer"
       "steipete/tap"
     ];
     brews = [
@@ -34,6 +35,7 @@ in
     casks = [
       "beeper"
       "claude"
+      "codelayer"
       "discord"
       "obs"
       "obsidian"
