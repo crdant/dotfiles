@@ -20,7 +20,8 @@ in {
       kubeseal
       kustomize
       kyverno-chainsaw
-      # open-policy-agent
+      # unstable.open-policy-agent
+      pack
       stern
       vendir
       ytt
@@ -30,8 +31,33 @@ in {
     sessionPath = [
       "$HOME/.krew/bin"
     ];
+
+    activation = {
+      krewPlugins = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        KREW="${pkgs.krew}/bin/krew"
+        PLUGINS=(
+          ctx
+          get-all
+          netshoot/netshoot
+          ns
+          outdated
+          preflight
+          schemahero
+          support-bundle
+        )
+        $DRY_RUN_CMD $KREW update
+        if ! $KREW index list 2>/dev/null | grep -q "^netshoot"; then
+          $DRY_RUN_CMD $KREW index add netshoot https://github.com/nilic/kubectl-netshoot.git
+        fi
+        for plugin in "''${PLUGINS[@]}"; do
+          if ! $KREW list 2>/dev/null | grep -q "^$plugin$"; then
+            $DRY_RUN_CMD $KREW install "$plugin"
+          fi
+        done
+      '';
+    };
   };
- 
+
   programs = {
     zsh = {
       oh-my-zsh = {

@@ -9,6 +9,7 @@
   homebrew = {
     casks = [
       "gqrx"
+      "lm-studio"
     ];
 
     masApps = {
