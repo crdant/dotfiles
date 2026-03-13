@@ -9,6 +9,7 @@ in {
     apko
     crane
     docker-client
+    docker-credential-helpers
     imgpkg
     unstable.ko
     melange
