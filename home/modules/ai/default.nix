@@ -11,6 +11,7 @@ in {
       amp-cli
       ollama
       nur.repos.charmbracelet.crush
+      claude-code-transcripts
       unstable.claude-code
       unstable.fabric-ai
       gemini-cli

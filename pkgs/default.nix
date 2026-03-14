@@ -23,6 +23,7 @@ rec {
   icalpal = pkgs.callPackage ./icalpal { };
 
   # simonw tools
+  claude-code-transcripts = pkgs.callPackage ./claude-code-transcripts { };
   ttok = pkgs.callPackage ./ttok { };
   rodney = pkgs.callPackage ./rodney { };
   showboat = pkgs.callPackage ./showboat { };
