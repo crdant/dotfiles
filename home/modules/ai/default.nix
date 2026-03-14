@@ -68,9 +68,23 @@ in {
         fi
       '';
 
+      # Ensure sops template target directories exist
+      claudeDataDir = lib.hm.dag.entryBefore [ "sops-nix" ] ''
+        $DRY_RUN_CMD mkdir -p ${config.xdg.dataHome}/claude
+      '';
+
       # Update mcpServers in Claude config files
       claudeMcpServers = lib.hm.dag.entryAfter [ "sops-nix" ] (''
-        MCP_SERVERS="$(cat ${config.sops.templates."mcp-servers.json".path})"
+        MCP_SERVERS_FILE="${config.sops.templates."mcp-servers.json".path}"
+
+        # sops-nix on macOS renders templates via an async LaunchAgent;
+        # wait for it to finish before reading
+        for _attempt in $(seq 1 30); do
+          [ -r "$MCP_SERVERS_FILE" ] && break
+          sleep 1
+        done
+
+        MCP_SERVERS="$(cat "$MCP_SERVERS_FILE")"
 
         if [ -n "$MCP_SERVERS" ]; then
           for CONFIG_DIR in ${config.xdg.configHome}/claude/replicated ${config.xdg.configHome}/claude/personal ; do
