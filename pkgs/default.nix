@@ -25,6 +25,7 @@ rec {
   zapier-platform-cli = pkgs.callPackage ./zapier-platform-cli { };
 
   # simonw tools
+  claude-code-transcripts = pkgs.callPackage ./claude-code-transcripts { };
   ttok = pkgs.callPackage ./ttok { };
   rodney = pkgs.callPackage ./rodney { };
   showboat = pkgs.callPackage ./showboat { };
