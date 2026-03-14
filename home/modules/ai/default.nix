@@ -87,6 +87,54 @@ in {
         #   ${pkgs.jq}/bin/jq --argjson servers "$MCP_SERVERS" '.mcpServers = $servers' "$CONFIG" > "$CONFIG.tmp" && mv "$CONFIG.tmp" "$CONFIG"
         # fi
       # '');
+
+      # Install Claude Code plugins declaratively
+      claudePlugins = let
+        marketplaces = {
+          "claude-plugins-official" = "anthropics/claude-plugins-official";
+          "compound-engineering-plugin" = "git@github.com:EveryInc/compound-engineering-plugin.git";
+          "compound-knowledge-marketplace" = "git@github.com:EveryInc/compound-knowledge-plugin.git";
+        };
+        plugins = [
+          "gopls-lsp@claude-plugins-official"
+          "pyright-lsp@claude-plugins-official"
+          "swift-lsp@claude-plugins-official"
+          "typescript-lsp@claude-plugins-official"
+          "skill-creator@claude-plugins-official"
+          "claude-md-management@claude-plugins-official"
+          "compound-engineering@compound-engineering-plugin"
+          "compound-knowledge@compound-knowledge-marketplace"
+          "hookify@claude-plugins-official"
+        ];
+        jq = "${pkgs.jq}/bin/jq";
+        claude = "${pkgs.unstable.claude-code}/bin/claude";
+      in lib.hm.dag.entryAfter [ "writeBoundary" "installPackages" ] ''
+        export PATH="${pkgs.git}/bin:${pkgs.openssh}/bin:$PATH"
+
+        for CLAUDE_CONFIG_DIR in ${config.xdg.configHome}/claude/personal ${config.xdg.configHome}/claude/replicated ; do
+          export CLAUDE_CONFIG_DIR
+          $DRY_RUN_CMD mkdir -p "$CLAUDE_CONFIG_DIR/plugins"
+
+          KNOWN_MARKETPLACES="$CLAUDE_CONFIG_DIR/plugins/known_marketplaces.json"
+          INSTALLED_PLUGINS="$CLAUDE_CONFIG_DIR/plugins/installed_plugins.json"
+
+          # Register marketplaces
+          ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: source: ''
+          if [ ! -f "$KNOWN_MARKETPLACES" ] || ! ${jq} -e '.["${name}"]' "$KNOWN_MARKETPLACES" > /dev/null 2>&1; then
+            $DRY_RUN_CMD ${claude} plugin marketplace add ${source}
+          fi
+          '') marketplaces)}
+
+          # Install or update plugins
+          ${lib.concatStringsSep "\n" (map (plugin: ''
+          if [ ! -f "$INSTALLED_PLUGINS" ] || ! ${jq} -e '.plugins["${plugin}"]' "$INSTALLED_PLUGINS" > /dev/null 2>&1; then
+            $DRY_RUN_CMD ${claude} plugin install ${plugin}
+          else
+            $DRY_RUN_CMD ${claude} plugin update ${plugin}
+          fi
+          '') plugins)}
+        done
+      '';
     };
 
     file = {
