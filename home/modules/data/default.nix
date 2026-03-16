@@ -1,4 +1,4 @@
-{ inputs, outputs, config, pkgs, lib, ... }:
+{ inputs, outputs, options, config, pkgs, lib, ... }:
 
 let
   isDarwin = pkgs.stdenv.isDarwin;
@@ -37,4 +37,5 @@ in {
       };
     };
   };
+  guiEnvironment = lib.mkIf (options ? guiEnvironment) {};
 }

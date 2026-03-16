@@ -1,4 +1,4 @@
-{ inputs, outputs, config, pkgs, lib, ... }:
+{ inputs, outputs, options, config, pkgs, lib, ... }:
 
 {
   # Homelab-specific SSH configurations
@@ -32,5 +32,6 @@
       };
     };
   };
+  guiEnvironment = lib.mkIf (options ? guiEnvironment) {};
 }
 

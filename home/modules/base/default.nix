@@ -1,10 +1,22 @@
-{ inputs, outputs, config, pkgs, lib, username, homeDirectory, ... }:
+{ inputs, outputs, options, config, pkgs, lib, username, homeDirectory, secretsFile ? null, ... }:
 
 let
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
 in {
   imports = [ ./fish.nix ./zsh.nix ];
+
+  # Option for environment variables visible to GUI/desktop apps via launchd
+  options.guiEnvironment = lib.mkOption {
+    type = lib.types.attrsOf lib.types.str;
+    default = {};
+    description = "Environment variables to make visible to GUI/desktop apps via launchd.";
+  };
+
+  config = {
+  guiEnvironment = {
+    XDG_CONFIG_HOME = config.xdg.configHome;
+  };
 
   # Home Manager basics
   home = {
@@ -327,4 +339,5 @@ in {
       };
     };
   };
+  }; # config
 }

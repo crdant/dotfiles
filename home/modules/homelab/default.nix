@@ -1,9 +1,9 @@
-{ inputs, outputs, config, pkgs, lib, ... }:
-let 
+{ inputs, outputs, options, config, pkgs, lib, ... }:
+
+let
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
 in {
-
   home = {
     packages = with pkgs; [
       govc
@@ -87,4 +87,5 @@ in {
       };
     };
   };
+  guiEnvironment = lib.mkIf (options ? guiEnvironment) {};
 }
