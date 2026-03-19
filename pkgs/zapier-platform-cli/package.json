@@ -1,0 +1,8 @@
+{
+  "name": "zapier-platform-cli-wrapper",
+  "version": "18.3.0",
+  "description": "Nix wrapper for zapier-platform-cli",
+  "dependencies": {
+    "zapier-platform-cli": "18.3.0"
+  }
+}

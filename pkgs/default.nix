@@ -22,6 +22,8 @@ rec {
 
   icalpal = pkgs.callPackage ./icalpal { };
 
+  zapier-platform-cli = pkgs.callPackage ./zapier-platform-cli { };
+
   # simonw tools
   ttok = pkgs.callPackage ./ttok { };
   rodney = pkgs.callPackage ./rodney { };
