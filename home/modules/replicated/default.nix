@@ -10,6 +10,7 @@ in {
       replicated
       troubleshoot-sbctl
       unstable.okteto
+      zapier-platform-cli
     ] ++ lib.optionals isDarwin [
       instruqt
       iterm2

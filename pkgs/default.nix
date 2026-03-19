@@ -22,6 +22,8 @@ rec {
 
   icalpal = pkgs.callPackage ./icalpal { };
 
+  zapier-platform-cli = pkgs.callPackage ./zapier-platform-cli { };
+
   # simonw tools
   claude-code-transcripts = pkgs.callPackage ./claude-code-transcripts { };
   ttok = pkgs.callPackage ./ttok { };
