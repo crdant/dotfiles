@@ -14,13 +14,13 @@ buildNpmPackage rec {
 
   postInstall = ''
     mkdir -p $out/bin
-    ln -s $out/lib/node_modules/zapier-platform-cli-wrapper/node_modules/.bin/zapier $out/bin/zapier
+    ln -s $out/lib/node_modules/zapier-platform-cli-wrapper/node_modules/.bin/zapier-platform $out/bin/zapier-platform
   '';
 
   meta = with lib; {
     description = "CLI for the Zapier Developer Platform";
     homepage = "https://github.com/zapier/zapier-platform";
     license = licenses.unfree;
-    mainProgram = "zapier";
+    mainProgram = "zapier-platform";
   };
 }
