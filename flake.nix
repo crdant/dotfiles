@@ -36,7 +36,10 @@
       };
 
       # Helper function to create home configurations with profiles
-      mkHomeConfig = { username, homeDirectory, gitEmail, profile ? "full", homeModule ? ./home/users/crdant/home.nix }:
+      mkHomeConfig = { username, gitEmail, profile ? "full"
+        , homeDirectory ? (if isDarwin then "/Users/${username}" else "/home/${username}")
+        , homeModule ? (./. + "/home/users/${username}/home.nix")
+      }:
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           extraSpecialArgs = {inherit inputs outputs username homeDirectory gitEmail profile;};
@@ -106,22 +109,17 @@
           # User configurations with different profiles
           userConfigs = {
             chuck = {
-              homeDirectory = if isDarwin then "/Users/chuck" else "/home/chuck";
               gitEmail = "chuck@replicated.com";
+              homeModule = ./home/users/crdant/home.nix;
             };
             crdant = {
-              homeDirectory = if isDarwin then "/Users/crdant" else "/home/crdant";
               gitEmail = "chuck@crdant.io";
             };
             luca = {
-              homeDirectory = if isDarwin then "/Users/luca" else "/home/luca";
               gitEmail = "";
-              homeModule = ./home/users/luca/home.nix;
             };
             dewey = {
-              homeDirectory = if isDarwin then "/Users/dewey" else "/home/dewey";
               gitEmail = "";
-              homeModule = ./home/users/dewey/home.nix;
             };
           };
           
@@ -136,10 +134,7 @@
                   let userConfig = userConfigs.${username}; in
                   builtins.map (profile: {
                     name = if profile == "full" then username else "${username}:${profile}";
-                    value = mkHomeConfig ({
-                      inherit username profile;
-                      inherit (userConfig) homeDirectory gitEmail;
-                    } // (if userConfig ? homeModule then { inherit (userConfig) homeModule; } else {}));
+                    value = mkHomeConfig ({ inherit username profile; } // userConfig);
                   }) profiles
                 ) (builtins.attrNames userConfigs)
               )
