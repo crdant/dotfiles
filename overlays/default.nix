@@ -9,6 +9,14 @@
   modifications = final: prev: {
     mas = final.unstable.mas;
 
+    container = prev.container.overrideAttrs (oldAttrs: rec {
+      version = "0.10.0";
+      src = prev.fetchurl {
+        url = "https://github.com/apple/container/releases/download/${version}/container-${version}-installer-signed.pkg";
+        hash = "sha256-xIHONVUk0DbDzdrH/SgeMXlNQGkL+aIfcy7z12+p/gg=";
+      };
+    });
+
     vimPlugins = prev.vimPlugins // {
       nvim-aider = prev.callPackage ./nvim-aider { };
       # xcodebuild-nvim = prev.callPackage ./xcodebuild-nvim { }; 

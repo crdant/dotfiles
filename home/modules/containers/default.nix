@@ -17,6 +17,7 @@ in {
     skopeo
     trivy
   ] ++ lib.optionals isDarwin [
+    container
     unstable.colima
   ] ++ lib.optionals isLinux [
     nerdctl
