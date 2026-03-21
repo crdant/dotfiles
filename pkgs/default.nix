@@ -21,6 +21,7 @@ rec {
   imgpkg = pkgs.callPackage ./imgpkg { };
 
   icalpal = pkgs.callPackage ./icalpal { };
+  mole = pkgs.callPackage ./mole { };
 
   zapier-platform-cli = pkgs.callPackage ./zapier-platform-cli { };
 

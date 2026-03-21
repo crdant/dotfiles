@@ -42,6 +42,7 @@ in (lib.mkMerge [
         mas
         m-cli
         darwin.trash
+        mole
       ] ++ lib.optionals isLinux [
         unixtools.watch
       ];
