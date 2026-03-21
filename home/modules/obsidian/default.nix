@@ -3,7 +3,9 @@
 let
   isLinux = pkgs.stdenv.isLinux;
 in {
-  home.packages = lib.optionals isLinux [
-    pkgs.unstable.obsidian
+  home.packages = with pkgs; [
+    obsidian-headless
+  ] ++ lib.optionals isLinux [
+    unstable.obsidian
   ];
 }
