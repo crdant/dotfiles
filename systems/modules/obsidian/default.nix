@@ -1,9 +1,17 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, ... }:
 
 let
   isDarwin = pkgs.stdenv.isDarwin;
-  isLinux = pkgs.stdenv.isLinux;
 in {
+  homebrew = lib.mkIf isDarwin {
+    casks = [
+      "obsidian"
+    ];
+    masApps = {
+      "Obsidian Web Clipper" = 6720708363;
+    };
+  };
+
   users.groups = {
     obsidian = {
       # Read/write access to obsidian vaults
