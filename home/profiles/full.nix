@@ -24,5 +24,6 @@
     ../modules/infrastructure
     ../modules/home-network
     ../modules/homelab
+    ../modules/obsidian
   ];
 }
