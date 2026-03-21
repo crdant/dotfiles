@@ -36,12 +36,15 @@
       };
 
       # Helper function to create home configurations with profiles
-      mkHomeConfig = { username, homeDirectory, gitEmail, profile ? "full" }: 
+      mkHomeConfig = { username, gitEmail, profile ? "full"
+        , homeDirectory ? (if isDarwin then "/Users/${username}" else "/home/${username}")
+        , homeModule ? (./. + "/home/users/${username}/home.nix")
+      }:
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           extraSpecialArgs = {inherit inputs outputs username homeDirectory gitEmail profile;};
-          modules = [ 
-            ./home/users/crdant/home.nix
+          modules = [
+            homeModule
           ];
         };
     in {
@@ -91,10 +94,12 @@
         "pisco" = darwin.lib.darwinSystem {
           system = "aarch64-darwin";
           specialArgs = {inherit inputs outputs;};
-          modules = [ 
+          modules = [
             ./systems/hosts/pisco/default.nix
             ./home/users/crdant/crdant.nix
             ./home/users/crdant/darwin.nix
+            ./home/users/luca/luca.nix
+            ./home/users/dewey/dewey.nix
           ];
         };
       }; 
@@ -104,12 +109,17 @@
           # User configurations with different profiles
           userConfigs = {
             chuck = {
-              homeDirectory = if isDarwin then "/Users/chuck" else "/home/chuck";
               gitEmail = "chuck@replicated.com";
+              homeModule = ./home/users/crdant/home.nix;
             };
             crdant = {
-              homeDirectory = if isDarwin then "/Users/crdant" else "/home/crdant";
               gitEmail = "chuck@crdant.io";
+            };
+            luca = {
+              gitEmail = "";
+            };
+            dewey = {
+              gitEmail = "";
             };
           };
           
@@ -120,14 +130,11 @@
           generateConfigs = userConfigs: profiles:
             builtins.listToAttrs (
               builtins.concatLists (
-                builtins.map (username: 
+                builtins.map (username:
                   let userConfig = userConfigs.${username}; in
                   builtins.map (profile: {
                     name = if profile == "full" then username else "${username}:${profile}";
-                    value = mkHomeConfig {
-                      inherit username profile;
-                      inherit (userConfig) homeDirectory gitEmail;
-                    };
+                    value = mkHomeConfig ({ inherit username profile; } // userConfig);
                   }) profiles
                 ) (builtins.attrNames userConfigs)
               )
