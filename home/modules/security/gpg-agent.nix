@@ -20,6 +20,10 @@ in {
       initExtra = ''
         if [[ -z $SSH_TTY ]]; then
           plugins+=( gpg-agent )
+        else
+          # When SSHed in, set GPG_TTY so pinentry-mac can fall back to curses mode
+          export GPG_TTY=$(tty)
+          gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1
         fi
 
         source $ZSH/oh-my-zsh.sh
