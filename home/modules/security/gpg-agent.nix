@@ -17,7 +17,7 @@ in {
 
   programs = {
     zsh = {
-      initExtra = ''
+      initContent = ''
         if [[ -z $SSH_TTY ]]; then
           plugins+=( gpg-agent )
         fi

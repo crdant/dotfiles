@@ -32,7 +32,7 @@
   # be accessible through 'pkgs.unstable'
   unstable-packages = final: _prev: {
     unstable = import inputs.nixpkgs-unstable {
-      system = final.system;
+      system = final.stdenv.hostPlatform.system;
       config.allowUnfree = true;
     };
   };
@@ -40,7 +40,7 @@
   nur-packages = final: prev: {
     nur = import inputs.nur {
       pkgs = final;
-      system = final.system;
+      system = final.stdenv.hostPlatform.system;
     };
   };
 }
