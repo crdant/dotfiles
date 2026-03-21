@@ -70,9 +70,14 @@ in {
 
       # Update mcpServers in Claude config files
       claudeMcpServers = lib.hm.dag.entryAfter [ "sops-nix" ] (''
-        MCP_SERVERS="$(cat ${config.sops.templates."mcp-servers.json".path})"
+        MCP_SERVERS_FILE="${config.sops.templates."mcp-servers.json".path}"
+        if [ ! -f "$MCP_SERVERS_FILE" ]; then
+          echo "MCP servers file not found at $MCP_SERVERS_FILE, skipping mcpServers configuration"
+        else
+          MCP_SERVERS="$(cat "$MCP_SERVERS_FILE")"
+        fi
 
-        if [ -n "$MCP_SERVERS" ]; then
+        if [ -n "''${MCP_SERVERS:-}" ]; then
           for CONFIG_DIR in ${config.xdg.configHome}/claude/replicated ${config.xdg.configHome}/claude/personal ; do
             CONFIG="$CONFIG_DIR/.claude.json"
             [ -f "$CONFIG" ] || echo '{}' > "$CONFIG"
