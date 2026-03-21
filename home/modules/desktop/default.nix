@@ -87,10 +87,10 @@ in {
       ${pkgs.dockutil}/bin/dockutil --add "${pkgs.slack}/Applications/Slack.app" --no-restart
       ${pkgs.dockutil}/bin/dockutil --add "/Applications/Superhuman.app" --no-restart
       ${pkgs.dockutil}/bin/dockutil --add "${pkgs.zoom-us}/Applications/zoom.us.app" --no-restart
-      ${pkgs.dockutil}/bin/dockutil --add "/Applications/X.app" --no-restart
 
       # System applications
       ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/Messages.app" --no-restart
+      ${pkgs.dockutil}/bin/dockutil --add "/Applications/Beeper.app" --no-restart
       ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/Contacts.app" --no-restart
 
       # Productivity apps
