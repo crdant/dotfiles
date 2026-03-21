@@ -1,10 +1,12 @@
-## TL;DR
+TL;DR
+-----
 
 <!-- One or two sentences: what does this PR do and why? Lead with the
      outcome, not the implementation. Think "what changes for the user
      or the system after this merges?" -->
 
-## Details
+Details
+-------
 
 <!-- Explain the approach and any non-obvious decisions. Write in
      present tense, declarative voice ("Adds...", "Replaces...",
