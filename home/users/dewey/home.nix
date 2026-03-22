@@ -27,4 +27,9 @@
       setopt correct
     '';
   };
+
+  sops = {
+    gnupg.home = lib.mkForce null;
+    age.keyFile = "${homeDirectory}/.config/sops/age/keys.txt";
+  };
 }

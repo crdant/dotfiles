@@ -6,7 +6,6 @@ let
 in {
   imports = [
     inputs._1password-shell-plugins.hmModules.default
-    inputs.sops-nix.homeManagerModules.sops
   ];
   
   # Security-related packages

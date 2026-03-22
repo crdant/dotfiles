@@ -4,6 +4,10 @@ let
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
 in {
+  imports = [
+    inputs.sops-nix.homeManagerModules.sops
+  ];
+
   # Home Manager basics
   home = {
     username = "${username}";

@@ -123,6 +123,7 @@
             };
             dewey = {
               gitEmail = "";
+              secretsFile = ./home/users/dewey/secrets.yaml;
             };
           };
           
