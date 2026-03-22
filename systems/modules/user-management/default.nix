@@ -1,11 +1,11 @@
 { pkgs, lib, ... }:
 
-let 
+let
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
 in {
   # User and group management for multi-user systems
-  
+
   users = {
     users.crdant = {};
     groups = {
