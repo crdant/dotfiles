@@ -5,7 +5,4 @@
   imports = [
     ../../profiles/${profile}.nix
   ];
-  
-  # Set user-specific secrets file for modules to use
-  _module.args.secretsFile = ./secrets.yaml;
 }

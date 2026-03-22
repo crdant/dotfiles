@@ -39,10 +39,11 @@
       mkHomeConfig = { username, gitEmail, profile ? "full"
         , homeDirectory ? (if isDarwin then "/Users/${username}" else "/home/${username}")
         , homeModule ? (./. + "/home/users/${username}/home.nix")
+        , secretsFile ? null
       }:
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          extraSpecialArgs = {inherit inputs outputs username homeDirectory gitEmail profile;};
+          extraSpecialArgs = {inherit inputs outputs username homeDirectory gitEmail profile secretsFile;};
           modules = [
             homeModule
           ];
@@ -111,9 +112,11 @@
             chuck = {
               gitEmail = "chuck@replicated.com";
               homeModule = ./home/users/crdant/home.nix;
+              secretsFile = ./home/users/crdant/secrets.yaml;
             };
             crdant = {
               gitEmail = "chuck@crdant.io";
+              secretsFile = ./home/users/crdant/secrets.yaml;
             };
             luca = {
               gitEmail = "";
