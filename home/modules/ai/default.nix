@@ -31,7 +31,6 @@ in {
         # Tool plugins
         "skill-creator@claude-plugins-official"
         "claude-md-management@claude-plugins-official"
-        "compound-engineering@compound-engineering-plugin"
         "compound-knowledge@compound-knowledge-marketplace"
         "last30days@last30days-skill"
         "taste@shortrib-labs"
