@@ -45,6 +45,11 @@ in {
     };
   };
   
+  # Claude Code plugin for Go language support
+  programs.claude.plugins = [
+    "gopls-lsp@claude-plugins-official"
+  ];
+
   xdg = {
     configFile = {
       "nvim/lua/gopls.lua" = {

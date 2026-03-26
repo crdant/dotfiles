@@ -24,6 +24,11 @@ in {
     plugins = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [
+        # Language LSP plugins — move to respective language modules as they adopt programs.claude.plugins
+        "pyright-lsp@claude-plugins-official"
+        "swift-lsp@claude-plugins-official"
+        "typescript-lsp@claude-plugins-official"
+        # Tool plugins
         "skill-creator@claude-plugins-official"
         "claude-md-management@claude-plugins-official"
         "compound-engineering@compound-engineering-plugin"
