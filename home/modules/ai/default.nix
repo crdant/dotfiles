@@ -89,12 +89,13 @@ in {
       # '');
 
       # Install Claude Code plugins declaratively
+      # NOTE: additive only — plugins removed from config persist on disk until manually removed
       claudePlugins = let
         pluginConfig = import ./config/plugins.nix;
         inherit (pluginConfig) marketplaces plugins;
         jq = "${pkgs.jq}/bin/jq";
         claude = "${pkgs.unstable.claude-code}/bin/claude";
-      in lib.hm.dag.entryAfter [ "writeBoundary" "installPackages" ] ''
+      in lib.hm.dag.entryAfter [ "writeBoundary" "installPackages" "claude" ] ''
         export PATH="${pkgs.git}/bin:${pkgs.openssh}/bin:$PATH"
 
         for CLAUDE_CONFIG_DIR in ${config.xdg.configHome}/claude/personal ${config.xdg.configHome}/claude/replicated ; do
@@ -102,22 +103,17 @@ in {
           $DRY_RUN_CMD mkdir -p "$CLAUDE_CONFIG_DIR/plugins"
 
           KNOWN_MARKETPLACES="$CLAUDE_CONFIG_DIR/plugins/known_marketplaces.json"
-          INSTALLED_PLUGINS="$CLAUDE_CONFIG_DIR/plugins/installed_plugins.json"
 
-          # Register marketplaces
+          # Register marketplaces (skip if already known)
           ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: source: ''
-          if [ ! -f "$KNOWN_MARKETPLACES" ] || ! ${jq} -e '.["${name}"]' "$KNOWN_MARKETPLACES" > /dev/null 2>&1; then
-            $DRY_RUN_CMD ${claude} plugin marketplace add ${source}
+          if [ ! -f "$KNOWN_MARKETPLACES" ] || ! ${jq} --arg name ${lib.escapeShellArg name} -e '.[$name]' "$KNOWN_MARKETPLACES" > /dev/null 2>&1; then
+            $DRY_RUN_CMD ${claude} plugin marketplace add ${lib.escapeShellArg source}
           fi
           '') marketplaces)}
 
-          # Install or update plugins
+          # Install plugins (install is idempotent — handles both new and existing plugins)
           ${lib.concatStringsSep "\n" (map (plugin: ''
-          if [ ! -f "$INSTALLED_PLUGINS" ] || ! ${jq} -e '.plugins["${plugin}"]' "$INSTALLED_PLUGINS" > /dev/null 2>&1; then
-            $DRY_RUN_CMD ${claude} plugin install ${plugin}
-          else
-            $DRY_RUN_CMD ${claude} plugin update ${plugin}
-          fi
+          $DRY_RUN_CMD ${claude} plugin install ${lib.escapeShellArg plugin}
           '') plugins)}
         done
       '';
