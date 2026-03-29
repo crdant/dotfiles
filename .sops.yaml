@@ -3,5 +3,3 @@ creation_rules:
   pgp: 905EBD494A6AA2B774ED5C67621620CDA290611D
 - path_regex: home/users/crdant/secrets.yaml
   pgp: 905EBD494A6AA2B774ED5C67621620CDA290611D
-- path_regex: home/users/dewey/secrets.yaml
-  age: age1v2vz7q99ml7e8x4sjh5fhxfh8ynj322zdgquxdnhvtnss8wj9pjss7htyp

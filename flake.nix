@@ -100,7 +100,6 @@
             ./home/users/crdant/crdant.nix
             ./home/users/crdant/darwin.nix
             ./home/users/luca/luca.nix
-            ./home/users/dewey/dewey.nix
           ];
         };
       }; 
@@ -120,10 +119,6 @@
             };
             luca = {
               gitEmail = "";
-            };
-            dewey = {
-              gitEmail = "";
-              secretsFile = ./home/users/dewey/secrets.yaml;
             };
           };
           
