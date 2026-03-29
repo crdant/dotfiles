@@ -100,6 +100,7 @@
             ./home/users/crdant/crdant.nix
             ./home/users/crdant/darwin.nix
             ./home/users/luca/luca.nix
+            ./home/users/luca/darwin.nix
           ];
         };
       }; 

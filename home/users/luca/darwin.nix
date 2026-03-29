@@ -1,0 +1,8 @@
+{ pkgs, ... }:
+{
+  homebrew = {
+    casks = [
+      "bluebubbles"
+    ];
+  };
+}

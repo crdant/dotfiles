@@ -27,4 +27,50 @@
       setopt correct
     '';
   };
+
+  home.file."Scripts/poke-messages.scpt".text = ''
+    try
+      tell application "Messages"
+        if not running then
+          launch
+        end if
+        set _chatCount to (count of chats)
+      end tell
+    on error
+    end try
+  '';
+
+  launchd = {
+    enable = true;
+    agents = {
+      "com.luca.poke-messages" = {
+        enable = true;
+        config = {
+          Label = "com.luca.poke-messages";
+          ProgramArguments = [
+            "/usr/bin/osascript"
+            "${homeDirectory}/Scripts/poke-messages.scpt"
+          ];
+          RunAtLoad = true;
+          StartInterval = 300;
+          StandardOutPath = "/tmp/poke-messages.log";
+          StandardErrorPath = "/tmp/poke-messages.err";
+        };
+      };
+
+      "com.luca.bluebubbles-server" = {
+        enable = true;
+        config = {
+          Label = "com.luca.bluebubbles-server";
+          ProgramArguments = [
+            "/Applications/BlueBubbles.app/Contents/MacOS/BlueBubbles"
+          ];
+          RunAtLoad = true;
+          KeepAlive = true;
+          StandardOutPath = "/tmp/bluebubbles.log";
+          StandardErrorPath = "/tmp/bluebubbles.err";
+        };
+      };
+    };
+  };
 }
