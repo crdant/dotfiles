@@ -120,6 +120,7 @@
             };
             luca = {
               gitEmail = "";
+              secretsFile = ./home/users/luca/secrets.yaml;
             };
           };
           

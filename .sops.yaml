@@ -3,3 +3,5 @@ creation_rules:
   pgp: 905EBD494A6AA2B774ED5C67621620CDA290611D
 - path_regex: home/users/crdant/secrets.yaml
   pgp: 905EBD494A6AA2B774ED5C67621620CDA290611D
+- path_regex: home/users/luca/secrets.yaml
+  age: age1k2xgl4tmywlhygyq4z5hgqqf6hwaenmgkfmy2c788ajw5gyglefqxqzfdu

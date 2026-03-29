@@ -28,6 +28,11 @@
     '';
   };
 
+  sops = {
+    gnupg.home = lib.mkForce null;
+    age.keyFile = "${homeDirectory}/.config/sops/age/keys.txt";
+  };
+
   home.file."Scripts/poke-messages.scpt".text = ''
     try
       tell application "Messages"

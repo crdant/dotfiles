@@ -12,7 +12,7 @@ in
       "/home/luca";
 
     shell = pkgs.zsh;
-    description = "Luca";
+    description = "Luca Aragosta";
   } // lib.optionalAttrs isLinux {
     isNormalUser = true;
     group = "luca";
