@@ -133,7 +133,7 @@
                 builtins.map (username:
                   let userConfig = userConfigs.${username}; in
                   builtins.map (profile: {
-                    name = if profile == "full" then username else "${username}.${profile}";
+                    name = if profile == "full" then username else "${username}:${profile}";
                     value = mkHomeConfig ({ inherit username profile; } // userConfig);
                   }) profiles
                 ) (builtins.attrNames userConfigs)
