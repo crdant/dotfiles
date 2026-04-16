@@ -131,21 +131,19 @@
           generateConfigs = userConfigs: profiles:
             builtins.listToAttrs (
               builtins.concatLists (
-                builtins.concatLists (
-                  builtins.map (system:
-                    builtins.concatLists (
-                      builtins.map (username:
-                        let userConfig = userConfigs.${username}; in
-                        builtins.map (profile: {
-                          name =
-                            let base = if profile == "full" then username else "${username}:${profile}";
-                            in "${base}@${system}";
-                          value = mkHomeConfig ({ inherit system username profile; } // userConfig);
-                        }) profiles
-                      ) (builtins.attrNames userConfigs)
-                    )
-                  ) supportedSystems
-                )
+                builtins.map (system:
+                  builtins.concatLists (
+                    builtins.map (username:
+                      let userConfig = userConfigs.${username}; in
+                      builtins.map (profile: {
+                        name =
+                          let base = if profile == "full" then username else "${username}:${profile}";
+                          in "${base}@${system}";
+                        value = mkHomeConfig ({ inherit system username profile; } // userConfig);
+                      }) profiles
+                    ) (builtins.attrNames userConfigs)
+                  )
+                ) supportedSystems
               )
             );
         in
