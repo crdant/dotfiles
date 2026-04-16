@@ -1,4 +1,4 @@
-{ inputs, outputs, config, pkgs, lib, username, homeDirectory, secretsFile ? null, ... }:
+{ inputs, outputs, config, pkgs, lib, username, homeDirectory, ... }:
 
 let 
   isDarwin = pkgs.stdenv.isDarwin;
@@ -366,13 +366,6 @@ in {
     };
   };
   
-  sops = lib.mkIf (secretsFile != null) {
-    defaultSopsFile = secretsFile;
-    gnupg = {
-      home = "${config.home.homeDirectory}/.gnupg";
-    };
-  };
-
   xdg = {
     enable = true;
     configFile = {

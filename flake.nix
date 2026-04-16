@@ -137,7 +137,7 @@
                       let userConfig = userConfigs.${username}; in
                       builtins.map (profile: {
                         name =
-                          let base = if profile == "full" then username else "${username}-${profile}";
+                          let base = if profile == "full" then username else "${username}:${profile}";
                           in "${base}@${system}";
                         value = mkHomeConfig ({ inherit system username profile; } // userConfig);
                       }) profiles
