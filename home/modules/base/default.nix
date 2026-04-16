@@ -76,7 +76,7 @@ in {
         mkdir -p ~/sandbox
       '';
 
-      customizeOmz = lib.hm.dag.entryAfter [ "writeBoundary" "installPackages" ] ''
+      customizeOmz = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
         if [ ! -d ~/workspace/oh-my-zsh-custom ]; then
           ${pkgs.git}/bin/git clone https://github.com/crdant/oh-my-zsh-custom ~/workspace/oh-my-zsh-custom || {
             echo "Warning: Failed to clone oh-my-zsh-custom repository. Skipping..."
