@@ -24,6 +24,7 @@ rec {
   mole = pkgs.callPackage ./mole { };
 
   zapier-platform-cli = pkgs.callPackage ./zapier-platform-cli { };
+  obsidian-headless = pkgs.callPackage ./obsidian-headless { };
 
   # simonw tools
   claude-code-transcripts = pkgs.callPackage ./claude-code-transcripts { };

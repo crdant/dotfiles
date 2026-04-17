@@ -16,5 +16,6 @@
     ../modules/development
     ../modules/system-defaults
     ../modules/home-lab
+    ../modules/obsidian
   ];
 }

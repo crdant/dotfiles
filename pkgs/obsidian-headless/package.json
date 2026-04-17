@@ -1,0 +1,8 @@
+{
+  "name": "obsidian-headless-wrapper",
+  "version": "0.0.8",
+  "description": "Nix wrapper for obsidian-headless",
+  "dependencies": {
+    "obsidian-headless": "0.0.8"
+  }
+}
