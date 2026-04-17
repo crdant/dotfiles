@@ -6,7 +6,6 @@ let
 in {
   imports = [
     inputs._1password-shell-plugins.hmModules.default
-    inputs.sops-nix.homeManagerModules.sops
   ];
   
   # Security-related packages
@@ -92,14 +91,6 @@ in {
       '';
     };
   };
-  
-  sops = lib.mkIf (secretsFile != null) {
-    defaultSopsFile = secretsFile;
-    gnupg = {
-      home = "${config.home.homeDirectory}/.gnupg";
-    };
-  };
-  
   
   programs = {
     zsh = {

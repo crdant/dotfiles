@@ -22,13 +22,13 @@
 
   };
 
-  outputs = { self, nixpkgs, home-manager, darwin, ...}@inputs: 
+  outputs = { self, nixpkgs, home-manager, darwin, ...}@inputs:
     let
       inherit (self) outputs;
-      system = builtins.currentSystem;
-      isDarwin = nixpkgs.legacyPackages.${system}.stdenv.isDarwin;
-      
-      pkgs = import nixpkgs {
+
+      supportedSystems = [ "aarch64-darwin" "x86_64-linux" ];
+
+      mkPkgs = system: import nixpkgs {
         inherit system;
         overlays = [
           inputs.nur.overlays.default
@@ -36,12 +36,12 @@
       };
 
       # Helper function to create home configurations with profiles
-      mkHomeConfig = { username, gitEmail, profile ? "full"
-        , homeDirectory ? (if isDarwin then "/Users/${username}" else "/home/${username}")
+      mkHomeConfig = { system, username, gitEmail, profile ? "full"
+        , homeDirectory ? (if (mkPkgs system).stdenv.isDarwin then "/Users/${username}" else "/home/${username}")
         , homeModule ? (./. + "/home/users/${username}/home.nix")
       }:
         home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
+          pkgs = mkPkgs system;
           extraSpecialArgs = {inherit inputs outputs username homeDirectory gitEmail profile;};
           modules = [
             homeModule
@@ -104,7 +104,7 @@
         };
       }; 
 
-      homeConfigurations = 
+      homeConfigurations =
         let
           # User configurations with different profiles
           userConfigs = {
@@ -122,21 +122,28 @@
               gitEmail = "";
             };
           };
-          
+
           # Available profiles
           profiles = [ "full" "development" "minimal" "server" ];
-          
-          # Generate configurations for each user-profile combination
+
+          # Generate configurations for each user-profile-system combination
+          # Names: "user@system", "user:profile@system"
           generateConfigs = userConfigs: profiles:
             builtins.listToAttrs (
               builtins.concatLists (
-                builtins.map (username:
-                  let userConfig = userConfigs.${username}; in
-                  builtins.map (profile: {
-                    name = if profile == "full" then username else "${username}:${profile}";
-                    value = mkHomeConfig ({ inherit username profile; } // userConfig);
-                  }) profiles
-                ) (builtins.attrNames userConfigs)
+                builtins.map (system:
+                  builtins.concatLists (
+                    builtins.map (username:
+                      let userConfig = userConfigs.${username}; in
+                      builtins.map (profile: {
+                        name =
+                          let base = if profile == "full" then username else "${username}:${profile}";
+                          in "${base}@${system}";
+                        value = mkHomeConfig ({ inherit system username profile; } // userConfig);
+                      }) profiles
+                    ) (builtins.attrNames userConfigs)
+                  )
+                ) supportedSystems
               )
             );
         in

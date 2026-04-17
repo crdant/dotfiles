@@ -18,6 +18,7 @@
     ../modules/infrastructure
     ../modules/kubernetes
     ../modules/ai
+    ../modules/secrets
     ../modules/security
     ../modules/certificates
   ] ;

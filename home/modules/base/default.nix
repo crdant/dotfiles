@@ -1,4 +1,4 @@
-{ inputs, outputs, config, pkgs, lib, username, homeDirectory, secretsFile ? null, ... }:
+{ inputs, outputs, config, pkgs, lib, username, homeDirectory, ... }:
 
 let 
   isDarwin = pkgs.stdenv.isDarwin;
@@ -76,7 +76,7 @@ in {
         mkdir -p ~/sandbox
       '';
 
-      customizeOmz = lib.hm.dag.entryAfter [ "writeBoundary" "installPackages" "git" ] ''
+      customizeOmz = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
         if [ ! -d ~/workspace/oh-my-zsh-custom ]; then
           ${pkgs.git}/bin/git clone https://github.com/crdant/oh-my-zsh-custom ~/workspace/oh-my-zsh-custom || {
             echo "Warning: Failed to clone oh-my-zsh-custom repository. Skipping..."
@@ -371,13 +371,6 @@ in {
     };
   };
   
-  sops = lib.mkIf (secretsFile != null) {
-    defaultSopsFile = secretsFile;
-    gnupg = {
-      home = "${config.home.homeDirectory}/.gnupg";
-    };
-  };
-
   xdg = {
     enable = true;
     configFile = {
