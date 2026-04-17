@@ -1,24 +1,16 @@
-[connections]          
-# *WARNING* *WARNING* *WARNING* *WARNING* *WARNING* *WARNING*
-# 
-# The Snowflake user password is stored in plain text in this file.
-# Pay special attention to the management of this file.
-# Thank you.
-# 
-# *WARNING* *WARNING* *WARNING* *WARNING* *WARNING* *WARNING*
-
-#If a connection doesn't specify a value, it will default to these
+[connections]
+# If a connection doesn't specify a value, it will default to these
 #
 account = "UFGKXST-DCA66381"
 user = "CHUCK@REPLICATED.COM"
-authenticator = "externalbrowser"
+authenticator = "snowflake_jwt"
 role = "TRANSFORMER_DEV"
 private_key_path = "/Users/chuck/.ssh/id_snowflake.p8"
 
 # [connections.raw]
 # account = "UFGKXST-DCA66381"
 # user = "CHUCK@REPLICATED.COM"
-# authenticator = "snowflake"
+# authenticator = "snowflake_jwt"
 # role = "TRANSFORMER_DEV"
 # database = "RAW"
 # private_key_path = "/Users/chuck/.ssh/id_snowflake.p8"
@@ -26,7 +18,7 @@ private_key_path = "/Users/chuck/.ssh/id_snowflake.p8"
 # [connections.dev]
 # account = "UFGKXST-DCA66381"
 # user = "CHUCK@REPLICATED.COM"
-# authenticator = "snowflake"
+# authenticator = "snowflake_jwt"
 # role = "TRANSFORMER_DEV"
 # database = "ANALYTICS_DEV"
 # private_key_path = "/Users/chuck/.ssh/id_snowflake.p8"
@@ -34,7 +26,7 @@ private_key_path = "/Users/chuck/.ssh/id_snowflake.p8"
 # [connections.prod]
 # account = "UFGKXST-DCA66381"
 # user = "CHUCK@REPLICATED.COM"
-# authenticator = "snowflake"
+# authenticator = "snowflake_jwt"
 # role = "TRANSFORMER_DEV"
 # database = "ANALYTICS_DEV"
 # schema = "ANALYTICS"
