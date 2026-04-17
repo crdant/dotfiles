@@ -137,6 +137,11 @@ in {
       };
     };
     
+    # Claude Code plugin for development workflows
+    claude.plugins = [
+      "compound-engineering@compound-engineering-plugin"
+    ];
+
     neovim = {
       plugins = with pkgs.vimPlugins; [
         vim-fugitive
