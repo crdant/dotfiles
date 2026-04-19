@@ -1,9 +1,11 @@
 { inputs, outputs, config, pkgs, lib, username, homeDirectory, ... }:
 
-let 
+let
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
 in {
+  imports = [ ./fish.nix ];
+
   # Home Manager basics
   home = {
     username = "${username}";
@@ -127,7 +129,62 @@ in {
       enableBashIntegration = true;
       enableFishIntegration = true;
     };
-    
+
+    starship = {
+      enable = true;
+      enableZshIntegration = true;
+      enableBashIntegration = true;
+      enableFishIntegration = true;
+
+      # Layout mirrors the crdant oh-my-zsh theme: "user@host ➜ cwd git:(branch)"
+      # Colors use ANSI names so Ghostty's Rose Pine Moon palette paints them.
+      settings = {
+        add_newline = false;
+        format = "$username$hostname $character $directory $git_branch$git_state$git_status$line_break$jobs";
+
+        username = {
+          show_always = true;
+          style_user = "magenta";
+          style_root = "bold red";
+          format = "[$user]($style)";
+        };
+
+        hostname = {
+          ssh_only = false;
+          style = "magenta";
+          format = "[@$hostname]($style)";
+        };
+
+        character = {
+          success_symbol = "[➜](bold red)";
+          error_symbol = "[➜](bold red)";
+        };
+
+        directory = {
+          style = "cyan";
+          truncation_length = 3;
+          truncate_to_repo = false;
+        };
+
+        git_branch = {
+          symbol = "";
+          style = "bold blue";
+          format = "[git:\\(]($style)[$branch](red)[\\)]($style)";
+        };
+
+        git_status = {
+          style = "bold yellow";
+          format = " [$all_status$ahead_behind]($style)";
+          conflicted = "✗";
+          modified = "✗";
+          untracked = "✗";
+          staged = "●";
+          renamed = "»";
+          deleted = "✘";
+        };
+      };
+    };
+
     tmux = {
       enable = true;
       keyMode = "vi";
