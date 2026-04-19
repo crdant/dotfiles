@@ -7,6 +7,7 @@ in {
   # Development-related packages
   home = {
     packages = with pkgs; [
+      ast-grep
       unstable.cue
       exercism
       gh
@@ -21,6 +22,7 @@ in {
       pixi
       shellcheck
       subversion
+      tokei
     ] ++ lib.optionals isDarwin [
     ];
 
@@ -50,7 +52,9 @@ in {
     
     git = {
       enable = true;
-      
+
+      delta.enable = true;
+
       signing = {
         key = "0805EEDF0FEA6ACD";
         signByDefault = true;
