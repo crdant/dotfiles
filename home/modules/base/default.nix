@@ -31,13 +31,16 @@ in {
 
     # Basic packages for all environments
     packages = with pkgs; [
+      bat
       dogdns
+      eza
       fd
       moreutils
       nmap
       pstree
       rar
       ripgrep
+      sd
       sipcalc
       smug
       tcptraceroute

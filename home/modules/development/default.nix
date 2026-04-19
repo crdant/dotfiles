@@ -52,7 +52,9 @@ in {
     
     git = {
       enable = true;
-      
+
+      delta.enable = true;
+
       signing = {
         key = "0805EEDF0FEA6ACD";
         signByDefault = true;
