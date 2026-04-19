@@ -19,7 +19,7 @@ in
 
   users.users.chuck = {
     home = "/Users/chuck";
-    shell = pkgs.zsh;
+    shell = pkgs.fish;
 
     description = "Chuck D'Antonio";
 
