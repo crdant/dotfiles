@@ -11,6 +11,16 @@ NIXOS_SYSTEMS := $(shell $(NIX) eval --impure --json $(FLAKE_PATH)$(HASH)nixosCo
 DARWIN_SYSTEMS := $(shell $(NIX) eval --impure --json $(FLAKE_PATH)$(HASH)darwinConfigurations --apply 'builtins.attrNames' 2>/dev/null | tr -d '[]"' | tr ',' ' ' || echo "")
 HOME_CONFIGS := $(shell $(NIX) eval --impure --json $(FLAKE_PATH)$(HASH)homeConfigurations --apply 'builtins.attrNames' 2>/dev/null | tr -d '[]"' | tr ',' ' ' | sed 's/:/\\:/g' || echo "")
 
+# Detect the current nix system for resolving short-name targets
+UNAME_M := $(shell uname -m)
+UNAME_S := $(shell uname -s | tr '[:upper:]' '[:lower:]')
+NIX_ARCH := $(if $(filter arm64,$(UNAME_M)),aarch64,$(UNAME_M))
+NIX_SYSTEM := $(NIX_ARCH)-$(UNAME_S)
+
+# Home configs matching the current system, with short names (no @arch-os suffix)
+LOCAL_HOME_CONFIGS := $(filter %@$(NIX_SYSTEM),$(HOME_CONFIGS))
+HOME_SHORT_NAMES := $(patsubst %@$(NIX_SYSTEM),%,$(LOCAL_HOME_CONFIGS))
+
 .PHONY: help
 help: ## Show this help menu
 	@echo "Usage: make [TARGET]"
@@ -95,6 +105,22 @@ $(1): switch-home-$(1)
 endef
 
 $(foreach config,$(HOME_CONFIGS),$(eval $(call home_config_targets,$(config))))
+
+# Generate short-name targets that resolve @arch-os from the current system
+define home_short_targets
+.PHONY: build-home-$(1)
+build-home-$(1): build-home-$(1)@$(NIX_SYSTEM)
+
+.PHONY: switch-home-$(1)
+switch-home-$(1): switch-home-$(1)@$(NIX_SYSTEM)
+
+.PHONY: check-home-$(1)
+check-home-$(1): check-home-$(1)@$(NIX_SYSTEM)
+
+$(1): switch-home-$(1)@$(NIX_SYSTEM)
+endef
+
+$(foreach name,$(HOME_SHORT_NAMES),$(eval $(call home_short_targets,$(name))))
 
 # Convenience targets for the current user
 CURRENT_USER := $(shell whoami)
