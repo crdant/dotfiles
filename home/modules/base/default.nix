@@ -31,9 +31,7 @@ in {
 
     # Basic packages for all environments
     packages = with pkgs; [
-      bat
       dogdns
-      eza
       fd
       moreutils
       nmap
@@ -116,7 +114,9 @@ in {
         "--disable-up-arrow"
       ];
     };
-    
+
+    bat.enable = true;
+
     direnv = {
       enable = true;
       enableZshIntegration = true;
@@ -124,7 +124,14 @@ in {
       enableFishIntegration = true;
       nix-direnv.enable = true;
     };
-    
+
+    eza = {
+      enable = true;
+      enableZshIntegration = true;
+      enableBashIntegration = true;
+      enableFishIntegration = true;
+    };
+
     fzf = {
       enable = true;
       enableZshIntegration = false;
@@ -207,6 +214,7 @@ in {
       };
       
       shellAliases = {
+        cat = "bat --paging=never";
         more = "less -X";
         pd = "pushd";
         pop = "popd";
@@ -291,6 +299,16 @@ in {
 
           function window() {
             smug-session window
+          }
+
+          function sed() {
+            echo "hint: consider 'sd' for cross-platform find-and-replace" >&2
+            command sed "$@"
+          }
+
+          function find() {
+            echo "hint: consider 'fd' for a faster, simpler file finder" >&2
+            command find "$@"
           }
         '')
       ];
