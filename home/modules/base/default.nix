@@ -32,6 +32,7 @@ in {
     # Basic packages for all environments
     packages = with pkgs; [
       dogdns
+      fd
       moreutils
       nmap
       pstree

@@ -7,6 +7,7 @@ in {
   # Development-related packages
   home = {
     packages = with pkgs; [
+      ast-grep
       unstable.cue
       exercism
       gh
@@ -21,6 +22,7 @@ in {
       pixi
       shellcheck
       subversion
+      tokei
     ] ++ lib.optionals isDarwin [
     ];
 
