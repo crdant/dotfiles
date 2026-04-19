@@ -24,7 +24,7 @@ in
       else
         "/home/crdant";
 
-      shell = pkgs.zsh;
+      shell = pkgs.fish;
       description = "Chuck D'Antonio";
 
       openssh.authorizedKeys.keys = authorizedKeys;
