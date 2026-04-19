@@ -115,7 +115,10 @@ in {
       ];
     };
 
-    bat.enable = true;
+    bat = {
+      enable = true;
+      config.paging = "never";
+    };
 
     direnv = {
       enable = true;
@@ -214,7 +217,7 @@ in {
       };
       
       shellAliases = {
-        cat = "bat --paging=never";
+        cat = "bat";
         more = "less -X";
         pd = "pushd";
         pop = "popd";
