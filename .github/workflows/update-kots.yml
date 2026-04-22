@@ -130,8 +130,9 @@ jobs:
           echo "Linux: $LINUX_HASH"
 
           # Update the package file with new vendor hashes
-          sed -i.bak -E "s|(vendorHash = if isDarwin then[[:space:]]*)\\\".+\\\"|\1\"$DARWIN_HASH\"|" pkgs/kots/default.nix
-          sed -i.bak -E "s|(else[[:space:]]*)\\\".+\\\";|\1\"$LINUX_HASH\";|" pkgs/kots/default.nix
+          # The Nix file has the hashes on separate lines after isDarwin/else keywords
+          sed -i.bak -E "/isDarwin then/{n;s|\"sha256-[^\"]+\"|\"$DARWIN_HASH\"|;}" pkgs/kots/default.nix
+          sed -i.bak -E "/^[[:space:]]*else$/{n;s|\"sha256-[^\"]+\"|\"$LINUX_HASH\"|;}" pkgs/kots/default.nix
 
           # Show the changes
           echo "Updated package file:"
