@@ -1,5 +1,6 @@
 theme = "Rose Pine Moon"
 font-family = "Inconsolata Regular Regular"
+font-family-bold = "Inconsolata Regular Bold"
 font-size = 11
 copy-on-select = clipboard
 keybind = shift+enter=text:\n

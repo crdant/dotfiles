@@ -153,47 +153,48 @@ in {
       # Colors use ANSI names so Ghostty's Rose Pine Moon palette paints them.
       settings = {
         add_newline = false;
-        format = "$username$hostname $character $directory $git_branch$git_state$git_status$line_break$jobs";
+        format = "$username$hostname$character$directory$git_branch$git_state$git_status$jobs[ ]()";
 
         username = {
           show_always = true;
-          style_user = "magenta";
+          style_user = "purple";
           style_root = "bold red";
-          format = "[$user]($style)";
+          format = "[$user](purple)";
         };
 
         hostname = {
           ssh_only = false;
-          style = "magenta";
-          format = "[@$hostname]($style)";
+          style = "purple";
+          format = " [@$hostname](purple)";
         };
 
         character = {
-          success_symbol = "[➜](bold red)";
-          error_symbol = "[➜](bold red)";
+          success_symbol = " [➜](bold red)";
+          error_symbol = " [➜](bold red)";
         };
 
         directory = {
           style = "cyan";
-          truncation_length = 3;
+          truncation_length = 1;
           truncate_to_repo = false;
         };
 
         git_branch = {
           symbol = "";
           style = "bold blue";
-          format = "[git:\\(]($style)[$branch](red)[\\)]($style)";
+          format = " [git:\\(]($style)[$branch](red)[\\)]($style)";
         };
 
         git_status = {
           style = "bold yellow";
           format = " [$all_status$ahead_behind]($style)";
-          conflicted = "✗";
-          modified = "✗";
-          untracked = "✗";
-          staged = "●";
-          renamed = "»";
-          deleted = "✘";
+          conflicted = "";
+          modified = "";
+          untracked = "";
+          staged = "";
+          deleted = "";
+          renamed = "";
+          stashed = "";
         };
       };
     };
