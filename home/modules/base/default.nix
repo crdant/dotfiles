@@ -153,7 +153,7 @@ in {
       # Colors use ANSI names so Ghostty's Rose Pine Moon palette paints them.
       settings = {
         add_newline = false;
-        format = "$username$hostname$character$directory$git_branch$git_state$git_status$jobs[ ]()";
+        format = "$username$hostname$directory$git_branch$git_state$git_status$jobs$character";
 
         username = {
           show_always = true;
@@ -165,18 +165,19 @@ in {
         hostname = {
           ssh_only = false;
           style = "purple";
-          format = " [@$hostname](purple)";
+          format = "[@$hostname](purple) [▸](bold red) ";
         };
 
         character = {
-          success_symbol = " [➜](bold red)";
-          error_symbol = " [➜](bold red)";
+          success_symbol = " [➜](bold green) ";
+          error_symbol = " [➜](bold red) ";
         };
 
         directory = {
           style = "cyan";
           truncation_length = 1;
           truncate_to_repo = false;
+          format = "[$path]($style)[$read_only]($read_only_style)";
         };
 
         git_branch = {
