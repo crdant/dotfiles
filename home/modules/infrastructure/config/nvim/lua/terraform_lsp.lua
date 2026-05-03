@@ -1,2 +1,2 @@
-local lspconfig = require'lspconfig'
-lspconfig.terraform_lsp.setup({})
+vim.lsp.config('terraform_lsp', {})
+vim.lsp.enable('terraform_lsp')
