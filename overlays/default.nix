@@ -7,6 +7,29 @@
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
+    go1_26 = prev.go.overrideAttrs (oldAttrs: let
+      newVersion = "1.26.1";
+      in {
+        version = newVersion;
+        src = prev.fetchzip {
+          url = "https://go.dev/dl/go${newVersion}.src.tar.gz";
+          hash = "sha256-639cg0AQx1yKpkJtMI6/34miHPkKHHBfZV1yz3zWp2Y=";
+        };
+        patches = [];
+        GOROOT_BOOTSTRAP = "${prev.go}/share/go";
+      }
+    );
+
+    buildGo1_26Module = prev.buildGoModule.override {
+      go = final.go1_26;
+    };
+
+    replicated = prev.replicated.override {
+      buildGoModule = final.buildGo1_26Module;
+    };
+
+    direnv = final.unstable.direnv;
+
     mas = final.unstable.mas;
 
     container = prev.container.overrideAttrs (oldAttrs: rec {
@@ -18,8 +41,7 @@
     });
 
     vimPlugins = prev.vimPlugins // {
-      nvim-aider = prev.callPackage ./nvim-aider { };
-      # xcodebuild-nvim = prev.callPackage ./xcodebuild-nvim { }; 
+      # xcodebuild-nvim = prev.callPackage ./xcodebuild-nvim { };
     };
 
     python3Packages = prev.python3Packages // {
