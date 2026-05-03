@@ -46,7 +46,6 @@ in {
     # AI and coding assistant tools
     home = {
       packages = with pkgs; [
-        aider-chat
         amp-cli
         ollama
         nur.repos.charmbracelet.crush
@@ -190,14 +189,11 @@ in {
         plugins = with pkgs.vimPlugins; [
           claude-code-nvim
           neo-tree-nvim
-          nvim-aider
           plenary-nvim
           snacks-nvim
         ];
 
         extraLuaConfig = lib.mkAfter ''
-          -- Aider integration
-          require('nvim_aider').setup({})
           -- Claude code integration
           require('claude-code').setup({})
         '';
@@ -232,29 +228,6 @@ in {
         "shortcut/api_token" = {};
       };
       templates = {
-        ".aider.conf.yml" = {
-          path = "${config.home.homeDirectory}/.aider.conf.yml";
-          mode = "0600";
-          content =
-            let
-              # Create the configuration data structure first
-              aiderConfig = {
-                model = "sonnet";
-                # Use the placeholder directly - this is safe because sops handles the substitution
-                anthropic-api-key = config.sops.placeholder."anthropic/apiKeys/${gitEmail}";
-                cache-prompts = true;
-                architect = true;
-                auto-accept-architect = false;
-                multiline = true;
-                vim = true;
-                watch-files = true;
-                notifications = true;
-              };
-              # Generate the YAML from the data structure
-              yamlContent = (pkgs.formats.yaml { }).generate "aider-config" aiderConfig;
-            in builtins.readFile yamlContent;
-        };
-
         "crush/crush.json" = {
           path = "${config.home.homeDirectory}/.local/share/crush/crush.json";
           mode = "0600";
