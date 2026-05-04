@@ -22,7 +22,7 @@ in
   users.users.chuck = {
     home = "/Users/chuck";
     shell = pkgs.fish;
-    uid = 501;
+    uid = 503;
 
     description = "Chuck D'Antonio";
 
