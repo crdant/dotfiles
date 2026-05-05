@@ -30,6 +30,8 @@
 
     direnv = final.unstable.direnv;
 
+    fish = final.unstable.fish;
+
     mas = final.unstable.mas;
 
     container = prev.container.overrideAttrs (oldAttrs: rec {

@@ -18,17 +18,20 @@ in
   # The user should already exist, but we need to set this up so Nix knows
   # what our home directory is (https://github.com/LnL7/nix-darwin/issues/423).
   users = {
+    knownUsers = lib.optionals isDarwin [ "crdant" ];
     users.crdant = {
       home = if isDarwin then
         "/Users/crdant"
       else
         "/home/crdant";
 
-      shell = pkgs.zsh;
+      shell = pkgs.fish;
       description = "Chuck D'Antonio";
 
       openssh.authorizedKeys.keys = authorizedKeys;
 
+    } // lib.optionalAttrs isDarwin {
+      uid = 501;
     } // lib.optionalAttrs isLinux {
       isNormalUser = true;
       group = "crdant";
