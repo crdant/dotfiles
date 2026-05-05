@@ -1,4 +1,4 @@
-Match exec "[[ $(uname) == 'Darwin' ]]" host *.mash
+Match exec "uname -s | grep -q Darwin" host *.mash
   RemoteCommand source ~/.zshrc && cd ~/workspace/$(basename %n .mash) && smug-session window
   RequestTTY Yes
   HostName mash
@@ -8,7 +8,7 @@ Match exec "[[ $(uname) == 'Darwin' ]]" host *.mash
   RemoteForward /run/user/1001/gnupg/S.gpg-agent %d/.gnupg/S.gpg-agent.extra 
   RemoteForward /run/user/1001/gnupg/S.gpg-agent.ssh %d/.gnupg/S.gpg-agent.ssh
 
-Match exec "[[ $(uname) == 'Darwin' ]]" host *.pisco
+Match exec "uname -s | grep -q Darwin" host *.pisco
   RemoteCommand source ~/.zshrc && cd ~/workspace/$(basename %n .pisco) && smug-session window
   RequestTTY Yes
   HostName pisco
