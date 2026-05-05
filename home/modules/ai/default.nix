@@ -1,4 +1,4 @@
-{ inputs, outputs, options, config, pkgs, lib, gitEmail, ... }:
+{ inputs, outputs, config, pkgs, lib, gitEmail, ... }:
 
 let
   isDarwin = pkgs.stdenv.isDarwin;
@@ -46,14 +46,10 @@ in {
     # AI and coding assistant tools
     home = {
       packages = with pkgs; [
-        amp-cli
         ollama
-        nur.repos.charmbracelet.crush
         claude-code-transcripts
         unstable.claude-code
         unstable.fabric-ai
-        gemini-cli
-        goose-cli
         unstable.github-mcp-server
         (unstable.llm.withPlugins {
           llm-anthropic = true;
@@ -228,109 +224,6 @@ in {
         "shortcut/api_token" = {};
       };
       templates = {
-        "crush/crush.json" = {
-          path = "${config.home.homeDirectory}/.local/share/crush/crush.json";
-          mode = "0600";
-          content = builtins.toJSON {
-            "$schema" = "https://charm.land/crush.json";
-            providers = {
-              anthropic = {
-                api_key = config.sops.placeholder."anthropic/apiKeys/${gitEmail}";
-              };
-            };
-            models = {
-              large = {
-                model = "claude-opus-4-20250514";
-                provider = "anthropic";
-                max_tokens = 32000;
-              };
-              small = {
-                model = "claude-3-5-haiku-20241022";
-                provider = "anthropic";
-                max_tokens = 5000;
-              };
-            };
-            lsp = {
-              servers = {
-                "Go" = {
-                  command = "${pkgs.gopls}/bin/gopls";
-                };
-                "Swift" = {
-                  command = "${pkgs.sourcekit-lsp}/bin/sourcekit-lsp";
-                };
-                "Rust" = {
-                  command = "${pkgs.rust-analyzer}/bin/rust-analyzer";
-                };
-                "Python" = {
-                  command = "${pkgs.pyright}/bin/pyright-langserver";
-                };
-                "JavaScript" = {
-                  command = "${pkgs.typescript-language-server}/bin/typescript-language-server --stdio";
-                };
-                "TypeScript" = {
-                  command = "${pkgs.typescript-language-server}/bin/typescript-language-server --stdio";
-                };
-                "Markdown" = {
-                  command = "${pkgs.markdown-oxide}/bin/markdown-oxide";
-                };
-                "Nix" = {
-                  command = "${pkgs.nil}/bin/nil";
-                };
-              };
-            };
-            mcp = {
-              servers = import ./config/mcp.nix { inherit config pkgs; };
-            };
-          };
-        };
-
-        "goose/config.yaml" = {
-          path = "${config.home.homeDirectory}/.config/goose/config.yaml";
-          mode = "0600";
-          content =
-            let
-              # Same pattern for goose config
-              gooseConfig = {
-                GOOSE_PROVIDER = "claude-code";
-                GOOSE_MODE = "smart_approve";
-                extensions = {
-                  computercontroller = {
-                    display_name = "Computer Controller";
-                    enabled = true;
-                    name = "computercontroller";
-                    timeout = 300;
-                    type = "builtin";
-                  };
-                  developer = {
-                    display_name = "Developer Tools";
-                    enabled = true;
-                    name = "developer";
-                    timeout = 300;
-                    type = "builtin";
-                  };
-                  memory = {
-                    display_name = "Memory";
-                    enabled = true;
-                    name = "memory";
-                    timeout = 300;
-                    type = "builtin";
-                  };
-                  repomix = {
-                    display_name = "Repomix";
-                    description = "Pack your codebase into AI-friendly formats";
-                    cmd = "${pkgs.nodejs_22}/bin/npx";
-                    args = [ "-y" "repomix" "--mcp" ];
-                    enabled = true;
-                    name = "repomix";
-                    timeout = 300;
-                    type = "stdio";
-                  };
-                };
-              };
-              yamlContent = (pkgs.formats.yaml { }).generate "goose-config" gooseConfig;
-            in builtins.readFile yamlContent;
-        };
-
         # MCP servers configuration for Claude
         "mcp-servers.json" = {
           path = "${config.xdg.dataHome}/claude/mcp-servers.json";
@@ -348,10 +241,6 @@ in {
           recursive = true;
         };
       };
-    };
-
-    guiEnvironment = lib.mkIf (options ? guiEnvironment) {
-      CLAUDE_CONFIG_DIR = "${config.xdg.configHome}/claude/personal";
     };
   };
 }

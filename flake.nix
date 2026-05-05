@@ -12,11 +12,6 @@
     darwin.url = "github:lnl7/nix-darwin/nix-darwin-25.11";
     darwin.inputs.nixpkgs.follows = "nixpkgs"; # ...
 
-    nur = {
-      url = "github:nix-community/NUR";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     _1password-shell-plugins.url = "github:1Password/shell-plugins";
     _1password-shell-plugins.inputs.nixpkgs.follows = "home-manager"; # ...
 
@@ -31,7 +26,6 @@
       mkPkgs = system: import nixpkgs {
         inherit system;
         overlays = [
-          inputs.nur.overlays.default
         ];
       };
 
