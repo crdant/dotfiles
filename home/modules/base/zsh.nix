@@ -47,8 +47,8 @@ in {
         fpath+=($HOME/workspace/oh-my-zsh-custom/completions)
       '')
 
-      # Shell options
-      (lib.mkOrder 600 ''
+      # Shell options - after oh-my-zsh (mkOrder 800) so vi mode is not overridden
+      (lib.mkOrder 850 ''
         setopt vi
         setopt nobeep
         setopt inc_append_history
