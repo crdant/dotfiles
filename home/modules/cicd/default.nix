@@ -19,5 +19,4 @@ in {
   #     enable = true;
   #   };
   # };
-  guiEnvironment = lib.mkIf (options ? guiEnvironment) {};
 }

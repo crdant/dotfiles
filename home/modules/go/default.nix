@@ -14,7 +14,7 @@ in {
     go = {
       enable = true;
       env = {
-        GOPATH = [ "${config.home.homeDirectory}/workspace/go}" ];
+        GOPATH = [ "${config.home.homeDirectory}/workspace/go" ];
       };
       package = pkgs.go;
     };
@@ -57,5 +57,4 @@ in {
       };
     };
   };
-  guiEnvironment = lib.mkIf (options ? guiEnvironment) {};
 }

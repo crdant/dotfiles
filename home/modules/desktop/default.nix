@@ -4,12 +4,16 @@ let
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
   cfg = config.guiEnvironment;
+  guiPath = config.guiPath;
 
-  setenvScript = lib.concatStringsSep "\n" (
-    lib.mapAttrsToList (name: value:
-      "/bin/launchctl setenv ${name} '${value}'"
-    ) cfg
-  );
+  setenvScript =
+    lib.optionalString (guiPath != [])
+      "/bin/launchctl setenv PATH '${lib.concatStringsSep ":" guiPath}'\n" +
+    lib.concatStringsSep "\n" (
+      lib.mapAttrsToList (name: value:
+        "/bin/launchctl setenv ${name} '${value}'"
+      ) cfg
+    );
 
 in {
   # Home Manager basics
@@ -80,7 +84,7 @@ in {
   };
 
   # LaunchAgent to set GUI-visible environment variables on login
-  launchd.agents.set-environment = lib.mkIf (isDarwin && cfg != {}) {
+  launchd.agents.set-environment = lib.mkIf (isDarwin && (cfg != {} || guiPath != [])) {
     enable = true;
     config = {
       Label = "io.shortrib.set-environment";
@@ -94,7 +98,7 @@ in {
   # Dock configuration for Darwin
   home.activation = lib.mkIf isDarwin {
     # Re-trigger the environment agent immediately on activation
-    guiEnvironment = lib.mkIf (cfg != {}) (lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    guiEnvironment = lib.mkIf (cfg != {} || guiPath != []) (lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       /bin/launchctl kickstart -k gui/$(/usr/bin/id -u)/io.shortrib.set-environment 2>/dev/null || true
     '');
 

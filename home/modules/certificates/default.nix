@@ -88,5 +88,4 @@ in {
   } else {
     enable = false;
   };
-  guiEnvironment = lib.mkIf (options ? guiEnvironment) {};
 }

@@ -102,5 +102,7 @@ in {
     };
   };
 
-  guiEnvironment = lib.mkIf (options ? guiEnvironment) {};
+  guiEnvironment = lib.mkIf (options ? guiEnvironment) {
+    SSH_AUTH_SOCK = "${config.home.homeDirectory}/.gnupg/S.gpg-agent.ssh";
+  };
 }

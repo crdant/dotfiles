@@ -30,5 +30,7 @@ in {
       };
     };
   };
-  guiEnvironment = lib.mkIf (options ? guiEnvironment) {};
+  guiPath = lib.mkIf (options ? guiPath) [
+    "${config.home.homeDirectory}/.cargo/bin"
+  ];
 }
