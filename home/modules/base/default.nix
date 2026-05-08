@@ -1,10 +1,42 @@
-{ inputs, outputs, config, pkgs, lib, username, homeDirectory, ... }:
+{ inputs, outputs, options, config, pkgs, lib, username, homeDirectory, secretsFile ? null, ... }:
 
 let
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
 in {
   imports = [ ./fish.nix ./zsh.nix ];
+
+  options.guiEnvironment = lib.mkOption {
+    type = lib.types.attrsOf lib.types.str;
+    default = {};
+    description = "Environment variables to make visible to GUI/desktop apps via launchd.";
+  };
+
+  options.guiPath = lib.mkOption {
+    type = lib.types.listOf lib.types.str;
+    default = [];
+    description = "PATH entries to make visible to GUI/desktop apps via launchd.";
+  };
+
+  config = {
+    guiEnvironment = {
+      XDG_CONFIG_HOME = config.xdg.configHome;
+    };
+
+    guiPath = [
+      "${homeDirectory}/.local/bin"
+      "${homeDirectory}/workspace/go/bin"
+    ] ++ lib.optionals isDarwin [
+      "/opt/homebrew/bin"
+      "/opt/homebrew/sbin"
+    ] ++ [
+      "/usr/local/bin"
+      "/usr/local/sbin"
+      "/usr/bin"
+      "/bin"
+      "/usr/sbin"
+      "/sbin"
+    ];
 
   # Home Manager basics
   home = {
@@ -75,12 +107,16 @@ in {
     };
 
     activation = {
-     workspaceDirectory = lib.hm.dag.entryBefore [ "writeBoundary" ] ''
+      workspaceDirectory = lib.hm.dag.entryBefore [ "writeBoundary" ] ''
         mkdir -p ~/workspace
         mkdir -p ~/sandbox
       '';
 
-      customizeOmz = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+      launchdLogDirectory = lib.hm.dag.entryBefore [ "writeBoundary" ] ''
+        mkdir -p ${config.xdg.stateHome}/launchd
+      '';
+
+      customizeOmz = lib.hm.dag.entryAfter [ "writeBoundary" "installPackages" "git" ] ''
         if [ ! -d ~/workspace/oh-my-zsh-custom ]; then
           ${pkgs.git}/bin/git clone https://github.com/crdant/oh-my-zsh-custom ~/workspace/oh-my-zsh-custom || {
             echo "Warning: Failed to clone oh-my-zsh-custom repository. Skipping..."
@@ -320,11 +356,19 @@ in {
         source = ./config/smug;
         recursive = true;
       };
-    } // lib.optionalAttrs isDarwin { 
-    } // lib.optionalAttrs isLinux { 
+    } // lib.optionalAttrs isDarwin {
+    } // lib.optionalAttrs isLinux {
       "glow/glow.yml" = {
         text = builtins.readFile ./config/glow/glow.yml;
       };
     };
   };
+
+  sops = lib.mkIf (secretsFile != null) {
+    defaultSopsFile = secretsFile;
+    gnupg = {
+      home = "${homeDirectory}/.gnupg";
+    };
+  };
+  }; # config
 }

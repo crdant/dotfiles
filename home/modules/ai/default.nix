@@ -1,4 +1,4 @@
-{ inputs, outputs, config, pkgs, lib, gitEmail, ... }:
+{ inputs, outputs, options, config, pkgs, lib, gitEmail, ... }:
 
 let
   isDarwin = pkgs.stdenv.isDarwin;
@@ -348,6 +348,10 @@ in {
           recursive = true;
         };
       };
+    };
+
+    guiEnvironment = lib.mkIf (options ? guiEnvironment) {
+      CLAUDE_CONFIG_DIR = "${config.xdg.configHome}/claude/personal";
     };
   };
 }
