@@ -11,6 +11,7 @@
     ../modules/swift
     ../modules/rust
     ../modules/ai
+    ../modules/claude-code
     ../modules/data
     ../modules/containers
     ../modules/cicd
