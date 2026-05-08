@@ -28,6 +28,10 @@
       buildGoModule = final.buildGo1_26Module;
     };
 
+    kots = prev.kots.override {
+      buildGoModule = final.buildGo1_26Module;
+    };
+
     direnv = final.unstable.direnv;
 
     fish = final.unstable.fish;
