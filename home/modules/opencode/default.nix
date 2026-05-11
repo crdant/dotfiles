@@ -41,21 +41,15 @@ in {
       unstable.opencode
     ];
 
-    xdg.configFile = {
-      # Install agents file-by-file to avoid clobbering user-created agents
-      "opencode/agents/codebase-analyzer.md".source = ./config/agents/codebase-analyzer.md;
-      "opencode/agents/codebase-locator.md".source = ./config/agents/codebase-locator.md;
-      "opencode/agents/codebase-pattern-finder.md".source = ./config/agents/codebase-pattern-finder.md;
-      "opencode/agents/docs-analyzer.md".source = ./config/agents/docs-analyzer.md;
-      "opencode/agents/docs-locator.md".source = ./config/agents/docs-locator.md;
-      "opencode/agents/git-commiter.md".source = ./config/agents/git-commiter.md;
-      "opencode/agents/pull-request-author.md".source = ./config/agents/pull-request-author.md;
-      "opencode/agents/web-search-researcher.md".source = ./config/agents/web-search-researcher.md;
-
-      "opencode/AGENTS.md".source = ./config/AGENTS.md;
-    };
-
     home.activation = {
+      # Copy agent definitions to opencode config directory (avoids symlink warnings)
+      opencodeAgents = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        AGENTS_DIR="${config.xdg.configHome}/opencode/agents"
+        $DRY_RUN_CMD mkdir -p "$AGENTS_DIR"
+        $DRY_RUN_CMD cp -f ${./config/agents}/*.md "$AGENTS_DIR/"
+        $DRY_RUN_CMD cp -f ${./config/AGENTS.md} "${config.xdg.configHome}/opencode/AGENTS.md"
+      '';
+
       # Merge MCP servers into existing opencode.json (preserves user settings)
       opencodeMcpServers = lib.hm.dag.entryAfter [ "sops-nix" ] ''
         OPENCODE_CONFIG="${config.xdg.configHome}/opencode/opencode.json"
