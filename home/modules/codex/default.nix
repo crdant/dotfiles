@@ -47,12 +47,18 @@ let
     project_doc_fallback_filenames = [ "AGENTS.md" "CLAUDE.md" ];
   };
 in
-{
+  {
   options.programs.codex = {
     mcpServers = lib.mkOption {
       type = lib.types.attrsOf lib.types.attrs;
       default = sharedMcp;
       description = "MCP servers configuration for Codex";
+    };
+
+    plugins = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [];
+      description = "Codex plugins to install";
     };
 
     skills = lib.mkOption {
@@ -94,5 +100,27 @@ in
       export MBTA_API_KEY="$(cat ${config.sops.secrets."mbta/apiKey".path})"
       export GOOGLE_MAPS_API_KEY="$(cat ${config.sops.secrets."google/maps/apiKey".path})"
     '';
+
+    home.activation = {
+      # Install Compound Engineering plugin for Codex
+      # Steps:
+      # 1. Register marketplace
+      # 2. Install compound-engineering agents via bunx
+      codexPlugins = let
+        codex = "${pkgs.unstable.codex}/bin/codex";
+        bunx = "${pkgs.bun}/bin/bunx";
+      in lib.hm.dag.entryAfter [ "writeBoundary" "installPackages" ] ''
+        # Register Compound Engineering marketplace if not already registered
+        $DRY_RUN_CMD ${codex} plugin marketplace add EveryInc/compound-engineering-plugin || true
+
+        # Install compound-engineering agents (idempotent)
+        $DRY_RUN_CMD ${bunx} @every-env/compound-plugin install compound-engineering --to codex
+
+        # Install plugins listed in config (idempotent through codex TUI)
+        ${lib.concatStringsSep "\n" (map (plugin: ''
+          $DRY_RUN_CMD ${codex} plugin install ${lib.escapeShellArg plugin}
+        '') cfg.plugins)}
+      '';
+    };
   };
 }

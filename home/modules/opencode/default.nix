@@ -47,14 +47,26 @@ in {
         instructions = [ "AGENTS.md" ];
       };
 
-      "opencode/agents" = {
-        source = ./config/agents;
-        recursive = true;
-      };
+      # Install agents file-by-file to avoid clobbering user-created agents
+      "opencode/agents/codebase-analyzer.md".source = ./config/agents/codebase-analyzer.md;
+      "opencode/agents/codebase-locator.md".source = ./config/agents/codebase-locator.md;
+      "opencode/agents/codebase-pattern-finder.md".source = ./config/agents/codebase-pattern-finder.md;
+      "opencode/agents/docs-analyzer.md".source = ./config/agents/docs-analyzer.md;
+      "opencode/agents/docs-locator.md".source = ./config/agents/docs-locator.md;
+      "opencode/agents/git-commiter.md".source = ./config/agents/git-commiter.md;
+      "opencode/agents/pull-request-author.md".source = ./config/agents/pull-request-author.md;
+      "opencode/agents/web-search-researcher.md".source = ./config/agents/web-search-researcher.md;
 
-      "opencode/AGENTS.md" = {
-        source = ./config/AGENTS.md;
-      };
+      "opencode/AGENTS.md".source = ./config/AGENTS.md;
+    };
+
+    home.activation = {
+      # Install Compound Engineering plugin for OpenCode
+      opencodePlugins = let
+        bunx = "${pkgs.bun}/bin/bunx";
+      in lib.hm.dag.entryAfter [ "writeBoundary" "installPackages" ] ''
+        $DRY_RUN_CMD ${bunx} @every-env/compound-plugin install compound-engineering --to opencode
+      '';
     };
 
     programs.zsh.envExtra = ''
