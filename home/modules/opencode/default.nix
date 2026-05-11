@@ -110,5 +110,16 @@ in {
       export MBTA_API_KEY="$(cat ${config.sops.secrets."mbta/apiKey".path})"
       export GOOGLE_MAPS_API_KEY="$(cat ${config.sops.secrets."google/maps/apiKey".path})"
     '';
+
+    programs.fish.shellInit = ''
+      # OpenCode MCP server secrets
+      set -gx FIRECRAWL_API_KEY (cat ${config.sops.secrets."firecrawl/api_key".path})
+      set -gx SHORTCUT_API_TOKEN (cat ${config.sops.secrets."shortcut/api_token".path})
+      set -gx OMNI_API_TOKEN (cat ${config.sops.secrets."omni/api_token".path})
+      set -gx MCP_API_KEY $OMNI_API_TOKEN
+      set -gx GITHUB_TOKEN (cat ${config.sops.secrets."github/token".path})
+      set -gx MBTA_API_KEY (cat ${config.sops.secrets."mbta/apiKey".path})
+      set -gx GOOGLE_MAPS_API_KEY (cat ${config.sops.secrets."google/maps/apiKey".path})
+    '';
   };
 }

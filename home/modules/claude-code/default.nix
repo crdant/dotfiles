@@ -131,6 +131,20 @@ in {
         '';
       };
 
+      fish = {
+        shellInit = ''
+          # set default for Claude config based on hostname
+          if test "$(whoami)" = "chuck"
+            set -gx CLAUDE_CONFIG_DIR "${config.xdg.configHome}/claude/replicated"
+          else
+            set -gx CLAUDE_CONFIG_DIR "${config.xdg.configHome}/claude/personal"
+          end
+
+          # use MCP tool search in Claude Code
+          set -gx ENABLE_TOOL_SEARCH true
+        '';
+      };
+
       # Claude-specific Neovim plugins
       neovim = {
         plugins = with pkgs.vimPlugins; [
