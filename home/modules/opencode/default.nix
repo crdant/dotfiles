@@ -62,6 +62,7 @@ in {
       export FIRECRAWL_API_KEY="$(cat ${config.sops.secrets."firecrawl/api_key".path})"
       export SHORTCUT_API_TOKEN="$(cat ${config.sops.secrets."shortcut/api_token".path})"
       export OMNI_API_TOKEN="$(cat ${config.sops.secrets."omni/api_token".path})"
+      export MCP_API_KEY="$OMNI_API_TOKEN"
       export GITHUB_TOKEN="$(cat ${config.sops.secrets."github/token".path})"
       export MBTA_API_KEY="$(cat ${config.sops.secrets."mbta/apiKey".path})"
       export GOOGLE_MAPS_API_KEY="$(cat ${config.sops.secrets."google/maps/apiKey".path})"

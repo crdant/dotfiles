@@ -61,7 +61,7 @@ in
     env = {
       DEBUG = "true";
       MCP_SERVER_URL = "https://replicated.omniapp.co/mcp/https";
-      MCP_API_KEY = secretRenderer "omni/api_token";
+      OMNI_API_TOKEN = secretRenderer "omni/api_token";
     };
   };
   github = {
