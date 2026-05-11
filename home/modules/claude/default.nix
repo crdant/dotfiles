@@ -15,9 +15,9 @@ let
   };
 in {
   # Custom option for Claude Code plugin management.
-  # This is defined in this repo's claude-code module, not by upstream home-manager.
+  # This is defined in this repo's claude module, not by upstream home-manager.
   # Any module that sets programs.claude.plugins must be imported alongside
-  # this module (today all profiles that include language modules also include claude-code).
+  # this module (today all profiles that include language modules also include claude).
   options.programs.claude = {
     plugins = lib.mkOption {
       type = lib.types.listOf lib.types.str;

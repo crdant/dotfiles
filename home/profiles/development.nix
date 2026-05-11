@@ -18,7 +18,7 @@
     ../modules/infrastructure
     ../modules/kubernetes
     ../modules/ai
-    ../modules/claude-code
+    ../modules/claude
     ../modules/opencode
     ../modules/codex
     ../modules/secrets

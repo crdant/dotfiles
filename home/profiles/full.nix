@@ -11,7 +11,7 @@
     ../modules/swift
     ../modules/rust
     ../modules/ai
-    ../modules/claude-code
+    ../modules/claude
     ../modules/opencode
     ../modules/codex
     ../modules/data
