@@ -15,6 +15,34 @@ let
     inherit config pkgs;
     secretRenderer = path: "{env:${toEnvVarName path}}";
   };
+
+  # Transform shared MCP config to OpenCode's expected format
+  # OpenCode expects:
+  # - type: "local" | "remote"
+  # - command: array (command + args combined)
+  # - environment: object (instead of env)
+  # - enabled: boolean
+  toOpenCodeMcp = servers: lib.mapAttrs (name: server:
+    let
+      isRemote = server.type or "" == "http";
+      # Combine command and args into single array for local servers
+      commandArray = if server ? command
+        then [ server.command ] ++ (server.args or [])
+        else (server.args or []);
+    in
+    if isRemote then {
+      type = "remote";
+      enabled = true;
+      url = server.url;
+      headers = server.headers or {};
+    } else {
+      type = "local";
+      enabled = true;
+      command = commandArray;
+      environment = server.env or {};
+    }
+  ) servers;
+
 in {
   options.programs.opencode = {
     mcpServers = lib.mkOption {
@@ -57,8 +85,8 @@ in {
         # Ensure config file exists
         [ -f "$OPENCODE_CONFIG" ] || echo '{"$schema":"https://opencode.ai/config.json"}' > "$OPENCODE_CONFIG"
 
-        # Generate our MCP config as JSON
-        MCP_JSON='${builtins.toJSON { mcp = cfg.mcpServers; instructions = [ "AGENTS.md" ]; }}'
+        # Generate our MCP config as JSON with OpenCode's expected format
+        MCP_JSON='${builtins.toJSON { mcp = toOpenCodeMcp cfg.mcpServers; instructions = [ "AGENTS.md" ]; }}'
 
         # Merge into existing config using jq (preserves user settings)
         ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$OPENCODE_CONFIG" <(echo "$MCP_JSON") > "$OPENCODE_CONFIG.tmp" && mv "$OPENCODE_CONFIG.tmp" "$OPENCODE_CONFIG"
