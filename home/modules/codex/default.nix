@@ -71,9 +71,6 @@ in
   config = {
     home.packages = [ pkgs.unstable.codex ];
 
-    # Render merged MCP servers and top-level settings into ~/.codex/config.toml
-    home.file.".codex/config.toml".source = tomlFormat.generate "codex-config.toml" codexToml;
-
     # Custom instructions that Codex reads natively
     home.file.".codex/AGENTS.md".text = ''
       # Codex Custom Instructions
@@ -102,6 +99,16 @@ in
     '';
 
     home.activation = {
+      # Write Codex config.toml as a mutable file (not a read-only nix store symlink)
+      codexConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        CODEX_DIR="${config.home.homeDirectory}/.codex"
+        $DRY_RUN_CMD mkdir -p "$CODEX_DIR"
+
+        $DRY_RUN_CMD cat > "$CODEX_DIR/config.toml" <<'CODEX_EOF'
+${builtins.readFile (tomlFormat.generate "codex-config.toml" codexToml)}
+CODEX_EOF
+      '';
+
       # Install Compound Engineering plugin for Codex
       # Steps:
       # 1. Register marketplace
