@@ -36,6 +36,14 @@ in {
       # handle SSH differences between Prompt on iOS and a machine with Yubikey PGP available
       # if we're connected via a traditional SSH agent it's probably Prompt
       set -l gpg_ssh_sock (gpgconf --list-dirs agent-ssh-socket 2>/dev/null)
+
+      # On desktop, ensure gpg-agent is running for SSH support
+      # (replaces oh-my-zsh gpg-agent plugin which only handled zsh)
+      if test -z "$SSH_TTY"
+        gpg-connect-agent /bye >/dev/null 2>&1
+        set gpg_ssh_sock (gpgconf --list-dirs agent-ssh-socket 2>/dev/null)
+      end
+
       set -l launchd_ssh_sock ""
       if command -v launchctl >/dev/null 2>&1
         set launchd_ssh_sock (launchctl getenv SSH_AUTH_SOCK 2>/dev/null)
@@ -44,7 +52,7 @@ in {
       if test -n "$SSH_AUTH_SOCK" \
           -a "$SSH_AUTH_SOCK" != "$gpg_ssh_sock" \
           -a "$SSH_AUTH_SOCK" != "$launchd_ssh_sock" \
-          -a (readlink -f $SSH_AUTH_SOCK) != "$gpg_ssh_sock"
+          -a (readlink -f "$SSH_AUTH_SOCK") != "$gpg_ssh_sock"
         # use ssh signing with the provided key
         set -gx GIT_CONFIG_COUNT 3
         set -gx GIT_CONFIG_KEY_0 gpg.format
@@ -57,6 +65,12 @@ in {
         if test -z "$SSH_AUTH_SOCK"
           set -gx SSH_AUTH_SOCK "$gpg_ssh_sock"
         end
+      end
+
+      # When SSHed in, set GPG_TTY so pinentry can fall back to curses mode
+      if test -n "$SSH_TTY"
+        set -gx GPG_TTY (tty)
+        gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1
       end
 
       # Rosé Pine Moon syntax highlighting
@@ -101,8 +115,9 @@ in {
         if not test -d "$XDG_RUNTIME_DIR/ssh"
           mkdir -p "$XDG_RUNTIME_DIR/ssh"
         end
-        if test "$SSH_AUTH_SOCK" != "$XDG_RUNTIME_DIR/ssh/s.ssh-agent.smug-$session"
-          ln -sf (readlink -f $SSH_AUTH_SOCK) "$XDG_RUNTIME_DIR/ssh/s.ssh-agent.smug-$session"
+        if test -n "$SSH_AUTH_SOCK" \
+            -a "$SSH_AUTH_SOCK" != "$XDG_RUNTIME_DIR/ssh/s.ssh-agent.smug-$session"
+          ln -sf (readlink -f "$SSH_AUTH_SOCK") "$XDG_RUNTIME_DIR/ssh/s.ssh-agent.smug-$session"
           set -gx SSH_AUTH_SOCK "$XDG_RUNTIME_DIR/ssh/s.ssh-agent.smug-$session"
         end
         if test -f (pwd)/.smug.yml

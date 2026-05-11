@@ -65,12 +65,12 @@ in {
       (lib.mkOrder 700 ''
         # handle SSH differences between Prompt on iOS and a machine with Yubikey PGP available
         # if we're connected via a traditional SSH agent it's probably Prompt
-        GPG_AGENT_SSH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+        GPG_AGENT_SSH_SOCK=$(gpgconf --list-dirs agent-ssh-socket 2>/dev/null)
         LAUNCHD_SSH_SOCK=$(command -v launchctl &>/dev/null && launchctl getenv SSH_AUTH_SOCK 2>/dev/null)
         if [[ -n "$SSH_AUTH_SOCK" \
            && "$SSH_AUTH_SOCK" != "$GPG_AGENT_SSH_SOCK" \
            && "$SSH_AUTH_SOCK" != "$LAUNCHD_SSH_SOCK" \
-           && $(readlink -f $SSH_AUTH_SOCK) != "$GPG_AGENT_SSH_SOCK" ]]
+           && $(readlink -f "$SSH_AUTH_SOCK") != "$GPG_AGENT_SSH_SOCK" ]]
         then
           # use ssh signing with the provided key
           export GIT_CONFIG_COUNT=3
@@ -100,8 +100,9 @@ in {
           if [[ ! -d "$XDG_RUNTIME_DIR/ssh" ]]; then
             mkdir -p "$XDG_RUNTIME_DIR/ssh"
           fi
-          if [[ "SSH_AUTH_SOCK" != "$XDG_RUNTIME_DIR/ssh/s.ssh-agent.smug-$session" ]]; then
-            ln -sf $(readlink -f $SSH_AUTH_SOCK) "$XDG_RUNTIME_DIR/ssh/s.ssh-agent.smug-$session"
+          if [[ -n "$SSH_AUTH_SOCK" \
+             && "$SSH_AUTH_SOCK" != "$XDG_RUNTIME_DIR/ssh/s.ssh-agent.smug-$session" ]]; then
+            ln -sf $(readlink -f "$SSH_AUTH_SOCK") "$XDG_RUNTIME_DIR/ssh/s.ssh-agent.smug-$session"
             export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh/s.ssh-agent.smug-$session"
           fi
           if [[ -f $(pwd)/.smug.yml ]]; then
