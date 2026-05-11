@@ -71,20 +71,6 @@ in
   config = {
     home.packages = [ pkgs.unstable.codex ];
 
-    # Custom instructions that Codex reads natively
-    home.file.".codex/AGENTS.md".text = ''
-      # Codex Custom Instructions
-
-      ## Role
-      You are a helpful coding assistant integrated into the terminal.
-
-      ## Guidelines
-      - Follow existing code style and conventions.
-      - Write tests for new functionality.
-      - Prefer simple, clear solutions.
-      - Ask clarifying questions when requirements are ambiguous.
-    '';
-
     # Export sops-backed secrets as environment variables so Codex can forward
     # them to MCP stdio servers via env_vars.
     programs.zsh.envExtra = ''
@@ -107,6 +93,19 @@ in
         $DRY_RUN_CMD cat > "$CODEX_DIR/config.toml" <<'CODEX_EOF'
 ${builtins.readFile (tomlFormat.generate "codex-config.toml" codexToml)}
 CODEX_EOF
+
+        $DRY_RUN_CMD cat > "$CODEX_DIR/AGENTS.md" <<'CODEX_AGENTS_EOF'
+# Codex Custom Instructions
+
+## Role
+You are a helpful coding assistant integrated into the terminal.
+
+## Guidelines
+- Follow existing code style and conventions.
+- Write tests for new functionality.
+- Prefer simple, clear solutions.
+- Ask clarifying questions when requirements are ambiguous.
+CODEX_AGENTS_EOF
       '';
 
       # Install Compound Engineering plugin for Codex
