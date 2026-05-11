@@ -46,10 +46,6 @@
       };
     });
 
-    vimPlugins = prev.vimPlugins // {
-      # xcodebuild-nvim = prev.callPackage ./xcodebuild-nvim { };
-    };
-
     python3Packages = prev.python3Packages // {
       exa-py = prev.callPackage ./exa-py { };
       mlx-lm = prev.callPackage ./mlx-lm { };
@@ -65,10 +61,4 @@
     };
   };
 
-  nur-packages = final: prev: {
-    nur = import inputs.nur {
-      pkgs = final;
-      system = final.stdenv.hostPlatform.system;
-    };
-  };
 }

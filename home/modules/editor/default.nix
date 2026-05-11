@@ -33,6 +33,7 @@ in {
         nvim-web-devicons
         nvim-cmp
         nvim-lspconfig
+        plenary-nvim
         supermaven-nvim
         vim-surround
         vim-commentary
