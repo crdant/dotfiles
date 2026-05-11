@@ -42,11 +42,6 @@ in {
     ];
 
     xdg.configFile = {
-      "opencode/opencode.json".text = builtins.toJSON {
-        mcp = cfg.mcpServers;
-        instructions = [ "AGENTS.md" ];
-      };
-
       # Install agents file-by-file to avoid clobbering user-created agents
       "opencode/agents/codebase-analyzer.md".source = ./config/agents/codebase-analyzer.md;
       "opencode/agents/codebase-locator.md".source = ./config/agents/codebase-locator.md;
@@ -61,6 +56,20 @@ in {
     };
 
     home.activation = {
+      # Merge MCP servers into existing opencode.json (preserves user settings)
+      opencodeMcpServers = lib.hm.dag.entryAfter [ "sops-nix" ] ''
+        OPENCODE_CONFIG="${config.xdg.configHome}/opencode/opencode.json"
+
+        # Ensure config file exists
+        [ -f "$OPENCODE_CONFIG" ] || echo '{"$schema":"https://opencode.ai/config.json"}' > "$OPENCODE_CONFIG"
+
+        # Generate our MCP config as JSON
+        MCP_JSON='${builtins.toJSON { mcp = cfg.mcpServers; instructions = [ "AGENTS.md" ]; }}'
+
+        # Merge into existing config using jq (preserves user settings)
+        ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$OPENCODE_CONFIG" <(echo "$MCP_JSON") > "$OPENCODE_CONFIG.tmp" && mv "$OPENCODE_CONFIG.tmp" "$OPENCODE_CONFIG"
+      '';
+
       # Install Compound Engineering plugin for OpenCode
       opencodePlugins = let
         bunx = "${pkgs.bun}/bin/bunx";
