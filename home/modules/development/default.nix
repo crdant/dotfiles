@@ -149,6 +149,22 @@ in {
       "compound-engineering@compound-engineering-plugin"
     ];
 
+    # Development MCP servers for OpenCode
+    opencode.mcpServers = {
+      repomix = {
+        command = "${pkgs.nodejs_22}/bin/npx";
+        args = [ "-y" "repomix" "--mcp" ];
+      };
+    };
+
+    # Development MCP servers for Codex
+    codex.mcpServers = {
+      repomix = {
+        command = "${pkgs.nodejs_22}/bin/npx";
+        args = [ "-y" "repomix" "--mcp" ];
+      };
+    };
+
     neovim = {
       plugins = with pkgs.vimPlugins; [
         vim-fugitive

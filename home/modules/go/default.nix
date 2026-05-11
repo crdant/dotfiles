@@ -50,6 +50,18 @@ in {
     "gopls-lsp@claude-plugins-official"
   ];
 
+  # Go LSP MCP server for OpenCode
+  programs.opencode.mcpServers.gopls = {
+    command = "${pkgs.gopls}/bin/gopls";
+    args = [ "-mcp" ];
+  };
+
+  # Go LSP MCP server for Codex
+  programs.codex.mcpServers.gopls = {
+    command = "${pkgs.gopls}/bin/gopls";
+    args = [ "-mcp" ];
+  };
+
   xdg = {
     configFile = {
       "nvim/lua/gopls.lua" = {

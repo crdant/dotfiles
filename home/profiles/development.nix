@@ -19,6 +19,8 @@
     ../modules/kubernetes
     ../modules/ai
     ../modules/claude-code
+    ../modules/opencode
+    ../modules/codex
     ../modules/secrets
     ../modules/security
     ../modules/certificates

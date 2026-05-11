@@ -12,6 +12,8 @@
     ../modules/rust
     ../modules/ai
     ../modules/claude-code
+    ../modules/opencode
+    ../modules/codex
     ../modules/data
     ../modules/containers
     ../modules/cicd
