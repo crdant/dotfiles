@@ -96,7 +96,7 @@ in {
               fireworks = {
                 __inherited_from = "openai",
                 endpoint = "https://api.fireworks.ai/inference/v1",
-                api_key_name = "AVANTE_FIREWORKS_API_KEY",
+                api_key_name = "FIREWORKS_API_KEY",
                 model = "accounts/fireworks/models/llama-v3p1-405b-instruct",
                 timeout = 30000,
                 extra_request_body = {
@@ -141,9 +141,9 @@ in {
           # Avante.nvim Fireworks API key
           # Switches between personal and replicated keys based on user
           if [[ "$(whoami)" == "chuck" ]] ; then
-            export AVANTE_FIREWORKS_API_KEY="$(cat ${config.sops.secrets."fireworks/apiKey/replicated".path})"
+            export FIREWORKS_API_KEY="$(cat ${config.sops.secrets."fireworks/apiKey/replicated".path})"
           else
-            export AVANTE_FIREWORKS_API_KEY="$(cat ${config.sops.secrets."fireworks/apiKey/personal".path})"
+            export FIREWORKS_API_KEY="$(cat ${config.sops.secrets."fireworks/apiKey/personal".path})"
           fi
         '';
       };
@@ -153,9 +153,9 @@ in {
           # Avante.nvim Fireworks API key
           # Switches between personal and replicated keys based on user
           if test "$(whoami)" = "chuck"
-            set -gx AVANTE_FIREWORKS_API_KEY (cat ${config.sops.secrets."fireworks/apiKey/replicated".path})
+            set -gx FIREWORKS_API_KEY (cat ${config.sops.secrets."fireworks/apiKey/replicated".path})
           else
-            set -gx AVANTE_FIREWORKS_API_KEY (cat ${config.sops.secrets."fireworks/apiKey/personal".path})
+            set -gx FIREWORKS_API_KEY (cat ${config.sops.secrets."fireworks/apiKey/personal".path})
           end
         '';
       };
