@@ -37,11 +37,14 @@ in {
       # if we're connected via a traditional SSH agent it's probably Prompt
       set -l gpg_ssh_sock (gpgconf --list-dirs agent-ssh-socket 2>/dev/null)
 
-      # On desktop, ensure gpg-agent is running for SSH support
+      # On desktop, ensure gpg-agent is running and use it for SSH
       # (replaces oh-my-zsh gpg-agent plugin which only handled zsh)
       if test -z "$SSH_TTY"
         gpg-connect-agent /bye >/dev/null 2>&1
         set gpg_ssh_sock (gpgconf --list-dirs agent-ssh-socket 2>/dev/null)
+        if test -n "$gpg_ssh_sock"
+          set -gx SSH_AUTH_SOCK "$gpg_ssh_sock"
+        end
       end
 
       set -l launchd_ssh_sock ""
