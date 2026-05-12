@@ -66,6 +66,15 @@ in {
         # handle SSH differences between Prompt on iOS and a machine with Yubikey PGP available
         # if we're connected via a traditional SSH agent it's probably Prompt
         GPG_AGENT_SSH_SOCK=$(gpgconf --list-dirs agent-ssh-socket 2>/dev/null)
+
+        # On desktop, ensure gpg-agent is running and use it for SSH
+        # (makes zsh self-contained; also handled by oh-my-zsh gpg-agent plugin)
+        if [[ -z "$SSH_TTY" && -n "$GPG_AGENT_SSH_SOCK" ]]; then
+          gpg-connect-agent /bye >/dev/null 2>&1
+          GPG_AGENT_SSH_SOCK=$(gpgconf --list-dirs agent-ssh-socket 2>/dev/null)
+          export SSH_AUTH_SOCK="$GPG_AGENT_SSH_SOCK"
+        fi
+
         LAUNCHD_SSH_SOCK=$(command -v launchctl &>/dev/null && launchctl getenv SSH_AUTH_SOCK 2>/dev/null)
         if [[ -n "$SSH_AUTH_SOCK" \
            && "$SSH_AUTH_SOCK" != "$GPG_AGENT_SSH_SOCK" \
