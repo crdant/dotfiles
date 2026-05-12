@@ -5,19 +5,19 @@ let
 in
 buildGoModule rec {
   pname = "replicated";
-  version = "0.128.0";
+  version = "0.129.0";
 
   src = fetchFromGitHub {
     owner = "replicatedhq";
     repo = "replicated";
     rev = "v${version}";
-    sha256 = "sha256-zP3heMfACL5MVV018JNztk6U8DEoVft0n2OUCv4ssGg=";
+    sha256 = "sha256-gxDQQOQHtgMkUU/51WKn2pI0UHpfyzaXDco44UM/dHo=";
   };
 
   vendorHash = if isDarwin then
-      "sha256-ECFmOH4hQXf/ztGtMUxDq5MsnL/JkYVkq+/dw2UgQnw="
+      "sha256-wRF2Pv5UYmEt09oyMy3Tu7RfLmEQfj0/FSA/8Quarg4="
     else
-      "sha256-8/Azw8qgeFpGQSxwg3Ugp3gochj0hzyxyHPS38YI5gY=";
+      "sha256-aSJo1AIOhXqZ+PJn+ADg2yGgThbf9enE/XCch/1nTMM=";
 
   subPackages = [ "cli/cmd/" ];
   ldflags = [
