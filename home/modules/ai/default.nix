@@ -60,7 +60,8 @@ in {
         "firecrawl/api_key" = {};
         "omni/api_token" = {};
         "shortcut/api_token" = {};
-        "moonshot/apiKey" = {};
+        "fireworks/apiKey/personal" = {};
+        "fireworks/apiKey/replicated" = {};
       };
     };
 
@@ -87,17 +88,20 @@ in {
         extraLuaConfig = lib.mkAfter ''
           -- Avante.nvim configuration
           -- AI-powered code assistance within Neovim, complementing OpenCode
+          -- Uses Fireworks.ai (OpenAI-compatible API) for inference
           require('avante').setup({
-            provider = "moonshot",
-            auto_suggestions_provider = "moonshot",
+            provider = "fireworks",
+            auto_suggestions_provider = "fireworks",
             providers = {
-              moonshot = {
-                endpoint = "https://api.moonshot.ai/v1",
-                model = "kimi-k2-0711-preview",
+              fireworks = {
+                __inherited_from = "openai",
+                endpoint = "https://api.fireworks.ai/inference/v1",
+                api_key_name = "AVANTE_FIREWORKS_API_KEY",
+                model = "accounts/fireworks/models/llama-v3p1-405b-instruct",
                 timeout = 30000,
                 extra_request_body = {
                   temperature = 0.75,
-                  max_tokens = 32768,
+                  max_tokens = 4096,
                 },
               },
             },
@@ -134,15 +138,25 @@ in {
 
       zsh = {
         envExtra = ''
-          # Avante.nvim Moonshot API key
-          export AVANTE_MOONSHOT_API_KEY="$(cat ${config.sops.secrets."moonshot/apiKey".path})"
+          # Avante.nvim Fireworks API key
+          # Switches between personal and replicated keys based on user
+          if [[ "$(whoami)" == "chuck" ]] ; then
+            export AVANTE_FIREWORKS_API_KEY="$(cat ${config.sops.secrets."fireworks/apiKey/replicated".path})"
+          else
+            export AVANTE_FIREWORKS_API_KEY="$(cat ${config.sops.secrets."fireworks/apiKey/personal".path})"
+          fi
         '';
       };
 
       fish = {
         shellInit = ''
-          # Avante.nvim Moonshot API key
-          set -gx AVANTE_MOONSHOT_API_KEY (cat ${config.sops.secrets."moonshot/apiKey".path})
+          # Avante.nvim Fireworks API key
+          # Switches between personal and replicated keys based on user
+          if test "$(whoami)" = "chuck"
+            set -gx AVANTE_FIREWORKS_API_KEY (cat ${config.sops.secrets."fireworks/apiKey/replicated".path})
+          else
+            set -gx AVANTE_FIREWORKS_API_KEY (cat ${config.sops.secrets."fireworks/apiKey/personal".path})
+          end
         '';
       };
     };
