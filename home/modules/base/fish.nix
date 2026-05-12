@@ -45,7 +45,7 @@ in {
       end
 
       set -l launchd_ssh_sock ""
-      if command -v launchctl >/dev/null 2>&1
+      if type -q launchctl
         set launchd_ssh_sock (launchctl getenv SSH_AUTH_SOCK 2>/dev/null)
       end
 
