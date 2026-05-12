@@ -45,8 +45,8 @@ in {
       end
 
       set -l launchd_ssh_sock ""
-      if type -q launchctl
-        set launchd_ssh_sock (launchctl getenv SSH_AUTH_SOCK 2>/dev/null)
+      if test -x /bin/launchctl
+        set launchd_ssh_sock (/bin/launchctl getenv SSH_AUTH_SOCK 2>/dev/null)
       end
 
       if test -n "$SSH_AUTH_SOCK" \
