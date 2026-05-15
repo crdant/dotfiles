@@ -13,15 +13,21 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ nodejs makeWrapper ];
 
-  # Disable sandbox to allow npm install from registry
-  # This is a temporary workaround for npm package builds
+  # Using __noChroot due to buildNpmPackage limitations:
+  # The upstream package-lock.json is stale (renamed from "claude-introspection" to
+  # "claude-memory" but lock file not regenerated). Even with a corrected lock file,
+  # buildNpmPackage's prefetch-npm-deps only caches ~50 of 483 dependencies, causing
+  # ENOTCACHED errors. This appears to be a prefetch-npm-deps limitation with
+  # lockfileVersion 3 packages.
+  #
+  # The source is pinned to a specific commit SHA for reproducibility.
   __noChroot = true;
 
   buildPhase = ''
     runHook preBuild
 
     export HOME=$TMPDIR
-    npm install --legacy-peer-deps
+    npm ci --prefer-offline --no-audit
     npm run build
 
     runHook postBuild
@@ -30,12 +36,12 @@ stdenv.mkDerivation rec {
   installPhase = ''
     runHook preInstall
 
-    mkdir -p $out/lib/node_modules/claude-memory
-    cp -r . $out/lib/node_modules/claude-memory
+    mkdir -p $out/lib/node_modules/claude-memory-extractor
+    cp -r . $out/lib/node_modules/claude-memory-extractor
 
     mkdir -p $out/bin
     makeWrapper ${nodejs}/bin/node $out/bin/claude-memory \
-      --add-flags "$out/lib/node_modules/claude-memory/dist/cli.js"
+      --add-flags "$out/lib/node_modules/claude-memory-extractor/dist/cli.js"
 
     runHook postInstall
   '';
