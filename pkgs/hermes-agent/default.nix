@@ -12,7 +12,7 @@ python3.pkgs.buildPythonApplication rec {
   src = fetchPypi {
     pname = "hermes_agent";
     inherit version;
-    hash = "sha256-jy8UElmQswXqtOKcI+GAORgFy4GxHXs9o4RH4pCV2ks=";
+    hash = "sha256-jywUElmQswXqtOKcI+GAORgFy4Gx17PaOER+KQle2ks=";
   };
 
   # The package pins exact versions as a supply-chain security measure.
