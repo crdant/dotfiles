@@ -48,7 +48,8 @@
         mash = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = {inherit inputs outputs;};
-          modules = [ 
+          modules = [
+            inputs.sops-nix.nixosModules.sops
             ./systems/hosts/mash/default.nix
             ./home/users/crdant/crdant.nix
           ];
