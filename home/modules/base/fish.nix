@@ -53,9 +53,9 @@ in {
       end
 
       if test -n "$SSH_AUTH_SOCK" \
-          -a "$SSH_AUTH_SOCK" != "$gpg_ssh_sock" \
-          -a "$SSH_AUTH_SOCK" != "$launchd_ssh_sock" \
-          -a (readlink -f "$SSH_AUTH_SOCK") != "$gpg_ssh_sock"
+          && test "$SSH_AUTH_SOCK" != "$gpg_ssh_sock" \
+          && test "$SSH_AUTH_SOCK" != "$launchd_ssh_sock" \
+          && test (readlink -f "$SSH_AUTH_SOCK") != "$gpg_ssh_sock"
         # use ssh signing with the provided key
         set -gx GIT_CONFIG_COUNT 3
         set -gx GIT_CONFIG_KEY_0 gpg.format
