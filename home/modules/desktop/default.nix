@@ -117,7 +117,7 @@ in {
 
       # System applications
       ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/Messages.app" --no-restart
-      ${pkgs.dockutil}/bin/dockutil --add "/Applications/Beeper.app" --no-restart
+      ${pkgs.dockutil}/bin/dockutil --add "/Applications/Beeper Pro.app" --no-restart
       ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/Contacts.app" --no-restart
 
       # Productivity apps
