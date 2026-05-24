@@ -26,6 +26,7 @@ rec {
   zapier-platform-cli = pkgs.callPackage ./zapier-platform-cli { };
   spiral-cli = pkgs.callPackage ./spiral-cli { };
   readwise-cli = pkgs.callPackage ./readwise-cli { };
+  hermes-agent = pkgs.callPackage ./hermes-agent { };
   obsidian-headless = pkgs.callPackage ./obsidian-headless { };
 
   # simonw tools

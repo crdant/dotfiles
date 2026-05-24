@@ -32,6 +32,7 @@ in {
         ttok
         unstable.fabric-ai
         unstable.github-mcp-server
+        hermes-agent
         mbta-mcp-server
       ];
 
