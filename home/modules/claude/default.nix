@@ -59,18 +59,6 @@ in {
             $DRY_RUN_CMD cp -f ${./config/agents}/* $CLAUDE_CONFIG_DIR/agents
           done
 
-          # Only on sochu: copy Replicated's auto-installed managed agents/commands
-          if [ "$(/bin/hostname -s)" = "sochu" ]; then
-            if [ -d ~/.claude/agents ] && [ -n "$(ls -A ~/.claude/agents 2>/dev/null)" ]; then
-              echo "Copying Replicated managed agents to the Replicated Claude config directory..."
-              $DRY_RUN_CMD cp -r ~/.claude/agents/* ${config.xdg.configHome}/claude/replicated/agents/
-            fi
-
-            if [ -d ~/.claude/commands ] && [ -n "$(ls -A ~/.claude/commands 2>/dev/null)" ]; then
-              echo "Copying Replicated managed commands to the Replicated Claude config directory..."
-              $DRY_RUN_CMD cp -r ~/.claude/commands/* ${config.xdg.configHome}/claude/replicated/commands/
-            fi
-          fi
         '';
 
         # Update mcpServers in Claude config files
