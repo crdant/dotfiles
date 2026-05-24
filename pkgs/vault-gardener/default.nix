@@ -1,29 +1,45 @@
 {
   lib,
-  stdenv,
   fetchurl,
   nodejs,
-  makeWrapper,
+  buildNpmPackage,
+  runCommand,
+  cacert,
 }:
 
-stdenv.mkDerivation rec {
-  pname = "vault-gardener";
+let
   version = "0.3.1";
 
-  src = fetchurl {
+  tarball = fetchurl {
     url = "https://registry.npmjs.org/vault-gardener/-/vault-gardener-${version}.tgz";
     hash = "sha256-JvyqPeEI9hidSvX4A7bFvbLEbTPn7A59TByFUZ1fJ6k=";
   };
 
-  nativeBuildInputs = [ makeWrapper ];
-
-  # dist/bin/vault-gardener.js is a fully bundled tsup build — no node_modules needed
-  installPhase = ''
-    mkdir -p $out/lib/vault-gardener
-    cp -r dist $out/lib/vault-gardener/
-    makeWrapper ${nodejs}/bin/node $out/bin/vault-gardener \
-      --add-flags "$out/lib/vault-gardener/dist/bin/vault-gardener.js"
+  packageLock = runCommand "vault-gardener-lockfile-${version}" {
+    nativeBuildInputs = [ nodejs cacert ];
+    outputHashAlgo = "sha256";
+    outputHashMode = "flat";
+    outputHash = "sha256-fd7X/+iiVgTO2bYk+l96JmhBmjMWxzbrECs3M7/x4jM=";
+  } ''
+    tar xzf ${tarball} --strip-components=1
+    HOME=$TMPDIR npm install --package-lock-only --ignore-scripts
+    cp package-lock.json $out
   '';
+in
+
+buildNpmPackage {
+  pname = "vault-gardener";
+  inherit version;
+
+  src = tarball;
+
+  postPatch = ''
+    cp ${packageLock} package-lock.json
+  '';
+
+  npmDepsHash = "sha256-sxVT2F57M3qhYhBmUQVL5n112ZzmkVaq5cayuE3BQ5c=";
+
+  dontNpmBuild = true;
 
   meta = with lib; {
     description = "AI-powered vault maintenance pipeline for markdown knowledge bases";
