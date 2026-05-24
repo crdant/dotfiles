@@ -8,7 +8,7 @@ in {
     # AI and coding assistant tools (non-agentic, shared across agents)
     home = {
       packages = with pkgs; [
-        ollama
+        unstable.ollama
         (unstable.llm.withPlugins {
           llm-anthropic = true;
           llm-cmd = true;
