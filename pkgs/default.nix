@@ -24,6 +24,8 @@ rec {
   mole = pkgs.callPackage ./mole { };
 
   zapier-platform-cli = pkgs.callPackage ./zapier-platform-cli { };
+  spiral-cli = pkgs.callPackage ./spiral-cli { };
+  readwise-cli = pkgs.callPackage ./readwise-cli { };
   obsidian-headless = pkgs.callPackage ./obsidian-headless { };
 
   # simonw tools

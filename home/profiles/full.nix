@@ -29,5 +29,6 @@
     ../modules/home-network
     ../modules/homelab
     ../modules/obsidian
+    ../modules/writing
   ];
 }
