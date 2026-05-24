@@ -35,7 +35,7 @@ in {
         nvim-lspconfig
         plenary-nvim
         snacks-nvim
-        supermaven-nvim
+        # supermaven-nvim
         vim-surround
         vim-commentary
       ];

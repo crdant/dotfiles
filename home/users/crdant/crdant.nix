@@ -18,7 +18,6 @@ in
   # The user should already exist, but we need to set this up so Nix knows
   # what our home directory is (https://github.com/LnL7/nix-darwin/issues/423).
   users = {
-    knownUsers = lib.optionals isDarwin [ "crdant" ];
     users.crdant = {
       home = if isDarwin then
         "/Users/crdant"
@@ -37,6 +36,8 @@ in
       group = "crdant";
       extraGroups = [ "adm" "ssher" "sudo" "wheel" ];
     };
+  } // lib.optionalAttrs isDarwin {
+    knownUsers = [ "crdant" ];
   } // lib.optionalAttrs isLinux {
     groups.crdant = {
       gid = 1002;

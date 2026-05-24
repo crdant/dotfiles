@@ -161,7 +161,7 @@ let
   supportsIPv6 = builtins.hasAttr "enableIPv6" options.networking;
   ipv6Config = lib.optionalAttrs supportsIPv6 {
     networking = {
-      enableIPv6 = false;
+      enableIPv6 = lib.mkDefault false;
     };
   };
 
