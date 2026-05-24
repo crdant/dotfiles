@@ -4,6 +4,7 @@
   fetchurl,
   runCommand,
   nodejs,
+  cacert,
 }:
 
 let
@@ -19,7 +20,8 @@ let
   # To update: set lockHash = lib.fakeHash, build, copy the hash from the error.
   lockHash = "sha256-ctZDqmv0Jug171Tb6uBfo3n097YtQ00nbnhgbQmHs84=";
   packageLock = runCommand "readwise-cli-lockfile-${version}" {
-    nativeBuildInputs = [ nodejs ];
+    nativeBuildInputs = [ nodejs cacert ];
+    SSL_CERT_FILE = "${cacert}/etc/ssl/certs/ca-bundle.crt";
     outputHashAlgo = "sha256";
     outputHashMode = "flat";
     outputHash = lockHash;
@@ -41,11 +43,6 @@ buildNpmPackage rec {
 
   npmDepsHash = "sha256-HOdNw7ahKvVMb5cOqZ8UgUNWivLlJAQqZuN6fijoTyc=";
   dontNpmBuild = true;
-
-  postInstall = ''
-    mkdir -p $out/bin
-    ln -s $out/lib/node_modules/@readwise/cli/dist/index.js $out/bin/readwise
-  '';
 
   meta = with lib; {
     description = "CLI for Readwise";
