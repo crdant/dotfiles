@@ -110,8 +110,8 @@ in {
 
         vim.api.nvim_set_keymap("n", "<C-P>", ":Files<CR>", { noremap = true })
         
-        -- Supermaven setup
-        require('supermaven-nvim').setup({})
+        -- Supermaven setup (disabled)
+        -- require('supermaven-nvim').setup({})
         
         -- Challenge Edit functionality
         function ChallengeEdit(args)
