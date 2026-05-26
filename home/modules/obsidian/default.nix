@@ -8,6 +8,7 @@ let
 in {
   home.packages = with pkgs; [
     obsidian-headless
+    vault-gardener
   ] ++ lib.optionals isLinux [
     unstable.obsidian
   ];

@@ -59,6 +59,10 @@ in {
   };
 
   programs = {
+    fish.shellInit = ''
+      set -q KREW_ROOT; and fish_add_path $KREW_ROOT/.krew/bin; or fish_add_path $HOME/.krew/bin
+    '';
+
     zsh = {
       oh-my-zsh = {
         plugins = [

@@ -22,7 +22,7 @@ in (lib.mkMerge [
     # Essential packages for system administration and daily use
     environment = {
       systemPackages = with pkgs; [
-        coreutils
+        uutils-coreutils-noprefix
         glow
         gnumake
         gnupg

@@ -7,8 +7,8 @@ let
   # does not merge duplicate keys, even with identical values
   marketplaces = {
     "claude-plugins-official" = "anthropics/claude-plugins-official";
-    "compound-engineering-plugin" = "EveryInc/compound-engineering-plugin.git";
-    "compound-knowledge-marketplace" = "EveryInc/compound-knowledge-plugin.git";
+    "compound-engineering-plugin" = "EveryInc/compound-engineering-plugin";
+    "compound-knowledge-marketplace" = "EveryInc/compound-knowledge-plugin";
     "last30days-skill" = "mvanhorn/last30days-skill";
     "replicatedhq" = "replicatedhq/replicated-claude-marketplace";
     "shortrib-labs" = "shortrib-labs/shortrib-claude-marketplace";
@@ -59,18 +59,6 @@ in {
             $DRY_RUN_CMD cp -f ${./config/agents}/* $CLAUDE_CONFIG_DIR/agents
           done
 
-          # Only on sochu: copy Replicated's auto-installed managed agents/commands
-          if [ "$(/bin/hostname -s)" = "sochu" ]; then
-            if [ -d ~/.claude/agents ] && [ -n "$(ls -A ~/.claude/agents 2>/dev/null)" ]; then
-              echo "Copying Replicated managed agents to the Replicated Claude config directory..."
-              $DRY_RUN_CMD cp -r ~/.claude/agents/* ${config.xdg.configHome}/claude/replicated/agents/
-            fi
-
-            if [ -d ~/.claude/commands ] && [ -n "$(ls -A ~/.claude/commands 2>/dev/null)" ]; then
-              echo "Copying Replicated managed commands to the Replicated Claude config directory..."
-              $DRY_RUN_CMD cp -r ~/.claude/commands/* ${config.xdg.configHome}/claude/replicated/commands/
-            fi
-          fi
         '';
 
         # Update mcpServers in Claude config files
