@@ -1,5 +1,8 @@
-{ fetchurl, lib, stdenv }:
+{ fetchurl, lib, stdenv, makeWrapper, vimUtils, neovim ? null }:
 
+let
+  hasNeovim = neovim != null;
+in
 stdenv.mkDerivation rec {
   pname = "vimr";
   version = "v0.63.0";
@@ -10,13 +13,28 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-/wmfzSezc68IRRPHfh24Y31eyjcH9OElfCGBjN9soLg=";
   };
 
+  nativeBuildInputs = lib.optionals hasNeovim [ makeWrapper ];
+
   dontFixup = true;
 
   installPhase = ''
     runHook preInstall
+
     APP_DIR="$out/Applications/VimR.app"
     mkdir -p "$APP_DIR"
     cp -r . "$APP_DIR"
+
+    mkdir -p "$out/bin"
+    ${if hasNeovim then ''
+      makeWrapper "$APP_DIR/Contents/Resources/vimr" "$out/bin/vimr" \
+        ${lib.concatStringsSep " " neovim.wrapperArgs} \
+        --add-flags '--nvim' \
+        --add-flags '--cmd "set packpath^=${vimUtils.packDir neovim.packpathDirs}"' \
+        --add-flags '--cmd "set rtp^=${vimUtils.packDir neovim.packpathDirs}"'
+    '' else ''
+      ln -s "$APP_DIR/Contents/Resources/vimr" "$out/bin/vimr"
+    ''}
+
     runHook postInstall
   '';
 
@@ -25,5 +43,6 @@ stdenv.mkDerivation rec {
     homepage = "https://twitter.com/VimRefined";
     license = licenses.mit;
     platforms = [ "x86_64-darwin" "aarch64-darwin" ];
+    mainProgram = "vimr";
   };
 }
