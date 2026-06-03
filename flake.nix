@@ -42,6 +42,10 @@
           ];
         };
     in {
+      packages = nixpkgs.lib.genAttrs supportedSystems (system:
+        import ./pkgs { pkgs = mkPkgs system; }
+      );
+
       overlays = import ./overlays {inherit inputs;};
 
       nixosConfigurations = {

@@ -13,9 +13,10 @@ python3.pkgs.buildPythonPackage rec {
     owner = "ml-explore";
     repo = "mlx-lm";
     rev = "v${version}";
-    hash = "sha256-d//JUhvRpNde1+drWWYJ9lmkXi+buaa1zxDg4rQdt0o="; 
+    hash = "sha256-d//JUhvRpNde1+drWWYJ9lmkXi+buaa1zxDg4rQdt0o=";
   };
-  
+
+  pyproject = true;
   build-system = [
     python3.pkgs.setuptools
     python3.pkgs.wheel
