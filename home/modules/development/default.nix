@@ -20,6 +20,7 @@ in {
       nix-init
       nix-prefetch-git
       pixi
+      railway
       shellcheck
       subversion
       tokei

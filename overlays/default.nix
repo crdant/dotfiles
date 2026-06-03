@@ -8,12 +8,12 @@
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
     go1_26 = prev.go.overrideAttrs (oldAttrs: let
-      newVersion = "1.26.1";
+      newVersion = "1.26.3";
       in {
         version = newVersion;
         src = prev.fetchzip {
           url = "https://go.dev/dl/go${newVersion}.src.tar.gz";
-          hash = "sha256-639cg0AQx1yKpkJtMI6/34miHPkKHHBfZV1yz3zWp2Y=";
+          hash = "sha256-f+sGifVA+laOZWNcTX9lz2oKaFzh1iqYCcQipb0FjDo=";
         };
         patches = [];
         GOROOT_BOOTSTRAP = "${prev.go}/share/go";

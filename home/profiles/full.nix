@@ -1,6 +1,7 @@
 { pkgs, ... }: {
   # Full workstation profile with all modules
   imports = [
+    ../modules/atproto
     ../modules/base
     ../modules/desktop
     ../modules/development

@@ -19,7 +19,6 @@ in
 {
   homebrew = {
     taps = [
-      "humanlayer/humanlayer"
       "steipete/tap"
     ];
     brews = [
@@ -36,7 +35,6 @@ in
       "arc"
       "beeper"
       "claude"
-      "codelayer"
       "discord"
       "lens"
       "loom"
@@ -44,10 +42,8 @@ in
       "postman"
       "raspberry-pi-imager"
       "repobar"
-      "macwhisper"
+      "microsoft-teams"
       "monologue"
-      "notion-calendar"
-      "snowflake-snowsql"
       "superhuman"
       "thebrowsercompany-dia"
     ];
