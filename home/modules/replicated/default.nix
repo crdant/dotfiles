@@ -14,7 +14,7 @@ in {
     ] ++ lib.optionals isDarwin [
       instruqt
       iterm2
-      teams
+      # teams
     ];
     file = lib.optionalAttrs isDarwin {
       "Library/Colors/Replicated.clr" = {
