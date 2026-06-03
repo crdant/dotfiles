@@ -24,8 +24,7 @@ in {
       unstable.spotify
     ] ++ lib.optionals isDarwin [
       dockutil
-      vimr
-      (callPackage ./vimr-wrapper.nix { inherit config; })
+      (vimr.override { neovim = config.programs.neovim.finalPackage; })
     ];
 
     file = {
