@@ -16,14 +16,13 @@ in {
       terraform
       terraform-lsp
       vault
-      wrangler
     ];
   };
   
   programs = {
     # Terraform-specific Neovim configuration
     neovim = {
-      extraLuaConfig = lib.mkAfter ''
+      initLua = lib.mkAfter ''
         -- Terraform language server
         require('terraform_lsp')
       '';

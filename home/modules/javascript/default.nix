@@ -14,7 +14,7 @@ in {
   programs = {
     # JavaScript/TypeScript-specific Neovim configuration
     neovim = {
-      extraLuaConfig = lib.mkAfter ''
+      initLua = lib.mkAfter ''
         -- TypeScript language server
         require('ts_ls')
       '';

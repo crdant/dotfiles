@@ -61,7 +61,7 @@ in {
     # Core Neovim configuration
     neovim = {
       # Core Lua config (basic settings, keymaps, etc.)
-      extraLuaConfig = ''
+      initLua = ''
         -- Appearance
         if vim.fn.has('gui_running') == 1 then
           vim.opt.background = "light"
@@ -110,14 +110,14 @@ in {
 
       # Third-party applications (in /Applications/)
       ${pkgs.dockutil}/bin/dockutil --add "/Applications/Ghostty.app" --no-restart
-      ${pkgs.dockutil}/bin/dockutil --add "/Applications/Arc.app" --no-restart
+      ${pkgs.dockutil}/bin/dockutil --add "/Applications/Dia.app" --no-restart
       ${pkgs.dockutil}/bin/dockutil --add "${pkgs.slack}/Applications/Slack.app" --no-restart
       ${pkgs.dockutil}/bin/dockutil --add "/Applications/Superhuman.app" --no-restart
       ${pkgs.dockutil}/bin/dockutil --add "${pkgs.zoom-us}/Applications/zoom.us.app" --no-restart
 
       # System applications
       ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/Messages.app" --no-restart
-      ${pkgs.dockutil}/bin/dockutil --add "/Applications/Beeper Pro.app" --no-restart
+      ${pkgs.dockutil}/bin/dockutil --add "/Applications/Beeper Desktop.app" --no-restart
       ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/Contacts.app" --no-restart
 
       # Productivity apps
