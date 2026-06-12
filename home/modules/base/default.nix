@@ -65,7 +65,7 @@ in {
 
     # Basic packages for all environments
     packages = with pkgs; [
-      dogdns
+      doggo
       fd
       moreutils
       nmap
@@ -286,12 +286,15 @@ in {
       enable = true;
       viAlias = true;
       vimAlias = true;
+      withRuby = false;
+      withPython3 = false;
       
       # Core plugins used everywhere
       plugins = with pkgs.vimPlugins; [
         editorconfig-nvim
         {
           plugin = rose-pine;
+          type = "viml";
           config = ''
             let g:rose_pine_dark_variant = 'moon'
             let g:rose_pine_disable_background = 1 
@@ -307,7 +310,7 @@ in {
       ];
       
       # Core Lua config (basic settings, keymaps, etc.)
-      extraLuaConfig = ''
+      initLua = ''
         -- General
         vim.opt.encoding = "utf-8"          -- The encoding displayed
         vim.opt.fileencoding = "utf-8"      -- The encoding written to file

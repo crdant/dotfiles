@@ -14,7 +14,7 @@ in {
   programs = {
     # Python-specific Neovim configuration
     neovim = {
-      extraLuaConfig = lib.mkAfter ''
+      initLua = lib.mkAfter ''
         -- Python language server
         require('pyright')
       '';

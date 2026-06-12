@@ -2,7 +2,7 @@
 
 let
   vimrCommand = "${pkgs.vimr}/Applications/VimR.app/Contents/Resources/vimr" ;
-  wrapperArgs = config.programs.neovim.finalPackage.wrapperArgs  ;
+  wrapperArgs = lib.escapeShellArgs config.programs.neovim.finalPackage.wrapperArgs;
   neovimArgs = ''
     --add-flags '--nvim' --add-flags '--cmd "set packpath^=${vimUtils.packDir config.programs.neovim.finalPackage.packpathDirs}"' \
     --add-flags '--cmd "set rtp^=${vimUtils.packDir config.programs.neovim.finalPackage.packpathDirs}"';
@@ -13,7 +13,7 @@ in stdenv.mkDerivation {
 
   dontUnpack = true ;
   dontPatch  = true ;
-  dontConfigure = true ;  
+  dontConfigure = true ;
   dontBuild = true ;
 
   nativeBuildInputs = [ makeWrapper ];

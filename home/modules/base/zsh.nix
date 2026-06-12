@@ -7,6 +7,7 @@ in {
   programs.zsh = {
     enable = true;
     enableCompletion = true;
+    dotDir = config.home.homeDirectory;
 
     oh-my-zsh = {
       enable = true;

@@ -81,7 +81,7 @@ in {
   # bash is enabled by default
 
   environment = {
-    enableAllTerminfo = true;
+    # enableAllTerminfo = true;
 
     systemPackages = with pkgs; [
       coreutils

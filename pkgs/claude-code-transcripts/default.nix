@@ -13,6 +13,11 @@ python3.pkgs.buildPythonPackage rec {
     python3.pkgs.uv-build
   ];
 
+  postPatch = ''
+    substituteInPlace pyproject.toml \
+      --replace-fail 'uv_build>=0.9.7,<0.10.0' 'uv_build>=0.9.7'
+  '';
+
   src = fetchFromGitHub {
     owner = "simonw";
     repo = "claude-code-transcripts";

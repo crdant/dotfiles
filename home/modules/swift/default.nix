@@ -24,7 +24,7 @@ in {
         # xcodebuild-nvim 
       ];
 
-      extraLuaConfig = lib.mkAfter ''
+      initLua = lib.mkAfter ''
         -- Swift language server
         require('sourcekit')
       '';
