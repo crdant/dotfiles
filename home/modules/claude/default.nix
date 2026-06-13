@@ -12,6 +12,7 @@ let
     "last30days-skill" = "mvanhorn/last30days-skill";
     "replicatedhq" = "replicatedhq/replicated-claude-marketplace";
     "shortrib-labs" = "shortrib-labs/shortrib-claude-marketplace";
+    "draft-review-kit-local" = "EveryInc/draft-review-kit";
   };
 in {
   # Custom option for Claude Code plugin management.
