@@ -144,6 +144,7 @@ in {
     
     atuin = {
       enable = true;
+      package = pkgs.unstable.atuin;
       enableZshIntegration = true;
       enableBashIntegration = true;
       enableFishIntegration = true;
@@ -294,11 +295,15 @@ in {
         editorconfig-nvim
         {
           plugin = rose-pine;
-          type = "viml";
+          type = "lua";
           config = ''
-            let g:rose_pine_dark_variant = 'moon'
-            let g:rose_pine_disable_background = 1 
-            colorscheme rose-pine
+            require('rose-pine').setup({
+              variant = 'moon',
+              styles = {
+                transparency = true,
+              },
+            })
+            vim.cmd('colorscheme rose-pine')
           '';
         }
         vim-surround
