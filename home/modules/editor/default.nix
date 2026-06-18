@@ -21,6 +21,7 @@ in {
         diffview-nvim
         {
           plugin = fzf-vim;
+          type = "viml";
           config = ''
             " Initialize configuration dictionary
             let g:fzf_vim = {}
@@ -40,7 +41,7 @@ in {
         vim-commentary
       ];
 
-      extraLuaConfig = ''
+      initLua = ''
         -- Core editor settings
         require('snacks').setup({})
 

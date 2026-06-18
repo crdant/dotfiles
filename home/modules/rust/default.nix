@@ -16,7 +16,7 @@ in {
   programs = {
     # Rust-specific Neovim configuration
     neovim = {
-      extraLuaConfig = lib.mkAfter ''
+      initLua = lib.mkAfter ''
         -- Rust language server
         require('rust_analyzer')
       '';

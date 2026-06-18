@@ -140,7 +140,7 @@ in {
           claude-code-nvim
         ];
 
-        extraLuaConfig = lib.mkAfter ''
+        initLua = lib.mkAfter ''
           -- Claude code integration
           require('claude-code').setup({})
         '';

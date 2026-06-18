@@ -21,7 +21,7 @@ in {
     
     # Go-specific Neovim configuration
     neovim = {
-      extraLuaConfig = lib.mkAfter ''
+      initLua = lib.mkAfter ''
         -- Go language server
         require('gopls')
         

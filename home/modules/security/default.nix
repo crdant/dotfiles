@@ -52,7 +52,7 @@ in {
         nvim-sops 
       ];
 
-      extraLuaConfig = ''
+      initLua = ''
         vim.keymap.set('n', '<leader>ef', vim.cmd.SopsEncrypt, { desc = '[E]ncrypt [F]ile' })
         vim.keymap.set('n', '<leader>df', vim.cmd.SopsDecrypt, { desc = '[D]ecrypt [F]ile' })
       '';
