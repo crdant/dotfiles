@@ -42,9 +42,10 @@ in (lib.mkMerge [
         m-cli
         darwin.trash
         mole
+        uutils-coreutils
       ] ++ lib.optionals isLinux [
-        uutils-coreutils-noprefix
         unixtools.watch
+        uutils-coreutils-noprefix
       ];
     };
     services = {
