@@ -16,6 +16,7 @@ in {
       gnumake
       fermyon-spin
       imagemagick
+      just
       unstable.lima
       nix-init
       nix-prefetch-git
