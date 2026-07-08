@@ -84,7 +84,6 @@ in {
     # enableAllTerminfo = true;
 
     systemPackages = with pkgs; [
-      coreutils
       glow
       gnumake
       gnupg

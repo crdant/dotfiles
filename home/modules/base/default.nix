@@ -79,7 +79,6 @@ in {
       tcptraceroute
       zsh-completions
     ] ++ lib.optionals isLinux [
-      coreutils
       dig
       gnupg
       hostess

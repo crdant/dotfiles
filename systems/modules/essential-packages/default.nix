@@ -22,7 +22,6 @@ in (lib.mkMerge [
     # Essential packages for system administration and daily use
     environment = {
       systemPackages = with pkgs; [
-        uutils-coreutils-noprefix
         glow
         gnumake
         gnupg
@@ -44,6 +43,7 @@ in (lib.mkMerge [
         darwin.trash
         mole
       ] ++ lib.optionals isLinux [
+        uutils-coreutils-noprefix
         unixtools.watch
       ];
     };
