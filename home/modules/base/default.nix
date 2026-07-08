@@ -72,6 +72,7 @@ in {
       pstree
       rar
       ripgrep
+      rust-petname
       sd
       sipcalc
       smug
