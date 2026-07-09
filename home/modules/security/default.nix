@@ -61,22 +61,20 @@ in {
     ssh = {
       enable = true;
       enableDefaultConfig = false;
-      matchBlocks = {
+      settings = {
         "*" = {
-          user = "crdant";
-          forwardAgent = false;
-          addKeysToAgent = "yes";
-          compression = false;
-          serverAliveInterval = 0;
-          serverAliveCountMax = 3;
-          hashKnownHosts = true;
-          userKnownHostsFile = "~/.ssh/known_hosts";
-          controlMaster = "yes";
-          controlPath = "~/.ssh/master-%r@%n:%p";
-          controlPersist = "no";
-          extraOptions = {
-            passwordAuthentication = "no";
-          };
+          User = "crdant";
+          ForwardAgent = false;
+          AddKeysToAgent = "yes";
+          Compression = false;
+          ServerAliveInterval = 0;
+          ServerAliveCountMax = 3;
+          HashKnownHosts = true;
+          UserKnownHostsFile = "~/.ssh/known_hosts";
+          ControlMaster = "yes";
+          ControlPath = "~/.ssh/master-%r@%n:%p";
+          ControlPersist = "no";
+          PasswordAuthentication = "no";
         };
       };
 
