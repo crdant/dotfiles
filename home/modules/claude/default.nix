@@ -6,6 +6,11 @@ let
   # Seconds to wait for sops-nix to render mcp-servers.json before giving up
   mcpTemplateTimeout = 30;
 
+  # Claude Code's own layout when CLAUDE_CONFIG_DIR is unset: the config file sits
+  # next to the state directory, not inside it.
+  claudeStateDir = "${config.home.homeDirectory}/.claude";
+  claudeConfigFile = "${config.home.homeDirectory}/.claude.json";
+
   # Marketplace configuration — centralized here because attrsOf str
   # does not merge duplicate keys, even with identical values
   marketplaces = {
@@ -45,22 +50,21 @@ in {
       # HACK because Claude code won't follow symlinks, replace with commented out file
       # stuff below as soon as possible
       activation = {
-        # Copy agents and commands to Claude config directories
+        # Copy agents and commands into the Claude state directory
         claude = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-          for CLAUDE_CONFIG_DIR in ${config.xdg.configHome}/claude/replicated ${config.xdg.configHome}/claude/personal ; do
-            if [[ -v DRY_RUN ]]; then
-              echo "Would copy agents and commands to $CLAUDE_CONFIG_DIR"
-              continue
-            fi
-
-            echo "Copying agents and commands to $CLAUDE_CONFIG_DIR..."
-            mkdir -p "$CLAUDE_CONFIG_DIR/commands" "$CLAUDE_CONFIG_DIR/agents"
-            cp -f ${./config/commands}/* "$CLAUDE_CONFIG_DIR/commands"
-            cp -f ${./config/agents}/* "$CLAUDE_CONFIG_DIR/agents"
-          done
+          if [[ -v DRY_RUN ]]; then
+            echo "Would copy agents and commands to ${claudeStateDir}"
+          else
+            echo "Copying agents and commands to ${claudeStateDir}..."
+            mkdir -p "${claudeStateDir}/commands" "${claudeStateDir}/agents"
+            cp -f ${./config/commands}/* "${claudeStateDir}/commands"
+            cp -f ${./config/agents}/* "${claudeStateDir}/agents"
+          fi
         '';
 
-        # Update mcpServers in Claude config files.
+        # Update mcpServers in the Claude config file. Note this sits beside the
+        # state directory rather than inside it — that is Claude's own layout when
+        # CLAUDE_CONFIG_DIR is unset.
         #
         # On darwin the sops-nix activation entry only bootstraps a launchd agent and
         # returns, so entryAfter orders us against that call rather than against the
@@ -69,6 +73,7 @@ in {
         # the whole switch.
         claudeMcpServers = lib.hm.dag.entryAfter [ "sops-nix" ] (''
           MCP_TEMPLATE="${config.sops.templates."mcp-servers.json".path}"
+          CONFIG="${claudeConfigFile}"
 
           WAITED=0
           while [ ! -s "$MCP_TEMPLATE" ] && [ "$WAITED" -lt ${toString mcpTemplateTimeout} ]; do
@@ -79,20 +84,13 @@ in {
           if [ ! -s "$MCP_TEMPLATE" ]; then
             warnEcho "claude: $MCP_TEMPLATE not rendered after ${toString mcpTemplateTimeout}s; leaving mcpServers unchanged."
             warnEcho "claude: check 'launchctl print gui/\$(id -u)/org.nix-community.home.sops-nix' and ~/Library/Logs/SopsNix/stderr."
+          elif [[ -v DRY_RUN ]]; then
+            echo "Would set mcpServers in $CONFIG from $MCP_TEMPLATE"
           else
             MCP_SERVERS="$(cat "$MCP_TEMPLATE")"
 
-            for CONFIG_DIR in ${config.xdg.configHome}/claude/replicated ${config.xdg.configHome}/claude/personal ; do
-              CONFIG="$CONFIG_DIR/.claude.json"
-
-              if [[ -v DRY_RUN ]]; then
-                echo "Would set mcpServers in $CONFIG from $MCP_TEMPLATE"
-                continue
-              fi
-
-              [ -f "$CONFIG" ] || echo '{}' > "$CONFIG"
-              ${pkgs.jq}/bin/jq --argjson servers "$MCP_SERVERS" '.mcpServers = $servers' "$CONFIG" > "$CONFIG.tmp" && mv "$CONFIG.tmp" "$CONFIG"
-            done
+            [ -f "$CONFIG" ] || echo '{}' > "$CONFIG"
+            ${pkgs.jq}/bin/jq --argjson servers "$MCP_SERVERS" '.mcpServers = $servers' "$CONFIG" > "$CONFIG.tmp" && mv "$CONFIG.tmp" "$CONFIG"
           fi
         '' );
 
@@ -104,17 +102,16 @@ in {
         in lib.hm.dag.entryAfter [ "writeBoundary" "installPackages" "claude" ] ''
           export PATH="${pkgs.git}/bin:${pkgs.openssh}/bin:$PATH"
 
-          for CLAUDE_CONFIG_DIR in ${config.xdg.configHome}/claude/personal ${config.xdg.configHome}/claude/replicated ; do
-            export CLAUDE_CONFIG_DIR
+          # Target Claude's default location, not whatever the invoking shell exports.
+          # A stale CLAUDE_CONFIG_DIR would otherwise send plugins somewhere else.
+          unset CLAUDE_CONFIG_DIR
 
-            if [[ -v DRY_RUN ]]; then
-              echo "Would register ${toString (lib.length (lib.attrNames marketplaces))} marketplaces and install ${toString (lib.length cfg.plugins)} plugins in $CLAUDE_CONFIG_DIR"
-              continue
-            fi
+          if [[ -v DRY_RUN ]]; then
+            echo "Would register ${toString (lib.length (lib.attrNames marketplaces))} marketplaces and install ${toString (lib.length cfg.plugins)} plugins in ${claudeStateDir}"
+          else
+            mkdir -p "${claudeStateDir}/plugins"
 
-            mkdir -p "$CLAUDE_CONFIG_DIR/plugins"
-
-            KNOWN_MARKETPLACES="$CLAUDE_CONFIG_DIR/plugins/known_marketplaces.json"
+            KNOWN_MARKETPLACES="${claudeStateDir}/plugins/known_marketplaces.json"
 
             # Register marketplaces (skip if already known)
             ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: source: ''
@@ -127,7 +124,7 @@ in {
             ${lib.concatStringsSep "\n" (map (plugin: ''
             ${claude} plugin install ${lib.escapeShellArg plugin}
             '') cfg.plugins)}
-          done
+          fi
         '';
       };
     };
@@ -145,27 +142,13 @@ in {
 
       zsh = {
         envExtra = ''
-          # set default for Claude config based on hostname
-          if [[ "$(whoami)" == "chuck" ]] ; then
-            export CLAUDE_CONFIG_DIR="${config.xdg.configHome}/claude/replicated"
-          else
-            export CLAUDE_CONFIG_DIR="${config.xdg.configHome}/claude/personal"
-          fi
-
           # use MCP tool search in Claude Code
-          ENABLE_TOOL_SEARCH=true
+          export ENABLE_TOOL_SEARCH=true
         '';
       };
 
       fish = {
         shellInit = ''
-          # set default for Claude config based on hostname
-          if test "$(whoami)" = "chuck"
-            set -gx CLAUDE_CONFIG_DIR "${config.xdg.configHome}/claude/replicated"
-          else
-            set -gx CLAUDE_CONFIG_DIR "${config.xdg.configHome}/claude/personal"
-          end
-
           # use MCP tool search in Claude Code
           set -gx ENABLE_TOOL_SEARCH true
         '';
