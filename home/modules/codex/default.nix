@@ -88,13 +88,17 @@ in
       # Write Codex config.toml as a mutable file (not a read-only nix store symlink)
       codexConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         CODEX_DIR="${config.home.homeDirectory}/.codex"
-        $DRY_RUN_CMD mkdir -p "$CODEX_DIR"
 
-        $DRY_RUN_CMD cat > "$CODEX_DIR/config.toml" <<'CODEX_EOF'
+        if [[ -v DRY_RUN ]]; then
+          echo "Would write $CODEX_DIR/config.toml and $CODEX_DIR/AGENTS.md"
+        else
+          mkdir -p "$CODEX_DIR"
+
+          cat > "$CODEX_DIR/config.toml" <<'CODEX_EOF'
 ${builtins.readFile (tomlFormat.generate "codex-config.toml" codexToml)}
 CODEX_EOF
 
-        $DRY_RUN_CMD cat > "$CODEX_DIR/AGENTS.md" <<'CODEX_AGENTS_EOF'
+          cat > "$CODEX_DIR/AGENTS.md" <<'CODEX_AGENTS_EOF'
 # Codex Custom Instructions
 
 ## Role
@@ -106,6 +110,7 @@ You are a helpful coding assistant integrated into the terminal.
 - Prefer simple, clear solutions.
 - Ask clarifying questions when requirements are ambiguous.
 CODEX_AGENTS_EOF
+        fi
       '';
 
       # Install Compound Engineering plugin for Codex
@@ -116,16 +121,20 @@ CODEX_AGENTS_EOF
         codex = "${pkgs.unstable.codex}/bin/codex";
         bunx = "${pkgs.bun}/bin/bunx";
       in lib.hm.dag.entryAfter [ "writeBoundary" "installPackages" ] ''
-        # Register Compound Engineering marketplace if not already registered
-        $DRY_RUN_CMD ${codex} plugin marketplace add EveryInc/compound-engineering-plugin || true
+        if [[ -v DRY_RUN ]]; then
+          echo "Would register the Compound Engineering marketplace and install ${toString (lib.length cfg.plugins)} codex plugins"
+        else
+          # Register Compound Engineering marketplace if not already registered
+          ${codex} plugin marketplace add EveryInc/compound-engineering-plugin || true
 
-        # Install compound-engineering agents (idempotent)
-        $DRY_RUN_CMD ${bunx} @every-env/compound-plugin install compound-engineering --to codex
+          # Install compound-engineering agents (idempotent)
+          ${bunx} @every-env/compound-plugin install compound-engineering --to codex
 
-        # Install plugins listed in config (idempotent through codex TUI)
-        ${lib.concatStringsSep "\n" (map (plugin: ''
-          $DRY_RUN_CMD ${codex} plugin install ${lib.escapeShellArg plugin}
-        '') cfg.plugins)}
+          # Install plugins listed in config (idempotent through codex TUI)
+          ${lib.concatStringsSep "\n" (map (plugin: ''
+            ${codex} plugin install ${lib.escapeShellArg plugin}
+          '') cfg.plugins)}
+        fi
       '';
     };
   };
