@@ -57,12 +57,16 @@ in {
         # Copy agents and commands to Claude config directories
         claude = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
           for CLAUDE_CONFIG_DIR in ${config.xdg.configHome}/claude/replicated ${config.xdg.configHome}/claude/personal ; do
-            echo "Copying agents and commands to $CLAUDE_CONFIG_DIR..."
-            $DRY_RUN_CMD mkdir -p $CLAUDE_CONFIG_DIR/commands $CLAUDE_CONFIG_DIR/agents
-            $DRY_RUN_CMD cp -f ${./config/commands}/* $CLAUDE_CONFIG_DIR/commands
-            $DRY_RUN_CMD cp -f ${./config/agents}/* $CLAUDE_CONFIG_DIR/agents
-          done
+            if [[ -v DRY_RUN ]]; then
+              echo "Would copy agents and commands to $CLAUDE_CONFIG_DIR"
+              continue
+            fi
 
+            echo "Copying agents and commands to $CLAUDE_CONFIG_DIR..."
+            mkdir -p "$CLAUDE_CONFIG_DIR/commands" "$CLAUDE_CONFIG_DIR/agents"
+            cp -f ${./config/commands}/* "$CLAUDE_CONFIG_DIR/commands"
+            cp -f ${./config/agents}/* "$CLAUDE_CONFIG_DIR/agents"
+          done
         '';
 
         # Update mcpServers in Claude config files.
@@ -90,8 +94,6 @@ in {
             for CONFIG_DIR in ${config.xdg.configHome}/claude/replicated ${config.xdg.configHome}/claude/personal ; do
               CONFIG="$CONFIG_DIR/.claude.json"
 
-              # $DRY_RUN_CMD cannot guard this: the shell performs the redirection
-              # below before the command it prefixes ever runs.
               if [[ -v DRY_RUN ]]; then
                 echo "Would set mcpServers in $CONFIG from $MCP_TEMPLATE"
                 continue
@@ -113,20 +115,26 @@ in {
 
           for CLAUDE_CONFIG_DIR in ${config.xdg.configHome}/claude/personal ${config.xdg.configHome}/claude/replicated ; do
             export CLAUDE_CONFIG_DIR
-            $DRY_RUN_CMD mkdir -p "$CLAUDE_CONFIG_DIR/plugins"
+
+            if [[ -v DRY_RUN ]]; then
+              echo "Would register ${toString (lib.length (lib.attrNames marketplaces))} marketplaces and install ${toString (lib.length cfg.plugins)} plugins in $CLAUDE_CONFIG_DIR"
+              continue
+            fi
+
+            mkdir -p "$CLAUDE_CONFIG_DIR/plugins"
 
             KNOWN_MARKETPLACES="$CLAUDE_CONFIG_DIR/plugins/known_marketplaces.json"
 
             # Register marketplaces (skip if already known)
             ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: source: ''
             if [ ! -f "$KNOWN_MARKETPLACES" ] || ! ${jq} --arg name ${lib.escapeShellArg name} -e '.[$name]' "$KNOWN_MARKETPLACES" > /dev/null 2>&1; then
-              $DRY_RUN_CMD ${claude} plugin marketplace add ${lib.escapeShellArg source}
+              ${claude} plugin marketplace add ${lib.escapeShellArg source}
             fi
             '') marketplaces)}
 
             # Install plugins (install is idempotent — handles both new and existing plugins)
             ${lib.concatStringsSep "\n" (map (plugin: ''
-            $DRY_RUN_CMD ${claude} plugin install ${lib.escapeShellArg plugin}
+            ${claude} plugin install ${lib.escapeShellArg plugin}
             '') cfg.plugins)}
           done
         '';
