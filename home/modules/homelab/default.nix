@@ -34,55 +34,45 @@ in {
 
   programs = {
     ssh = {
-      matchBlocks = {
+      settings = {
         "router" = {
-          hostname = "router";
-          user = "arceus";
-          identityFile = "~/.ssh/id_router.pub";
-          extraOptions = {
-            identityAgent = "\"~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock\"";
-            canonicalizeHostName = "yes";
-            canonicalDomains = "walrus-shark.ts.net lab.shortrib.net";
-            identitiesOnly = "yes";
-          };
+          HostName = "router";
+          User = "arceus";
+          IdentityFile = "~/.ssh/id_router.pub";
+          IdentityAgent = "\"~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock\"";
+          CanonicalizeHostname = "yes";
+          CanonicalDomains = "walrus-shark.ts.net lab.shortrib.net";
+          IdentitiesOnly = "yes";
         };
 
         "prism.lab.shortrib.net" = {
-          user = "admin";
-          identityFile = "~/.ssh/id_homelab.pub";
-          extraOptions = {
-            identityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
-            identitiesOnly = "yes";
-          };
+          User = "admin";
+          IdentityFile = "~/.ssh/id_homelab.pub";
+          IdentityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+          IdentitiesOnly = "yes";
         };
 
         "bourbon.lab.shortrib.net rye.lab.shortrib.net scotch.lab.shortrib.net" = {
-          user = "nutanix";
-          identityFile = "~/.ssh/id_homelab.pub";
-          extraOptions = {
-            identityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
-            identitiesOnly = "yes";
-          };
+          User = "nutanix";
+          IdentityFile = "~/.ssh/id_homelab.pub";
+          IdentityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+          IdentitiesOnly = "yes";
         };
-        
+
         "ipmi.rye.lab.shortrib.net ipmi.bourbon.lab.shortrib.net ipmi.scotch.lab.shortrib.net" = {
-          user = "arceus";
-          identityFile = "~/.ssh/id_ipmi.pub";
-          extraOptions = {
-            hostKeyAlgorithms = "+ssh-rsa";
-            passwordAuthentication = "yes";
-            identityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
-            identitiesOnly = "yes";
-          };
+          User = "arceus";
+          IdentityFile = "~/.ssh/id_ipmi.pub";
+          HostKeyAlgorithms = "+ssh-rsa";
+          PasswordAuthentication = "yes";
+          IdentityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+          IdentitiesOnly = "yes";
         };
 
         "hypervisor.rye.lab.shortrib.net ahv.rye.lab.shortrib.net hypervisor.bourbon.lab.shortrib.net ahv.bourbon.lab.shortrib.net hypervisor.scotch.lab.shortrib.net ahv.scotch.lab.shortrib.net" = {
-          user = "root";
-          identityFile = "~/.ssh/id_homelab.pub";
-          extraOptions = {
-            identityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
-            identitiesOnly = "yes";
-          };
+          User = "root";
+          IdentityFile = "~/.ssh/id_homelab.pub";
+          IdentityAgent = "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+          IdentitiesOnly = "yes";
         };
       };
     };
