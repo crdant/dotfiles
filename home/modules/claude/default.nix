@@ -89,6 +89,14 @@ in {
 
             for CONFIG_DIR in ${config.xdg.configHome}/claude/replicated ${config.xdg.configHome}/claude/personal ; do
               CONFIG="$CONFIG_DIR/.claude.json"
+
+              # $DRY_RUN_CMD cannot guard this: the shell performs the redirection
+              # below before the command it prefixes ever runs.
+              if [[ -v DRY_RUN ]]; then
+                echo "Would set mcpServers in $CONFIG from $MCP_TEMPLATE"
+                continue
+              fi
+
               [ -f "$CONFIG" ] || echo '{}' > "$CONFIG"
               ${pkgs.jq}/bin/jq --argjson servers "$MCP_SERVERS" '.mcpServers = $servers' "$CONFIG" > "$CONFIG.tmp" && mv "$CONFIG.tmp" "$CONFIG"
             done
