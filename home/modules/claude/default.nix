@@ -22,24 +22,15 @@ in {
   # This is defined in this repo's claude module, not by upstream home-manager.
   # Any module that sets programs.claude.plugins must be imported alongside
   # this module (today all profiles that include language modules also include claude).
+  #
+  # Each module contributes the plugins it owns; definitions concatenate. Keep the
+  # default empty — a default is discarded as soon as any module defines the option,
+  # so anything listed there would silently never install.
   options.programs.claude = {
     plugins = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [
-        # Language LSP plugins — move to respective language modules as they adopt programs.claude.plugins
-        "pyright-lsp@claude-plugins-official"
-        "swift-lsp@claude-plugins-official"
-        "typescript-lsp@claude-plugins-official"
-        # Tool plugins
-        "skill-creator@claude-plugins-official"
-        "claude-md-management@claude-plugins-official"
-        "compound-knowledge@compound-knowledge-marketplace"
-        "last30days@last30days-skill"
-        "taste@shortrib-labs"
-        "strategy@shortrib-labs"
-        "writing@shortrib-labs"
-        "hookify@claude-plugins-official"
-      ];
+      default = [ ];
+      example = [ "pyright-lsp@claude-plugins-official" ];
       description = "Claude Code plugins to install (format: plugin-name@marketplace)";
     };
   };
@@ -142,6 +133,16 @@ in {
     };
 
     programs = {
+      # Plugins that tune Claude Code itself rather than any language or workflow,
+      # so they belong with the harness. Language and workflow plugins are defined
+      # by the modules that own them.
+      claude.plugins = [
+        "claude-md-management@claude-plugins-official"
+        "hookify@claude-plugins-official"
+        "last30days@last30days-skill"
+        "skill-creator@claude-plugins-official"
+      ];
+
       zsh = {
         envExtra = ''
           # set default for Claude config based on hostname
