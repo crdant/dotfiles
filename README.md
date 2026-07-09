@@ -75,7 +75,13 @@ I could finally start sharing.
    cd ~/.dotfiles
    ```
 
-4. Install configurations based on your needs:
+4. Import the PGP public keys used to encrypt secrets:
+   ```bash
+   gpg --import .sops.pub.asc
+   ```
+   See [Secrets](#secrets) for why this is necessary.
+
+5. Install configurations based on your needs:
    - For user configuration only:
      ```bash
      make <username>
@@ -84,6 +90,55 @@ I could finally start sharing.
      ```bash
      make <hostname>
      ```
+
+### Secrets
+
+Secrets are encrypted with [SOPS](https://github.com/getsops/sops) to the PGP
+subkeys listed in `.sops.yaml`, and decrypted at activation time by
+[sops-nix](https://github.com/Mic92/sops-nix). The private keys live on a
+YubiKey; `.sops.pub.asc` is a bundle of the matching **public** keys, covering
+every recipient in `.sops.yaml`.
+
+Nothing imports that bundle automatically — SOPS reads `.sops.yaml` for
+fingerprints and expects the keys themselves to already be in your GnuPG
+keyring. Import it by hand, as above.
+
+It is needed in both directions. Encrypting or running `sops updatekeys`
+requires the public key of every recipient. Decrypting requires it too, even
+though the YubiKey does the actual work: GnuPG will only drive a card-held
+subkey when the corresponding public subkey is present to bind the shadow stub
+in `~/.gnupg/private-keys-v1.d/`.
+
+If secrets stop decrypting, that binding is the first thing to check. A working
+encryption subkey shows as `ssb>` (card-backed); `ssb#` means the private half
+is absent and `gpg --list-keys` failing outright means the public subkey is
+missing:
+
+```bash
+gpg --list-secret-keys --keyid-format=long   # want ssb> on an [E] subkey
+gpg --import .sops.pub.asc && gpg --card-status
+```
+
+Note that a bare `sops -d` will fail against a YubiKey regardless. SOPS defaults
+to a native Go OpenPGP backend that cannot talk to a smartcard, and reports
+`could not decrypt data key with PGP key`. Point it at a real `gpg` to test:
+
+```bash
+SOPS_GPG_EXEC=/run/current-system/sw/bin/gpg sops -d home/users/crdant/secrets.yaml
+```
+
+Use that path rather than `$(which gpg)`. On macOS, Homebrew's `gpg` comes first
+on `PATH` and is newer than the `gpg-agent` this flake runs; a newer client
+against an older agent fails to decrypt through the card, with SOPS reporting
+`no master key was able to decrypt the file`.
+
+On macOS, sops-nix decrypts from a launchd agent rather than inline during
+activation, so its failures do not surface in `make user` output:
+
+```bash
+launchctl print gui/$(id -u)/org.nix-community.home.sops-nix | grep 'last exit code'
+tail ~/Library/Logs/SopsNix/stderr
+```
 
 ### Common Commands
 
