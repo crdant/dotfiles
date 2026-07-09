@@ -3,6 +3,9 @@
 let
   cfg = config.programs.claude;
 
+  # Seconds to wait for sops-nix to render mcp-servers.json before giving up
+  mcpTemplateTimeout = 30;
+
   # Marketplace configuration — centralized here because attrsOf str
   # does not merge duplicate keys, even with identical values
   marketplaces = {
@@ -62,11 +65,28 @@ in {
 
         '';
 
-        # Update mcpServers in Claude config files
+        # Update mcpServers in Claude config files.
+        #
+        # On darwin the sops-nix activation entry only bootstraps a launchd agent and
+        # returns, so entryAfter orders us against that call rather than against the
+        # template existing. Poll for it, and skip rather than abort if it never lands —
+        # a secret we cannot read should leave the old mcpServers in place, not fail
+        # the whole switch.
         claudeMcpServers = lib.hm.dag.entryAfter [ "sops-nix" ] (''
-          MCP_SERVERS="$(cat ${config.sops.templates."mcp-servers.json".path})"
+          MCP_TEMPLATE="${config.sops.templates."mcp-servers.json".path}"
 
-          if [ -n "$MCP_SERVERS" ]; then
+          WAITED=0
+          while [ ! -s "$MCP_TEMPLATE" ] && [ "$WAITED" -lt ${toString mcpTemplateTimeout} ]; do
+            sleep 1
+            WAITED=$((WAITED + 1))
+          done
+
+          if [ ! -s "$MCP_TEMPLATE" ]; then
+            warnEcho "claude: $MCP_TEMPLATE not rendered after ${toString mcpTemplateTimeout}s; leaving mcpServers unchanged."
+            warnEcho "claude: check 'launchctl print gui/\$(id -u)/org.nix-community.home.sops-nix' and ~/Library/Logs/SopsNix/stderr."
+          else
+            MCP_SERVERS="$(cat "$MCP_TEMPLATE")"
+
             for CONFIG_DIR in ${config.xdg.configHome}/claude/replicated ${config.xdg.configHome}/claude/personal ; do
               CONFIG="$CONFIG_DIR/.claude.json"
               [ -f "$CONFIG" ] || echo '{}' > "$CONFIG"
