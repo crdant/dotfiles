@@ -20,7 +20,12 @@ in {
       '';
     };
   };
-  
+
+  # Claude Code plugin for Python language support
+  programs.claude.plugins = [
+    "pyright-lsp@claude-plugins-official"
+  ];
+
   xdg = {
     configFile = {
       "nvim/lua/pyright.lua" = {

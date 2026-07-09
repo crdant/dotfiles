@@ -30,7 +30,12 @@ in {
       '';
     };
   };
-  
+
+  # Claude Code plugin for Swift language support
+  programs.claude.plugins = [
+    "swift-lsp@claude-plugins-official"
+  ];
+
   xdg = {
     configFile = {
       "nvim/lua/sourcekit.lua" = {

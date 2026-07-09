@@ -20,7 +20,12 @@ in {
       '';
     };
   };
-  
+
+  # Claude Code plugin for TypeScript language support
+  programs.claude.plugins = [
+    "typescript-lsp@claude-plugins-official"
+  ];
+
   xdg = {
     configFile = {
       "nvim/lua/ts_ls.lua" = {
