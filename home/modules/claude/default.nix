@@ -113,9 +113,18 @@ in {
 
             KNOWN_MARKETPLACES="${claudeStateDir}/plugins/known_marketplaces.json"
 
-            # Register marketplaces (skip if already known)
+            # Register marketplaces. Skip only when the entry is known *and* its
+            # installLocation still exists — the manifest records absolute paths, so
+            # a moved config directory leaves entries pointing at nothing. Treating
+            # those as "known" makes the plugin installs below fail on a missing
+            # source path.
             ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: source: ''
-            if [ ! -f "$KNOWN_MARKETPLACES" ] || ! ${jq} --arg name ${lib.escapeShellArg name} -e '.[$name]' "$KNOWN_MARKETPLACES" > /dev/null 2>&1; then
+            MARKETPLACE_DIR=""
+            if [ -f "$KNOWN_MARKETPLACES" ]; then
+              MARKETPLACE_DIR="$(${jq} -r --arg name ${lib.escapeShellArg name} '.[$name].installLocation // empty' "$KNOWN_MARKETPLACES")"
+            fi
+
+            if [ -z "$MARKETPLACE_DIR" ] || [ ! -d "$MARKETPLACE_DIR" ]; then
               ${claude} plugin marketplace add ${lib.escapeShellArg source}
             fi
             '') marketplaces)}
