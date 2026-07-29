@@ -14,10 +14,6 @@ let
         upgrade = true;
       };
       
-      packages = [
-        "wrangler"
-      ];
-
       casks = [
         "displaybuddy"
         "font-cabin"
@@ -59,7 +55,6 @@ in (lib.mkMerge [
 
     environment = {
       systemPackages = with pkgs; [
-        unstable._1password-cli
       ] ++ lib.optionals isDarwin [
         unstable._1password-gui
         chatgpt
