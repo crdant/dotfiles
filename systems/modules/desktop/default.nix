@@ -69,7 +69,6 @@ in (lib.mkMerge [
         duti
         grandperspective
         hexfiend
-        pinentry_mac
         raycast
       ];
     }; 
