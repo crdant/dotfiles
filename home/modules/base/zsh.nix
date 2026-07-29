@@ -142,6 +142,12 @@ in {
       fi
 
       unset RPS1
+
+      # Raise the open-files soft limit -- macOS defaults to 256, too low for
+      # Nix's parallel fetches (libgit2 tarball-cache "Too many open files").
+      if [[ "$(ulimit -Sn)" != unlimited && "$(ulimit -Sn)" -lt 65536 ]]; then
+        ulimit -Sn 65536
+      fi
     '';
   };
 }
