@@ -25,6 +25,14 @@ in {
       if test -d $HOME/.rd
         fish_add_path --append $HOME/.rd/bin
       end
+
+      # Raise the open-files soft limit -- macOS defaults to 256, too low for
+      # Nix's parallel fetches (libgit2 tarball-cache "Too many open files").
+      if test (ulimit -Sn) != unlimited
+        if test (ulimit -Sn) -lt 65536
+          ulimit -Sn 65536
+        end
+      end
     '';
 
     interactiveShellInit = ''
