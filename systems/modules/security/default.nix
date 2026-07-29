@@ -7,6 +7,7 @@ in {
   # Security configuration for both Darwin and Linux
   environment = {
     systemPackages = with pkgs; [
+      unstable._1password-cli
       nmap
     ];
   };
