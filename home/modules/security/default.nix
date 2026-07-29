@@ -117,35 +117,29 @@ in {
     };
   };
 
-  # Run gpg-agent as a launchd-supervised service on darwin. This replaces the
-  # hand-written ~/.gnupg/gpg-agent.conf and the oh-my-zsh gpg-agent plugin. The
-  # agent's sockets move under /private/var/run/org.nix-community.home.gpg-agent/
-  # (there's no option to keep them in ~/.gnupg); consumers of the ssh socket are
-  # pointed at the new path below and in the homelab ssh RemoteForward rules.
-  services.gpg-agent = lib.mkIf isDarwin {
-    enable = true;
-    enableSshSupport = true;
-    enableExtraSocket = true;                 # restricted socket for agent forwarding
-    pinentry.package = pkgs.pinentry_mac;
-    defaultCacheTtl = 600;
-    maxCacheTtl = 7200;
-    defaultCacheTtlSsh = 600;
-    maxCacheTtlSsh = 7200;
-    # Our own fish/zsh init already derives SSH_AUTH_SOCK via `gpgconf` and adds
-    # the Prompt-on-iOS fallback, so leave the module's shell hooks off to keep a
-    # single source of truth.
-    enableBashIntegration = false;
-    enableZshIntegration = false;
-    enableFishIntegration = false;
+  # Manage gpg-agent.conf directly rather than via services.gpg-agent on darwin.
+  # That module runs `gpg-agent --supervised`, which only implements systemd's
+  # LISTEN_FDNAMES socket-activation protocol; macOS launchd doesn't speak it and
+  # mainline GnuPG has no launchd support, so the supervised agent exits (code 2)
+  # and its launchd ssh socket accepts connections that nothing services -> hang.
+  # (home-manager#5997, home-manager#4413, gnupg-devel 2018-06.) Instead the agent
+  # runs as a normal daemon, launched by the fish/zsh init, and SSH_AUTH_SOCK is
+  # pointed at the socket gpgconf actually reports (~/.gnupg/S.gpg-agent.ssh).
+  home.file = lib.mkIf isDarwin {
+    ".gnupg/gpg-agent.conf".text = ''
+      enable-ssh-support
+      default-cache-ttl 600
+      max-cache-ttl 7200
+      default-cache-ttl-ssh 600
+      max-cache-ttl-ssh 7200
+      pinentry-program ${pkgs.pinentry_mac}/bin/pinentry-mac
+    '';
   };
 
-  # GUI apps get SSH_AUTH_SOCK from the launchd session env; point it at the
-  # agent's relocated ssh socket instead of the old ~/.gnupg path. This is the
-  # fixed path services.gpg-agent uses on darwin for the default homedir (see the
-  # module's `gpgconf`). We hardcode it rather than read
-  # config.launchd.agents.gpg-agent.*: guiEnvironment feeds the desktop module's
-  # set-environment launchd agent, so reading launchd.agents back here is a cycle.
-  guiEnvironment = lib.mkIf (options ? guiEnvironment && isDarwin) {
-    SSH_AUTH_SOCK = "/private/var/run/org.nix-community.home.gpg-agent/S.gpg-agent.ssh";
+  # GUI apps get SSH_AUTH_SOCK from the launchd session env (the desktop module's
+  # set-environment agent). Point it at the agent's ssh socket -- the path gpgconf
+  # reports for the default homedir.
+  guiEnvironment = lib.mkIf (options ? guiEnvironment) {
+    SSH_AUTH_SOCK = "${config.home.homeDirectory}/.gnupg/S.gpg-agent.ssh";
   };
 }

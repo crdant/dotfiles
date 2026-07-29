@@ -5,8 +5,8 @@ Match exec "uname -s | grep -q Darwin" host *.mash
   CanonicalizeHostName yes
   CanonicalDomains lab.shortrib.net shortrib.sh
   StreamLocalBindUnlink yes
-  RemoteForward /run/user/1001/gnupg/S.gpg-agent /private/var/run/org.nix-community.home.gpg-agent/S.gpg-agent.extra
-  RemoteForward /run/user/1001/gnupg/S.gpg-agent.ssh /private/var/run/org.nix-community.home.gpg-agent/S.gpg-agent.ssh
+  RemoteForward /run/user/1001/gnupg/S.gpg-agent %d/.gnupg/S.gpg-agent.extra
+  RemoteForward /run/user/1001/gnupg/S.gpg-agent.ssh %d/.gnupg/S.gpg-agent.ssh
 
 Match exec "uname -s | grep -q Darwin" host *.pisco
   RemoteCommand source ~/.zshrc && cd ~/workspace/$(basename %n .pisco) && smug-session window
@@ -15,5 +15,5 @@ Match exec "uname -s | grep -q Darwin" host *.pisco
   CanonicalizeHostName yes
   CanonicalDomains lab.shortrib.net shortrib.sh
   StreamLocalBindUnlink yes
-  RemoteForward /Users/crdant/.gnupg/S.gpg-agent /private/var/run/org.nix-community.home.gpg-agent/S.gpg-agent
-  RemoteForward /Users/crdant/.gnupg/S.gpg-agent.ssh /private/var/run/org.nix-community.home.gpg-agent/S.gpg-agent.ssh
+  RemoteForward /Users/crdant/.gnupg/S.gpg-agent %d/.gnupg/S.gpg-agent
+  RemoteForward /Users/crdant/.gnupg/S.gpg-agent.ssh %d/.gnupg/S.gpg-agent.ssh
