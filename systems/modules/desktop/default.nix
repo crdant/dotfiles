@@ -65,7 +65,7 @@ in (lib.mkMerge [
         slack
         zoom-us
       ] ++ lib.optionals isDarwin [
-        bartender
+        unstable.bartender
         duti
         grandperspective
         hexfiend
