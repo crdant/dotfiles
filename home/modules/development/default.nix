@@ -16,6 +16,7 @@ in {
       gnumake
       fermyon-spin
       imagemagick
+      just
       unstable.lima
       nix-init
       nix-prefetch-git
@@ -148,6 +149,7 @@ in {
     # Claude Code plugin for development workflows
     claude.plugins = [
       "compound-engineering@compound-engineering-plugin"
+      "compound-knowledge@compound-knowledge-marketplace"
     ];
 
     # Development MCP servers for OpenCode

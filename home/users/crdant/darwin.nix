@@ -22,6 +22,7 @@ in
       "steipete/tap"
     ];
     brews = [
+      "cloudflare-wrangler"
       "gogcli"
       "imsg"
       "peekaboo"

@@ -72,13 +72,13 @@ in {
       pstree
       rar
       ripgrep
+      rust-petname
       sd
       sipcalc
       smug
       tcptraceroute
       zsh-completions
     ] ++ lib.optionals isLinux [
-      coreutils
       dig
       gnupg
       hostess
