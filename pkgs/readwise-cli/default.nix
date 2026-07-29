@@ -18,7 +18,7 @@ let
   # Fixed-output derivation: generates the lockfile from the package's own
   # package.json at build time. No lockfile committed to the repo.
   # To update: set lockHash = lib.fakeHash, build, copy the hash from the error.
-  lockHash = "sha256-ctZDqmv0Jug171Tb6uBfo3n097YtQ00nbnhgbQmHs84=";
+  lockHash = "sha256-aL98VCh/hhAoXDIyskPH96G35Kl0e1Cpdb70n4Sf9kw=";
   packageLock = runCommand "readwise-cli-lockfile-${version}" {
     nativeBuildInputs = [ nodejs cacert ];
     SSL_CERT_FILE = "${cacert}/etc/ssl/certs/ca-bundle.crt";
@@ -41,7 +41,7 @@ buildNpmPackage rec {
     cp ${packageLock} package-lock.json
   '';
 
-  npmDepsHash = "sha256-HOdNw7ahKvVMb5cOqZ8UgUNWivLlJAQqZuN6fijoTyc=";
+  npmDepsHash = "sha256-2yjyVQzQpWjvQN0nCqdEuETiKBIzSw9PJosEqbEDpJg=";
   dontNpmBuild = true;
 
   meta = with lib; {
