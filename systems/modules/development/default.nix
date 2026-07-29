@@ -5,7 +5,7 @@ let
     homebrew = {
       enable = true;
       taps = [
-        "chainguard-dev/tap"
+        { name = "chainguard-dev/tap"; trusted = true; }
       ];
       brews = [
         "calicoctl"

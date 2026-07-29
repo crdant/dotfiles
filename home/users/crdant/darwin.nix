@@ -19,7 +19,7 @@ in
 {
   homebrew = {
     taps = [
-      "steipete/tap"
+      { name = "steipete/tap"; trusted = true; }
     ];
     brews = [
       "cloudflare-wrangler"
