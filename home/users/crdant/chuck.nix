@@ -3,15 +3,7 @@ let
   isDarwin = pkgs.stdenv.isDarwin ;
   isLinux = pkgs.stdenv.isLinux ;
 
-  authorizedKeysFile = builtins.fetchurl {
-    url = "https://github.com/crdant.keys";
-    sha256 = "sha256-ZsQD4lIGz/vWKvee26gTKhX6Qf4U7HeNvgHmGB0Qo2A=";
-  };
-
-  authorizedKeys = let
-      content = builtins.readFile authorizedKeysFile;
-    in
-      builtins.filter (entry: entry != [] && entry != "") (builtins.split "\n" content);
+  authorizedKeys = import ./authorized-keys.nix;
 in
 {
   # The user should already exist, but we need to set this up so Nix knows
