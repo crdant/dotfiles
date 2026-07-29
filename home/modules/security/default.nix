@@ -61,6 +61,16 @@ in {
         with-subkey-fingerprint = true;
       };
       dirmngrSettings.keyserver = "hkps://keys.openpgp.org";
+
+      # Bootstrap the public keyring on a fresh machine. Private key material
+      # lives on the YubiKey; these are public keys + ownertrust only, imported
+      # additively (mutableKeys/mutableTrust stay at their `true` defaults).
+      publicKeys = [
+        { source = ./config/gnupg/keys/crdant-shortrib.asc; trust = "ultimate"; }  # current key (card)
+        { source = ./config/gnupg/keys/crdant-2021.asc; trust = "ultimate"; }      # older personal key
+        { source = ./config/gnupg/keys/github-web-flow.asc; trust = "full"; }      # GitHub web-flow (2024)
+        { source = ./config/gnupg/keys/github-web-flow-2017.asc; trust = "full"; } # GitHub web-flow (2017)
+      ];
     };
 
     neovim = {
