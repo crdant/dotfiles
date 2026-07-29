@@ -40,33 +40,6 @@
 
     mas = final.unstable.mas;
 
-    bartender = prev.bartender.overrideAttrs (_oldAttrs: {
-      version = "6.5.2";
-
-      src = prev.fetchurl {
-        url = "https://downloads.macbartender.com/B2/updates/B6Latest/Bartender%206.dmg";
-        hash = "sha256-FVBgOJJYtabYXIUcbZgtsqJe5syV1HRcDfbZ8UkbJIQ=";
-      };
-
-      # undmg doesn't support APFS DMGs; use hdiutil directly instead
-      unpackCmd = ''
-        mnt=$(TMPDIR=/tmp mktemp -d -t nix-XXXXXXXXXX)
-        function finish { /usr/bin/hdiutil detach "$mnt" -force; rm -rf "$mnt"; }
-        trap finish EXIT
-        /usr/bin/hdiutil attach -nobrowse -mountpoint "$mnt" "$curSrc"
-        cp -a "$mnt/Bartender 6.app" "$PWD/"
-      '';
-
-      sourceRoot = ".";
-
-      installPhase = ''
-        runHook preInstall
-        mkdir -p "$out/Applications"
-        cp -r "Bartender 6.app" "$out/Applications/"
-        runHook postInstall
-      '';
-    });
-
     container = prev.container.overrideAttrs (oldAttrs: rec {
       version = "0.10.0";
       src = prev.fetchurl {
