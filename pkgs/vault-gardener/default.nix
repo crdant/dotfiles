@@ -19,7 +19,7 @@ let
     nativeBuildInputs = [ nodejs cacert ];
     outputHashAlgo = "sha256";
     outputHashMode = "flat";
-    outputHash = "sha256-fd7X/+iiVgTO2bYk+l96JmhBmjMWxzbrECs3M7/x4jM=";
+    outputHash = "sha256-hjF3p5pNtAox5bo8ZqQg5CBTmjxdPLwmPdOFdCERF1g=";
   } ''
     tar xzf ${tarball} --strip-components=1
     HOME=$TMPDIR npm install --package-lock-only --ignore-scripts
@@ -37,7 +37,7 @@ buildNpmPackage {
     cp ${packageLock} package-lock.json
   '';
 
-  npmDepsHash = "sha256-sxVT2F57M3qhYhBmUQVL5n112ZzmkVaq5cayuE3BQ5c=";
+  npmDepsHash = "sha256-7+aIZ4FFYLw79jSDioRg0Ds1zwF6i/9V9CnEszXCXdI=";
 
   dontNpmBuild = true;
 
