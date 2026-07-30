@@ -3,9 +3,9 @@ Match exec "uname -s | grep -q Darwin" host *.mash
   RequestTTY Yes
   HostName mash
   CanonicalizeHostName yes
-  CanonicalDomains lab.shortrib.net shortrib.sh 
+  CanonicalDomains lab.shortrib.net shortrib.sh
   StreamLocalBindUnlink yes
-  RemoteForward /run/user/1001/gnupg/S.gpg-agent %d/.gnupg/S.gpg-agent.extra 
+  RemoteForward /run/user/1001/gnupg/S.gpg-agent %d/.gnupg/S.gpg-agent.extra
   RemoteForward /run/user/1001/gnupg/S.gpg-agent.ssh %d/.gnupg/S.gpg-agent.ssh
 
 Match exec "uname -s | grep -q Darwin" host *.pisco
@@ -13,7 +13,7 @@ Match exec "uname -s | grep -q Darwin" host *.pisco
   RequestTTY Yes
   HostName pisco
   CanonicalizeHostName yes
-  CanonicalDomains lab.shortrib.net shortrib.sh 
+  CanonicalDomains lab.shortrib.net shortrib.sh
   StreamLocalBindUnlink yes
   RemoteForward /Users/crdant/.gnupg/S.gpg-agent %d/.gnupg/S.gpg-agent
   RemoteForward /Users/crdant/.gnupg/S.gpg-agent.ssh %d/.gnupg/S.gpg-agent.ssh
