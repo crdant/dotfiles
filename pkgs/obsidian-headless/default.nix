@@ -5,11 +5,11 @@
 
 buildNpmPackage rec {
   pname = "obsidian-headless";
-  version = "0.0.8";
+  version = "0.0.14";
 
   src = ./.;
 
-  npmDepsHash = "sha256-6PtdFej18oE7/vH07eBJTDMew4wrQkhPYozhNxgDG4s=";
+  npmDepsHash = "sha256-BfccB+FZgHt07hMdlXxEDcjo1zMVgXgJlX5BLgnopps=";
   dontNpmBuild = true;
 
   postInstall = ''
