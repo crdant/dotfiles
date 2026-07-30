@@ -1,10 +1,7 @@
 {
   lib,
   fetchurl,
-  nodejs,
   buildNpmPackage,
-  runCommand,
-  cacert,
 }:
 
 let
@@ -14,17 +11,6 @@ let
     url = "https://registry.npmjs.org/vault-gardener/-/vault-gardener-${version}.tgz";
     hash = "sha256-JvyqPeEI9hidSvX4A7bFvbLEbTPn7A59TByFUZ1fJ6k=";
   };
-
-  packageLock = runCommand "vault-gardener-lockfile-${version}" {
-    nativeBuildInputs = [ nodejs cacert ];
-    outputHashAlgo = "sha256";
-    outputHashMode = "flat";
-    outputHash = "sha256-hjF3p5pNtAox5bo8ZqQg5CBTmjxdPLwmPdOFdCERF1g=";
-  } ''
-    tar xzf ${tarball} --strip-components=1
-    HOME=$TMPDIR npm install --package-lock-only --ignore-scripts
-    cp package-lock.json $out
-  '';
 in
 
 buildNpmPackage {
@@ -33,8 +19,10 @@ buildNpmPackage {
 
   src = tarball;
 
+  # Lockfile is vendored in this directory (package-lock.json) rather than
+  # generated at build time, so npmDepsHash stays stable.
   postPatch = ''
-    cp ${packageLock} package-lock.json
+    cp ${./package-lock.json} package-lock.json
   '';
 
   npmDepsHash = "sha256-7+aIZ4FFYLw79jSDioRg0Ds1zwF6i/9V9CnEszXCXdI=";
