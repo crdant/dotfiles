@@ -2,9 +2,6 @@
   lib,
   buildNpmPackage,
   fetchurl,
-  runCommand,
-  nodejs,
-  cacert,
 }:
 
 let
@@ -14,22 +11,6 @@ let
     url = "https://registry.npmjs.org/@readwise/cli/-/cli-${version}.tgz";
     hash = "sha256-Hrf6Tng7dRRRzyWopaJ+5PQYD2EtUsdta5Iw98e4BuY=";
   };
-
-  # Fixed-output derivation: generates the lockfile from the package's own
-  # package.json at build time. No lockfile committed to the repo.
-  # To update: set lockHash = lib.fakeHash, build, copy the hash from the error.
-  lockHash = "sha256-aL98VCh/hhAoXDIyskPH96G35Kl0e1Cpdb70n4Sf9kw=";
-  packageLock = runCommand "readwise-cli-lockfile-${version}" {
-    nativeBuildInputs = [ nodejs cacert ];
-    SSL_CERT_FILE = "${cacert}/etc/ssl/certs/ca-bundle.crt";
-    outputHashAlgo = "sha256";
-    outputHashMode = "flat";
-    outputHash = lockHash;
-  } ''
-    tar xzf ${tarball} --strip-components=1
-    HOME=$TMPDIR npm install --package-lock-only --ignore-scripts
-    cp package-lock.json $out
-  '';
 in
 buildNpmPackage rec {
   pname = "readwise-cli";
@@ -37,11 +18,13 @@ buildNpmPackage rec {
 
   src = tarball;
 
+  # Lockfile is vendored in this directory (package-lock.json) rather than
+  # generated at build time, so npmDepsHash stays stable.
   postPatch = ''
-    cp ${packageLock} package-lock.json
+    cp ${./package-lock.json} package-lock.json
   '';
 
-  npmDepsHash = "sha256-2yjyVQzQpWjvQN0nCqdEuETiKBIzSw9PJosEqbEDpJg=";
+  npmDepsHash = "sha256-zsEAUEmOEchpDxhstKYLr2sxX9fNmMmtKaj2IvqcCAw=";
   dontNpmBuild = true;
 
   meta = with lib; {
