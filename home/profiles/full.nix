@@ -20,6 +20,7 @@
     ../modules/cicd
     ../modules/kubernetes
     ../modules/replicated
+    ../modules/shortrib-labs
     ../modules/secrets
     ../modules/security
     ../modules/certificates

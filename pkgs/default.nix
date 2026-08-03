@@ -28,6 +28,7 @@ rec {
   readwise-cli = pkgs.callPackage ./readwise-cli { };
   hermes-agent = pkgs.callPackage ./hermes-agent { };
   vault-gardener = pkgs.callPackage ./vault-gardener { };
+  space-grotesk = pkgs.callPackage ./space-grotesk { };
   obsidian-headless = pkgs.callPackage ./obsidian-headless { };
 
   # simonw tools
