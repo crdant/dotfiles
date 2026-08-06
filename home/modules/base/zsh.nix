@@ -70,7 +70,9 @@ in {
 
         # On desktop, ensure gpg-agent is running and use it for SSH
         # (makes zsh self-contained; also handled by oh-my-zsh gpg-agent plugin)
-        if [[ -z "$SSH_TTY" && -n "$GPG_AGENT_SSH_SOCK" ]]; then
+        # SSH_CONNECTION is set by sshd and inherited by tmux, so it distinguishes
+        # remote sessions (including tmux panes) from a local desktop.
+        if [[ -z "$SSH_TTY" && -z "$SSH_CONNECTION" && -n "$GPG_AGENT_SSH_SOCK" ]]; then
           gpg-connect-agent /bye >/dev/null 2>&1
           GPG_AGENT_SSH_SOCK=$(gpgconf --list-dirs agent-ssh-socket 2>/dev/null)
           export SSH_AUTH_SOCK="$GPG_AGENT_SSH_SOCK"
