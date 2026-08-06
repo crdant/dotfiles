@@ -30,6 +30,8 @@ rec {
   vault-gardener = pkgs.callPackage ./vault-gardener { };
   obsidian-headless = pkgs.callPackage ./obsidian-headless { };
 
+  kubectl-refresh-config = pkgs.callPackage ./kubectl-refresh-config { };
+
   # simonw tools
   claude-code-transcripts = pkgs.callPackage ./claude-code-transcripts { };
   ttok = pkgs.callPackage ./ttok { };

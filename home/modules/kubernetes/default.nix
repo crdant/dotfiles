@@ -13,6 +13,7 @@ in {
       istioctl
       krew
       kubectl
+      kubectl-refresh-config
       k0sctl
       k9s
       kapp
