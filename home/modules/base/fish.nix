@@ -7,11 +7,6 @@ in {
   programs.fish = {
     enable = true;
 
-    # fish 4.8+ dropped share/fish/tools/create_manpage_completions.py, which
-    # Home Manager's man-page completion generator invokes; disable it so the
-    # build doesn't fail. Built-in and package-vendored completions still work.
-    generateCompletions = false;
-
     shellAliases = {
       more = "less -X";
       pd = "pushd";
