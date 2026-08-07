@@ -36,7 +36,21 @@
 
     direnv = final.unstable.direnv;
 
-    fish = final.unstable.fish;
+    # fish 4.8 stopped installing share/fish/tools — everything but man pages
+    # now lives inside the binary, retrievable with `status get-file`. The
+    # NixOS and Home Manager 26.05 fish modules still read the man-page
+    # completion generator from the old path, so extract it and put it back.
+    # Drop once the release branches pick up the `status get-file` module
+    # fixes that are already on master (home-manager PR #9555, nixpkgs
+    # PR #534907).
+    fish = final.unstable.fish.overrideAttrs (oldAttrs: {
+      postInstall = (oldAttrs.postInstall or "") + ''
+        mkdir -p $out/share/fish/tools
+        HOME=$(mktemp -d) $out/bin/fish --no-config \
+          -c 'status get-file tools/create_manpage_completions.py' \
+          > $out/share/fish/tools/create_manpage_completions.py
+      '';
+    });
 
     mas = final.unstable.mas;
 
