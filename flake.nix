@@ -108,7 +108,7 @@
               homeModule = ./home/users/crdant/home.nix;
             };
             crdant = {
-              gitEmail = "chuck@crdant.io";
+              gitEmail = "crdant@shortrib.io";
             };
             luca = {
               gitEmail = "";
