@@ -31,6 +31,8 @@ rec {
   space-grotesk = pkgs.callPackage ./space-grotesk { };
   obsidian-headless = pkgs.callPackage ./obsidian-headless { };
 
+  kubectl-refresh-config = pkgs.callPackage ./kubectl-refresh-config { };
+
   # simonw tools
   claude-code-transcripts = pkgs.callPackage ./claude-code-transcripts { };
   ttok = pkgs.callPackage ./ttok { };

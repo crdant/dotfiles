@@ -10,6 +10,7 @@ in {
       knot-dns
       minio-client
       powershell
+      seaweedfs
     ] ++ lib.optionals isDarwin [
       tart
     ];
