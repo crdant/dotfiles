@@ -15,6 +15,7 @@ let
       };
       
       casks = [
+        "apparency"
         "displaybuddy"
         "font-cabin"
         "font-noto-sans"
@@ -24,8 +25,10 @@ let
         "noun-project"
         "popclip"
         "proxyman"
-        "quicklook-json"
+        "qlmarkdown"
+        "quickjson"
         "rancher"
+        "suspicious-package"
         "tailscale-app"
       ];
 
