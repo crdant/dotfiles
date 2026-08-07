@@ -61,6 +61,7 @@ in {
         "firecrawl/api_key" = {};
         "omni/api_token" = {};
         "shortcut/api_token" = {};
+        "openrouter/apiKey" = {};
       };
     };
 
@@ -71,6 +72,82 @@ in {
           source = ./config/llm/templates;
           recursive = true;
         };
+      };
+    };
+
+    programs = {
+      # Avante.nvim — AI-powered editing assistant for Neovim
+      neovim = {
+        plugins = with pkgs.vimPlugins; [
+          nui-nvim
+          render-markdown-nvim
+          avante-nvim
+          img-clip-nvim
+        ];
+
+        extraLuaConfig = lib.mkAfter ''
+          -- Avante.nvim configuration
+          -- AI-powered code assistance within Neovim, complementing OpenCode
+          -- Uses Kimi K2.x via OpenRouter (OpenAI-compatible API)
+          require('avante').setup({
+            provider = "openrouter",
+            auto_suggestions_provider = "openrouter",
+            providers = {
+              openrouter = {
+                __inherited_from = "openai",
+                endpoint = "https://openrouter.ai/api/v1",
+                api_key_name = "OPENROUTER_API_KEY",
+                model = "moonshotai/kimi-k2.7-code",
+                timeout = 30000,
+                extra_request_body = {
+                  temperature = 0.75,
+                  max_tokens = 32768,
+                },
+              },
+            },
+            input = {
+              provider = "snacks",
+              provider_opts = {
+                title = "Avante Input",
+                icon = " ",
+              },
+            },
+            selector = {
+              provider = "fzf",
+            },
+            behaviour = {
+              auto_suggestions = false,
+              auto_set_keymaps = true,
+              auto_apply_diff_after_generation = false,
+              enable_token_counting = true,
+              auto_add_current_file = true,
+              auto_approve_tool_permissions = true,
+              confirmation_ui_style = "inline_buttons",
+            },
+            windows = {
+              position = "right",
+              width = 30,
+              input = {
+                prefix = "> ",
+                height = 8,
+              },
+            },
+          })
+        '';
+      };
+
+      zsh = {
+        envExtra = ''
+          # Avante.nvim OpenRouter API key
+          export OPENROUTER_API_KEY="$(cat ${config.sops.secrets."openrouter/apiKey".path})"
+        '';
+      };
+
+      fish = {
+        shellInit = ''
+          # Avante.nvim OpenRouter API key
+          set -gx OPENROUTER_API_KEY (cat ${config.sops.secrets."openrouter/apiKey".path})
+        '';
       };
     };
   };
