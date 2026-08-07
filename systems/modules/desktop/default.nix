@@ -1,6 +1,6 @@
-{ pkgs, lib, options, ...}:
+{ config, pkgs, lib, options, ...}:
 
-let 
+let
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
 
@@ -48,6 +48,35 @@ let
       };
     };
   };
+
+  supportsDesktopManager = builtins.hasAttr "services" options && builtins.hasAttr "desktopManager" options.services;
+  desktopSessionConfig = lib.optionalAttrs supportsDesktopManager {
+    services = {
+      # GNOME as the baseline session, COSMIC as an alternate, both through GDM
+      displayManager.gdm.enable = true;
+      desktopManager = {
+        gnome.enable = true;
+        cosmic.enable = true;
+      };
+
+      # Defaults only: nixos-apple-silicon ships its own PipeWire tuning
+      pipewire = {
+        enable = lib.mkDefault true;
+        alsa.enable = lib.mkDefault true;
+        pulse.enable = lib.mkDefault true;
+      };
+    };
+  };
+
+  supportsNetworkManager = builtins.hasAttr "networking" options && builtins.hasAttr "networkmanager" options.networking;
+  networkManagerConfig = lib.optionalAttrs supportsNetworkManager {
+    networking.networkmanager.enable = lib.mkDefault true;
+    # system-defaults turns on networkd for headless hosts; on a desktop
+    # NetworkManager owns the interfaces, so stand networkd down unless the
+    # host opts back out of NetworkManager
+    networking.useNetworkd = lib.mkIf config.networking.networkmanager.enable (lib.mkForce false);
+    systemd.network.enable = lib.mkIf config.networking.networkmanager.enable (lib.mkForce false);
+  };
 in (lib.mkMerge [
   {
     # Desktop applications and fonts for GUI environments
@@ -84,4 +113,6 @@ in (lib.mkMerge [
 
   }
   homebrewConfig
+  desktopSessionConfig
+  networkManagerConfig
   ])
