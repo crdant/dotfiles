@@ -27,7 +27,6 @@ let
         "proxyman"
         "qlmarkdown"
         "quickjson"
-        "rancher"
         "suspicious-package"
         "tailscale-app"
       ];
