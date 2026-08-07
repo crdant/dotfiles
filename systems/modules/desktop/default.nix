@@ -33,7 +33,6 @@ let
       ];
 
       masApps = {
-       # "1Blocker" = 1365531024;
        "1Password for Safari" = 1569813296;
        "Amphetamine" = 937984704;
        "Ghostery Privacy Ad Blocker" = 6504861501;
