@@ -17,6 +17,10 @@ UNAME_S := $(shell uname -s | tr '[:upper:]' '[:lower:]')
 NIX_ARCH := $(if $(filter arm64,$(UNAME_M)),aarch64,$(UNAME_M))
 NIX_SYSTEM := $(NIX_ARCH)-$(UNAME_S)
 
+# Hosts that dual boot appear as both a NixOS and a Darwin configuration;
+# their targets must dispatch on the running OS rather than the flake
+DUAL_BOOT_SYSTEMS := $(filter $(DARWIN_SYSTEMS),$(NIXOS_SYSTEMS))
+
 # Home configs matching the current system, with short names (no @arch-os suffix)
 LOCAL_HOME_CONFIGS := $(filter %@$(NIX_SYSTEM),$(HOME_CONFIGS))
 HOME_SHORT_NAMES := $(patsubst %@$(NIX_SYSTEM),%,$(LOCAL_HOME_CONFIGS))
@@ -67,7 +71,7 @@ boot-nixos-$(1): ## Build NixOS configuration for $(1) and add it to the boot me
 test-nixos-$(1): ## Test NixOS configuration for $(1) without adding it to the boot menu
 	sudo nixos-rebuild test --flake $(FLAKE_PATH)#$(1)
 
-$(1): build-nixos-$(1) switch-nixos-$(1)
+$(if $(filter $(1),$(DUAL_BOOT_SYSTEMS)),,$(1): build-nixos-$(1) switch-nixos-$(1))
 endef
 
 $(foreach system,$(NIXOS_SYSTEMS),$(eval $(call nixos_system_targets,$(system))))
@@ -82,10 +86,17 @@ build-darwin-$(1): ## Build Darwin configuration for $(1)
 switch-darwin-$(1): ## Switch to Darwin configuration for $(1)
 	sudo ./result/sw/bin/darwin-rebuild switch --flake $(FLAKE_PATH) --impure
 
-$(1): build-darwin-$(1) switch-darwin-$(1)
+$(if $(filter $(1),$(DUAL_BOOT_SYSTEMS)),,$(1): build-darwin-$(1) switch-darwin-$(1))
 endef
 
 $(foreach system,$(DARWIN_SYSTEMS),$(eval $(call darwin_system_targets,$(system))))
+
+# Bare-name targets for dual-boot hosts follow the OS currently running
+define dual_boot_targets
+$(1): $(if $(filter darwin,$(UNAME_S)),build-darwin-$(1) switch-darwin-$(1),build-nixos-$(1) switch-nixos-$(1))
+endef
+
+$(foreach system,$(DUAL_BOOT_SYSTEMS),$(eval $(call dual_boot_targets,$(system))))
 
 # Generate targets for home-manager configurations
 define home_config_targets
@@ -140,24 +151,24 @@ $(CURRENT_USER): build switch
 HOSTNAME := $(shell hostname -s)
 
 .PHONY: build-host
-build-host: ## Switch configuration for current host
-	@if echo "$(DARWIN_SYSTEMS)" | grep -q $(HOSTNAME); then \
+build-host: ## Build configuration for current host
+	@if [ "$(UNAME_S)" = "darwin" ] && echo "$(DARWIN_SYSTEMS)" | grep -qw $(HOSTNAME); then \
 		$(MAKE) build-darwin-$(HOSTNAME); \
-	elif echo "$(NIXOS_SYSTEMS)" | grep -q $(HOSTNAME); then \
+	elif [ "$(UNAME_S)" = "linux" ] && echo "$(NIXOS_SYSTEMS)" | grep -qw $(HOSTNAME); then \
 		$(MAKE) build-nixos-$(HOSTNAME); \
 	else \
-		echo "No system configuration found for host $(HOSTNAME)"; \
+		echo "No $(UNAME_S) system configuration found for host $(HOSTNAME)"; \
 		exit 1; \
 	fi
 
 .PHONY: switch-host
 switch-host: ## Switch configuration for current host
-	@if echo "$(DARWIN_SYSTEMS)" | grep -q $(HOSTNAME); then \
+	@if [ "$(UNAME_S)" = "darwin" ] && echo "$(DARWIN_SYSTEMS)" | grep -qw $(HOSTNAME); then \
 		$(MAKE) switch-darwin-$(HOSTNAME); \
-	elif echo "$(NIXOS_SYSTEMS)" | grep -q $(HOSTNAME); then \
+	elif [ "$(UNAME_S)" = "linux" ] && echo "$(NIXOS_SYSTEMS)" | grep -qw $(HOSTNAME); then \
 		$(MAKE) switch-nixos-$(HOSTNAME); \
 	else \
-		echo "No system configuration found for host $(HOSTNAME)"; \
+		echo "No $(UNAME_S) system configuration found for host $(HOSTNAME)"; \
 		exit 1; \
 	fi
 
