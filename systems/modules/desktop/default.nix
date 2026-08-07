@@ -38,13 +38,13 @@ let
        "Ghostery Privacy Ad Blocker" = 6504861501;
        "iMovie" = 408981434;
        "Kagi for Safari" = 1622835804;
-       "Keynote" = 409183694;
+       "Keynote" = 361285480;
        "Microsoft Excel" = 462058435;
        "Microsoft PowerPoint" = 462062816;
        "Microsoft Remote Desktop" = 1295203466;
        "Microsoft Word" = 462054704;
-       "Numbers" = 409203825;
-       "Pages" = 409201541;
+       "Numbers" = 361304891;
+       "Pages" = 361309726;
        "Todoist" = 585829637;
        "Transmit" = 1436522307;
       };
