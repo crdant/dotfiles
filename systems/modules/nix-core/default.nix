@@ -38,6 +38,9 @@
       experimental-features = nix-command flakes
       # bump from the 64 MiB default to quiet "download buffer is full" warnings
       download-buffer-size = 268435456
+      # evaluate impurely without --impure on every invocation; Apple Silicon
+      # NixOS needs it to extract peripheral firmware from /boot/asahi
+      pure-eval = false
       '';
 
     registry = {
