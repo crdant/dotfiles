@@ -25,7 +25,7 @@
     let
       inherit (self) outputs;
 
-      supportedSystems = [ "aarch64-darwin" "x86_64-linux" ];
+      supportedSystems = [ "aarch64-darwin" "aarch64-linux" "x86_64-linux" ];
 
       mkPkgs = system: import nixpkgs {
         inherit system;
