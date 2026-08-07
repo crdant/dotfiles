@@ -14,7 +14,10 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/7f99ae8c-172b-4d07-98a5-478ef66bd993";
+    # ext4 filesystem inside the cryptroot LUKS mapping (see nixos.nix)
+    # REPLACE after reinstall: UUID of the inner filesystem, from
+    # nixos-generate-config or blkid /dev/mapper/cryptroot
+    { device = "/dev/disk/by-uuid/REPLACE-WITH-INNER-FS-UUID";
       fsType = "ext4";
     };
 
