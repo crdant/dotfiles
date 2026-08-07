@@ -6,6 +6,10 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     sops-nix.url = "github:Mic92/sops-nix";
 
+    # Kernel, firmware, and graphics support for NixOS on Apple Silicon;
+    # keeps its own nixpkgs pin so the patched kernel stays as tested
+    nixos-apple-silicon.url = "github:nix-community/nixos-apple-silicon";
+
     home-manager.url = "github:nix-community/home-manager/release-26.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -54,7 +58,17 @@
             ./home/users/crdant/crdant.nix
           ];
         };
+        sochu = nixpkgs.lib.nixosSystem {
+          system = "aarch64-linux";
+          specialArgs = {inherit inputs outputs;};
+          modules = [ 
+            ./systems/hosts/sochu/default.nix
+            ./systems/hosts/sochu/nixos.nix
+            ./home/users/crdant/crdant.nix
+          ];
+        };
       };
+
 
       darwinConfigurations = {
 	      "aguardiente" = darwin.lib.darwinSystem {
@@ -82,6 +96,7 @@
           specialArgs = {inherit inputs outputs;};
           modules = [
             ./systems/hosts/sochu/default.nix
+            ./systems/hosts/sochu/darwin.nix
             ./home/users/crdant/crdant.nix
             ./home/users/crdant/darwin.nix
           ];
