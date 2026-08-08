@@ -14,12 +14,9 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    # nixos-generate-config or blkid /dev/mapper/cryptroot
     { device = "/dev/mapper/cryptroot";
-      fsType = "brtfs";
+      fsType = "btrfs";
     };
-
-  boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-uuid/2d3429b5-e164-4d4c-b502-cffda278a6ff"
 
   fileSystems."/boot" =
     { device = "/dev/disk/by-uuid/3D93-1F15";

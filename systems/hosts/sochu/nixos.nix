@@ -12,9 +12,7 @@
   boot.initrd.systemd.enable = true;
 
   boot.initrd.luks.devices.cryptroot = {
-    # REPLACE after reinstall: UUID of the LUKS partition (blkid on the raw
-    # root partition, not the mapped device)
-    device = "/dev/disk/by-uuid/REPLACE-WITH-LUKS-PARTITION-UUID";
+    device = "/dev/disk/by-uuid/2d3429b5-e164-4d4c-b502-cffda278a6ff";
     # try an enrolled YubiKey first (systemd-cryptenroll --fido2-device=auto),
     # fall back to the passphrase prompt if no token is present
     crypttabExtraOpts = [ "fido2-device=auto" ];
