@@ -125,15 +125,36 @@ in {
   # (home-manager#5997, home-manager#4413, gnupg-devel 2018-06.) Instead the agent
   # runs as a normal daemon, launched by the fish/zsh init, and SSH_AUTH_SOCK is
   # pointed at the socket gpgconf actually reports (~/.gnupg/S.gpg-agent.ssh).
-  home.file = lib.mkIf isDarwin {
-    ".gnupg/gpg-agent.conf".text = ''
-      enable-ssh-support
-      default-cache-ttl 600
-      max-cache-ttl 7200
-      default-cache-ttl-ssh 600
-      max-cache-ttl-ssh 7200
-      pinentry-program ${pkgs.pinentry_mac}/bin/pinentry-mac
-    '';
+  home.file = lib.mkMerge [
+    (lib.mkIf isDarwin {
+      ".gnupg/gpg-agent.conf".text = ''
+        enable-ssh-support
+        default-cache-ttl 600
+        max-cache-ttl 7200
+        default-cache-ttl-ssh 600
+        max-cache-ttl-ssh 7200
+        pinentry-program ${pkgs.pinentry_mac}/bin/pinentry-mac
+      '';
+    })
+    (lib.mkIf isLinux {
+      # scdaemon's built-in USB driver fails as an unprivileged user without
+      # ever consulting pcscd; force the PC/SC path the system config provides
+      ".gnupg/scdaemon.conf".text = ''
+        disable-ccid
+      '';
+    })
+  ];
+
+  # Linux gets the real home-manager agent module -- the launchd problems that
+  # force the hand-managed darwin setup above are systemd-only features there
+  services.gpg-agent = lib.mkIf isLinux {
+    enable = true;
+    enableSshSupport = true;
+    defaultCacheTtl = 600;
+    maxCacheTtl = 7200;
+    defaultCacheTtlSsh = 600;
+    maxCacheTtlSsh = 7200;
+    pinentry.package = pkgs.pinentry-curses;
   };
 
   # GUI apps get SSH_AUTH_SOCK from the launchd session env (the desktop module's

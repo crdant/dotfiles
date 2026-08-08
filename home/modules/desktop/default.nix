@@ -6,6 +6,9 @@ let
   cfg = config.guiEnvironment;
   guiPath = config.guiPath;
 
+  # the official Spotify client only ships for x86_64-linux and aarch64-darwin
+  spotifyAvailable = lib.meta.availableOn pkgs.stdenv.hostPlatform pkgs.unstable.spotify;
+
   setenvScript =
     lib.optionalString (guiPath != [])
       "/bin/launchctl setenv PATH '${lib.concatStringsSep ":" guiPath}'\n" +
@@ -21,7 +24,10 @@ in {
     # Basic packages for all environments
     packages = with pkgs; [
       neovide
+    ] ++ lib.optionals spotifyAvailable [
       unstable.spotify
+    ] ++ lib.optionals (!spotifyAvailable) [
+      unstable.spotube
     ] ++ lib.optionals isDarwin [
       dockutil
       vimr

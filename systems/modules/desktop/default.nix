@@ -55,11 +55,11 @@ in (lib.mkMerge [
 
     environment = {
       systemPackages = with pkgs; [
+        firefox
       ] ++ lib.optionals isDarwin [
         unstable._1password-gui
         chatgpt
         espanso
-        firefox
         google-chrome
         open-sans
         slack
