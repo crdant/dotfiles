@@ -2,6 +2,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ../../modules/hidpi
     inputs.nixos-apple-silicon.nixosModules.apple-silicon-support
   ];
 
