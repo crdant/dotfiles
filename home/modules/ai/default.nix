@@ -53,14 +53,11 @@ in {
     # AI-specific secrets (shared across agents)
     sops = {
       secrets = {
-        "anthropic/apiKeys/chuck@replicated.com" = {};
         "anthropic/apiKeys/chuck@crdant.io" = {};
         "github/token" = {};
         "google/maps/apiKey" = {};
         "mbta/apiKey" = {};
         "firecrawl/api_key" = {};
-        "omni/api_token" = {};
-        "shortcut/api_token" = {};
         "openrouter/apiKey" = {};
       };
     };

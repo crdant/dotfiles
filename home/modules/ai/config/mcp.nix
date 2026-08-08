@@ -48,22 +48,6 @@ in
       FIRECRAWL_API_KEY = secretRenderer "firecrawl/api_key";
     };
   };
-  shortcut = {
-    command = npxPath;
-    args = [ "-y" "@shortcut/mcp@latest" ];
-    env = {
-      SHORTCUT_API_TOKEN = secretRenderer "shortcut/api_token";
-    };
-  };
-  omni = {
-    command = npxPath;
-    args = [ "@omni-co/mcp" ];
-    env = {
-      DEBUG = "true";
-      MCP_SERVER_URL = "https://replicated.omniapp.co/mcp/https";
-      OMNI_API_TOKEN = secretRenderer "omni/api_token";
-    };
-  };
   github = {
     command = "${pkgs.unstable.github-mcp-server}/bin/github-mcp-server";
     type = "http";
