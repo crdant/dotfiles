@@ -1,27 +1,32 @@
-# sochu: reinstall NixOS root with LUKS2 encryption
+# sochu: install NixOS with LUKS2 encryption and btrfs subvolumes
 
 sochu is an Apple Silicon MacBook dual-booting macOS and NixOS (Asahi). This
-runbook reinstalls only the NixOS root filesystem, converting it from plain
-ext4 to LUKS2 with a passphrase (fallback) plus a FIDO2 YubiKey (primary
-unlock, enrolled after first boot).
+runbook (re)installs the NixOS side: LUKS2 on the root partition with a
+passphrase (fallback) plus a FIDO2 YubiKey with PIN (primary unlock, enrolled
+after first boot), and btrfs on top split into `@` (system), `@home`, and
+`@nix` subvolumes.
 
-Partitions are **not** resized. The ESP (`/boot`, vfat, holds m1n1 / U-Boot /
-Asahi firmware) is **untouched** — reformatting it would break the machine's
-boot chain.
+The ESP (`/boot`, vfat, holds m1n1 / U-Boot / Asahi firmware) and the small
+Apple partitions (ISC, the 2.5 GB NixOS boot stub, recovery) are **never
+touched** — reformatting any of them breaks the machine's boot chain.
 
-The repo already declares the encrypted layout on branch
-`feature/crdant/encrypts-sochu-root`:
+The repo already declares the target layout on the sochu branch:
 
-- `systems/hosts/sochu/nixos.nix` — `boot.initrd.systemd.enable`,
-  `boot.initrd.luks.devices.cryptroot` with `fido2-device=auto`
-- `systems/hosts/sochu/hardware-configuration.nix` — root on the mapped device
+- `systems/hosts/sochu/nixos.nix` — systemd initrd,
+  `boot.initrd.luks.devices.cryptroot` with `fido2-device=auto`, NetworkManager
+- `systems/hosts/sochu/hardware-configuration.nix` — btrfs subvolume mounts
 
-Both contain `REPLACE-WITH-...` placeholder UUIDs that this runbook fills in.
+Two UUIDs get harvested during the install: the **LUKS partition** UUID goes in
+`nixos.nix`'s `cryptroot` block (the single declaration — do **not** also add a
+`boot.initrd.luks.devices` line to `hardware-configuration.nix`; duplicate
+definitions with different values fail evaluation), and the ESP UUID in
+`hardware-configuration.nix` if it changed (it won't, unless the ESP was
+recreated).
 
 ## 0. Before wiping: back up SSH host keys (optional)
 
 Keeps sochu's host identity stable so other machines' `known_hosts` entries
-survive the reinstall. From the running NixOS system:
+survive. From the running NixOS system:
 
 ```sh
 sudo tar czf sochu-ssh-host-keys.tar.gz -C / etc/ssh/ssh_host_ed25519_key \
@@ -29,111 +34,168 @@ sudo tar czf sochu-ssh-host-keys.tar.gz -C / etc/ssh/ssh_host_ed25519_key \
   etc/ssh/ssh_host_rsa_key.pub
 ```
 
-Copy the tarball somewhere off the machine (another host, a USB stick — not
-the partition about to be reformatted).
+Copy the tarball off the machine, and restore into `/mnt/etc/ssh/` after
+`nixos-install`, before the first boot.
 
-Also note the current root partition device now, while it is easy to check:
+## 1. Boot the installer USB
 
-```sh
-lsblk -o NAME,SIZE,FSTYPE,MOUNTPOINT,UUID
+The Apple startup picker (hold the power button) only lists macOS and the
+NixOS stub — USB drives never appear there; that's normal. Pick the NixOS
+entry; m1n1 chainloads U-Boot, and U-Boot is where the USB gets chosen.
+
+U-Boot may prefer the internal disk. If you land at a LUKS passphrase prompt
+or the installed system, that's the internal disk — power off and interrupt
+U-Boot instead: mash a key the moment the screen goes to text, then at `=>`:
+
+```
+usb start
+bootflow scan -l          # list candidates; note the usb row's number
+bootflow select <n>
+bootflow boot
 ```
 
-The root is the ext4 partition mounted at `/` (an `nvme0n1pN` partition); the
-ESP is the vfat partition at `/boot`. Write both device names down.
+(`bootflow scan -b usb0` scans only USB; try `usb1` if empty. Plain
+`bootflow scan -b` boots the *first* candidate found — usually the internal
+disk — so don't use it here.) The installer boots to a shell with no LUKS
+prompt; a passphrase prompt means you're in the wrong boot.
 
-## 1. Boot the installer
+Get network with `nmtui` or `iwctl` if anything needs fetching, and
+`sudo -i`.
 
-Boot the nixos-apple-silicon installer USB: hold the power button, choose the
-NixOS boot option, and boot the USB installer image. (Keep a USB keyboard on
-hand for the whole procedure — the internal-keyboard initrd modules are
-unverified, see the note in `nixos.nix`.)
+## 2. Partitioning (only if the root partition doesn't exist yet)
 
-Get networking up and become root:
-
-```sh
-sudo -i
-```
-
-## 2. Encrypt the existing root partition
-
-Substitute the real root partition device from step 0 for `/dev/nvme0n1pN`
-below. Double-check with `lsblk` from the installer — device numbering should
-match, but verify the size and that it is **not** the vfat ESP.
+Free space in the GPT does **not** appear in `lsblk` — unallocated gaps have
+no device node. If the Linux root partition was deleted (e.g. to resize the
+macOS/Linux split via the Asahi installer), create it in the gap:
 
 ```sh
-cryptsetup luksFormat --type luks2 /dev/nvme0n1pN
-cryptsetup open /dev/nvme0n1pN cryptroot
-mkfs.ext4 /dev/mapper/cryptroot
+cfdisk /dev/nvme0n1     # select the Free space row → New → full size →
+                        # type "Linux filesystem" → Write
 ```
 
-`luksFormat` prompts for the passphrase — this stays as the fallback unlock
-after the YubiKey is enrolled, so pick something memorable and record it.
+Leave every other partition alone. Note the numbers: on sochu the ESP is
+`nvme0n1p4` and the root partition takes the next free number (`p6`, sitting
+between the ESP and the recovery partition — that gap is where the old root
+lived). Verify against sizes with `lsblk`; the root is the big one, the ESP
+the ~500M vfat one.
 
-## 3. Mount and harvest UUIDs
+Sizes read ~7% smaller in Linux tools than in `diskutil`: Apple speaks
+decimal GB, Linux binary GiB. 800 GB ≈ 745 GiB; nothing is missing.
+
+## 3. Encrypt, format, mount
+
+```sh
+cryptsetup luksFormat --type luks2 /dev/nvme0n1p6
+cryptsetup open /dev/nvme0n1p6 cryptroot
+mkfs.btrfs -L nixos /dev/mapper/cryptroot
+```
+
+The passphrase chosen here is the permanent fallback — it must be typeable on
+the console keyboard at boot.
+
+Create the subvolumes and mount the tree the way the config expects:
 
 ```sh
 mount /dev/mapper/cryptroot /mnt
-mkdir -p /mnt/boot
-mount /dev/nvme0n1pM /mnt/boot   # the existing vfat ESP — mount, do NOT format
-nixos-generate-config --root /mnt
+btrfs subvolume create /mnt/@
+btrfs subvolume create /mnt/@home
+btrfs subvolume create /mnt/@nix
+umount /mnt
+
+mount -o subvol=@,compress=zstd /dev/mapper/cryptroot /mnt
+mkdir -p /mnt/home /mnt/nix /mnt/boot
+mount -o subvol=@home,compress=zstd /dev/mapper/cryptroot /mnt/home
+mount -o subvol=@nix,compress=zstd,noatime /dev/mapper/cryptroot /mnt/nix
+mount /dev/nvme0n1p4 /mnt/boot
 ```
 
-Read the generated `/mnt/etc/nixos/hardware-configuration.nix` and copy the
-UUIDs into the repo (the generated file itself is not used — the repo's
-version is canonical):
-
-- `boot.initrd.luks.devices."cryptroot".device` UUID → replaces
-  `REPLACE-WITH-LUKS-PARTITION-UUID` in `systems/hosts/sochu/nixos.nix`
-  (also available as `blkid /dev/nvme0n1pN`)
-- `fileSystems."/"` UUID → replaces `REPLACE-WITH-INNER-FS-UUID` in
-  `systems/hosts/sochu/hardware-configuration.nix`
-  (also available as `blkid /dev/mapper/cryptroot`)
-- confirm the `fileSystems."/boot"` UUID still matches the repo (`EDAC-1406`
-  — it will, since the ESP was not reformatted)
-
-Update the repo (from another machine, or clone it in the installer), commit,
-and make the updated flake reachable from the installer.
-
-## 4. Install
+## 4. Harvest UUIDs into the repo
 
 ```sh
-nixos-install --flake 'git+https://github.com/crdant/dotfiles?ref=feature/crdant/encrypts-sochu-root#sochu' --impure
+blkid /dev/nvme0n1p6     # LUKS partition UUID → nixos.nix cryptroot block
+blkid /dev/nvme0n1p4     # ESP UUID → hardware-configuration.nix (rarely changes)
 ```
 
-`--impure` is required: the repo's flake relies on `pure-eval = false`, which
-is configured on the installed machine's nix.conf but is not live in the
-installer environment.
+`nixos-generate-config --root /mnt` shows what it would write, but the repo's
+`hardware-configuration.nix` is already shaped for this layout — take UUIDs
+from it, not structure. Watch for typos: it's `btrfs`, and the LUKS line needs
+its semicolon (both bit us once). Commit and push before installing.
 
-If the host keys were backed up in step 0, restore them before rebooting:
+## 5. Install
+
+Prefer a local clone — it doubles as the machine's permanent checkout and
+sidesteps nix's remote-fetch cache, which happily builds a stale branch tip:
 
 ```sh
-tar xzf sochu-ssh-host-keys.tar.gz -C /mnt
+git clone -b <branch> https://github.com/crdant/dotfiles \
+  /mnt/home/crdant/workspace/dotfiles
+nixos-install --flake /mnt/home/crdant/workspace/dotfiles#sochu --impure
 ```
 
-## 5. First boot: passphrase test
+If installing from a remote ref instead, always add
+`--option tarball-ttl 0` so the fetch can't serve yesterday's branch.
 
-Reboot into NixOS. The initrd should prompt for the LUKS passphrase (it will
-also probe for a FIDO2 token because of `fido2-device=auto`; with nothing
-enrolled it falls through to the passphrase). If the internal keyboard does
-not respond at the prompt, use the USB keyboard and note it for follow-up.
+`--impure` is required twice over: the machine's `pure-eval = false` nix.conf
+isn't live in the installer, and the Asahi module reads the peripheral
+firmware out of `/boot/asahi` at evaluation time, which pure evaluation
+forbids.
 
-Do not enroll the YubiKey until a plain passphrase boot has succeeded.
+Set the root password when prompted. Restore SSH host keys now if backed up.
 
-## 6. Enroll the YubiKey
+## 6. First boot
 
-From the booted system, with the YubiKey inserted:
+Remove the USB stick and boot. Expect the LUKS passphrase prompt — the
+console font is small until the HiDPI module lands, and the internal keyboard
+should work (the Asahi kernel's transport drivers plus `hid_apple` are in the
+initrd; keep a USB keyboard within reach the first time anyway).
+
+Then:
 
 ```sh
-sudo systemd-cryptenroll --fido2-device=auto /dev/nvme0n1pN
+passwd crdant           # as root; users are mutable on sochu — without this,
+                        # console login as crdant fails as if the user
+                        # doesn't exist
+nmtui                   # join Wi-Fi via NetworkManager
 ```
 
-It asks for the existing passphrase, then for a touch on the YubiKey. Verify
-with:
+## 7. Enroll the YubiKey
+
+Enrollments are **additive** — each run burns a new LUKS slot, and a no-PIN
+slot left behind means boot happily uses the weaker one. Enroll with the PIN
+required, and wipe-and-redo in one command if fixing an earlier enrollment:
 
 ```sh
-sudo systemd-cryptenroll /dev/nvme0n1pN
+sudo systemd-cryptenroll --fido2-device=auto --fido2-with-client-pin=yes /dev/nvme0n1p6
+# fixing a prior no-PIN enrollment (wipes ALL fido2 slots, then re-enrolls):
+sudo systemd-cryptenroll --wipe-slot=fido2 --fido2-device=auto \
+  --fido2-with-client-pin=yes /dev/nvme0n1p6
 ```
 
-which should list slot 0 (password) and a fido2 slot. Reboot once more: the
-initrd should unlock via the YubiKey (touch when it blinks), and a boot
-without the key inserted should still fall back to the passphrase prompt.
+Enroll the backup key afterward, plain (no wipe flag), with the same PIN
+option. The FIDO2 PIN is per-key (`ykman fido access change-pin`) and is not
+the GPG PIN. Verify slots with `sudo systemd-cryptenroll /dev/nvme0n1p6`,
+then reboot to test: key in → PIN + touch; key out → passphrase.
+
+## 8. Home environment and secrets
+
+As crdant (console, YubiKey plugged into sochu — its GPG applet decrypts the
+sops secrets):
+
+```sh
+gpg --card-status                 # smartcard stack check; the config declares
+                                  # all three layers it needs: pcscd + udev
+                                  # rules, the polkit wheel rule, and
+                                  # scdaemon's disable-ccid
+gpg --import <public-key>         # fresh keyring needs the public key before
+                                  # the card stubs are useful
+cd ~/workspace/dotfiles
+nix run github:nix-community/home-manager/release-26.05 -- switch \
+  --flake .#crdant@aarch64-linux --impure -b backup
+```
+
+`sops-nix.service` runs headless and cannot show a pinentry. Once per boot
+(or card replug), prime the PIN from any terminal — one interactive
+`sops -d <file>` prompts pinentry-curses and leaves the card unlocked in
+scdaemon — then `systemctl --user restart sops-nix.service` if it failed
+before priming. After the first switch, `make user` and `make host` work from
+the local clone like any other machine.
