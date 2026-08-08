@@ -7,6 +7,8 @@
 
   hardware.asahi.enable = true;
 
+  networking.hostName = "sochu";
+
   # Wi-Fi-only laptop: NetworkManager instead of the networkd stack that
   # system-defaults/home-lab push for servers (mkForce because they set it
   # at normal priority)
