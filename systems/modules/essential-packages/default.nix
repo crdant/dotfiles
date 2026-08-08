@@ -44,7 +44,9 @@ in (lib.mkMerge [
         mole
         uutils-coreutils
       ] ++ lib.optionals isLinux [
+        pciutils
         unixtools.watch
+        usbutils
         uutils-coreutils-noprefix
       ];
     };
