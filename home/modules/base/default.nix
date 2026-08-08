@@ -70,7 +70,6 @@ in {
       moreutils
       nmap
       pstree
-      rar
       ripgrep
       rust-petname
       sd
@@ -78,6 +77,11 @@ in {
       smug
       tcptraceroute
       zsh-completions
+    ] ++ lib.optionals (lib.meta.availableOn pkgs.stdenv.hostPlatform pkgs.rar) [
+      rar
+    ] ++ lib.optionals (!lib.meta.availableOn pkgs.stdenv.hostPlatform pkgs.rar) [
+      # rarlab doesn't ship an aarch64-linux build; unar at least extracts
+      unar
     ] ++ lib.optionals isLinux [
       dig
       gnupg
