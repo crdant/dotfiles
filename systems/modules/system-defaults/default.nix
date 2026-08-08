@@ -169,8 +169,10 @@ let
   resolvedConfig = lib.optionalAttrs supportsResolved {
     services.resolved = {
       enable = true;
-      dnssec = "allow-downgrade";
-      dnsovertls = "opportunistic";
+      settings.Resolve = {
+        DNSSEC = "allow-downgrade";
+        DNSOverTLS = "opportunistic";
+      };
     };
   };
 
