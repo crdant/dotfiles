@@ -29,10 +29,6 @@ in {
           region = "us-west-2";
           output = "json";
         };
-        "replicated-dev" = {
-          region = "us-west-2";
-          output = "json";
-        };
       };
     };
 

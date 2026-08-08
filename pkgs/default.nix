@@ -9,14 +9,9 @@ rec {
   vimr = pkgs.callPackage ./vimr { };
   leftovers = pkgs.callPackage ./leftovers { };
 
-  replicated = pkgs.callPackage ./replicated { };
-  kots = pkgs.callPackage ./kots { };
-  troubleshoot-sbctl = pkgs.callPackage ./sbctl { };
   helm-beta = pkgs.callPackage ./helm-beta { };
 
   llmPlugins = pkgs.callPackage ./llm/plugins { };
-
-  instruqt = pkgs.callPackage ./instruqt { };
 
   imgpkg = pkgs.callPackage ./imgpkg { };
 

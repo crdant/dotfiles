@@ -22,8 +22,6 @@ The following MCP servers are configured and available for tool use:
 - **time** — Time and timezone utilities
 - **todoist** — Todoist task management
 - **firecrawl** — Web scraping and crawling
-- **shortcut** — Shortcut (project management) integration
-- **omni** — Omni platform integration
 - **github** — GitHub Copilot MCP server
 - **mbta** — MBTA transit information
 - **google-maps** — Google Maps integration

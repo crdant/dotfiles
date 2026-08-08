@@ -7,33 +7,6 @@
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
-    go1_26 = prev.go.overrideAttrs (oldAttrs: let
-      newVersion = "1.26.4";
-      in {
-        version = newVersion;
-        src = prev.fetchzip {
-          url = "https://go.dev/dl/go${newVersion}.src.tar.gz";
-          hash = "sha256-R16Z1k4oBCRWy5MKnOILcQtXhlCpSxdNsQMaLFRML0U=";
-        };
-        patches = [];
-        env = (oldAttrs.env or {}) // {
-          GOROOT_BOOTSTRAP = "${prev.go}/share/go";
-        };
-      }
-    );
-
-    buildGo1_26Module = prev.buildGoModule.override {
-      go = final.go1_26;
-    };
-
-    replicated = prev.replicated.override {
-      buildGoModule = final.buildGo1_26Module;
-    };
-
-    kots = prev.kots.override {
-      buildGoModule = final.buildGo1_26Module;
-    };
-
     direnv = final.unstable.direnv;
 
     # fish 4.8 stopped installing share/fish/tools — everything but man pages

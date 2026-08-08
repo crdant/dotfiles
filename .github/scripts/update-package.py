@@ -408,113 +408,6 @@ def update_go_package(package_path: Path, owner: str, repo: str) -> Optional[Dic
     }
     return update_github_source_package(pkg_info)
 
-def update_sbctl(package_path: Path) -> Optional[Dict[str, str]]:
-    """Update sbctl package with latest release info."""
-    print("Checking for sbctl updates...")
-    
-    current = read_current_version(package_path)
-    if not current:
-        return None
-    
-    # Get latest release
-    try:
-        release = get_latest_release("replicatedhq", "sbctl")
-    except Exception as e:
-        print(f"Failed to get sbctl release info: {e}", file=sys.stderr)
-        return None
-    
-    # Parse version from tag (e.g., "v0.17.3" -> "0.17.3")
-    tag_name = release["tag_name"]
-    new_version = tag_name.lstrip("v")
-    
-    # Check if update is needed
-    if current["version"] == new_version:
-        print(f"sbctl is already up to date: {new_version}")
-        return None
-    
-    print(f"sbctl update available: {current['version']} -> {new_version}")
-    
-    # Calculate new hashes for both platforms
-    darwin_url = f"https://github.com/replicatedhq/sbctl/releases/download/{tag_name}/sbctl_darwin_amd64.tar.gz"
-    linux_url = f"https://github.com/replicatedhq/sbctl/releases/download/{tag_name}/sbctl_linux_amd64.tar.gz"
-    
-    try:
-        print("Calculating Darwin hash...")
-        darwin_result = subprocess.run([
-            "nix-prefetch-url", "--type", "sha256", "--unpack", darwin_url
-        ], capture_output=True, text=True, check=True)
-        
-        darwin_convert = subprocess.run([
-            "nix", "hash", "convert", "--hash-algo", "sha256", "--to", "sri",
-            darwin_result.stdout.strip()
-        ], capture_output=True, text=True, check=True)
-        
-        darwin_hash = darwin_convert.stdout.strip()
-        
-        print("Calculating Linux hash...")
-        linux_result = subprocess.run([
-            "nix-prefetch-url", "--type", "sha256", "--unpack", linux_url
-        ], capture_output=True, text=True, check=True)
-        
-        linux_convert = subprocess.run([
-            "nix", "hash", "convert", "--hash-algo", "sha256", "--to", "sri",
-            linux_result.stdout.strip()
-        ], capture_output=True, text=True, check=True)
-        
-        linux_hash = linux_convert.stdout.strip()
-        
-    except subprocess.CalledProcessError as e:
-        print(f"Failed to calculate sbctl hashes: {e}", file=sys.stderr)
-        return None
-    
-    # Update package file
-    try:
-        with package_path.open() as f:
-            content = f.read()
-        
-        # Update version and platform-specific hashes
-        content = re.sub(r'version\s*=\s*"[^"]+";', f'version = "{new_version}";', content)
-        
-        # Update Darwin hash
-        content = re.sub(
-            r'(sha256\s*=\s*if\s+isDarwin\s+then\s*)"[^"]+"\s*else',
-            f'\\1"{darwin_hash}"\n      else',
-            content
-        )
-        
-        # Update Linux hash
-        content = re.sub(
-            r'(else\s*)"[^"]+";',
-            f'\\1"{linux_hash}";',
-            content
-        )
-        
-        with package_path.open("w") as f:
-            f.write(content)
-            
-        print(f"Updated sbctl package to {new_version}")
-        
-        # Set GitHub Actions outputs
-        if os.environ.get("GITHUB_ACTIONS"):
-            with open(os.environ["GITHUB_OUTPUT"], "a") as f:
-                f.write("updated=true\n")
-                f.write(f"old-version={current['version']}\n")
-                f.write(f"new-version={new_version}\n")
-                f.write(f"darwin-hash={darwin_hash}\n")
-                f.write(f"linux-hash={linux_hash}\n")
-        
-        return {
-            "old_version": current["version"],
-            "new_version": new_version,
-            "darwin_hash": darwin_hash,
-            "linux_hash": linux_hash,
-            "updated": True
-        }
-        
-    except Exception as e:
-        print(f"Failed to update sbctl package file: {e}", file=sys.stderr)
-        return None
-
 def main():
     """Main entry point."""
     if len(sys.argv) < 2:
@@ -544,8 +437,6 @@ def main():
     
     if pkg_info["type"] == "vimr-binary":
         result = update_vimr(pkg_info["path"])
-    elif pkg_info["type"] == "pre-built-binary" and package_name == "sbctl":
-        result = update_sbctl(pkg_info["path"])
     elif pkg_info["type"] in ["go-module-simple", "go-module-platform-specific", "github-source"]:
         if pkg_info["owner"] and pkg_info["repo"]:
             result = update_github_source_package(pkg_info)

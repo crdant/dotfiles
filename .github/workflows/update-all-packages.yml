@@ -20,7 +20,7 @@ jobs:
           input_packages="${{ github.event.inputs.packages }}"
           
           if [ "$input_packages" = "all" ] || [ -z "$input_packages" ]; then
-            packages='["vimr", "replicated", "kots", "sbctl"]'
+            packages='["vimr"]'
           else
             # Convert comma-separated list to JSON array
             IFS=',' read -ra pkg_array <<< "$input_packages"
@@ -49,41 +49,8 @@ jobs:
           workflow: update-vimr.yml
           token: ${{ secrets.GITHUB_TOKEN }}
 
-  trigger-replicated-update:
-    needs: determine-packages
-    if: contains(fromJSON(needs.determine-packages.outputs.packages), 'replicated')
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger Replicated update workflow
-        uses: benc-uk/workflow-dispatch@v1
-        with:
-          workflow: update-replicated.yml
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-  trigger-kots-update:
-    needs: determine-packages
-    if: contains(fromJSON(needs.determine-packages.outputs.packages), 'kots')
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger KOTS update workflow
-        uses: benc-uk/workflow-dispatch@v1
-        with:
-          workflow: update-kots.yml
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-  trigger-sbctl-update:
-    needs: determine-packages
-    if: contains(fromJSON(needs.determine-packages.outputs.packages), 'sbctl')
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger sbctl update workflow
-        uses: benc-uk/workflow-dispatch@v1
-        with:
-          workflow: update-sbctl.yml
-          token: ${{ secrets.GITHUB_TOKEN }}
-
   summary:
-    needs: [determine-packages, trigger-vimr-update, trigger-replicated-update, trigger-kots-update, trigger-sbctl-update]
+    needs: [determine-packages, trigger-vimr-update]
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -104,15 +71,6 @@ jobs:
             case $pkg in
               "vimr")
                 echo "- 📱 **VimR**: [Workflow](https://github.com/${{ github.repository }}/actions/workflows/update-vimr.yml)" >> $GITHUB_STEP_SUMMARY
-                ;;
-              "replicated") 
-                echo "- 🔄 **Replicated CLI**: [Workflow](https://github.com/${{ github.repository }}/actions/workflows/update-replicated.yml)" >> $GITHUB_STEP_SUMMARY
-                ;;
-              "kots")
-                echo "- ☸️ **KOTS CLI**: [Workflow](https://github.com/${{ github.repository }}/actions/workflows/update-kots.yml)" >> $GITHUB_STEP_SUMMARY
-                ;;
-              "sbctl")
-                echo "- 🔧 **sbctl**: [Workflow](https://github.com/${{ github.repository }}/actions/workflows/update-sbctl.yml)" >> $GITHUB_STEP_SUMMARY
                 ;;
             esac
           done

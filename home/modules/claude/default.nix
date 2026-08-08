@@ -18,7 +18,6 @@ let
     "compound-engineering-plugin" = "EveryInc/compound-engineering-plugin";
     "compound-knowledge-marketplace" = "EveryInc/compound-knowledge-plugin";
     "last30days-skill" = "mvanhorn/last30days-skill";
-    "replicatedhq" = "replicatedhq/replicated-claude-marketplace";
     "shortrib-labs" = "shortrib-labs/shortrib-claude-marketplace";
     "draft-review-kit-local" = "EveryInc/draft-review-kit";
   };
