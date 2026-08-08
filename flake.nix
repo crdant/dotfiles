@@ -80,9 +80,9 @@
         "sochu" = darwin.lib.darwinSystem {
           system = "aarch64-darwin";
           specialArgs = {inherit inputs outputs;};
-          modules = [ 
+          modules = [
             ./systems/hosts/sochu/default.nix
-            ./home/users/crdant/chuck.nix
+            ./home/users/crdant/crdant.nix
             ./home/users/crdant/darwin.nix
           ];
         };
@@ -103,10 +103,6 @@
         let
           # User configurations with different profiles
           userConfigs = {
-            chuck = {
-              gitEmail = "chuck@replicated.com";
-              homeModule = ./home/users/crdant/home.nix;
-            };
             crdant = {
               gitEmail = "chuck@crdant.io";
             };
