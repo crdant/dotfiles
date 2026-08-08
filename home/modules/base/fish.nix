@@ -80,8 +80,9 @@ in {
         end
       end
 
-      # When SSHed in, set GPG_TTY so pinentry can fall back to curses mode
-      if test -n "$SSH_TTY"
+      # Point pinentry at this terminal whenever there is one -- SSH sessions,
+      # and Linux consoles where pinentry-curses is the only pinentry
+      if isatty stdin
         set -gx GPG_TTY (tty)
         gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1
       end
