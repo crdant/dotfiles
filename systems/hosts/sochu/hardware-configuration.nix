@@ -14,15 +14,15 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    # ext4 filesystem inside the cryptroot LUKS mapping (see nixos.nix)
-    # REPLACE after reinstall: UUID of the inner filesystem, from
     # nixos-generate-config or blkid /dev/mapper/cryptroot
-    { device = "/dev/disk/by-uuid/REPLACE-WITH-INNER-FS-UUID";
-      fsType = "ext4";
+    { device = "/dev/mapper/cryptroot";
+      fsType = "brtfs";
     };
 
+  boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-uuid/2d3429b5-e164-4d4c-b502-cffda278a6ff"
+
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/EDAC-1406";
+    { device = "/dev/disk/by-uuid/3D93-1F15";
       fsType = "vfat";
       options = [ "fmask=0022" "dmask=0022" ];
     };
