@@ -35,5 +35,18 @@ in {
       execWheelOnly = true;
       wheelNeedsPassword = false ;
     };
+
+    # pcsclite builds against polkit when polkit is enabled (NetworkManager
+    # enables it), which gates smartcard access per client; let admins reach
+    # the YubiKey from any session, not just an active local seat
+    polkit.extraConfig = ''
+      polkit.addRule(function(action, subject) {
+        if ((action.id == "org.debian.pcsc-lite.access_pcsc" ||
+             action.id == "org.debian.pcsc-lite.access_card") &&
+            subject.isInGroup("wheel")) {
+          return polkit.Result.YES;
+        }
+      });
+    '';
   };
 }
