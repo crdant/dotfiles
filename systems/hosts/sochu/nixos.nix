@@ -1,4 +1,4 @@
-{ inputs, outputs, pkgs, ... }:
+{ inputs, outputs, pkgs, lib, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -6,6 +6,13 @@
   ];
 
   hardware.asahi.enable = true;
+
+  # Wi-Fi-only laptop: NetworkManager instead of the networkd stack that
+  # system-defaults/home-lab push for servers (mkForce because they set it
+  # at normal priority)
+  networking.networkmanager.enable = true;
+  networking.useNetworkd = lib.mkForce false;
+  systemd.network.enable = lib.mkForce false;
 
   # systemd-based stage 1 is required for FIDO2 unlock (systemd-cryptsetup);
   # the scripted initrd only supports passphrases
