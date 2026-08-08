@@ -17,14 +17,6 @@ echo "Testing $PACKAGE_NAME installation on $PLATFORM..."
 
 # Map package name to Nix package name if needed
 case "$PACKAGE_NAME" in
-    "sbctl")
-        NIX_PACKAGE="troubleshoot-sbctl"  # Note: matches the name in pkgs/default.nix
-        BINARY_NAME="sbctl"
-        ;;
-    "kots")
-        NIX_PACKAGE="kots"
-        BINARY_NAME="kubectl-kots"  # KOTS installs as kubectl-kots
-        ;;
     "vimr")
         NIX_PACKAGE="vimr"
         BINARY_NAME=""  # VimR is an app bundle, not a CLI binary
@@ -91,13 +83,6 @@ case "$PACKAGE_NAME" in
             else
                 echo "⚠️  VimR app bundle structure could not be verified"
             fi
-        fi
-        ;;
-    "replicated"|"kots"|"sbctl")
-        if [ "$PLATFORM" = "Darwin" ] || [ "$PLATFORM" = "Linux" ]; then
-            echo "✅ $PACKAGE_NAME tested on supported platform ($PLATFORM)"
-        else
-            echo "⚠️  $PACKAGE_NAME tested on unexpected platform: $PLATFORM"
         fi
         ;;
 esac
