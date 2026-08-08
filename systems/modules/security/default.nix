@@ -12,6 +12,13 @@ in {
     ];
   };
   
+  # GPG against the YubiKey's OpenPGP applet needs a smartcard daemon and
+  # udev rules granting the console user access; macOS ships both built in
+  services = lib.optionalAttrs isLinux {
+    pcscd.enable = true;
+    udev.packages = [ pkgs.yubikey-personalization ];
+  };
+
   security = {
     pki = {
       installCACerts = true ;
