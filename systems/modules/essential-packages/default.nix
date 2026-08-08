@@ -45,6 +45,7 @@ in (lib.mkMerge [
         uutils-coreutils
       ] ++ lib.optionals isLinux [
         pciutils
+        psmisc
         unixtools.watch
         usbutils
         uutils-coreutils-noprefix
