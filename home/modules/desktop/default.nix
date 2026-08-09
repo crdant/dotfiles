@@ -19,6 +19,10 @@ let
     );
 
 in {
+  imports = [
+    ./gnome.nix
+  ];
+
   # Home Manager basics
   home = {
     # Basic packages for all environments
