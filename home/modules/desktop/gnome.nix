@@ -6,6 +6,13 @@
 let
   isLinux = pkgs.stdenv.isLinux;
 in {
+  # Stock GNOME has no knob for the dash's icon size and it runs cartoonishly
+  # large on a Retina panel; Dash to Dock adds the knob (and macOS-style
+  # behavior besides).
+  home.packages = lib.optionals isLinux [
+    pkgs.gnomeExtensions.dash-to-dock
+  ];
+
   dconf.settings = lib.mkIf isLinux {
     "org/gnome/desktop/interface" = {
       color-scheme = "prefer-dark";
@@ -14,6 +21,29 @@ in {
     "org/gnome/mutter" = {
       # A fixed set of workspaces instead of GNOME's grow-as-you-go default.
       dynamic-workspaces = false;
+    };
+
+    "org/gnome/shell" = {
+      # The dash, curated like the macOS Dock: terminal, browser, notes,
+      # music, files, monitor, settings — not GNOME's stock lineup.
+      favorite-apps = [
+        "com.mitchellh.ghostty.desktop"
+        "firefox.desktop"
+        "obsidian.desktop"
+        "spotube.desktop"
+        "org.gnome.Nautilus.desktop"
+        "org.gnome.SystemMonitor.desktop"
+        "org.gnome.Settings.desktop"
+      ];
+      enabled-extensions = [
+        "dash-to-dock@micxgx.gmail.com"
+      ];
+    };
+
+    "org/gnome/shell/extensions/dash-to-dock" = {
+      dash-max-icon-size = 40;
+      show-mounts = false;
+      show-trash = false;
     };
 
     "org/gnome/desktop/background" = {

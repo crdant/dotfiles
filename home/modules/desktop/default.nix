@@ -32,6 +32,9 @@ in {
       unstable.spotify
     ] ++ lib.optionals (!spotifyAvailable) [
       unstable.spotube
+    ] ++ lib.optionals isLinux [
+      # macOS gets Ghostty as a homebrew cask; Linux straight from nixpkgs
+      unstable.ghostty
     ] ++ lib.optionals isDarwin [
       dockutil
       vimr
@@ -83,12 +86,12 @@ in {
   xdg = {
     enable = true;
     configFile = {
+      "ghostty/config" = {
+        source = ./config/ghostty/config;
+      };
     } // lib.optionalAttrs isDarwin {
       "karabiner/karabiner.json" = {
         text = builtins.readFile ./config/karabiner/karabiner.json;
-      };
-      "ghostty/config" = {
-        source = ./config/ghostty/config;
       };
     };
   };
