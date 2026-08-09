@@ -154,7 +154,11 @@ in {
     maxCacheTtl = 7200;
     defaultCacheTtlSsh = 600;
     maxCacheTtlSsh = 7200;
-    pinentry.package = pkgs.pinentry-curses;
+    # gcr-based pinentry prompts through GNOME's system prompter over D-Bus,
+    # so headless callers (sops-nix.service after a switch restarts the
+    # agent and re-locks the card) raise a desktop PIN dialog instead of
+    # failing without a TTY. Falls back to tty when there's no session.
+    pinentry.package = pkgs.pinentry-gnome3;
   };
 
   # GUI apps get SSH_AUTH_SOCK from the launchd session env (the desktop module's
