@@ -52,12 +52,11 @@ let
   supportsDesktopManager = builtins.hasAttr "services" options && builtins.hasAttr "desktopManager" options.services;
   desktopSessionConfig = lib.optionalAttrs supportsDesktopManager {
     services = {
-      # GNOME as the baseline session, COSMIC as an alternate, both through GDM
+      # GNOME through GDM. COSMIC was briefly an alternate session, but its
+      # settings panels flood the app grid with launchers — one desktop is
+      # enough.
       displayManager.gdm.enable = true;
-      desktopManager = {
-        gnome.enable = true;
-        cosmic.enable = true;
-      };
+      desktopManager.gnome.enable = true;
 
       # Defaults only: nixos-apple-silicon ships its own PipeWire tuning
       pipewire = {
@@ -66,6 +65,15 @@ let
         pulse.enable = lib.mkDefault true;
       };
     };
+
+    # Stock apps that will never see use: Firefox is the browser, Neovim the
+    # editor, and Ghostty the only terminal
+    environment.gnome.excludePackages = with pkgs; [
+      epiphany
+      gnome-console
+      gnome-text-editor
+      gnome-tour
+    ];
   };
 
   supportsNetworkManager = builtins.hasAttr "networking" options && builtins.hasAttr "networkmanager" options.networking;
