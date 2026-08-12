@@ -119,7 +119,7 @@
           # User configurations with different profiles
           userConfigs = {
             crdant = {
-              gitEmail = "chuck@crdant.io";
+              gitEmail = "crdant@shortrib.io";
             };
             luca = {
               gitEmail = "";
