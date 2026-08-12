@@ -40,8 +40,14 @@ in {
       ];
     };
 
+    # Not wanted as an always-visible dock — with every show mechanism off
+    # the dash appears only in the overview, like stock GNOME, just with the
+    # icon size under control (24 chosen by eye on the Retina panel).
     "org/gnome/shell/extensions/dash-to-dock" = {
-      dash-max-icon-size = 40;
+      dash-max-icon-size = 24;
+      dock-fixed = false;
+      autohide = false;
+      intellihide = false;
       show-mounts = false;
       show-trash = false;
     };
