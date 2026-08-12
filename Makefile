@@ -57,11 +57,11 @@ check: ## Check flake
 define nixos_system_targets
 .PHONY: build-nixos-$(1)
 build-nixos-$(1): ## Build NixOS configuration for $(1)
-	$(NIX) build $(FLAKE_PATH)#nixosConfigurations.$(1).config.system.build.toplevel
+	$(NIX) build $(FLAKE_PATH)#nixosConfigurations.$(1).config.system.build.toplevel --impure
 
 .PHONY: switch-nixos-$(1)
 switch-nixos-$(1): ## Switch to NixOS configuration for $(1)
-	sudo nixos-rebuild switch --flake $(FLAKE_PATH)#$(1)
+	sudo nixos-rebuild switch --flake $(FLAKE_PATH)#$(1) --impure
 
 .PHONY: boot-nixos-$(1)
 boot-nixos-$(1): ## Build NixOS configuration for $(1) and add it to the boot menu
