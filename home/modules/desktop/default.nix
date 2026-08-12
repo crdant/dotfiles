@@ -35,6 +35,10 @@ in {
     ] ++ lib.optionals isLinux [
       # macOS gets Ghostty as a homebrew cask; Linux straight from nixpkgs
       unstable.ghostty
+      # the Arc/Dia-shaped browser seat; community flake, official binaries
+      inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
+      unstable.beeper
+      todoist-electron
     ] ++ lib.optionals isDarwin [
       dockutil
       vimr

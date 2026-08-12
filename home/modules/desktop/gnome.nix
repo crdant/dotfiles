@@ -24,11 +24,14 @@ in {
     };
 
     "org/gnome/shell" = {
-      # The dash, curated like the macOS Dock: terminal, browser, notes,
-      # music, files, monitor, settings — not GNOME's stock lineup.
+      # The dash, curated like the macOS Dock: terminal, browser, messages,
+      # tasks, notes, music, files, monitor, settings — not GNOME's stock
+      # lineup.
       favorite-apps = [
         "com.mitchellh.ghostty.desktop"
-        "firefox.desktop"
+        "zen-beta.desktop"
+        "beepertexts.desktop"
+        "todoist.desktop"
         "obsidian.desktop"
         "spotube.desktop"
         "org.gnome.Nautilus.desktop"

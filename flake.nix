@@ -19,6 +19,11 @@
     _1password-shell-plugins.url = "github:1Password/shell-plugins";
     _1password-shell-plugins.inputs.nixpkgs.follows = "home-manager"; # ...
 
+    # Zen isn't packaged in nixpkgs; this flake repackages the official
+    # binaries (including aarch64-linux)
+    zen-browser.url = "github:0xc000022070/zen-browser-flake";
+    zen-browser.inputs.nixpkgs.follows = "nixpkgs";
+
   };
 
   outputs = { self, nixpkgs, home-manager, darwin, ...}@inputs:

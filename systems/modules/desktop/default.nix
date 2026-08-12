@@ -66,7 +66,7 @@ let
       };
     };
 
-    # Stock apps that will never see use: Firefox is the browser, Neovim the
+    # Stock apps that will never see use: Zen is the browser, Neovim the
     # editor, and Ghostty the only terminal
     environment.gnome.excludePackages = with pkgs; [
       epiphany
@@ -74,6 +74,13 @@ let
       gnome-text-editor
       gnome-tour
     ];
+
+    # The NixOS module rather than the bare package: 1Password's system
+    # authentication and browser integration need its polkit policy installed
+    programs._1password-gui = {
+      enable = true;
+      polkitPolicyOwners = [ "crdant" ];
+    };
   };
 
   supportsNetworkManager = builtins.hasAttr "networking" options && builtins.hasAttr "networkmanager" options.networking;
@@ -92,8 +99,9 @@ in (lib.mkMerge [
 
     environment = {
       systemPackages = with pkgs; [
-        firefox
       ] ++ lib.optionals isDarwin [
+        # on Linux the browser seat belongs to Zen, from the home config
+        firefox
         unstable._1password-gui
         chatgpt
         espanso
