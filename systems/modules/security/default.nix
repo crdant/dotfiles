@@ -1,9 +1,9 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, options, ... }:
 
 let 
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
-in {
+in lib.mkMerge [ {
   # Security configuration for both Darwin and Linux
   environment = {
     systemPackages = with pkgs; [
@@ -50,3 +50,15 @@ in {
     '';
   };
 }
+(lib.optionalAttrs (builtins.hasAttr "powerManagement" options) {
+  # scdaemon keeps a stale handle to the reader across suspend, leaving the
+  # card invisible after wake until it's physically reseated; freshen the
+  # smartcard stack on resume so gpg's next touch re-enumerates it. The key
+  # itself is conditional inside mkMerge — nix-darwin rejects the namespace
+  # even as an empty attrset, and a plain // merge on the module body
+  # recurses.
+  powerManagement.resumeCommands = ''
+    ${pkgs.systemd}/bin/systemctl try-restart pcscd.service
+    ${pkgs.procps}/bin/pkill -x scdaemon || true
+  '';
+}) ]
