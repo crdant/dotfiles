@@ -40,6 +40,7 @@ in {
       ];
       enabled-extensions = [
         "dash-to-dock@micxgx.gmail.com"
+        "shiftit@shortrib.io"
       ];
     };
 

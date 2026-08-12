@@ -39,6 +39,8 @@ in {
       inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
       unstable.beeper
       todoist-electron
+      # the Hammerspoon window management, ported as a shell extension
+      (callPackage ./shiftit { })
     ] ++ lib.optionals isDarwin [
       dockutil
       vimr

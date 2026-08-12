@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.shiftit"
+          path="/org/gnome/shell/extensions/shiftit/">
+
+    <key type="as" name="cycle-left">
+      <default>["&lt;Control&gt;&lt;Alt&gt;&lt;Super&gt;Left"]</default>
+      <summary>Cycle the window through left-side widths (33/50/66/75%)</summary>
+    </key>
+    <key type="as" name="cycle-right">
+      <default>["&lt;Control&gt;&lt;Alt&gt;&lt;Super&gt;Right"]</default>
+      <summary>Cycle the window through right-side widths (33/50/66/75%)</summary>
+    </key>
+    <key type="as" name="fullscreen">
+      <default>["&lt;Control&gt;&lt;Alt&gt;&lt;Super&gt;Up"]</default>
+      <summary>Fill the work area</summary>
+    </key>
+
+    <key type="as" name="quarter-top-left">
+      <default>["&lt;Control&gt;&lt;Alt&gt;&lt;Super&gt;1"]</default>
+      <summary>Top-left quarter</summary>
+    </key>
+    <key type="as" name="quarter-top-right">
+      <default>["&lt;Control&gt;&lt;Alt&gt;&lt;Super&gt;2"]</default>
+      <summary>Top-right quarter</summary>
+    </key>
+    <key type="as" name="quarter-bottom-left">
+      <default>["&lt;Control&gt;&lt;Alt&gt;&lt;Super&gt;3"]</default>
+      <summary>Bottom-left quarter</summary>
+    </key>
+    <key type="as" name="quarter-bottom-right">
+      <default>["&lt;Control&gt;&lt;Alt&gt;&lt;Super&gt;4"]</default>
+      <summary>Bottom-right quarter</summary>
+    </key>
+
+    <key type="as" name="sixth-top-left">
+      <default>["&lt;Control&gt;&lt;Alt&gt;&lt;Super&gt;5"]</default>
+      <summary>Top-left sixth</summary>
+    </key>
+    <key type="as" name="sixth-bottom-left">
+      <default>["&lt;Control&gt;&lt;Alt&gt;&lt;Super&gt;6"]</default>
+      <summary>Bottom-left sixth</summary>
+    </key>
+    <key type="as" name="sixth-top-middle">
+      <default>["&lt;Control&gt;&lt;Alt&gt;&lt;Super&gt;7"]</default>
+      <summary>Top-middle sixth</summary>
+    </key>
+    <key type="as" name="sixth-bottom-middle">
+      <default>["&lt;Control&gt;&lt;Alt&gt;&lt;Super&gt;8"]</default>
+      <summary>Bottom-middle sixth</summary>
+    </key>
+    <key type="as" name="sixth-top-right">
+      <default>["&lt;Control&gt;&lt;Alt&gt;&lt;Super&gt;9"]</default>
+      <summary>Top-right sixth</summary>
+    </key>
+    <key type="as" name="sixth-bottom-right">
+      <default>["&lt;Control&gt;&lt;Alt&gt;&lt;Super&gt;0"]</default>
+      <summary>Bottom-right sixth</summary>
+    </key>
+
+    <key type="as" name="spot-todoist">
+      <default>["&lt;Control&gt;&lt;Alt&gt;&lt;Super&gt;t"]</default>
+      <summary>Todoist's spot</summary>
+    </key>
+    <key type="as" name="spot-calendar">
+      <default>["&lt;Control&gt;&lt;Alt&gt;&lt;Super&gt;f"]</default>
+      <summary>The calendar's spot (f for Fantastical, its macOS tenant)</summary>
+    </key>
+    <key type="as" name="spot-messages">
+      <default>["&lt;Control&gt;&lt;Alt&gt;&lt;Super&gt;m"]</default>
+      <summary>The messaging app's spot</summary>
+    </key>
+
+  </schema>
+</schemalist>

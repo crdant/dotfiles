@@ -1,0 +1,9 @@
+{
+  "uuid": "shiftit@shortrib.io",
+  "name": "ShiftIt",
+  "description": "Fractional window placement on the ShiftIt chord: width cycles, quarters, sixths, and a few bespoke spots. Ported from a Hammerspoon config that took its keypresses from the macOS app ShiftIt.",
+  "shell-version": ["50"],
+  "url": "https://github.com/crdant/dotfiles",
+  "settings-schema": "org.gnome.shell.extensions.shiftit",
+  "version-name": "0.1.0"
+}
