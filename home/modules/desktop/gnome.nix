@@ -5,6 +5,7 @@
 
 let
   isLinux = pkgs.stdenv.isLinux;
+  inherit (lib.hm.gvariant) mkEmptyArray type;
 in {
   # Stock GNOME has no knob for the dash's icon size and it runs cartoonishly
   # large on a Retina panel; Dash to Dock adds the knob (and macOS-style
@@ -42,6 +43,25 @@ in {
         "dash-to-dock@micxgx.gmail.com"
         "shiftit@shortrib.io"
       ];
+    };
+
+    # Summon vicinae on the Raycast reflex — option+space on the Mac, so
+    # alt+space here. GNOME puts the window menu there by default; nobody
+    # will miss it.
+    "org/gnome/desktop/wm/keybindings" = {
+      activate-window-menu = mkEmptyArray type.string;
+    };
+
+    "org/gnome/settings-daemon/plugins/media-keys" = {
+      custom-keybindings = [
+        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/vicinae/"
+      ];
+    };
+
+    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/vicinae" = {
+      name = "Vicinae";
+      command = "${pkgs.unstable.vicinae}/bin/vicinae toggle";
+      binding = "<Alt>space";
     };
 
     # Not wanted as an always-visible dock — with every show mechanism off

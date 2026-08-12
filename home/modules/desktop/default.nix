@@ -39,6 +39,8 @@ in {
       inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
       unstable.beeper
       todoist-electron
+      # the Raycast seat: launcher + clipboard history
+      unstable.vicinae
       # the Hammerspoon window management, ported as a shell extension
       (callPackage ./shiftit { })
     ] ++ lib.optionals isDarwin [
@@ -100,6 +102,21 @@ in {
         text = builtins.readFile ./config/karabiner/karabiner.json;
       };
     };
+  };
+
+  # The vicinae window is summoned by a GNOME keybinding; the server behind
+  # it rides the graphical session
+  systemd.user.services.vicinae = lib.mkIf isLinux {
+    Unit = {
+      Description = "Vicinae launcher server";
+      After = [ "graphical-session.target" ];
+      PartOf = [ "graphical-session.target" ];
+    };
+    Service = {
+      ExecStart = "${pkgs.unstable.vicinae}/bin/vicinae server";
+      Restart = "on-failure";
+    };
+    Install.WantedBy = [ "graphical-session.target" ];
   };
 
   # LaunchAgent to set GUI-visible environment variables on login
