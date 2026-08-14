@@ -34,16 +34,16 @@
       };
 
       # Helper function to create home configurations with profiles
-      mkHomeConfig = { system, username, gitEmail, profile ? "full", hostname ? null
+      mkHomeConfig = { system, username, gitEmail, profile ? "full", extraModules ? []
         , homeDirectory ? (if (mkPkgs system).stdenv.isDarwin then "/Users/${username}" else "/home/${username}")
         , homeModule ? (./. + "/home/users/${username}/home.nix")
       }:
         home-manager.lib.homeManagerConfiguration {
           pkgs = mkPkgs system;
-          extraSpecialArgs = {inherit inputs outputs username homeDirectory gitEmail profile hostname;};
+          extraSpecialArgs = {inherit inputs outputs username homeDirectory gitEmail profile;};
           modules = [
             homeModule
-          ];
+          ] ++ extraModules;
         };
     in {
       overlays = import ./overlays {inherit inputs;};
@@ -153,12 +153,12 @@
               )
             );
           # Host-specific configurations layered on the full profile.
-          # Names: "user@host"; overrides live in home/users/<user>/<host>.nix
+          # Names: "user@host"; overrides live in systems/hosts/<host>/home.nix
           hostConfigs = {
             "crdant@mash" = mkHomeConfig ({
               system = "x86_64-linux";
               username = "crdant";
-              hostname = "mash";
+              extraModules = [ ./systems/hosts/mash/home.nix ];
             } // userConfigs.crdant);
           };
         in
