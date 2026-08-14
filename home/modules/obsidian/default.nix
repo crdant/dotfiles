@@ -5,46 +5,86 @@ let
   isLinux = pkgs.stdenv.isLinux;
   homeDirectory = config.home.homeDirectory;
   vaultsDir = "${homeDirectory}/workspace/vaults";
+  cfg = config.programs.obsidian;
 in {
-  home.packages = with pkgs; [
-    obsidian-headless
-    vault-gardener
-  ] ++ lib.optionals isLinux [
-    unstable.obsidian
-  ];
+  options.programs.obsidian = {
+    sync.enable = lib.mkEnableOption "continuous Obsidian vault sync as a background service";
+  };
 
-  home.activation = {
-    createVaultsDirectory = lib.hm.dag.entryAfter ["writeBoundary"] ''
-      mkdir -p "${vaultsDir}"
-    '';
+  config = {
+    home.packages = with pkgs; [
+      obsidian-headless
+      vault-gardener
+    ] ++ lib.optionals isLinux [
+      unstable.obsidian
+    ];
 
-    setVaultsPermissions = lib.hm.dag.entryAfter ["createVaultsDirectory"] (
-      if isLinux then ''
-        if getent group obsidian > /dev/null 2>&1; then
-          chgrp obsidian "${vaultsDir}"
-          chmod g+rwxs "${vaultsDir}"
-          ${pkgs.acl}/bin/setfacl -m g:obsidian:rwX "${vaultsDir}"
-          ${pkgs.acl}/bin/setfacl -d -m g:obsidian:rwX "${vaultsDir}"
-          ${pkgs.acl}/bin/setfacl -m g:obsidian-readonly:rX "${vaultsDir}"
-          ${pkgs.acl}/bin/setfacl -d -m g:obsidian-readonly:rX "${vaultsDir}"
+    home.activation = {
+      createVaultsDirectory = lib.hm.dag.entryAfter ["writeBoundary"] ''
+        mkdir -p "${vaultsDir}"
+      '';
+
+      setVaultsPermissions = lib.hm.dag.entryAfter ["createVaultsDirectory"] (
+        if isLinux then ''
+          if getent group obsidian > /dev/null 2>&1; then
+            chgrp obsidian "${vaultsDir}"
+            chmod g+rwxs "${vaultsDir}"
+            ${pkgs.acl}/bin/setfacl -m g:obsidian:rwX "${vaultsDir}"
+            ${pkgs.acl}/bin/setfacl -d -m g:obsidian:rwX "${vaultsDir}"
+            ${pkgs.acl}/bin/setfacl -m g:obsidian-readonly:rX "${vaultsDir}"
+            ${pkgs.acl}/bin/setfacl -d -m g:obsidian-readonly:rX "${vaultsDir}"
+          fi
+        '' else if isDarwin then ''
+          if dscl . -read /Groups/obsidian > /dev/null 2>&1; then
+            chgrp obsidian "${vaultsDir}"
+            chmod g+rwx "${vaultsDir}"
+            /bin/chmod +a "group:obsidian allow list,add_file,search,add_subdirectory,delete_child,readattr,writeattr,readextattr,writeextattr,readsecurity,file_inherit,directory_inherit" "${vaultsDir}"
+            /bin/chmod +a "group:obsidian-readonly allow list,search,readattr,readextattr,readsecurity,file_inherit,directory_inherit" "${vaultsDir}"
+          fi
+        '' else ""
+      );
+
+      syncObsidianVault = lib.hm.dag.entryAfter ["setVaultsPermissions"] ''
+        if [ -f "${homeDirectory}/.config/obsidian-headless/config.json" ]; then
+          echo "Syncing Obsidian vault..."
+          ${pkgs.obsidian-headless}/bin/ob sync --vault-path "${vaultsDir}/Notes" || echo "Obsidian sync failed — have you run 'ob login' and 'ob sync-setup --vault Notes'?"
+        else
+          echo "Obsidian headless not configured — run 'ob login' and 'ob sync-setup --vault Notes' first"
         fi
-      '' else if isDarwin then ''
-        if dscl . -read /Groups/obsidian > /dev/null 2>&1; then
-          chgrp obsidian "${vaultsDir}"
-          chmod g+rwx "${vaultsDir}"
-          /bin/chmod +a "group:obsidian allow list,add_file,search,add_subdirectory,delete_child,readattr,writeattr,readextattr,writeextattr,readsecurity,file_inherit,directory_inherit" "${vaultsDir}"
-          /bin/chmod +a "group:obsidian-readonly allow list,search,readattr,readextattr,readsecurity,file_inherit,directory_inherit" "${vaultsDir}"
-        fi
-      '' else ""
-    );
+      '';
+    };
 
-    syncObsidianVault = lib.hm.dag.entryAfter ["setVaultsPermissions"] ''
-      if [ -f "${homeDirectory}/.config/obsidian-headless/config.json" ]; then
-        echo "Syncing Obsidian vault..."
-        ${pkgs.obsidian-headless}/bin/ob sync --vault-path "${vaultsDir}/Notes" || echo "Obsidian sync failed — have you run 'ob login' and 'ob sync-setup --vault Notes'?"
-      else
-        echo "Obsidian headless not configured — run 'ob login' and 'ob sync-setup --vault Notes' first"
-      fi
-    '';
+    systemd.user.services.obsidian-sync = lib.mkIf (cfg.sync.enable && isLinux) {
+      Unit = {
+        Description = "Continuous Obsidian vault sync";
+        After = [ "network-online.target" ];
+        # skip on machines where obsidian-headless hasn't been configured yet
+        ConditionPathExists = "${homeDirectory}/.config/obsidian-headless/config.json";
+      };
+
+      Service = {
+        Type = "simple";
+        WorkingDirectory = "${vaultsDir}/Notes";
+        ExecStart = "${pkgs.obsidian-headless}/bin/ob sync --continuous";
+        Restart = "on-failure";
+        RestartSec = 10;
+      };
+
+      Install = {
+        WantedBy = [ "default.target" ];
+      };
+    };
+
+    launchd.agents.obsidian-sync = lib.mkIf (cfg.sync.enable && isDarwin) {
+      enable = true;
+      config = {
+        ProgramArguments = [ "${pkgs.obsidian-headless}/bin/ob" "sync" "--continuous" ];
+        WorkingDirectory = "${vaultsDir}/Notes";
+        RunAtLoad = true;
+        KeepAlive = {
+          SuccessfulExit = false;
+        };
+      };
+    };
   };
 }
