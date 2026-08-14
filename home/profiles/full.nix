@@ -32,6 +32,4 @@
     ../modules/obsidian
     ../modules/writing
   ];
-
-  programs.obsidian.sync.enable = true;
 }
