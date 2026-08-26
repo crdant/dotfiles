@@ -29,6 +29,7 @@ in {
     ] ++ lib.optionals (!spotifyAvailable) [
       unstable.spotube
     ] ++ lib.optionals isDarwin [
+      unstable.chatgpt
       dockutil
       vimr
       (callPackage ./vimr-wrapper.nix { inherit config; })
