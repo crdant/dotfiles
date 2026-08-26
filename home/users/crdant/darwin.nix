@@ -20,6 +20,7 @@ in
   homebrew = {
     taps = [
       { name = "steipete/tap"; trusted = true; }
+      { name = "jbeda/tap"; trusted = true; }
     ];
     brews = [
       "cloudflare-wrangler"
@@ -39,6 +40,7 @@ in
       "discord"
       "lens"
       "loom"
+      "mdreflow"
       "obs"
       "postman"
       "raspberry-pi-imager"
