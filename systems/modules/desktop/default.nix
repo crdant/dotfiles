@@ -106,6 +106,7 @@ in (lib.mkMerge [
       packages = with pkgs.nerd-fonts; [
         fira-code
         inconsolata
+        jetbrains-mono
         noto
         bitstream-vera-sans-mono
       ];

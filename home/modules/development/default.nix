@@ -149,7 +149,7 @@ in {
     # Claude Code plugin for development workflows
     claude.plugins = [
       "compound-engineering@compound-engineering-plugin"
-      "compound-knowledge@compound-knowledge-marketplace"
+      "compound-knowledge@compound-knowledge-plugin"
     ];
 
     # Development MCP servers for OpenCode

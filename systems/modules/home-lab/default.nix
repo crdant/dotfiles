@@ -44,11 +44,14 @@ let
 
   supportsTailscale = builtins.hasAttr "services" options && builtins.hasAttr "tailscale" options.services;
   supportsRoutingFeatures = supportsTailscale && builtins.hasAttr "useRoutingFeatures" options.services.tailscale;
+  supportsSetFlags = supportsTailscale && builtins.hasAttr "extraSetFlags" options.services.tailscale;
   tailscaleConfig = lib.optionalAttrs supportsTailscale {
     services.tailscale = {
       enable = lib.mkForce true;
     } // lib.optionalAttrs supportsRoutingFeatures {
       useRoutingFeatures = "client";
+    } // lib.optionalAttrs supportsSetFlags {
+      extraSetFlags = [ "--ssh" ];
     };
   };
 in lib.mkMerge [

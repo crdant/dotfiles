@@ -134,6 +134,7 @@ in {
         default-cache-ttl-ssh 600
         max-cache-ttl-ssh 7200
         pinentry-program ${pkgs.pinentry_mac}/bin/pinentry-mac
+        scdaemon-program ${pkgs.gnupg}/libexec/scdaemon
       '';
     })
     (lib.mkIf isLinux {

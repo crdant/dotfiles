@@ -16,7 +16,7 @@ let
   marketplaces = {
     "claude-plugins-official" = "anthropics/claude-plugins-official";
     "compound-engineering-plugin" = "EveryInc/compound-engineering-plugin";
-    "compound-knowledge-marketplace" = "EveryInc/compound-knowledge-plugin";
+    "compound-knowledge-plugin" = "EveryInc/compound-knowledge-plugin";
     "last30days-skill" = "mvanhorn/last30days-skill";
     "shortrib-labs" = "shortrib-labs/shortrib-claude-marketplace";
     "draft-review-kit-local" = "EveryInc/draft-review-kit";

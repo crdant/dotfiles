@@ -19,14 +19,18 @@ in
 {
   homebrew = {
     taps = [
+      { name = "openclaw/tap"; trusted = true; }
       { name = "steipete/tap"; trusted = true; }
+      { name = "ampcode/tap"; trusted = true; }
       { name = "jbeda/tap"; trusted = true; }
     ];
     brews = [
+      "ampcode"
       "cloudflare-wrangler"
       "gogcli"
       "imsg"
-      "peekaboo"
+      # "mdreflow"
+      "openclaw/tap/peekaboo"
       "sonoscli"
       "summarize"
       "swiftformat"
@@ -38,17 +42,17 @@ in
       "beeper"
       "claude"
       "discord"
-      "lens"
+      "dot"
       "loom"
       "mdreflow"
       "obs"
       "postman"
       "raspberry-pi-imager"
       "repobar"
-      "microsoft-teams"
       "monologue"
       "superhuman"
       "thebrowsercompany-dia"
+      "zen"
     ];
     masApps = {
       "Flighty" = 1358823008;

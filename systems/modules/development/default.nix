@@ -14,7 +14,7 @@ let
       ];
       masApps = {
         "TestFlight" = 899247664;
-        "Xcode" = 497799835;
+        # "Xcode" = 497799835;
       };
     };
   };

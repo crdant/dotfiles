@@ -19,4 +19,10 @@ in {
   home.activation.reloadSystemdBeforeSops = lib.mkIf (isLinux && secretsFile != null) (
     lib.hm.dag.entryBetween [ "sops-nix" ] [ "reloadSystemd" ] ""
   );
+
+  # Home Manager installs LaunchAgent plists in setupLaunchAgents, rather than
+  # linkGeneration. SOPS must wait for its plist before bootstrapping the agent.
+  home.activation.setupLaunchAgentsBeforeSops = lib.mkIf (pkgs.stdenv.isDarwin && secretsFile != null) (
+    lib.hm.dag.entryBetween [ "sops-nix" ] [ "setupLaunchAgents" ] ""
+  );
 }
