@@ -44,6 +44,7 @@ in
       "discord"
       "dot"
       "loom"
+      "mdreflow"
       "obs"
       "postman"
       "raspberry-pi-imager"

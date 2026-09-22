@@ -88,7 +88,6 @@ in (lib.mkMerge [
         firefox
       ] ++ lib.optionals isDarwin [
         unstable._1password-gui
-        chatgpt
         espanso
         google-chrome
         open-sans
