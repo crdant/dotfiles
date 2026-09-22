@@ -29,7 +29,7 @@ in
       "cloudflare-wrangler"
       "gogcli"
       "imsg"
-      "mdreflow"
+      # "mdreflow"
       "openclaw/tap/peekaboo"
       "sonoscli"
       "summarize"
@@ -42,16 +42,16 @@ in
       "beeper"
       "claude"
       "discord"
-      "lens"
+      "dot"
       "loom"
       "obs"
       "postman"
       "raspberry-pi-imager"
       "repobar"
-      "microsoft-teams"
       "monologue"
       "superhuman"
       "thebrowsercompany-dia"
+      "zen"
     ];
     masApps = {
       "Flighty" = 1358823008;
