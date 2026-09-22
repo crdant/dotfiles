@@ -10,7 +10,7 @@ in {
       cloudflared
       doggo
       leftovers
-      packer
+      # unstable.packer
       restic
       talosctl
       terraform
@@ -35,15 +35,6 @@ in {
           "terraform"
         ];
       };
-
-    
-      envExtra = ''
-        export REPL_USE_SUDO=y
-        export GOVC_URL=https://vcenter.lab.shortrib.net
-        export GOVC_USERNAME=administrator@shortrib.local
-        # export GOVC_PASSWORD=$(security find-generic-password -a administrator@shortrib.local -s vcenter.lab.shortrib.net -w)
-        export GOVC_INSECURE=true
-      '';
     };
   };
   
