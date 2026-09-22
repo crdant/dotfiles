@@ -82,7 +82,7 @@ in {
           img-clip-nvim
         ];
 
-        extraLuaConfig = lib.mkAfter ''
+        initLua = lib.mkAfter ''
           -- Avante.nvim configuration
           -- AI-powered code assistance within Neovim, complementing OpenCode
           -- Uses Kimi K2.x via OpenRouter (OpenAI-compatible API)
