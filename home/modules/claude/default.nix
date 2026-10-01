@@ -49,18 +49,6 @@ in {
       # HACK because Claude code won't follow symlinks, replace with commented out file
       # stuff below as soon as possible
       activation = {
-        # Copy agents and commands into the Claude state directory
-        claude = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-          if [[ -v DRY_RUN ]]; then
-            echo "Would copy agents and commands to ${claudeStateDir}"
-          else
-            echo "Copying agents and commands to ${claudeStateDir}..."
-            mkdir -p "${claudeStateDir}/commands" "${claudeStateDir}/agents"
-            cp -f ${./config/commands}/* "${claudeStateDir}/commands"
-            cp -f ${./config/agents}/* "${claudeStateDir}/agents"
-          fi
-        '';
-
         # Update mcpServers in the Claude config file. Note this sits beside the
         # state directory rather than inside it — that is Claude's own layout when
         # CLAUDE_CONFIG_DIR is unset.
