@@ -13,6 +13,7 @@ in {
     packages = with pkgs; [
         age
         cosign
+        unstable.snyk
         sops
         syft
         tunnelmanager
