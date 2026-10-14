@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# No services or user authentication are required. Dependencies live in the
+# snapshot, and .bash_profile activates the development shell at login.
+nix --version

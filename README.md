@@ -55,6 +55,25 @@ I could finally start sharing.
 - [Home Manager](https://github.com/nix-community/home-manager) for user environment management
 - [nix-darwin](https://github.com/LnL7/nix-darwin) (for macOS systems)
 
+## Development and Amp Orbs
+
+Run `nix develop` for the development tools pinned by `flake.lock`: Make,
+Home Manager, Python with `requests`, jq, SOPS, GnuPG, and ShellCheck.
+The shell also points legacy `<nixpkgs>` imports at the locked nixpkgs input.
+
+Amp runs `.agents/setup` to realize this shell once before caching an orb
+snapshot. Setup reuses an existing Nix installation, or bootstraps Nix 2.35.3
+without a daemon if needed. A repository-scoped login hook exports the full
+shell environment for agents and supervised services, including when working
+in repository subdirectories. `.agents/resume` only checks Nix availability;
+it does not reinstall dependencies.
+
+Setup does not activate Home Manager or host configurations, import private
+keys, decrypt secrets, or authenticate user services. No backing services are
+required. Linux orbs can evaluate configurations and build Linux packages;
+macOS packages and system activation require an appropriate target machine.
+For a read-only smoke check, run `make show`.
+
 ## Installation
 
 ### First-time Setup
