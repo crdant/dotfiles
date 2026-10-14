@@ -18,6 +18,7 @@ in {
       # Work tooling
       asciinema
       asciinema-agg
+      tilt
     ] ++ lib.optionals isDarwin [
       linear
       notion-app
