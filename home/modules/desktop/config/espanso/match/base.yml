@@ -38,7 +38,7 @@ matches:
       73 Greenwood St.
       Melrose, MA 02176
   - trigger: ":bmail"
-    replace: chuck@crdant.io
+    replace: crdant@shortrib.io
   - trigger: ":hey"
     replace: crdant@hey.com
   - trigger: ":gmail"
