@@ -31,8 +31,6 @@ in {
     ] ++ lib.optionals isDarwin [
       unstable.chatgpt
       dockutil
-      vimr
-      (callPackage ./vimr-wrapper.nix { inherit config; })
     ];
 
     file = {

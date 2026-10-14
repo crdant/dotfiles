@@ -6,7 +6,6 @@ rec {
   mbta-mcp-server = pkgs.callPackage ./mbta-mcp-server { };
   tunnelmanager = pkgs.callPackage ./tunnelmanager { };
 
-  vimr = pkgs.callPackage ./vimr { };
   leftovers = pkgs.callPackage ./leftovers { };
 
   helm-beta = pkgs.callPackage ./helm-beta { };
