@@ -6,8 +6,8 @@ let
 in {
   # JavaScript/TypeScript development tools
   home.packages = with pkgs; [
-    bun
-    nodejs_22
+    unstable.bun
+    nodejs_24
     typescript-language-server
   ];
 

@@ -3,8 +3,10 @@
 let
   isDarwin = pkgs.stdenv.isDarwin;
 in {
-  # Audio transcoding tools (rely on macOS afconvert)
-  home.packages = with pkgs; lib.optionals isDarwin [
+  home.packages = with pkgs; [
+    ffmpeg
+  ] ++ lib.optionals isDarwin [
+    # Audio transcoding tools (rely on macOS afconvert)
     flac2aac
     shn2aac
   ];

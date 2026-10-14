@@ -92,7 +92,7 @@
 
 
       darwinConfigurations = {
-	      "aguardiente" = darwin.lib.darwinSystem {
+        "aguardiente" = darwin.lib.darwinSystem {
           system = "aarch64-darwin";
           specialArgs = {inherit inputs outputs;};
           modules = [ 
@@ -107,6 +107,16 @@
           specialArgs = {inherit inputs outputs;};
           modules = [ 
             ./systems/hosts/grappa/default.nix
+            ./home/users/crdant/crdant.nix
+            ./home/users/crdant/darwin.nix
+          ];
+        };
+
+        "cachaca" = darwin.lib.darwinSystem {
+          system = "aarch64-darwin";
+          specialArgs = {inherit inputs outputs;};
+          modules = [ 
+            ./systems/hosts/cachaca/default.nix
             ./home/users/crdant/crdant.nix
             ./home/users/crdant/darwin.nix
           ];

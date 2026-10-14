@@ -32,5 +32,6 @@
     ../modules/homelab
     ../modules/obsidian
     ../modules/writing
+    ../modules/tessl
   ];
 }

@@ -26,4 +26,6 @@ rec {
   ttok = pkgs.callPackage ./ttok { };
   rodney = pkgs.callPackage ./rodney { };
   showboat = pkgs.callPackage ./showboat { };
+  # Needs Playwright >= 1.62, which stable nixpkgs doesn't have yet
+  shot-scraper = pkgs.unstable.callPackage ./shot-scraper { };
 }

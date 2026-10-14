@@ -29,6 +29,7 @@ in {
         repomix
         rodney
         showboat
+        shot-scraper
         ttok
         unstable.fabric-ai
         unstable.github-mcp-server
