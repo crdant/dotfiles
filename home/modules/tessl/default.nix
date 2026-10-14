@@ -19,6 +19,7 @@ in {
       asciinema
       asciinema-agg
       postgresql
+      temporal-cli
       tilt
     ] ++ lib.optionals isDarwin [
       linear
