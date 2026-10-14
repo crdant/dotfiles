@@ -14,7 +14,6 @@ let
   tailscale = import ./defaults/tailscale.nix ;
   textedit = import ./defaults/textedit.nix ;
   todoist = import ./defaults/todoist.nix ;
-  vimr = import ./defaults/vimr.nix ;
 in
 {
   homebrew = {
@@ -72,7 +71,6 @@ in
         "com.apple.QuickTimePlayerX" = quicktime;
         # "com.apple.Safari" = safari;
         "com.apple.TextEdit" = textedit;
-        "com.qvacua.VimR" = vimr;
         "com.fiplab.memoryclean3" = memoryclean ;
         "io.tailscale.ipn.macos" = tailscale ;
         "org.cups.PrintingPrefs" = print ;
