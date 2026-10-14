@@ -7,7 +7,7 @@ let
   vaultsDir = "${homeDirectory}/workspace/vaults";
 in {
   home.packages = with pkgs; [
-    obsidian-headless
+    unstable.obsidian-headless
     vault-gardener
   ] ++ lib.optionals isLinux [
     unstable.obsidian
@@ -41,7 +41,7 @@ in {
     syncObsidianVault = lib.hm.dag.entryAfter ["setVaultsPermissions"] ''
       if [ -f "${homeDirectory}/.config/obsidian-headless/config.json" ]; then
         echo "Syncing Obsidian vault..."
-        ${pkgs.obsidian-headless}/bin/ob sync --vault-path "${vaultsDir}/Notes" || echo "Obsidian sync failed — have you run 'ob login' and 'ob sync-setup --vault Notes'?"
+        ${pkgs.unstable.obsidian-headless}/bin/ob sync --vault-path "${vaultsDir}/Notes" || echo "Obsidian sync failed — have you run 'ob login' and 'ob sync-setup --vault Notes'?"
       else
         echo "Obsidian headless not configured — run 'ob login' and 'ob sync-setup --vault Notes' first"
       fi

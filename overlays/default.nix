@@ -34,11 +34,6 @@
         hash = "sha256-xIHONVUk0DbDzdrH/SgeMXlNQGkL+aIfcy7z12+p/gg=";
       };
     });
-
-    python3Packages = prev.python3Packages // {
-      exa-py = prev.callPackage ./exa-py { };
-      mlx-lm = prev.callPackage ./mlx-lm { };
-    };
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
