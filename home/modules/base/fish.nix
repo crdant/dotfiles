@@ -116,6 +116,10 @@ in {
       set -U fish_pager_color_selected_prefix 9ccfd8
       set -U fish_pager_color_selected_completion e0def4
       set -U fish_pager_color_selected_description e0def4
+
+      if test -x /opt/homebrew/bin/brew
+        /opt/homebrew/bin/brew shellenv fish | source
+      end
     '';
 
     functions = {
