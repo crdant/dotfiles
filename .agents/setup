@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$repo_root"
+
+echo "Preparing Nix"
+SECONDS=0
+if ! command -v nix >/dev/null 2>&1; then
+  if [[ ! -x "$HOME/.nix-profile/bin/nix" ]]; then
+    # Orbs do not need a systemd daemon. Keep the bootstrap version explicit.
+    installer="$(mktemp)"
+    trap 'rm -f "$installer"' EXIT
+    curl --fail --location --retry 3 \
+      https://releases.nixos.org/nix/nix-2.35.3/install -o "$installer"
+    bash "$installer" --no-daemon --yes --no-channel-add --no-modify-profile
+  fi
+  # shellcheck disable=SC1091
+  source "$HOME/.nix-profile/etc/profile.d/nix.sh"
+fi
+export NIX_CONFIG="${NIX_CONFIG:-}
+experimental-features = nix-command flakes"
+nix_bin="$(command -v nix)"
+echo "Nix ready in ${SECONDS}s"
+
+echo "Realizing the locked development shell"
+SECONDS=0
+mkdir -p "$HOME/.cache/amp"
+nix print-dev-env --no-write-lock-file \
+  --profile "$HOME/.cache/amp/dotfiles-dev-shell" "$repo_root" >/dev/null
+echo "Development shell ready in ${SECONDS}s"
+
+# Amp and supervised services use non-interactive login shells. Export the
+# complete environment there, rather than relying on interactive direnv hooks.
+# Rewrite the hook on setup so a stale snapshot picks up script changes too.
+cat > "$HOME/.cache/amp/dotfiles-dev-shell.sh" <<EOF
+if [[ -z "\${IN_NIX_SHELL:-}" && ( "\$PWD" == "$repo_root" || "\$PWD" == "$repo_root/"* ) ]]; then
+  if [[ -f "\$HOME/.nix-profile/etc/profile.d/nix.sh" ]]; then
+    source "\$HOME/.nix-profile/etc/profile.d/nix.sh"
+  fi
+  export NIX_CONFIG="\${NIX_CONFIG:-}
+experimental-features = nix-command flakes"
+  eval "\$("$nix_bin" print-dev-env --no-write-lock-file "$repo_root")"
+fi
+EOF
+marker="# dotfiles orb development shell"
+if ! grep -Fqx "$marker" "$HOME/.bash_profile" 2>/dev/null; then
+  cat >> "$HOME/.bash_profile" <<EOF
+
+$marker
+source "\$HOME/.cache/amp/dotfiles-dev-shell.sh"
+EOF
+fi
+echo "Login-shell activation configured"

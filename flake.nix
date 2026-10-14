@@ -48,6 +48,23 @@
     in {
       overlays = import ./overlays {inherit inputs;};
 
+      devShells = nixpkgs.lib.genAttrs supportedSystems (system:
+        let pkgs = mkPkgs system; in {
+          default = pkgs.mkShellNoCC {
+            packages = [
+              pkgs.gnumake
+              pkgs.jq
+              pkgs.sops
+              pkgs.gnupg
+              pkgs.shellcheck
+              (pkgs.python3.withPackages (ps: [ ps.requests ]))
+              home-manager.packages.${system}.home-manager
+            ];
+            # Legacy package tests import <nixpkgs>; use the same locked input.
+            NIX_PATH = "nixpkgs=${pkgs.path}";
+          };
+        });
+
       nixosConfigurations = {
         mash = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
