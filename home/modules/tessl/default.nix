@@ -18,6 +18,7 @@ in {
       # Work tooling
       asciinema
       asciinema-agg
+      postgresql
       tilt
     ] ++ lib.optionals isDarwin [
       linear
