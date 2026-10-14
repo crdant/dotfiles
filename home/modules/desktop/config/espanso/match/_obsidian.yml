@@ -1,0 +1,56 @@
+matches:
+  # github issues
+  - regex: "(?P<owner>[\\w-]+)/(?P<repo>[\\w.-]+)#(?P<num>\\d+)\\s"
+    replace: "[{{owner}}/{{repo}}#{{num}}](https://github.com/{{owner}}/{{repo}}/pull/{{num}}) "
+
+  # Repo shorthand:  gh:crdant/dotfiles
+  - regex: "gh:(?P<owner>[\\w-]+)/(?P<repo>[\\w.-]+)\\s"
+    replace: "[{{owner}}/{{repo}}](https://github.com/{{owner}}/{{repo}}) "
+
+  # User/org:  gh@crdant
+  - regex: "gh@(?P<u>[\\w-]+)\\s"
+    replace: "[@{{u}}](https://github.com/{{u}}) "
+
+  # Commit:  crdant/dotfiles@a1b2c3d
+  - regex: "(?P<owner>[\\w-]+)/(?P<repo>[\\w.-]+)@(?P<sha>[0-9a-f]{7,40})\\s"
+    replace: "[{{owner}}/{{repo}}@{{sha}}](https://github.com/{{owner}}/{{repo}}/commit/{{sha}}) "
+
+    # Linear:  lin:ENG-123
+  - regex: "lin:(?P<id>[A-Z]{2,}-\\d+)\\s"
+    replace: "[{{id}}](https://linear.app/tessl/issue/{{id}}) "
+
+   # npm:react
+  - regex: "npm:(?P<p>[\\w@/.-]+)\\s"
+    replace: "[{{p}}](https://www.npmjs.com/package/{{p}}) "
+
+  # X profile:  x@crdant
+  - regex: "x@(?P<u>\\w+)\\s"
+    replace: "[@{{u}}](https://x.com/{{u}}) "
+
+  # LinkedIn person:  li@chris-dant
+  - regex: "li@(?P<u>[\\w-]+)\\s"
+    replace: "[{{u}}](https://www.linkedin.com/in/{{u}}) "
+
+  # PyPI:  pypi:requests
+  - regex: "pypi:(?P<p>[\\w.-]+)\\s"
+    replace: "[{{p}}](https://pypi.org/project/{{p}}/) "
+
+  # Rust crate:  crate:serde
+  - regex: "crate:(?P<p>[\\w-]+)\\s"
+    replace: "[{{p}}](https://crates.io/crates/{{p}}) "
+
+  # Go module:  go:github.com/spf13/cobra
+  - regex: "go:(?P<p>[\\w./-]+)\\s"
+    replace: "[{{p}}](https://pkg.go.dev/{{p}}) "
+
+  # RubyGem:  gem:rails
+  - regex: "gem:(?P<p>[\\w-]+)\\s"
+    replace: "[{{p}}](https://rubygems.org/gems/{{p}}) "
+
+  # Docker Hub (user image):  docker:grafana/loki
+  - regex: "docker:(?P<o>[\\w-]+)/(?P<i>[\\w.-]+)\\s"
+    replace: "[{{o}}/{{i}}](https://hub.docker.com/r/{{o}}/{{i}}) "
+
+  # Homebrew formula:  brew:ripgrep
+  - regex: "brew:(?P<f>[\\w@+-]+)\\s"
+    replace: "[{{f}}](https://formulae.brew.sh/formula/{{f}}) "
