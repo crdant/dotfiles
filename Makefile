@@ -49,6 +49,10 @@ show: ## Show available configurations in the flake
 update: ## Update flake inputs
 	$(NIX) flake update 
 
+.PHONY: update-python-tools
+update-python-tools: ## Upgrade the uv-locked Python tools in pkgs/simonw-tools
+	cd pkgs/simonw-tools && uv lock --upgrade
+
 .PHONY: check
 check: ## Check flake
 	$(NIX) flake check 

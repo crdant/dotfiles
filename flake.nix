@@ -23,6 +23,17 @@
     # match what its CI tests
     hermes-agent.url = "github:NousResearch/hermes-agent";
 
+    # Builds Python tools from a uv lockfile (see pkgs/simonw-tools)
+    pyproject-nix.url = "github:pyproject-nix/pyproject.nix";
+    pyproject-nix.inputs.nixpkgs.follows = "nixpkgs";
+    uv2nix.url = "github:pyproject-nix/uv2nix";
+    uv2nix.inputs.pyproject-nix.follows = "pyproject-nix";
+    uv2nix.inputs.nixpkgs.follows = "nixpkgs";
+    pyproject-build-systems.url = "github:pyproject-nix/build-system-pkgs";
+    pyproject-build-systems.inputs.pyproject-nix.follows = "pyproject-nix";
+    pyproject-build-systems.inputs.uv2nix.follows = "uv2nix";
+    pyproject-build-systems.inputs.nixpkgs.follows = "nixpkgs";
+
   };
 
   outputs = { self, nixpkgs, home-manager, darwin, ...}@inputs:
@@ -50,6 +61,10 @@
           ];
         };
     in {
+      packages = nixpkgs.lib.genAttrs supportedSystems (system:
+        import ./pkgs { pkgs = mkPkgs system; inherit inputs; }
+      );
+
       overlays = import ./overlays {inherit inputs;};
 
       devShells = nixpkgs.lib.genAttrs supportedSystems (system:
@@ -61,6 +76,7 @@
               pkgs.sops
               pkgs.gnupg
               pkgs.shellcheck
+              pkgs.uv
               (pkgs.python3.withPackages (ps: [ ps.requests ]))
               home-manager.packages.${system}.home-manager
             ];

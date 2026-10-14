@@ -1,0 +1,15 @@
+# Locks simonw's tools for pkgs/simonw-tools/default.nix; nothing is built
+# from this project itself. Upgrade with `make update-python-tools`.
+[project]
+name = "simonw-tools"
+version = "0"
+requires-python = ">=3.13"
+dependencies = [
+  "claude-code-transcripts",
+  "rodney",
+  "showboat",
+  "ttok",
+]
+
+[tool.uv]
+package = false

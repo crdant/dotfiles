@@ -1,6 +1,6 @@
 # Custom packages, that can be defined similarly to ones from nixpkgs
 # You can build them using 'nix build .#example'
-{ pkgs ? import <nixpkgs> {} } : 
+{ pkgs ? import <nixpkgs> {}, inputs ? {} } : 
 rec {
 
   mbta-mcp-server = pkgs.callPackage ./mbta-mcp-server { };
@@ -21,11 +21,10 @@ rec {
   flac2aac = pkgs.callPackage ./flac2aac { };
   shn2aac = pkgs.callPackage ./shn2aac { };
 
-  # simonw tools
-  claude-code-transcripts = pkgs.callPackage ./claude-code-transcripts { };
-  ttok = pkgs.callPackage ./ttok { };
-  rodney = pkgs.callPackage ./rodney { };
-  showboat = pkgs.callPackage ./showboat { };
+  # simonw tools, locked with uv (see ./simonw-tools); needs the uv2nix
+  # flake inputs, so only available through the flake
+  inherit (import ./simonw-tools { inherit pkgs inputs; })
+    claude-code-transcripts ttok rodney showboat;
   # Needs Playwright >= 1.62, which stable nixpkgs doesn't have yet
   shot-scraper = pkgs.unstable.callPackage ./shot-scraper { };
 }
