@@ -9,11 +9,7 @@ rec {
   vimr = pkgs.callPackage ./vimr { };
   leftovers = pkgs.callPackage ./leftovers { };
 
-  helm-beta = pkgs.callPackage ./helm-beta { };
-
   llmPlugins = pkgs.callPackage ./llm/plugins { };
-
-  imgpkg = pkgs.callPackage ./imgpkg { };
 
   icalpal = pkgs.callPackage ./icalpal { };
   mole = pkgs.callPackage ./mole { };
@@ -24,7 +20,6 @@ rec {
   hermes-agent = pkgs.callPackage ./hermes-agent { };
   vault-gardener = pkgs.callPackage ./vault-gardener { };
   space-grotesk = pkgs.callPackage ./space-grotesk { };
-  obsidian-headless = pkgs.callPackage ./obsidian-headless { };
 
   kubectl-refresh-config = pkgs.callPackage ./kubectl-refresh-config { };
 

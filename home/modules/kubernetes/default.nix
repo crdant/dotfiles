@@ -8,7 +8,7 @@ in {
   home = {
     packages = with pkgs; [
       conftest
-      helm-beta
+      unstable.kubernetes-helm
       helmfile
       istioctl
       krew
