@@ -65,11 +65,16 @@ in {
       # Bootstrap the public keyring on a fresh machine. Private key material
       # lives on the YubiKey; these are public keys + ownertrust only, imported
       # additively (mutableKeys/mutableTrust stay at their `true` defaults).
+      # The user's own keys come from home/users/<user>/gpg-keys.nix.
       publicKeys = [
-        { source = ./config/gnupg/keys/crdant-shortrib.asc; trust = "ultimate"; }  # current key (card)
-        { source = ./config/gnupg/keys/crdant-2021.asc; trust = "ultimate"; }      # older personal key
-        { source = ./config/gnupg/keys/github-web-flow.asc; trust = "full"; }      # GitHub web-flow (2024)
-        { source = ./config/gnupg/keys/github-web-flow-2017.asc; trust = "full"; } # GitHub web-flow (2017)
+        # GitHub web-flow (2017 + 2024), signs commits made on github.com
+        {
+          source = builtins.fetchurl {
+            url = "https://github.com/web-flow.gpg";
+            sha256 = "117gldk49gc76y7wqq6a4kjgkrlmdsrb33qw2l1z9wqcys3zd2kf";
+          };
+          trust = "full";
+        }
       ];
     };
 
