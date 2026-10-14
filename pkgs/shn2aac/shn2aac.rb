@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
-require 'tempfile'
+require 'tmpdir'
+require 'fileutils'
 require 'optparse'
 
 class Shn2AAC
@@ -35,7 +36,7 @@ class Shn2AAC
       puts "Transcoding #{trackname} to #{basename}.m4a...\n"
       aiffdir = Dir.mktmpdir
       aiffname = "#{aiffdir}/#{basename}.aiff"
-      system %Q[shn shorten -x "#{trackname}" -o aiff -d #{aiffdir}]
+      system %Q[ffmpeg -nostdin -loglevel error -y -i "#{trackname}" "#{aiffname}"]
       system %Q[afconvert "#{aiffname}" -q 127 -b 128000 -f m4af -d aac -o "#{basename}.m4a"]
       
       metadata_args = prepare_metadata_args(trackname)

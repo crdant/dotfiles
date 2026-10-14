@@ -28,6 +28,9 @@ rec {
 
   kubectl-refresh-config = pkgs.callPackage ./kubectl-refresh-config { };
 
+  flac2aac = pkgs.callPackage ./flac2aac { };
+  shn2aac = pkgs.callPackage ./shn2aac { };
+
   # simonw tools
   claude-code-transcripts = pkgs.callPackage ./claude-code-transcripts { };
   ttok = pkgs.callPackage ./ttok { };
