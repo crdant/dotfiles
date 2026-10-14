@@ -14,6 +14,10 @@ in {
       atkinson-hyperlegible
       atkinson-hyperlegible-next
       atkinson-hyperlegible-mono
+
+      # Work tooling
+      asciinema
+      asciinema-agg
     ] ++ lib.optionals isDarwin [
       linear
       notion-app
