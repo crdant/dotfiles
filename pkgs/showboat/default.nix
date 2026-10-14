@@ -20,7 +20,7 @@ buildGoModule rec {
 
   meta = with lib; {
     homepage = "https://github.com/simonw/showboat";
-    description = "CLI tool for interacting with the web";
+    description = "Create executable documents that demonstrate an agent's work";
     mainProgram = "showboat";
     license = licenses.asl20;
   };

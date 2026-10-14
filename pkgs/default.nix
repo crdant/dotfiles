@@ -13,11 +13,7 @@ rec {
   icalpal = pkgs.callPackage ./icalpal { };
   mole = pkgs.callPackage ./mole { };
 
-  zapier-platform-cli = pkgs.callPackage ./zapier-platform-cli { };
-  spiral-cli = pkgs.callPackage ./spiral-cli { };
   readwise-cli = pkgs.callPackage ./readwise-cli { };
-  hermes-agent = pkgs.callPackage ./hermes-agent { };
-  vault-gardener = pkgs.callPackage ./vault-gardener { };
   space-grotesk = pkgs.callPackage ./space-grotesk { };
 
   kubectl-refresh-config = pkgs.callPackage ./kubectl-refresh-config { };

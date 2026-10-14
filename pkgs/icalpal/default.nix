@@ -9,7 +9,7 @@
 }:
 
 let
-  version = "4.1.1";
+  version = "4.2.1";
 
   # Create a bundler environment with all the dependencies pre-installed
   gems = bundlerEnv {
@@ -35,7 +35,7 @@ stdenv.mkDerivation {
     owner = "ajrosen";
     repo = "icalPal";
     rev = "icalPal-${version}";
-    hash = "sha256-NWFXnp06ln5JOc08U4ZVFrSBijmNamKbUj0Djo9c8ZQ=";
+    hash = "sha256-UIoJNhEzK3g8Yq2BA9Ektx9MM+uQZRIC12MImca1yaE=";
   };
 
   nativeBuildInputs = [ makeWrapper ];

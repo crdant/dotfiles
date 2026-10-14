@@ -7,18 +7,23 @@
 
 python3.pkgs.buildPythonPackage rec {
   pname = "ttok";
-  version = "0.3";
+  version = "1.0";
 
   pyproject = true;
   build-system = [
-    python3.pkgs.setuptools
+    python3.pkgs.uv-build
   ];
+
+  postPatch = ''
+    substituteInPlace pyproject.toml \
+      --replace-fail 'uv_build>=0.11.0,<0.12.0' 'uv_build'
+  '';
 
   src = fetchFromGitHub {
     owner = "simonw";
     repo = "ttok";
     rev = version;
-    sha256 = "sha256-I6EPE6GDAiDM+FbxYzRW4Pml0wDA2wNP1y3pD3dg7Gg=";
+    sha256 = "sha256-VnslA5tYcrKLZJOXJi3ze/zhPyghBUlbuf6xpCDezgM=";
   };
 
   propagatedBuildInputs = with python3.pkgs; [
