@@ -76,7 +76,7 @@ in
     programs.zsh.envExtra = ''
       # Codex MCP secrets
       export FIRECRAWL_API_KEY="$(cat ${config.sops.secrets."firecrawl/api_key".path})"
-      export GITHUB_TOKEN="$(cat ${config.sops.secrets."github/token".path})"
+      # export GITHUB_TOKEN="$(cat ${config.sops.secrets."github/token".path})"
       export MBTA_API_KEY="$(cat ${config.sops.secrets."mbta/apiKey".path})"
       export GOOGLE_MAPS_API_KEY="$(cat ${config.sops.secrets."google/maps/apiKey".path})"
     '';
