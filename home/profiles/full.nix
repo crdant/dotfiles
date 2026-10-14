@@ -19,6 +19,7 @@
     ../modules/containers
     ../modules/cicd
     ../modules/kubernetes
+    ../modules/media
     ../modules/shortrib-labs
     ../modules/secrets
     ../modules/security
