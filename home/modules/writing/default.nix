@@ -5,7 +5,6 @@
     pandoc
     readwise-cli
     unstable.rumdl
-    spiral-cli
     texlive.combined.scheme-small
   ];
 

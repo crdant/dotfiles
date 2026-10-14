@@ -19,6 +19,10 @@
     _1password-shell-plugins.url = "github:1Password/shell-plugins";
     _1password-shell-plugins.inputs.nixpkgs.follows = "home-manager"; # ...
 
+    # Upstream flake for the Hermes agent; keeps its own nixpkgs so builds
+    # match what its CI tests
+    hermes-agent.url = "github:NousResearch/hermes-agent";
+
   };
 
   outputs = { self, nixpkgs, home-manager, darwin, ...}@inputs:

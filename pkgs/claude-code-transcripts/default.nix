@@ -41,7 +41,7 @@ python3.pkgs.buildPythonPackage rec {
   pythonImportsCheck = [ "claude_code_transcripts" ];
 
   meta = with lib; {
-    description = "Convert Claude Code session files to HTML transcripts";
+    description = "Tools for publishing transcripts for Claude Code sessions";
     homepage = "https://github.com/simonw/claude-code-transcripts";
     license = licenses.asl20;
     mainProgram = "claude-code-transcripts";
