@@ -11,7 +11,6 @@ rec {
   llmPlugins = pkgs.callPackage ./llm/plugins { };
 
   icalpal = pkgs.callPackage ./icalpal { };
-  mole = pkgs.callPackage ./mole { };
 
   readwise-cli = pkgs.callPackage ./readwise-cli { };
   space-grotesk = pkgs.callPackage ./space-grotesk { };
