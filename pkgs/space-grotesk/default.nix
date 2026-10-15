@@ -1,4 +1,4 @@
-{ lib, stdenvNoCC, fetchzip }:
+{ lib, stdenvNoCC, fetchzip, nix-update-script }:
 
 stdenvNoCC.mkDerivation rec {
   pname = "space-grotesk";
@@ -18,6 +18,8 @@ stdenvNoCC.mkDerivation rec {
 
     runHook postInstall
   '';
+
+  passthru.updateScript = nix-update-script { };
 
   meta = with lib; {
     description = "Proportional variable typeface derived from Space Mono";

@@ -1,4 +1,4 @@
-{ stdenv, lib, buildGoModule, fetchFromGitHub }:
+{ stdenv, lib, buildGoModule, fetchFromGitHub, nix-update-script }:
 
 buildGoModule rec {
   pname = "mole";
@@ -42,6 +42,8 @@ EOF
     chmod +x $out/bin/mo
     substituteInPlace $out/bin/mo --replace-fail '@out@' "$out"
   '';
+
+  passthru.updateScript = nix-update-script { };
 
   meta = with lib; {
     homepage = "https://github.com/tw93/Mole";

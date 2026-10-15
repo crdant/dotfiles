@@ -1,4 +1,4 @@
-{ stdenv, lib, buildGoModule, fetchFromGitHub, installShellFiles, pkg-config }:
+{ stdenv, lib, buildGoModule, fetchFromGitHub, nix-update-script, installShellFiles, pkg-config }:
 
 buildGoModule rec {
   pname = "leftovers";
@@ -14,6 +14,8 @@ buildGoModule rec {
   vendorHash = "sha256-yYRQcjQyVqoBUkWHG/hwuSK/JLsl6u+wrGAuWOxwIAs=";
 
   nativeBuildInputs = [ installShellFiles ];
+
+  passthru.updateScript = nix-update-script { };
 
   meta = with lib; {
     homepage = "https://github.com/genevieve/leftovers";

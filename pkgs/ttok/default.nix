@@ -3,6 +3,7 @@
   lib,
   python3,
   fetchFromGitHub,
+  nix-update-script,
 }:
 
 python3.pkgs.buildPythonPackage rec {
@@ -36,6 +37,8 @@ python3.pkgs.buildPythonPackage rec {
   ];
 
   pythonImportsCheck = [ "ttok" ];
+
+  passthru.updateScript = nix-update-script { };
 
   meta = with lib; {
     description = "Count and truncate text based on tokens";
