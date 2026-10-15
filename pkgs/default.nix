@@ -8,8 +8,6 @@ rec {
 
   leftovers = pkgs.callPackage ./leftovers { };
 
-  llmPlugins = pkgs.callPackage ./llm/plugins { };
-
   icalpal = pkgs.callPackage ./icalpal { };
 
   readwise-cli = pkgs.callPackage ./readwise-cli { };

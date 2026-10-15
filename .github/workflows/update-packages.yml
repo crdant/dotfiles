@@ -1,0 +1,99 @@
+name: Update packages
+
+# Opens a pull request for each custom package with a newer upstream version.
+# A package opts in by setting `passthru.updateScript = nix-update-script { ... }`;
+# any extraArgs it passes are handed to nix-update here.
+
+on:
+  schedule:
+    - cron: "23 7 * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: update-packages
+  cancel-in-progress: false
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+      - id: matrix
+        name: List packages with an update script
+        run: |
+          # Packages that only evaluate on Darwin are updated on a macOS runner,
+          # everything else on Linux.
+          # shellcheck disable=SC2016 # ${name} is Nix interpolation, not shell
+          matrix=$(nix eval --json .#packages --apply '
+            packages:
+            let
+              linux = packages.x86_64-linux;
+              all = packages.aarch64-darwin // linux;
+              extraArgs = pkg:
+                let script = pkg.updateScript;
+                    command = if builtins.isList script then script else script.command;
+                in builtins.concatStringsSep " " (builtins.tail command);
+            in
+              map (name: {
+                package = name;
+                runner = if linux ? ${name} then "ubuntu-latest" else "macos-latest";
+                args = extraArgs all.${name};
+              }) (builtins.filter (name: all.${name} ? updateScript) (builtins.attrNames all))
+          ')
+          echo "$matrix" | jq .
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+
+  update:
+    needs: discover
+    if: needs.discover.outputs.matrix != '[]'
+    name: update ${{ matrix.package }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
+    permissions:
+      contents: write
+      pull-requests: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.discover.outputs.matrix) }}
+    env:
+      PACKAGE: ${{ matrix.package }}
+      UPDATE_ARGS: ${{ matrix.args }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+      - id: update
+        name: Update and build
+        run: |
+          old=$(nix eval --raw ".#${PACKAGE}.version")
+
+          # Use the nix-update from the locked nixpkgs-unstable so runs are reproducible
+          rev=$(jq -r '.nodes["nixpkgs-unstable"].locked.rev' flake.lock)
+          # shellcheck disable=SC2086 # UPDATE_ARGS is a space-separated argument list
+          nix run "github:NixOS/nixpkgs/${rev}#nix-update" -- \
+            --flake --build $UPDATE_ARGS "$PACKAGE"
+
+          new=$(nix eval --raw ".#${PACKAGE}.version")
+          echo "old=$old" >> "$GITHUB_OUTPUT"
+          echo "new=$new" >> "$GITHUB_OUTPUT"
+      - uses: peter-evans/create-pull-request@v8
+        with:
+          branch: update/${{ matrix.package }}
+          delete-branch: true
+          commit-message: "${{ matrix.package }}: ${{ steps.update.outputs.old }} -> ${{ steps.update.outputs.new }}"
+          title: "${{ matrix.package }}: ${{ steps.update.outputs.old }} -> ${{ steps.update.outputs.new }}"
+          body: |
+            Updates `${{ matrix.package }}` from ${{ steps.update.outputs.old }} to ${{ steps.update.outputs.new }} using `nix-update`.
+
+            The package built successfully on `${{ matrix.runner }}` as part of this run.

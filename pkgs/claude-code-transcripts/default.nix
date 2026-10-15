@@ -2,6 +2,7 @@
   lib,
   python3,
   fetchFromGitHub,
+  nix-update-script,
 }:
 
 python3.pkgs.buildPythonPackage rec {
@@ -39,6 +40,8 @@ python3.pkgs.buildPythonPackage rec {
   ];
 
   pythonImportsCheck = [ "claude_code_transcripts" ];
+
+  passthru.updateScript = nix-update-script { };
 
   meta = with lib; {
     description = "Tools for publishing transcripts for Claude Code sessions";

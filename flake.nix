@@ -52,6 +52,20 @@
     in {
       overlays = import ./overlays {inherit inputs;};
 
+      # Custom packages, exposed so they can be built and updated on their own.
+      # Each system only gets the packages whose meta.platforms include it.
+      packages = nixpkgs.lib.genAttrs supportedSystems (system:
+        let
+          pkgs = import nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+            overlays = [ outputs.overlays.unstable-packages ];
+          };
+        in
+          nixpkgs.lib.filterAttrs
+            (_: pkg: nixpkgs.lib.meta.availableOn pkgs.stdenv.hostPlatform pkg)
+            (import ./pkgs { inherit pkgs; }));
+
       devShells = nixpkgs.lib.genAttrs supportedSystems (system:
         let pkgs = mkPkgs system; in {
           default = pkgs.mkShellNoCC {

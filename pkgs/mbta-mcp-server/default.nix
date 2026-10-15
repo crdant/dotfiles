@@ -1,4 +1,4 @@
-{ lib, buildGoModule, fetchFromGitHub }:
+{ lib, buildGoModule, fetchFromGitHub, nix-update-script }:
 
 buildGoModule rec {
   pname = "mbta-mcp-server";
@@ -29,6 +29,8 @@ buildGoModule rec {
     cp bin/mbta-mcp-server $out/bin/
     runHook postInstall
   '';
+
+  passthru.updateScript = nix-update-script { };
 
   meta = with lib; {
     description = "MBTA MCP Server";

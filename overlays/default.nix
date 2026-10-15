@@ -27,13 +27,7 @@
 
     mas = final.unstable.mas;
 
-    container = prev.container.overrideAttrs (oldAttrs: rec {
-      version = "0.10.0";
-      src = prev.fetchurl {
-        url = "https://github.com/apple/container/releases/download/${version}/container-${version}-installer-signed.pkg";
-        hash = "sha256-xIHONVUk0DbDzdrH/SgeMXlNQGkL+aIfcy7z12+p/gg=";
-      };
-    });
+    container = final.unstable.container;
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
