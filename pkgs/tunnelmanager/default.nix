@@ -2,12 +2,12 @@
 
 buildGoModule rec {
   pname = "tunnelmanager";
-  version = "0.1.0";
+  version = "0-unstable-2024-01-12";
 
   src = fetchFromGitHub {
     owner = "crdant";
     repo = "tunnelmanager";
-    rev = "main";
+    rev = "7190a4432d4cf820384f004920573d4b948712b8";
     sha256 = "sha256-v36xjjkukY9EXHLp9/z/YUysMCA+NXIWr9B+37UODiQ=";
   };
 
