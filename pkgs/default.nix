@@ -8,8 +8,6 @@ rec {
 
   leftovers = pkgs.callPackage ./leftovers { };
 
-  llmPlugins = pkgs.callPackage ./llm/plugins { };
-
   icalpal = pkgs.callPackage ./icalpal { };
   mole = pkgs.callPackage ./mole { };
 
