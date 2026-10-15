@@ -1,4 +1,4 @@
-{ stdenv, lib, pkgs, buildGoModule, fetchFromGitHub, installShellFiles, pkg-config, bash, python3 }:
+{ stdenv, lib, pkgs, buildGoModule, fetchFromGitHub, nix-update-script, installShellFiles, pkg-config, bash, python3 }:
 let
   isDarwin = stdenv.isDarwin;
   isLinux = stdenv.isLinux;
@@ -20,6 +20,8 @@ buildGoModule rec {
   doCheck = false;
 
   nativeBuildInputs = [ installShellFiles pkg-config python3];
+
+  passthru.updateScript = nix-update-script { };
 
   meta = with lib; {
     homepage = "https://github.com/simonw/rodney";

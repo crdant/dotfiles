@@ -2,6 +2,7 @@
   lib,
   python3,
   fetchFromGitHub,
+  nix-update-script,
   playwright-driver,
 }:
 
@@ -46,6 +47,8 @@ python3.pkgs.buildPythonApplication rec {
   doCheck = false;
 
   pythonImportsCheck = [ "shot_scraper" ];
+
+  passthru.updateScript = nix-update-script { };
 
   meta = with lib; {
     description = "Tool for taking automated screenshots of websites";

@@ -1,4 +1,4 @@
-{ stdenv, lib, pkgs, buildGoModule, fetchFromGitHub, installShellFiles, pkg-config, bash, python3 }:
+{ stdenv, lib, pkgs, buildGoModule, fetchFromGitHub, nix-update-script, installShellFiles, pkg-config, bash, python3 }:
 let
   isDarwin = stdenv.isDarwin;
   isLinux = stdenv.isLinux;
@@ -17,6 +17,8 @@ buildGoModule rec {
   vendorHash = "sha256-mGKxBRU5TPgdmiSx0DHEd0Ys8gsVD/YdBfbDdSVpC3U=";
 
   nativeBuildInputs = [ installShellFiles pkg-config python3 ];
+
+  passthru.updateScript = nix-update-script { };
 
   meta = with lib; {
     homepage = "https://github.com/simonw/showboat";

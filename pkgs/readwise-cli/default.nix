@@ -2,6 +2,7 @@
   lib,
   buildNpmPackage,
   fetchurl,
+  nix-update-script,
 }:
 
 let
@@ -26,6 +27,8 @@ buildNpmPackage rec {
 
   npmDepsHash = "sha256-zsEAUEmOEchpDxhstKYLr2sxX9fNmMmtKaj2IvqcCAw=";
   dontNpmBuild = true;
+
+  passthru.updateScript = nix-update-script { extraArgs = [ "--generate-lockfile" ]; };
 
   meta = with lib; {
     description = "CLI for Readwise";

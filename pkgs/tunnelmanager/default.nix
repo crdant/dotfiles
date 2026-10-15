@@ -1,4 +1,4 @@
-{ stdenv, lib, buildGoModule, fetchFromGitHub, installShellFiles, pkg-config }:
+{ stdenv, lib, buildGoModule, fetchFromGitHub, nix-update-script, installShellFiles, pkg-config }:
 
 buildGoModule rec {
   pname = "tunnelmanager";
@@ -21,6 +21,8 @@ buildGoModule rec {
     $out/bin/tunnelctl completion fish > tunnelctl.fish
     installShellCompletion tunnelctl.{bash,zsh,fish}
   '';
+
+  passthru.updateScript = nix-update-script { extraArgs = [ "--version=branch" ]; };
 
   meta = with lib; {
     homepage = "https://github.com/crdant/tunnelmanager";
