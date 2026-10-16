@@ -119,6 +119,21 @@ in {
 
       if test -x /opt/homebrew/bin/brew
         /opt/homebrew/bin/brew shellenv fish | source
+
+        # brew shellenv doesn't add Homebrew's fish completions; put them
+        # ahead of the man-page-generated ones so they aren't shadowed
+        set -l brew_completions /opt/homebrew/share/fish/vendor_completions.d
+        if test -d $brew_completions; and not contains $brew_completions $fish_complete_path
+          set -l complete_path
+          for dir in $fish_complete_path
+            if string match -q '*generated_completions' -- $dir; and not contains $brew_completions $complete_path
+              set -a complete_path $brew_completions
+            end
+            set -a complete_path $dir
+          end
+          contains $brew_completions $complete_path; or set -a complete_path $brew_completions
+          set fish_complete_path $complete_path
+        end
       end
     '';
 
