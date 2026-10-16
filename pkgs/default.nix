@@ -9,7 +9,6 @@ rec {
   leftovers = pkgs.callPackage ./leftovers { };
 
   icalpal = pkgs.callPackage ./icalpal { };
-  mole = pkgs.callPackage ./mole { };
 
   readwise-cli = pkgs.callPackage ./readwise-cli { };
   space-grotesk = pkgs.callPackage ./space-grotesk { };

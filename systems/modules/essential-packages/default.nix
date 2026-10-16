@@ -41,7 +41,7 @@ in (lib.mkMerge [
         mas
         m-cli
         darwin.trash
-        mole
+        unstable.mole-cleaner
         uutils-coreutils
       ] ++ lib.optionals isLinux [
         pciutils
