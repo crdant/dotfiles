@@ -5,4 +5,11 @@
   ];
 
   nix.enable = false;
+
+  homebrew = {
+    casks = [
+      "webex"
+    ];
+  };
+
 } 
