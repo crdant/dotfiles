@@ -58,3 +58,11 @@ matches:
   # Tessl registry:  tessl:tessl/brand-and-design
   - regex: "tessl:(?P<w>[\\w-]+)/(?P<p>[\\w.-]+)\\s"
     replace: "[{{w}}/{{p}}](https://tessl.io/registry/{{w}}/{{p}}) "
+
+  # Slack channel:  slack:proj-automated-demo-factory
+  - regex: "slack:#?(?P<c>[\\w-]+)\\s"
+    replace: "[#{{c}}](https://tesslio.slack.com/channels/{{c}}) "
+
+  # Slack person:  slack:@chuck
+  - regex: "slack:@(?P<u>[\\w.-]+)\\s"
+    replace: "[@{{u}}](https://tesslio.slack.com/team/{{u}}) "
