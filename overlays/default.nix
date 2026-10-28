@@ -27,6 +27,30 @@
 
     mas = final.unstable.mas;
 
+    # Bartender 7 is only available as a macOS 27 beta, so nixpkgs still
+    # ships Bartender 6. The beta zip nests the app under a build directory
+    # alongside __MACOSX, so unpack without stripping the root and copy the
+    # app out explicitly. Betas expire; bump the URL and hash from
+    # https://www.macbartender.com/goldengate/releases/ and drop this once
+    # nixpkgs packages a 7.x release.
+    bartender = final.unstable.bartender.overrideAttrs (old: {
+      version = "7.0.0-beta4";
+      src = final.fetchzip {
+        url = "https://downloads.macbartender.com/GoldenGate/bt7-beta4.zip";
+        hash = "sha256-Xx59A6vPSCUtCDv0L+RjqEHOKTaGDvowJfvZwSJG2VQ=";
+        stripRoot = false;
+      };
+      appName = "Bartender 7.app";
+      installPhase = ''
+        runHook preInstall
+
+        mkdir -p "$out/Applications"
+        cp -R "b7-b4/Bartender 7.app" "$out/Applications/"
+
+        runHook postInstall
+      '';
+    });
+
     container = final.unstable.container;
   };
 
