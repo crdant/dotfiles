@@ -6,11 +6,11 @@
 }:
 
 let
-  version = "0.5.6";
+  version = "0.5.11";
 
   tarball = fetchurl {
     url = "https://registry.npmjs.org/@readwise/cli/-/cli-${version}.tgz";
-    hash = "sha256-Hrf6Tng7dRRRzyWopaJ+5PQYD2EtUsdta5Iw98e4BuY=";
+    hash = "sha256-0dP8pVZpOBPm04rKsTRjQGJVN9PHZkLvXVPdTm+MOQw=";
   };
 in
 buildNpmPackage rec {
@@ -25,7 +25,7 @@ buildNpmPackage rec {
     cp ${./package-lock.json} package-lock.json
   '';
 
-  npmDepsHash = "sha256-zsEAUEmOEchpDxhstKYLr2sxX9fNmMmtKaj2IvqcCAw=";
+  npmDepsHash = "sha256-n/RFUFnfej8AHrjMxdHoyfvs9H7Cyj8URxXDb/HG86I=";
   dontNpmBuild = true;
 
   passthru.updateScript = nix-update-script { extraArgs = [ "--generate-lockfile" ]; };
