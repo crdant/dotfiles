@@ -156,6 +156,7 @@ in {
     rex = {
       enable = true;
       sshGuard = config.programs.ssh.enable;
+      config = ./config/rex/init.lua;
     };
 
     atuin = {
