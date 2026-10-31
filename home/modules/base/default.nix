@@ -4,7 +4,11 @@ let
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
 in {
-  imports = [ ./fish.nix ./zsh.nix ];
+  imports = [
+    ./fish.nix
+    ./zsh.nix
+    inputs.rex.homeModules.default
+  ];
 
   options.guiEnvironment = lib.mkOption {
     type = lib.types.attrsOf lib.types.str;
@@ -145,7 +149,16 @@ in {
   # Essential programs
   programs = {
     home-manager.enable = true;
-    
+
+    # Rex CLI, xterm-rex terminfo, and the SSH TERM fallback. On macOS the Rex
+    # app (a gated beta download) runs the server, so services.rex stays off.
+    # The SSH fallback is only written where home-manager manages ~/.ssh/config.
+    rex = {
+      enable = true;
+      sshGuard = config.programs.ssh.enable;
+      config = ./config/rex/init.lua;
+    };
+
     atuin = {
       enable = true;
       package = pkgs.unstable.atuin;
