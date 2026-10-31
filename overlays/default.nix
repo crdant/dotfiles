@@ -27,6 +27,26 @@
 
     mas = final.unstable.mas;
 
+    # nixpkgs still ships Bartender 6, which doesn't fully support macOS 27.
+    # Bartender 7 releases moved to their own path, so the upstream src URL
+    # doesn't follow the version bump. Take new versions from
+    # https://downloads.macbartender.com/Bartender7/updates/AppcastB7.xml and
+    # drop this once nixpkgs packages a 7.x release. Unpacking the zip writes
+    # its macOS metadata out as ._* files inside the bundle, which breaks the
+    # code signature, so remove them.
+    bartender = final.unstable.bartender.overrideAttrs (finalAttrs: old: {
+      version = "7.1.0";
+      src = final.fetchzip {
+        url = "https://downloads.macbartender.com/Bartender7/updates/${
+          builtins.replaceStrings [ "." ] [ "-" ] finalAttrs.version
+        }/Bartender%207.zip";
+        hash = "sha256-CT0EVTDO5dR5rwNcNXWnnd8K6+4m1Ou3I3fywANcgaY=";
+        postFetch = ''
+          find "$out" -name '._*' -delete
+        '';
+      };
+    });
+
     container = final.unstable.container;
   };
 

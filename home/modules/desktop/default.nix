@@ -18,6 +18,55 @@ let
       ) cfg
     );
 
+  # Dock items in order, after Finder. Where an app lives depends on how it
+  # was installed: Homebrew casks and the Mac App Store use /Applications,
+  # nix-darwin copies system packages into /Applications/Nix Apps, and Apple
+  # apps live under /System/Applications. Items that aren't installed on a
+  # given host (e.g. Webex) are skipped.
+  nixApps = "/Applications/Nix Apps";
+  dockApps = [
+    "/Applications/Ghostty.app"
+    "/Applications/Claude.app"
+    "/Applications/Dia.app"
+    "${nixApps}/Slack.app"
+    "/Applications/Superhuman.app"
+    "/System/Applications/Messages.app"
+    "${nixApps}/zoom.us.app"
+    "/Applications/Microsoft Teams.app"
+    "/Applications/Webex.app"
+    "/Applications/Beeper Desktop.app"
+    "/System/Applications/Contacts.app"
+    "/Applications/Todoist.app"
+    "/Applications/Obsidian.app"
+
+    # Media
+    "/System/Applications/News.app"
+    "/System/Applications/Music.app"
+    "/System/Applications/TV.app"
+    "/System/Applications/Books.app"
+    "/System/Applications/Photos.app"
+
+    # iWork (the Mac App Store installs these under their Creator Studio names)
+    "/Applications/Keynote Creator Studio.app"
+    "/Applications/Numbers Creator Studio.app"
+    "/Applications/Pages Creator Studio.app"
+
+    # System utilities
+    "/System/Applications/App Store.app"
+    "/System/Applications/Utilities/Activity Monitor.app"
+    "/System/Applications/Utilities/Console.app"
+    "/System/Applications/Siri AI.app"
+    "/System/Applications/System Settings.app"
+  ];
+
+  addToDock = app: ''
+    if [ -e "${app}" ]; then
+      ${pkgs.dockutil}/bin/dockutil --add "${app}" --no-restart
+    else
+      echo "Skipping missing Dock item: ${app}"
+    fi
+  '';
+
 in {
   # Home Manager basics
   home = {
@@ -113,39 +162,7 @@ in {
       # Clear existing dock items
       ${pkgs.dockutil}/bin/dockutil --remove all --no-restart
 
-      # Third-party applications (in /Applications/)
-      ${pkgs.dockutil}/bin/dockutil --add "/Applications/Ghostty.app" --no-restart
-      ${pkgs.dockutil}/bin/dockutil --add "/Applications/Dia.app" --no-restart
-      ${pkgs.dockutil}/bin/dockutil --add "${pkgs.slack}/Applications/Slack.app" --no-restart
-      ${pkgs.dockutil}/bin/dockutil --add "/Applications/Superhuman.app" --no-restart
-      ${pkgs.dockutil}/bin/dockutil --add "${pkgs.zoom-us}/Applications/zoom.us.app" --no-restart
-
-      # System applications
-      ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/Messages.app" --no-restart
-      ${pkgs.dockutil}/bin/dockutil --add "/Applications/Beeper Desktop.app" --no-restart
-      ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/Contacts.app" --no-restart
-
-      # Productivity apps
-      ${pkgs.dockutil}/bin/dockutil --add "/Applications/Todoist.app" --no-restart
-      ${pkgs.dockutil}/bin/dockutil --add "/Applications/Obsidian.app" --no-restart
-
-      # Media apps
-      ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/News.app" --no-restart
-      ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/Music.app" --no-restart
-      ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/TV.app" --no-restart
-      ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/Books.app" --no-restart
-      ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/Photos.app" --no-restart
-
-      # iWork suite
-      ${pkgs.dockutil}/bin/dockutil --add "/Applications/Keynote.app" --no-restart
-      ${pkgs.dockutil}/bin/dockutil --add "/Applications/Numbers.app" --no-restart
-      ${pkgs.dockutil}/bin/dockutil --add "/Applications/Pages.app" --no-restart
-
-      # System utilities
-      ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/App Store.app" --no-restart
-      ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/Utilities/Activity Monitor.app" --no-restart
-      ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/Utilities/Console.app" --no-restart
-      ${pkgs.dockutil}/bin/dockutil --add "/System/Applications/System Settings.app" --no-restart
+      ${lib.concatMapStrings addToDock dockApps}
 
       # Restart Dock to apply changes
       /usr/bin/killall Dock

@@ -88,13 +88,13 @@ in (lib.mkMerge [
         firefox
       ] ++ lib.optionals isDarwin [
         unstable._1password-gui
-        espanso
+        unstable.espanso
         google-chrome
         open-sans
         slack
         zoom-us
       ] ++ lib.optionals isDarwin [
-        unstable.bartender
+        bartender
         duti
         grandperspective
         hexfiend

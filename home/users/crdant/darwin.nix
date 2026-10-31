@@ -3,7 +3,7 @@ let
   addressbook = import ./defaults/addressbook.nix ;
   amphetamine = import ./defaults/amphetamine.nix ;
   appstore = import ./defaults/appstore.nix ;
-  bartender = import ./defaults/amphetamine.nix ;
+  bartender = import ./defaults/bartender.nix ;
   diskutil = import ./defaults/diskutil.nix ;
   ical = import ./defaults/ical.nix ;
   iterm2 = import ./defaults/iterm2.nix ;
