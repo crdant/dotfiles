@@ -23,6 +23,11 @@
     # match what its CI tests
     hermes-agent.url = "github:NousResearch/hermes-agent";
 
+    # Rex terminal multiplexer from Superlogical; packages the prebuilt release
+    # binary. Preview channel until a stable release exists.
+    rex.url = "https://pkgs.superlogical.com/rex/nix/preview.tar.gz";
+    rex.inputs.nixpkgs.follows = "nixpkgs";
+
   };
 
   outputs = { self, nixpkgs, home-manager, darwin, ...}@inputs:
