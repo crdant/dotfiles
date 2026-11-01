@@ -8,7 +8,7 @@ in {
   environment = {
     systemPackages = with pkgs; [
       nmap
-    ] ++ lib.optional isLinux [
+    ] ++ lib.optionals isLinux [
       unstable._1password-cli
     ];
   };
