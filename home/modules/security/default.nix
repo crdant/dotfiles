@@ -1,4 +1,4 @@
-{ inputs, outputs, options, config, pkgs, lib, gitEmail, secretsFile ? null, ... }:
+{ inputs, outputs, options, config, pkgs, lib, gitEmail, headless ? false, secretsFile ? null, ... }:
 
 let
   isDarwin = pkgs.stdenv.isDarwin;
@@ -152,9 +152,12 @@ in {
     })
   ];
 
-  # Linux gets the real home-manager agent module -- the launchd problems that
-  # force the hand-managed darwin setup above are systemd-only features there
-  services.gpg-agent = lib.mkIf isLinux {
+  # Linux desktops get the real home-manager agent module -- the launchd
+  # problems that force the hand-managed darwin setup above are systemd-only
+  # features there. Headless hosts skip it entirely: no local secret keys or
+  # pinentry, and its ssh socket would clobber SSH_AUTH_SOCK and break agent
+  # forwarding from the connecting machine.
+  services.gpg-agent = lib.mkIf (isLinux && !headless) {
     enable = true;
     enableSshSupport = true;
     defaultCacheTtl = 600;
