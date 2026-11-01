@@ -44,12 +44,13 @@
 
       # Helper function to create home configurations with profiles
       mkHomeConfig = { system, username, gitEmail, profile ? "full"
+        , headless ? false
         , homeDirectory ? (if (mkPkgs system).stdenv.isDarwin then "/Users/${username}" else "/home/${username}")
         , homeModule ? (./. + "/home/users/${username}/home.nix")
       }:
         home-manager.lib.homeManagerConfiguration {
           pkgs = mkPkgs system;
-          extraSpecialArgs = {inherit inputs outputs username homeDirectory gitEmail profile;};
+          extraSpecialArgs = {inherit inputs outputs username homeDirectory gitEmail profile headless;};
           modules = [
             homeModule
           ];
@@ -203,6 +204,18 @@
               )
             );
         in
-        generateConfigs userConfigs profiles;
+        generateConfigs userConfigs profiles // {
+          # Host-qualified configs for headless hosts: the usual profile, but
+          # with desktop-only services (gpg-agent on Linux) disabled. The
+          # Makefile's `switch`/`build` prefer user@host over user@arch-os
+          # when the hostname matches.
+          "crdant@mash" = mkHomeConfig {
+            system = "x86_64-linux";
+            username = "crdant";
+            profile = "full";
+            headless = true;
+            inherit (userConfigs.crdant) gitEmail;
+          };
+        };
     };
 }

@@ -135,12 +135,17 @@ $(foreach name,$(HOME_SHORT_NAMES),$(eval $(call home_short_targets,$(name))))
 
 # Convenience targets for the current user
 CURRENT_USER := $(shell whoami)
+HOSTNAME := $(shell hostname -s)
+
+# Prefer a host-qualified home config (user@host) over the generic
+# user@arch-os one so hosts with overrides (e.g. headless) pick them up
+HOME_TARGET := $(if $(filter $(CURRENT_USER)@$(HOSTNAME),$(HOME_CONFIGS)),$(CURRENT_USER)@$(HOSTNAME),$(CURRENT_USER))
 
 .PHONY: build
-build: build-home-$(CURRENT_USER) ## Build home-manager configuration for current user
+build: build-home-$(HOME_TARGET) ## Build home-manager configuration for current user
 
 .PHONY: switch
-switch: switch-home-$(CURRENT_USER) ## Switch to home-manager configuration for current user
+switch: switch-home-$(HOME_TARGET) ## Switch to home-manager configuration for current user
 
 .PHONY: user
 default: user
@@ -148,7 +153,6 @@ user: switch
 $(CURRENT_USER): build switch
  
 # Host-specific targets
-HOSTNAME := $(shell hostname -s)
 
 .PHONY: build-host
 build-host: ## Build configuration for current host
