@@ -27,6 +27,7 @@ let
         "proxyman"
         "qlmarkdown"
         "quickjson"
+        "raycast"
         "suspicious-package"
         "tailscale-app"
       ];
@@ -98,7 +99,7 @@ in (lib.mkMerge [
         duti
         grandperspective
         hexfiend
-        unstable.raycast
+        # raycast
       ];
     }; 
    
