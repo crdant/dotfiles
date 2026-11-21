@@ -7,7 +7,6 @@ in {
   # Swift and iOS development tools
   home.packages = with pkgs; [
   ] ++ lib.optionals isDarwin [
-    jetbrains-toolbox
     sourcekit-lsp
     swiftlint
     terminal-notifier
