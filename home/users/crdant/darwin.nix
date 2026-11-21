@@ -18,17 +18,19 @@ in
 {
   homebrew = {
     taps = [
+      { name = "ampcode/tap"; trusted = true; }
+      { name = "basecamp/tap"; trusted = true; }
+      { name = "jbeda/tap"; trusted = true; }
       { name = "openclaw/tap"; trusted = true; }
       { name = "steipete/tap"; trusted = true; }
-      { name = "ampcode/tap"; trusted = true; }
-      { name = "jbeda/tap"; trusted = true; }
     ];
     brews = [
       "ampcode"
       "cloudflare-wrangler"
       "gogcli"
+      "basecamp/tap/hey"
       "imsg"
-      # "mdreflow"
+      "jbeda/tap/mdreflow"
       "openclaw/tap/peekaboo"
       "sonoscli"
       "summarize"
