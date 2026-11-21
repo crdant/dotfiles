@@ -35,12 +35,12 @@
     # its macOS metadata out as ._* files inside the bundle, which breaks the
     # code signature, so remove them.
     bartender = final.unstable.bartender.overrideAttrs (finalAttrs: old: {
-      version = "7.1.0";
+      version = "7.2.0";
       src = final.fetchzip {
         url = "https://downloads.macbartender.com/Bartender7/updates/${
           builtins.replaceStrings [ "." ] [ "-" ] finalAttrs.version
         }/Bartender%207.zip";
-        hash = "sha256-CT0EVTDO5dR5rwNcNXWnnd8K6+4m1Ou3I3fywANcgaY=";
+        hash = "sha256-8+tADl0QV1uji3iBs3iJq08wiRWfPQaadwW62KEqoh0=";
         postFetch = ''
           find "$out" -name '._*' -delete
         '';
