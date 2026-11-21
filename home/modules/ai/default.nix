@@ -33,7 +33,7 @@ in {
         ttok
         unstable.fabric-ai
         unstable.github-mcp-server
-        inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.default
+        # inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.default
         mbta-mcp-server
       ];
 

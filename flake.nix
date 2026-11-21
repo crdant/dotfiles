@@ -21,7 +21,7 @@
 
     # Upstream flake for the Hermes agent; keeps its own nixpkgs so builds
     # match what its CI tests
-    hermes-agent.url = "github:NousResearch/hermes-agent";
+    # hermes-agent.url = "github:NousResearch/hermes-agent";
 
     # Rex terminal multiplexer from Superlogical; packages the prebuilt release
     # binary. Preview channel until a stable release exists.

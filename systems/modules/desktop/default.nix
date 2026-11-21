@@ -98,7 +98,7 @@ in (lib.mkMerge [
         duti
         grandperspective
         hexfiend
-        raycast
+        unstable.raycast
       ];
     }; 
    

@@ -8,6 +8,7 @@
 
   homebrew = {
     casks = [
+      "granola"
       "webex"
     ];
   };

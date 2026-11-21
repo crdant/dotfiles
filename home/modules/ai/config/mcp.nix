@@ -29,10 +29,6 @@ in
     command = uvxPath;
     args = ["mcp-server-fetch"];
   };
-  puppeteer = {
-    command = npxPath;
-    args = ["-y" "@modelcontextprotocol/server-puppeteer" ];
-  };
   time = {
     command = uvxPath;
     args = ["mcp-server-time" "--local-timezone=America/New_York"];
@@ -41,37 +37,11 @@ in
     type = "http";
     url = "https://ai.todoist.net/mcp";
   };
-  firecrawl = {
-    command = npxPath;
-    args = [ "-y" "firecrawl-mcp" ];
-    env = {
-      FIRECRAWL_API_KEY = secretRenderer "firecrawl/api_key";
-    };
-  };
-  github = {
-    command = "${pkgs.unstable.github-mcp-server}/bin/github-mcp-server";
-    type = "http";
-    url = "https://api.githubcopilot.com/mcp";
-    headers = {
-      "Authorization" = "Bearer ${secretRenderer "github/token"}";
-    };
-  };
   mbta = {
     command = "${pkgs.mbta-mcp-server}/bin/mbta-mcp-server";
     args = [ ];
     env = {
       MBTA_API_KEY = secretRenderer "mbta/apiKey";
     };
-  };
-  google-maps = {
-    command = npxPath;
-    args = [ "-y" "@modelcontextprotocol/server-google-maps" ];
-    env = {
-      GOOGLE_MAPS_API_KEY = secretRenderer "google/maps/apiKey";
-    };
-  };
-  repomix = {
-   command = npxPath;
-    args = [ "-y" "repomix" "--mcp" ];
   };
 }

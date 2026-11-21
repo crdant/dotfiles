@@ -24,10 +24,13 @@ let
   # apps live under /System/Applications. Items that aren't installed on a
   # given host (e.g. Webex) are skipped.
   nixApps = "/Applications/Nix Apps";
+  homeApps = "${homeDirectory}/Applications/Home Manager Apps";
   dockApps = [
-    "/Applications/Ghostty.app"
-    "/Applications/Claude.app"
+    "/Applications/Rex.app"
     "/Applications/Dia.app"
+    "${homeApps}/Linear.app"
+    "/Applications/Claude.app"
+    "${homeApps}/ChatGPT.app"
     "${nixApps}/Slack.app"
     "/Applications/Superhuman.app"
     "/System/Applications/Messages.app"
@@ -43,13 +46,7 @@ let
     "/System/Applications/News.app"
     "/System/Applications/Music.app"
     "/System/Applications/TV.app"
-    "/System/Applications/Books.app"
     "/System/Applications/Photos.app"
-
-    # iWork (the Mac App Store installs these under their Creator Studio names)
-    "/Applications/Keynote Creator Studio.app"
-    "/Applications/Numbers Creator Studio.app"
-    "/Applications/Pages Creator Studio.app"
 
     # System utilities
     "/System/Applications/App Store.app"
