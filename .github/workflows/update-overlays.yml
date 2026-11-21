@@ -1,0 +1,75 @@
+name: Update overlays
+
+# Opens a pull request when Bartender 7 has a newer release than the one
+# overlays/default.nix pins ahead of nixpkgs. The overlay is rewritten with a
+# placeholder hash and built once to learn the real one, since the fetch
+# strips files from the zip and a plain prefetch won't match.
+
+on:
+  schedule:
+    - cron: "41 8 */3 * *"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: update-overlays
+  cancel-in-progress: false
+
+jobs:
+  bartender:
+    name: update bartender
+    runs-on: macos-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      # Any darwin host works; it's only used to evaluate the overlaid package
+      ATTR: .#darwinConfigurations.cachaca.pkgs.bartender
+      FAKE_HASH: sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+    steps:
+      - uses: actions/checkout@v7
+      - uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+      - id: update
+        name: Update and build
+        run: |
+          old=$(nix eval --raw "$ATTR.version")
+          new=$(curl -fsSL https://downloads.macbartender.com/Bartender7/updates/AppcastB7.xml \
+            | sed -n 's|.*<sparkle:shortVersionString>\(.*\)</sparkle:shortVersionString>.*|\1|p' \
+            | sort -V | tail -1)
+          echo "old=$old" >> "$GITHUB_OUTPUT"
+          echo "new=$new" >> "$GITHUB_OUTPUT"
+          if [ -z "$new" ] || [ "$old" = "$new" ]; then
+            echo "bartender is up to date at $old"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Rewrite only the fields inside the bartender overlay block
+          NEW_VERSION="$new" perl -0pi -e 's/(bartender = .*?version = ")[^"]+(".*?hash = ")[^"]+(")/${1}$ENV{NEW_VERSION}${2}$ENV{FAKE_HASH}${3}/s' \
+            overlays/default.nix
+
+          hash=$(nix build --no-link "$ATTR" 2>&1 | sed -n 's/^ *got: *//p' || true)
+          if [ -z "$hash" ]; then
+            echo "::error::Could not determine the hash for bartender $new"
+            exit 1
+          fi
+          FOUND_HASH="$hash" perl -pi -e 's/\Q$ENV{FAKE_HASH}\E/$ENV{FOUND_HASH}/' overlays/default.nix
+
+          nix build --no-link "$ATTR"
+          git diff
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+      - if: steps.update.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v8
+        with:
+          branch: update/overlay-bartender
+          delete-branch: true
+          commit-message: "bartender: ${{ steps.update.outputs.old }} -> ${{ steps.update.outputs.new }}"
+          title: "bartender: ${{ steps.update.outputs.old }} -> ${{ steps.update.outputs.new }}"
+          body: |
+            Updates the `bartender` overlay from ${{ steps.update.outputs.old }} to ${{ steps.update.outputs.new }}.
+
+            The overlaid package built successfully on `macos-latest` as part of this run.
