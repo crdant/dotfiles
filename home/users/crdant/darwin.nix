@@ -22,16 +22,14 @@ in
       { name = "basecamp/tap"; trusted = true; }
       { name = "jbeda/tap"; trusted = true; }
       { name = "openclaw/tap"; trusted = true; }
-      { name = "steipete/tap"; trusted = true; }
     ];
     brews = [
       "ampcode"
       "cloudflare-wrangler"
       "gogcli"
-      "basecamp/tap/hey"
+      "hey"
       "imsg"
-      "jbeda/tap/mdreflow"
-      "openclaw/tap/peekaboo"
+      "peekaboo"
       "sonoscli"
       "summarize"
       "swiftformat"
@@ -50,6 +48,7 @@ in
       "postman"
       "raspberry-pi-imager"
       "repobar"
+      "mdreflow"
       "monologue"
       "superhuman"
       "thebrowsercompany-dia"
